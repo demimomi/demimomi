@@ -21,13 +21,13 @@
       text-align: center;
       top: 40%;
       font-size: 3em;
-      color: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.1);
       animation: float 10s infinite ease-in-out;
       letter-spacing: 0.2em;
     }
     @keyframes float {
       0% { transform: translateY(0); opacity: 0.1; }
-      50% { transform: translateY(-20px); opacity: 0.2; }
+      50% { transform: translateY(-20px); opacity: 0.3; }
       100% { transform: translateY(0); opacity: 0.1; }
     }
   </style>
@@ -46,6 +46,75 @@
     let time = 0;
 
     const dragonPath = [];
-    const dragonLength = 400;
+    const dragonLength = 500;
     for (let i = 0; i < dragonLength; i++) {
       const angle = i * 0.2;
+      const x = Math.sin(angle) * i * 0.8 + canvas.width / 2;
+      const y = Math.cos(angle * 1.3) * i * 0.4 + canvas.height / 2;
+      dragonPath.push({ x, y });
+    }
+
+    canvas.addEventListener('click', (e) => {
+      ripples.push({
+        x: e.clientX,
+        y: e.clientY,
+        radius: 0
+      });
+    });
+
+    function drawRipples() {
+      for (let i = 0; i < ripples.length; i++) {
+        let r = ripples[i];
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, r.radius, 0, 2 * Math.PI);
+        ctx.strokeStyle = `rgba(255, 255, 255, ${1 - r.radius / 200})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        r.radius += 2;
+        if (r.radius > 200) {
+          ripples.splice(i, 1);
+          i--;
+        }
+      }
+    }
+
+    function drawDragon() {
+      ctx.beginPath();
+      ctx.moveTo(dragonPath[0].x, dragonPath[0].y);
+      for (let i = 1; i < dragonPath.length; i++) {
+        const p = dragonPath[i];
+        ctx.lineTo(p.x, p.y);
+      }
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    function drawInkSmoke() {
+      for (let i = 0; i < 100; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const size = Math.random() * 3 + 1;
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 0, 0, ${Math.random() * 0.1})`;
+        ctx.fill();
+      }
+    }
+
+    function animate() {
+      ctx.fillStyle = 'rgba(0,0,0,0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      drawInkSmoke();
+      drawDragon();
+      drawRipples();
+
+      time++;
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
