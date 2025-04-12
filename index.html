@@ -10,21 +10,20 @@
   <p id="response"></p>
 
   <script>
-    async function sendToGemini() {
-      const input = document.getElementById("userInput").value;
-      const apiKey = "AIzaSyAEiKEL3Cd_iuVe0HPS8Yek7dIkN6gmhpI"; // ←ここに貼る！
+  async function sendToGemini() {
+    const input = document.getElementById("userInput").value;
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbzPaHN3jrnX7q9enogJ8sj7zcH9v8Fv7bC1Qp3XdCDTOtX3BTcRjWfliYxLsmDgx0Ia/exec"; // ここに貼り付け
 
-      const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + apiKey, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: input }] }]
-        })
-      });
+    const response = await fetch(GAS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ input: input })
+    });
 
-      const data = await response.json();
-      document.getElementById("response").innerText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "エラー";
-    }
-  </script>
+    const data = await response.json();
+    document.getElementById("response").innerText =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text || "エラー";
+  }
+</script>
 </body>
 </html>
