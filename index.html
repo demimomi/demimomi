@@ -73,7 +73,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Geminiに聞いてみよう</h1>
+    <h1>demimomiに聞いてみよう!</h1>
     <textarea id="userInput" placeholder="質問を入力してください..."></textarea>
     <button onclick="sendRequest()">送信</button>
     <div id="response" class="response"></div>
@@ -86,7 +86,7 @@
       responseEl.innerText = "回答を取得中…";
 
       try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbx71PHDOZEMbg2Bk0r87fYBH0BX99pPkeSsBzsolJj4NlE1nYsjiKCA_P1z7mgRCzpk/exec", {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbwKQ0FMD3DghN8odh2CoovoGzBmxI6WD5AmovxZJHhNaTdJYOfTXoY16ZtryBQhUy1k/exec", {
           method: "POST",
           body: JSON.stringify({ input }),
           headers: {
