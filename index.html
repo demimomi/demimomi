@@ -5,12 +5,18 @@
   <title>宇宙曼荼羅の龍神界 - Fractal Deep</title>
   <style>
     html, body {
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
       overflow: hidden;
       height: 100%;
-      background: black;
       font-family: "Noto Serif JP", serif;
+      background-image: url('https://raw.githubusercontent.com/demimomi/demimomi/main/sakura.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
     }
+
     canvas {
       display: block;
       position: absolute;
@@ -18,6 +24,7 @@
     }
     #threeCanvas { z-index: 0; }
     #2dCanvas { z-index: 1; }
+
     .center-om {
       position: absolute;
       left: 50%;
@@ -30,18 +37,18 @@
       pointer-events: none;
       z-index: 2;
     }
+
     @keyframes pulse {
       0%, 100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
       50% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.2); }
     }
 
-    /* ロゴの強化スタイル */
     .demimomi-logo {
       position: absolute;
       right: 20px;
       bottom: 20px;
       font-size: 1.4em;
-      color: rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.2);
       font-family: monospace;
       z-index: 3;
       pointer-events: none;
@@ -64,7 +71,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
   <script>
-    // --- THREE.JS SETUP ---
     const threeCanvas = document.getElementById('threeCanvas');
     const renderer = new THREE.WebGLRenderer({ canvas: threeCanvas, alpha: true });
     const scene = new THREE.Scene();
@@ -72,7 +78,12 @@
     camera.position.z = 5;
 
     const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
-    const material = new THREE.MeshStandardMaterial({ color: 0x8844ff, emissive: 0x220022, roughness: 0.2, metalness: 0.8 });
+    const material = new THREE.MeshStandardMaterial({
+      color: 0x8844ff,
+      emissive: 0x220022,
+      roughness: 0.2,
+      metalness: 0.8
+    });
     const torusKnot = new THREE.Mesh(geometry, material);
     scene.add(torusKnot);
 
@@ -90,7 +101,6 @@
     window.addEventListener('resize', resizeRenderer);
     resizeRenderer();
 
-    // --- 2D CANVAS ---
     const canvas2D = document.getElementById('2dCanvas');
     const ctx = canvas2D.getContext('2d');
     canvas2D.width = innerWidth;
@@ -98,14 +108,13 @@
 
     let time = 0;
     let chaosMode = false;
-
     const mouse = { x: canvas2D.width / 2, y: canvas2D.height / 2 };
+
     canvas2D.addEventListener('mousemove', e => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
     });
 
-    // --- DRAGON + FRACTAL SMOKE ---
     function drawSmokeDragon(t) {
       for (let i = 0; i < 400; i++) {
         const angle = i * 0.03 + t * 0.002;
@@ -148,20 +157,17 @@
       ctx.fillRect(0, 0, canvas2D.width, canvas2D.height);
     }
 
-    // --- ANIMATE ---
     function animate() {
       time++;
 
       if (time === 1200) chaosMode = true;
 
-      // 3D Mandala
       torusKnot.rotation.x += 0.005;
       torusKnot.rotation.y += 0.008;
       material.emissiveIntensity = chaosMode ? 1.2 : 0.2;
       material.color.set(chaosMode ? 0xff3366 : 0x8844ff);
       renderer.render(scene, camera);
 
-      // 2D World
       drawBackground();
       drawFractalSpiral(canvas2D.width/2, canvas2D.height/2, time);
       drawSmokeDragon(time);
