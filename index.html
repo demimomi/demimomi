@@ -34,15 +34,25 @@
       0%, 100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
       50% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.2); }
     }
+
+    /* ロゴの強化スタイル */
     .demimomi-logo {
       position: absolute;
       right: 20px;
-      bottom: 15px;
-      font-size: 1em;
-      color: rgba(255,255,255,0.07);
+      bottom: 20px;
+      font-size: 1.4em;
+      color: rgba(255, 255, 255, 0.15);
       font-family: monospace;
       z-index: 3;
       pointer-events: none;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+      opacity: 0;
+      animation: fadeInLogo 3s ease-in-out forwards;
+    }
+
+    @keyframes fadeInLogo {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
