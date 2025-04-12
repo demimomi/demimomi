@@ -2,54 +2,50 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>虚無の龍神</title>
+  <title>禅とdemimomiの夢</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       overflow: hidden;
-      background: black;
+      background: #000;
       height: 100%;
+      font-family: "Noto Serif JP", serif;
     }
     canvas {
       display: block;
     }
-    h1 {
+    .mantra {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: 'Cinzel', serif;
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 2.5em;
-      text-shadow: 0 0 10px #333, 0 0 20px #006, 0 0 40px #00f;
-      animation: fadein 3s ease-out forwards;
+      width: 100%;
+      text-align: center;
+      top: 40%;
+      font-size: 3em;
+      color: rgba(255, 255, 255, 0.05);
+      animation: float 10s infinite ease-in-out;
+      letter-spacing: 0.2em;
     }
-    @keyframes fadein {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    @keyframes float {
+      0% { transform: translateY(0); opacity: 0.1; }
+      50% { transform: translateY(-20px); opacity: 0.2; }
+      100% { transform: translateY(0); opacity: 0.1; }
     }
   </style>
 </head>
 <body>
   <canvas id="canvas"></canvas>
-  <h1>DEMIMOMI、虚無へ還る</h1>
+  <div class="mantra">唵 吽 吽 唵</div>
 
   <script>
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
 
+    let ripples = [];
     let time = 0;
 
-    function draw() {
-      const w = canvas.width;
-      const h = canvas.height;
-      ctx.fillStyle = `rgba(0, 0, 0, 0.15)`;
-      ctx.fillRect(0, 0, w, h);
-
-      const cx = w / 2;
-      const cy = h / 2;
-
-      for (let i =
+    const dragonPath = [];
+    const dragonLength = 400;
+    for (let i = 0; i < dragonLength; i++) {
+      const angle = i * 0.2;
