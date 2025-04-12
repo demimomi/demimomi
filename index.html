@@ -2,11 +2,10 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>DEMIMONI曼荼羅</title>
+  <title>宇宙曼荼羅のDEMIMONI界 - Fractal Deep</title>
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       overflow: hidden;
       height: 100%;
       background: black;
@@ -14,19 +13,11 @@
     }
     canvas {
       display: block;
-    }
-    .mantra {
       position: absolute;
-      width: 100%;
-      text-align: center;
-      top: 40%;
-      font-size: 2.5em;
-      color: rgba(255, 255, 255, 0.05);
-      animation: float 8s infinite ease-in-out;
-      letter-spacing: 0.3em;
-      pointer-events: none;
-      z-index: 2;
+      top: 0; left: 0;
     }
+    #threeCanvas { z-index: 0; }
+    #2dCanvas { z-index: 1; }
     .center-om {
       position: absolute;
       left: 50%;
@@ -37,103 +28,97 @@
       text-shadow: 0 0 20px rgba(255,255,255,0.1);
       animation: pulse 6s ease-in-out infinite;
       pointer-events: none;
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
+      z-index: 2;
     }
     @keyframes pulse {
       0%, 100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
-      50% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.1); }
+      50% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.2); }
+    }
+    .demimomi-logo {
+      position: absolute;
+      right: 20px;
+      bottom: 15px;
+      font-size: 1em;
+      color: rgba(255,255,255,0.07);
+      font-family: monospace;
+      z-index: 3;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
-  <canvas id="canvas"></canvas>
-  <div class="mantra">ॐ 唵 吽 ☯️</div>
+  <canvas id="threeCanvas"></canvas>
+  <canvas id="2dCanvas"></canvas>
   <div class="center-om">ॐ</div>
+  <div class="demimomi-logo">demimomi</div>
 
+  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
   <script>
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = innerWidth;
-    canvas.height = innerHeight;
+    // --- THREE.JS SETUP ---
+    const threeCanvas = document.getElementById('threeCanvas');
+    const renderer = new THREE.WebGLRenderer({ canvas: threeCanvas, alpha: true });
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
+
+    const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
+    const material = new THREE.MeshStandardMaterial({ color: 0x8844ff, emissive: 0x220022, roughness: 0.2, metalness: 0.8 });
+    const torusKnot = new THREE.Mesh(geometry, material);
+    scene.add(torusKnot);
+
+    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambient);
+    const point = new THREE.PointLight(0xffffff, 1);
+    point.position.set(5, 5, 5);
+    scene.add(point);
+
+    function resizeRenderer() {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener('resize', resizeRenderer);
+    resizeRenderer();
+
+    // --- 2D CANVAS ---
+    const canvas2D = document.getElementById('2dCanvas');
+    const ctx = canvas2D.getContext('2d');
+    canvas2D.width = innerWidth;
+    canvas2D.height = innerHeight;
 
     let time = 0;
-    let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
-    let ripples = [];
+    let chaosMode = false;
 
-    // ドラゴンパス
-    const dragonPath = [];
-    const dragonLength = 350;
-    for (let i = 0; i < dragonLength; i++) {
-      dragonPath.push({ x: 0, y: 0 });
-    }
-
-    // チャクラの粒子
-    const chakraParticles = [];
-    for (let i = 0; i < 40; i++) {
-      chakraParticles.push({
-        angle: Math.random() * Math.PI * 2,
-        radius: 30 + Math.random() * 30
-      });
-    }
-
-    // マウス追従（ドラゴンアイ）
-    canvas.addEventListener('mousemove', e => {
+    const mouse = { x: canvas2D.width / 2, y: canvas2D.height / 2 };
+    canvas2D.addEventListener('mousemove', e => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
     });
 
-    canvas.addEventListener('click', e => {
-      ripples.push({ x: e.clientX, y: e.clientY, radius: 0 });
-    });
-
-    function drawMandala(cx, cy, radius, layers, sides, t) {
-      for (let l = 1; l <= layers; l++) {
+    // --- DRAGON + FRACTAL SMOKE ---
+    function drawSmokeDragon(t) {
+      for (let i = 0; i < 400; i++) {
+        const angle = i * 0.03 + t * 0.002;
+        const radius = 150 + Math.sin(t * 0.003 + i) * 30;
+        const x = canvas2D.width/2 + radius * Math.cos(angle);
+        const y = canvas2D.height/2 + radius * Math.sin(angle * 1.1);
         ctx.beginPath();
-        for (let i = 0; i <= sides; i++) {
-          let angle = (Math.PI * 2 / sides) * i + t * 0.001 * l;
-          let r = radius * l / layers + Math.sin(t * 0.002 + i + l) * 5;
-          let x = cx + r * Math.cos(angle);
-          let y = cy + r * Math.sin(angle);
-          ctx.lineTo(x, y);
-        }
-        ctx.strokeStyle = `hsla(${(t/10 + l * 20) % 360}, 100%, 40%, 0.02)`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
+        ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${Math.sin(i + t * 0.005) * 0.03 + 0.03})`;
+        ctx.fill();
       }
     }
 
-    function updateDragon(t) {
-      for (let i = 0; i < dragonLength; i++) {
-        const a = i * 0.05 + t * 0.01;
-        const r = 120 + Math.sin(a * 2 + t * 0.003) * 60;
-        const x = canvas.width/2 + r * Math.cos(a);
-        const y = canvas.height/2 + r * Math.sin(a * 1.3);
-        dragonPath[i] = { x, y };
-      }
-    }
-
-    function drawRipples() {
-      for (let i = ripples.length - 1; i >= 0; i--) {
-        const r = ripples[i];
+    function drawFractalSpiral(cx, cy, t) {
+      const levels = 80;
+      for (let i = 0; i < levels; i++) {
+        const angle = i * 0.3 + t * 0.002;
+        const r = 10 * Math.sqrt(i) * (1 + Math.sin(t * 0.002 + i * 0.2));
+        const x = cx + r * Math.cos(angle);
+        const y = cy + r * Math.sin(angle);
         ctx.beginPath();
-        ctx.arc(r.x, r.y, r.radius, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(255,255,255,${1 - r.radius / 200})`;
-        ctx.lineWidth = 0.8;
-        ctx.stroke();
-        r.radius += 2;
-        if (r.radius > 200) ripples.splice(i, 1);
-      }
-    }
-
-    function drawDragonPath(t) {
-      for (let i = 0; i < dragonLength; i++) {
-        const p = dragonPath[i];
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 1.5 + Math.sin(t * 0.01 + i) * 0.5, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${(i + t) % 360}, 100%, 60%, 0.02)`;
+        ctx.arc(x, y, 1.2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,0.015)`;
         ctx.fill();
       }
     }
@@ -148,33 +133,30 @@
       ctx.shadowBlur = 0;
     }
 
-    function drawChakra(cx, cy, t) {
-      for (let i = 0; i < chakraParticles.length; i++) {
-        let p = chakraParticles[i];
-        let angle = p.angle + t * 0.002;
-        let x = cx + p.radius * Math.cos(angle);
-        let y = cy + p.radius * Math.sin(angle);
-        ctx.beginPath();
-        ctx.arc(x, y, 3, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,0.05)`;
-        ctx.fill();
-      }
-    }
-
     function drawBackground() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.07)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = chaosMode ? 'rgba(0,0,0,0.02)' : 'rgba(0,0,0,0.07)';
+      ctx.fillRect(0, 0, canvas2D.width, canvas2D.height);
     }
 
+    // --- ANIMATE ---
     function animate() {
-      time += 1;
+      time++;
+
+      if (time === 1200) chaosMode = true;
+
+      // 3D Mandala
+      torusKnot.rotation.x += 0.005;
+      torusKnot.rotation.y += 0.008;
+      material.emissiveIntensity = chaosMode ? 1.2 : 0.2;
+      material.color.set(chaosMode ? 0xff3366 : 0x8844ff);
+      renderer.render(scene, camera);
+
+      // 2D World
       drawBackground();
-      drawMandala(canvas.width/2, canvas.height/2, 300, 8, 24, time);
-      updateDragon(time);
-      drawDragonPath(time);
+      drawFractalSpiral(canvas2D.width/2, canvas2D.height/2, time);
+      drawSmokeDragon(time);
       drawDragonEye();
-      drawChakra(canvas.width/2, canvas.height/2, time);
-      drawRipples();
+
       requestAnimationFrame(animate);
     }
 
