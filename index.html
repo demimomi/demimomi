@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>曼荼羅の龍神</title>
+  <title>DEMIMONI曼荼羅</title>
   <style>
     html, body {
       margin: 0;
@@ -10,7 +10,7 @@
       overflow: hidden;
       height: 100%;
       background: black;
-      font-family: 'Noto Serif JP', serif;
+      font-family: "Noto Serif JP", serif;
     }
     canvas {
       display: block;
@@ -25,16 +25,33 @@
       animation: float 8s infinite ease-in-out;
       letter-spacing: 0.3em;
       pointer-events: none;
+      z-index: 2;
+    }
+    .center-om {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4em;
+      color: rgba(255,255,255,0.07);
+      text-shadow: 0 0 20px rgba(255,255,255,0.1);
+      animation: pulse 6s ease-in-out infinite;
+      pointer-events: none;
     }
     @keyframes float {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-15px); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.1); }
     }
   </style>
 </head>
 <body>
   <canvas id="canvas"></canvas>
   <div class="mantra">ॐ 唵 吽 ☯️</div>
+  <div class="center-om">ॐ</div>
 
   <script>
     const canvas = document.getElementById('canvas');
@@ -43,9 +60,35 @@
     canvas.height = innerHeight;
 
     let time = 0;
+    let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
     let ripples = [];
 
-    // 曼荼羅パターン
+    // ドラゴンパス
+    const dragonPath = [];
+    const dragonLength = 350;
+    for (let i = 0; i < dragonLength; i++) {
+      dragonPath.push({ x: 0, y: 0 });
+    }
+
+    // チャクラの粒子
+    const chakraParticles = [];
+    for (let i = 0; i < 40; i++) {
+      chakraParticles.push({
+        angle: Math.random() * Math.PI * 2,
+        radius: 30 + Math.random() * 30
+      });
+    }
+
+    // マウス追従（ドラゴンアイ）
+    canvas.addEventListener('mousemove', e => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    canvas.addEventListener('click', e => {
+      ripples.push({ x: e.clientX, y: e.clientY, radius: 0 });
+    });
+
     function drawMandala(cx, cy, radius, layers, sides, t) {
       for (let l = 1; l <= layers; l++) {
         ctx.beginPath();
@@ -56,17 +99,10 @@
           let y = cy + r * Math.sin(angle);
           ctx.lineTo(x, y);
         }
-        ctx.strokeStyle = `hsla(${(t/10 + l * 20) % 360}, 100%, 40%, 0.03)`;
-        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = `hsla(${(t/10 + l * 20) % 360}, 100%, 40%, 0.02)`;
+        ctx.lineWidth = 1;
         ctx.stroke();
       }
-    }
-
-    // 龍の軌跡
-    const dragonPath = [];
-    const dragonLength = 400;
-    for (let i = 0; i < dragonLength; i++) {
-      dragonPath.push({ x: 0, y: 0 });
     }
 
     function updateDragon(t) {
@@ -78,11 +114,6 @@
         dragonPath[i] = { x, y };
       }
     }
-
-    // 波紋生成
-    canvas.addEventListener('click', e => {
-      ripples.push({ x: e.clientX, y: e.clientY, radius: 0 });
-    });
 
     function drawRipples() {
       for (let i = ripples.length - 1; i >= 0; i--) {
@@ -98,15 +129,36 @@
     }
 
     function drawDragonPath(t) {
-      ctx.beginPath();
       for (let i = 0; i < dragonLength; i++) {
         const p = dragonPath[i];
-        if (i === 0) ctx.moveTo(p.x, p.y);
-        else ctx.lineTo(p.x, p.y);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1.5 + Math.sin(t * 0.01 + i) * 0.5, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${(i + t) % 360}, 100%, 60%, 0.02)`;
+        ctx.fill();
       }
-      ctx.strokeStyle = `hsla(${t % 360}, 100%, 60%, 0.05)`;
-      ctx.lineWidth = 2;
-      ctx.stroke();
+    }
+
+    function drawDragonEye() {
+      ctx.beginPath();
+      ctx.arc(mouse.x, mouse.y, 8, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(255,255,255,0.05)";
+      ctx.shadowColor = "white";
+      ctx.shadowBlur = 20;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    function drawChakra(cx, cy, t) {
+      for (let i = 0; i < chakraParticles.length; i++) {
+        let p = chakraParticles[i];
+        let angle = p.angle + t * 0.002;
+        let x = cx + p.radius * Math.cos(angle);
+        let y = cy + p.radius * Math.sin(angle);
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,0.05)`;
+        ctx.fill();
+      }
     }
 
     function drawBackground() {
@@ -120,6 +172,8 @@
       drawMandala(canvas.width/2, canvas.height/2, 300, 8, 24, time);
       updateDragon(time);
       drawDragonPath(time);
+      drawDragonEye();
+      drawChakra(canvas.width/2, canvas.height/2, time);
       drawRipples();
       requestAnimationFrame(animate);
     }
