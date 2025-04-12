@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>demimomiチャット</title>
 </head>
 <body>
@@ -10,20 +11,22 @@
   <p id="response"></p>
 
   <script>
-  async function sendToGemini() {
-    const input = document.getElementById("userInput").value;
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbwGuuh6whcFXtTSXPWs2Cbq3M5_he8_h8M8seNkqZzE8vYEvOOtikhPxs9pKL-gxO-O/exec"; // ここに貼り付け
+    async function sendToGemini() {
+      const input = document.getElementById("userInput").value;
+      const GAS_URL = "https://script.google.com/macros/s/AKfycbzELE7ukkXGFU6jdU32dN2nX0g7j2y3NCy6hUg6tK6U7au9HGKDvQ2EmAt6pyoS7s6R/exec"; // 例: https://script.google.com/macros/s/AKfycb.../exec
 
-    const response = await fetch(GAS_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ input: input })
-    });
+      const response = await fetch(GAS_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain" // ⚠ プリフライト回避のため application/json ではなく text/plain を使用
+        },
+        body: JSON.stringify({ input: input })
+      });
 
-    const data = await response.json();
-    document.getElementById("response").innerText =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text || "エラー";
-  }
-</script>
+      const data = await response.json();
+      document.getElementById("response").innerText =
+        data?.candidates?.[0]?.content?.parts?.[0]?.text || "エラーが発生しました。";
+    }
+  </script>
 </body>
 </html>
