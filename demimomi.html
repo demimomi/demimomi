@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Geminiチャットアプリ</title>
+</head>
+<body>
+  <h1>Geminiチャットアプリ</h1>
+  <textarea id="userInput" placeholder="質問を入力してください" rows="4" cols="50"></textarea><br>
+  <button onclick="sendMessage()">送信</button>
+  <pre id="responseOutput"></pre>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("userInput").value;
+      const responseBox = document.getElementById("responseOutput");
+
+      const response = await fetch("https://script.google.com/macros/s/AKfycbzAKinUMq5xKKq3tpOF_lP4RQ0n2o_HegaZ8gLmpX2gnkAEwURPJFrlYrZ5_vLf9SVY/exec", {
+        method: "POST",
+        body: JSON.stringify({ message: input }),
+        headers: { "Content-Type": "application/json" }
+      });
+
+      const data = await response.json();
+      responseBox.textContent = data.candidates[0].content.parts[0].text;
+    }
+  </script>
+</body>
+</html>
