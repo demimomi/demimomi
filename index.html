@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>宇宙曼荼羅の龍神界 - Fractal Deep</title>
+  <title>Fractal Deep</title>
   <style>
     html, body {
       margin: 0;
@@ -78,21 +78,37 @@
 </head>
 <body>
 
-   <!-- 中央揃えメニューバー -->
+  <!-- 中央揃えメニューバー -->
 <div style="
   position: fixed;
   top: 0;
   width: 100%;
   background: rgba(0, 0, 0, 0.6);
-  padding: 12px 0;
+  padding: 14px 0;
   z-index: 1000;
   text-align: center;
   font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
-  font-size: 14px;
+  font-size: 16px; /* ← 少し大きく */
+  letter-spacing: 1.5px; /* ← 文字の間隔 */
 ">
-  <a href="https://huggingface.co/demimomi" target="_blank" style="margin: 0 15px; color: #ccc; text-decoration: none;">Hugging Face</a>
-  <a href="https://www.j-platpat.inpit.go.jp/c1801/PU/JP-7634129/15/ja" target="_blank" style="margin: 0 15px; color: #ccc; text-decoration: none;">Patent</a>
-  <a href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank" style="margin: 0 15px; color: #ccc; text-decoration: none;">CatBus</a>
+  <a href="https://huggingface.co/demimomi" target="_blank" style="
+    margin: 0 25px;
+    color: rgba(255,255,255,0.5); /* ← 少し薄く */
+    text-decoration: none;
+    transition: color 0.3s ease;
+  ">Hugging Face</a>
+  <a href="https://www.j-platpat.inpit.go.jp/c1801/PU/JP-7634129/15/ja" target="_blank" style="
+    margin: 0 25px;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  ">Patent</a>
+  <a href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank" style="
+    margin: 0 25px;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  ">CatBus</a>
 </div>
 
   <canvas id="threeCanvas"></canvas>
