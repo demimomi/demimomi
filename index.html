@@ -85,30 +85,30 @@
       text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
     }
 
-    /* 🌸 出水の桜ロゴ */
-    .izumi-logo {
-      position: absolute;
-      right: 20px;
-      bottom: 20px;
-      display: flex;
-      align-items: center;
-      font-size: 1.6em;
-      font-family: 'Sawarabi Mincho', serif;
-      color: rgba(255, 255, 255, 0.4);
-      z-index: 3;
-      pointer-events: none;
-      text-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
-      opacity: 0;
-      animation: fadeInLogo 3s ease-in-out forwards;
-    }
+.izumi-logo {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 1.2em; /* ← 小さく調整 */
+  font-family: 'Sawarabi Mincho', serif;
+  color: rgba(255, 255, 255, 0.25); /* ← さらに薄く調整 */
+  z-index: 3;
+  pointer-events: none;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.15); /* ← 控えめな光彩 */
+  opacity: 0;
+  animation: fadeInLogo 3s ease-in-out forwards;
+}
 
-    .izumi-logo img {
-      width: 26px;
-      height: 26px;
-      margin-left: 10px;
-      opacity: 0.7;
-      filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.2));
-    }
+.izumi-logo img {
+  width: 22px;  /* ← 少し小さく */
+  height: 22px;
+  margin-left: 8px;
+  opacity: 0.6;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.1));
+}
+
 
     @keyframes fadeInLogo {
       0% { opacity: 0; transform: translateY(10px); }
