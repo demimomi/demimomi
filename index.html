@@ -2,7 +2,11 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>Fractal Deep</title>
+  <title> Fractal Deep</title>
+
+  <!-- 🖌️ 習字風フォント（Sawarabi Mincho）読み込み -->
+  <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
+
   <style>
     html, body {
       margin: 0;
@@ -31,7 +35,8 @@
     canvas {
       display: block;
       position: absolute;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
     }
 
     #threeCanvas { z-index: 0; }
@@ -55,7 +60,6 @@
       50% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.2); }
     }
 
-    /* 🔸 上部メニューのスタイル */
     .menu-bar {
       position: fixed;
       top: 0;
@@ -81,28 +85,28 @@
       text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
     }
 
-    /* 🔸 右下のロゴ＋桜アイコン */
-    .demimomi-logo {
+    /* 🌸 出水の桜ロゴ */
+    .izumi-logo {
       position: absolute;
       right: 20px;
       bottom: 20px;
       display: flex;
       align-items: center;
-      font-size: 1.4em;
-      color: rgba(255, 255, 255, 0.3);
-      font-family: monospace;
+      font-size: 1.6em;
+      font-family: 'Sawarabi Mincho', serif;
+      color: rgba(255, 255, 255, 0.4);
       z-index: 3;
       pointer-events: none;
-      text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+      text-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
       opacity: 0;
       animation: fadeInLogo 3s ease-in-out forwards;
     }
 
-    .demimomi-logo img {
-      width: 24px;
-      height: 24px;
+    .izumi-logo img {
+      width: 26px;
+      height: 26px;
       margin-left: 10px;
-      opacity: 0.6;
+      opacity: 0.7;
       filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.2));
     }
 
@@ -125,9 +129,9 @@
   <canvas id="2dCanvas"></canvas>
   <div class="center-om">ॐ</div>
 
-  <!-- 🌸 ロゴ＋桜 -->
-  <div class="demimomi-logo">
-    demimomi
+  <!-- 🌸 出水の桜ロゴ -->
+  <div class="izumi-logo">
+    出水の桜
     <img src="https://raw.githubusercontent.com/demimomi/demimomi/refs/heads/main/sakura.png" alt="sakura">
   </div>
 
