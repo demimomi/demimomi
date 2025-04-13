@@ -91,24 +91,23 @@
   bottom: 20px;
   display: flex;
   align-items: center;
-  font-size: 1.2em; /* ← 小さく調整 */
+  font-size: 1em; /* ← さらに小さく */
   font-family: 'Sawarabi Mincho', serif;
-  color: rgba(255, 255, 255, 0.25); /* ← さらに薄く調整 */
+  color: rgba(255, 255, 255, 0.18); /* ← さらに薄く */
   z-index: 3;
   pointer-events: none;
-  text-shadow: 0 0 4px rgba(255, 255, 255, 0.15); /* ← 控えめな光彩 */
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.1); /* ← 光も弱めに */
   opacity: 0;
   animation: fadeInLogo 3s ease-in-out forwards;
 }
 
 .izumi-logo img {
-  width: 22px;  /* ← 少し小さく */
-  height: 22px;
-  margin-left: 8px;
-  opacity: 0.6;
-  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.1));
+  width: 18px;  /* ← さらに小さく */
+  height: 18px;
+  margin-left: 6px;
+  opacity: 0.5; /* ← 少し透明度を上げて自然に */
+  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.08));
 }
-
 
     @keyframes fadeInLogo {
       0% { opacity: 0; transform: translateY(10px); }
