@@ -84,6 +84,30 @@
   <div class="center-om">ॐ</div>
   <div class="demimomi-logo">demimomi</div>
 
+  <div id="menu-toggle" style="position: fixed; top: 20px; right: 20px; cursor: pointer;">
+  <span style="display: block; width: 25px; height: 3px; background: #333; margin: 5px 0;"></span>
+  <span style="display: block; width: 25px; height: 3px; background: #333; margin: 5px 0;"></span>
+  <span style="display: block; width: 25px; height: 3px; background: #333; margin: 5px 0;"></span>
+</div>
+
+<div id="menu" style="display: none; position: fixed; top: 0; right: 0; width: 200px; height: 100%; background: rgba(255, 255, 255, 0.9); padding: 60px 20px;">
+  <a href="https://huggingface.co/demimomi" target="_blank">Hugging Face</a>
+  <a href="https://www.j-platpat.inpit.go.jp/c1801/PU/JP-7634129/15/ja" target="_blank">Patent</a>
+  <a href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank">CatBus</a>
+</div>
+
+<script>
+  document.getElementById('menu-toggle').onclick = function() {
+    var menu = document.getElementById('menu');
+    if (menu.style.display === 'none' || menu.style.display === '') {
+      menu.style.display = 'block';
+    } else {
+      menu.style.display = 'none';
+    }
+  };
+</script>
+
+
   <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
   <script>
     const threeCanvas = document.getElementById('threeCanvas');
