@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>宇宙曼荼羅のDEMIMOMI界 - Fractal Deep</title>
+  <title>宇宙曼荼羅の龍神界 - Fractal Deep</title>
   <style>
     html, body {
       margin: 0;
@@ -14,6 +14,20 @@
       position: relative;
     }
 
+    /* 🌸 背景に桜画像をうっすら表示 */
+    html::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://raw.githubusercontent.com/demimomi/demimomi/main/sakura.png');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.12; /* ← うっすら見える程度に調整可能 */
+      z-index: -1;
+    }
 
     canvas {
       display: block;
@@ -61,34 +75,12 @@
       100% { opacity: 1; transform: translateY(0); }
     }
   </style>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="https://github.com/demimomi/demimomi/blob/main/sakura.png?raw=true">
 </head>
 <body>
-  
   <canvas id="threeCanvas"></canvas>
   <canvas id="2dCanvas"></canvas>
   <div class="center-om">ॐ</div>
   <div class="demimomi-logo">demimomi</div>
-
-  <div id="menu-toggle" style="position: fixed; top: 20px; right: 20px; cursor: pointer;">
-  <span style="display: block; width: 25px; height: 3px; background: #333; margin: 5px 0;"></span>
-  <span style="display: block; width: 25px; height: 3px; background: #333; margin: 5px 0;"></span>
-  <span style="display: block; width: 25px; height: 3px; background: #333; margin: 5px 0;"></span>
-</div>
-
-
-<script>
-  document.getElementById('menu-toggle').onclick = function() {
-    var menu = document.getElementById('menu');
-    if (menu.style.display === 'none' || menu.style.display === '') {
-      menu.style.display = 'block';
-    } else {
-      menu.style.display = 'none';
-    }
-  };
-</script>
-
 
   <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
   <script>
@@ -198,37 +190,6 @@
     }
 
     animate();
-<!-- ハンバーガーアイコン -->
-<div id="menu-toggle" style="position: fixed; top: 20px; right: 20px; cursor: pointer; z-index: 1000;">
-  <span style="display: block; width: 25px; height: 3px; background: #333; margin: 5px 0;"></span>
-  <span style="display: block; width: 25px; height: 3px; background: #333; margin: 5px 0;"></span>
-  <span style="display: block; width: 25px; height: 3px; background: #333; margin: 5px 0;"></span>
-</div>
-
-<!-- メニュー -->
-<div id="menu" style="display: none; position: fixed; top: 0; right: 0; width: 220px; height: 100%; background: rgba(255,255,255,0.95); padding: 60px 20px; z-index: 999;">
-  <a href="https://huggingface.co/demimomi" target="_blank" style="display: block; margin: 15px 0;">🤗 Hugging Face</a>
-  <a href="https://www.j-platpat.inpit.go.jp/c1801/PU/JP-7634129/15/ja" target="_blank" style="display: block; margin: 15px 0;">📄 Patent</a>
-  <a href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank" style="display: block; margin: 15px 0;">🚌 CatBus</a>
-</div>
-
-<!-- JavaScript -->
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const toggle = document.getElementById("menu-toggle");
-    const menu = document.getElementById("menu");
-
-    toggle.addEventListener("click", function () {
-      if (menu.style.display === "block") {
-        menu.style.display = "none";
-      } else {
-        menu.style.display = "block";
-      }
-    });
-  });
-</script>
-
-    
   </script>
 </body>
 </html>
