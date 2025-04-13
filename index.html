@@ -14,7 +14,6 @@
       position: relative;
     }
 
-    /* 🌸 背景に桜画像をうっすら表示 */
     html::before {
       content: "";
       position: fixed;
@@ -25,7 +24,7 @@
       background-image: url('https://raw.githubusercontent.com/demimomi/demimomi/main/sakura.png');
       background-size: cover;
       background-position: center;
-      opacity: 0.12; /* ← うっすら見える程度に調整可能 */
+      opacity: 0.12;
       z-index: -1;
     }
 
@@ -56,18 +55,55 @@
       50% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.2); }
     }
 
+    /* 🔸 上部メニューのスタイル */
+    .menu-bar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 14px 0;
+      z-index: 1000;
+      text-align: center;
+      font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+      font-size: 16px;
+      letter-spacing: 1.5px;
+    }
+
+    .menu-bar a {
+      margin: 0 25px;
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: none;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .menu-bar a:hover {
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+    }
+
+    /* 🔸 右下のロゴ＋桜アイコン */
     .demimomi-logo {
       position: absolute;
       right: 20px;
       bottom: 20px;
+      display: flex;
+      align-items: center;
       font-size: 1.4em;
-      color: rgba(255, 255, 255, 0.2);
+      color: rgba(255, 255, 255, 0.3);
       font-family: monospace;
       z-index: 3;
       pointer-events: none;
-      text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
       opacity: 0;
       animation: fadeInLogo 3s ease-in-out forwards;
+    }
+
+    .demimomi-logo img {
+      width: 24px;
+      height: 24px;
+      margin-left: 10px;
+      opacity: 0.6;
+      filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.2));
     }
 
     @keyframes fadeInLogo {
@@ -78,45 +114,24 @@
 </head>
 <body>
 
-  <!-- 中央揃えメニューバー -->
-<div style="
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 14px 0;
-  z-index: 1000;
-  text-align: center;
-  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
-  font-size: 16px; /* ← 少し大きく */
-  letter-spacing: 1.5px; /* ← 文字の間隔 */
-">
-  <a href="https://huggingface.co/demimomi" target="_blank" style="
-    margin: 0 25px;
-    color: rgba(255,255,255,0.5); /* ← 少し薄く */
-    text-decoration: none;
-    transition: color 0.3s ease;
-  ">LLM</a>
-  <a href="https://www.j-platpat.inpit.go.jp/c1801/PU/JP-7634129/15/ja" target="_blank" style="
-    margin: 0 25px;
-    color: rgba(255,255,255,0.5);
-    text-decoration: none;
-    transition: color 0.3s ease;
-  ">Patent</a>
-  <a href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank" style="
-    margin: 0 25px;
-    color: rgba(255,255,255,0.5);
-    text-decoration: none;
-    transition: color 0.3s ease;
-  ">CatBus</a>
-</div>
+  <!-- 🌌 上部メニュー -->
+  <div class="menu-bar">
+    <a href="https://huggingface.co/demimomi" target="_blank">Hugging Face</a>
+    <a href="https://www.j-platpat.inpit.go.jp/c1801/PU/JP-7634129/15/ja" target="_blank">Patent</a>
+    <a href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank">CatBus</a>
+  </div>
 
   <canvas id="threeCanvas"></canvas>
   <canvas id="2dCanvas"></canvas>
   <div class="center-om">ॐ</div>
-  <div class="demimomi-logo">demimomi</div>
 
+  <!-- 🌸 ロゴ＋桜 -->
+  <div class="demimomi-logo">
+    demimomi
+    <img src="https://raw.githubusercontent.com/demimomi/demimomi/refs/heads/main/sakura.png" alt="sakura">
+  </div>
 
+  <!-- 🔮 Three.js & 2D Canvas スクリプト -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
   <script>
     const threeCanvas = document.getElementById('threeCanvas');
