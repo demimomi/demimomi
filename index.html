@@ -218,19 +218,27 @@
   <span style="display: block; width: 25px; height: 3px; background: #333; margin: 5px 0;"></span>
 </div>
 
-<!-- メニュー本体 -->
-<div id="menu" style="display: none; position: fixed; top: 0; right: 0; width: 220px; height: 100%; background: rgba(255, 255, 255, 0.9); padding: 60px 20px; z-index: 999;">
-  <a href="https://huggingface.co/demimomi" target="_blank" style="display: block; margin: 15px 0; color: #333; text-decoration: none;">🤗 Hugging Face</a>
-  <a href="https://www.j-platpat.inpit.go.jp/c1801/PU/JP-7634129/15/ja" target="_blank" style="display: block; margin: 15px 0; color: #333; text-decoration: none;">📄 Patent</a>
-  <a href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank" style="display: block; margin: 15px 0; color: #333; text-decoration: none;">🚌 CatBus</a>
+<!-- メニュー -->
+<div id="menu" style="display: none; position: fixed; top: 0; right: 0; width: 220px; height: 100%; background: rgba(255,255,255,0.95); padding: 60px 20px; z-index: 999;">
+  <a href="https://huggingface.co/demimomi" target="_blank" style="display: block; margin: 15px 0;">🤗 Hugging Face</a>
+  <a href="https://www.j-platpat.inpit.go.jp/c1801/PU/JP-7634129/15/ja" target="_blank" style="display: block; margin: 15px 0;">📄 Patent</a>
+  <a href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank" style="display: block; margin: 15px 0;">🚌 CatBus</a>
 </div>
 
-<!-- JavaScript（クリックで開閉） -->
+<!-- JavaScript -->
 <script>
-  document.getElementById('menu-toggle').onclick = function () {
-    const menu = document.getElementById('menu');
-    menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
-  };
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggle = document.getElementById("menu-toggle");
+    const menu = document.getElementById("menu");
+
+    toggle.addEventListener("click", function () {
+      if (menu.style.display === "block") {
+        menu.style.display = "none";
+      } else {
+        menu.style.display = "block";
+      }
+    });
+  });
 </script>
 
     
