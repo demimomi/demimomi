@@ -245,6 +245,48 @@
     }
 
     animate();
+
+    function drawSmokeDragon(t) {
+  for (let i = 0; i < 400; i++) {
+    const angle = i * 0.03 + t * 0.002;
+    const radius = 150 + Math.sin(t * 0.003 + i) * 30;
+    const x = canvas2D.width / 2 + radius * Math.cos(angle);
+    const y = canvas2D.height / 2 + radius * Math.sin(angle * 1.1);
+    ctx.beginPath();
+    ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+    // ここを桜色系に変更
+    ctx.fillStyle = `rgba(255, 182, 193, ${Math.sin(i + t * 0.005) * 0.03 + 0.03})`; 
+    ctx.fill();
+  }
+}
+
+function drawFractalSpiral(cx, cy, t) {
+  const levels = 80;
+  for (let i = 0; i < levels; i++) {
+    const angle = i * 0.3 + t * 0.002;
+    const r = 10 * Math.sqrt(i) * (1 + Math.sin(t * 0.002 + i * 0.2));
+    const x = cx + r * Math.cos(angle);
+    const y = cy + r * Math.sin(angle);
+    ctx.beginPath();
+    ctx.arc(x, y, 1.2, 0, Math.PI * 2);
+    // ここも桜色の薄い感じに変更
+    ctx.fillStyle = `rgba(255, 182, 193, 0.02)`;
+    ctx.fill();
+  }
+}
+
+function drawDragonEye() {
+  ctx.beginPath();
+  ctx.arc(mouse.x, mouse.y, 8, 0, Math.PI * 2);
+  // ここも桜色系に変更
+  ctx.fillStyle = "rgba(255, 182, 193, 0.05)";
+  ctx.shadowColor = "pink";
+  ctx.shadowBlur = 20;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+}
+material.color.set(chaosMode ? 0xffb6c1 : 0x8844ff);
+
   </script>
 </body>
 </html>
