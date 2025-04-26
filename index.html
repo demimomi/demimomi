@@ -9,6 +9,17 @@
 
   <style>
     html, body {
+margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: black; /* 背景色（フェード効果にも使える） */
+      background-image: url('https://github.com/demimomi/demimomi/raw/main/images/demimomi.png');
+      background-size: cover; /* 画面いっぱいに拡大 */
+      background-position: center; /* 中央に配置 */
+      background-repeat: no-repeat; /* 繰り返しなし */
+      opacity: 0.9; /* 少しだけ透過も可能（任意） */
+      
       margin: 0;
       padding: 0;
       overflow: hidden;
@@ -246,17 +257,7 @@
 
     animate();
 
-    function drawSmokeDragon(t) {
-  for (let i = 0; i < 400; i++) {
-    const angle = i * 0.03 + t * 0.002;
-    const radius = 150 + Math.sin(t * 0.003 + i) * 30;
-    const x = canvas2D.width / 2 + radius * Math.cos(angle);
-    const y = canvas2D.height / 2 + radius * Math.sin(angle * 1.1);
-    ctx.beginPath();
-    ctx.arc(x, y, 1.5, 0, Math.PI * 2);
-    // ここを桜色系に変更
-    ctx.fillStyle = `rgba(255, 182, 193, ${Math.sin(i + t * 0.005) * 0.03 + 0.03})`; 
-    ctx.fill();
+  
   }
 }
 
