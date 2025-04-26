@@ -1,4 +1,124 @@
-  <!-- 🌌 上部メニュー -->
+<!DOCTYPE html>
+ <html lang="ja">
+ <head>
+   <meta charset="UTF-8">
+   <title> Fractal Deep</title>
+ 
+   <!-- 🖌️ 習字風フォント（Sawarabi Mincho）読み込み -->
+   <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
+ 
+   <style>
+     html, body {
+       margin: 0;
+       padding: 0;
+       overflow: hidden;
+       height: 100%;
+       font-family: "Noto Serif JP", serif;
+       background: black;
+       position: relative;
+     }
+ 
+     html::before {
+       content: "";
+       position: fixed;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       background-image: url('https://raw.githubusercontent.com/demimomi/demimomi/main/sakura.png');
+       background-size: cover;
+       background-position: center;
+       opacity: 0.12;
+       z-index: -1;
+     }
+ 
+     canvas {
+       display: block;
+       position: absolute;
+       top: 0;
+       left: 0;
+     }
+ 
+     #threeCanvas { z-index: 0; }
+     #2dCanvas { z-index: 1; }
+ 
+     .center-om {
+       position: absolute;
+       left: 50%;
+       top: 50%;
+       transform: translate(-50%, -50%);
+       font-size: 4em;
+       color: rgba(255,255,255,0.07);
+       text-shadow: 0 0 20px rgba(255,255,255,0.1);
+       animation: pulse 6s ease-in-out infinite;
+       pointer-events: none;
+       z-index: 2;
+     }
+ 
+     @keyframes pulse {
+       0%, 100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
+       50% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.2); }
+     }
+ 
+     .menu-bar {
+       position: fixed;
+       top: 0;
+       width: 100%;
+       background: rgba(0, 0, 0, 0.6);
+       padding: 14px 0;
+       z-index: 1000;
+       text-align: center;
+       font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+       font-size: 16px;
+       letter-spacing: 1.5px;
+     }
+ 
+     .menu-bar a {
+       margin: 0 25px;
+       color: rgba(255, 255, 255, 0.5);
+       text-decoration: none;
+       transition: color 0.3s ease, text-shadow 0.3s ease;
+     }
+ 
+     .menu-bar a:hover {
+       color: rgba(255, 255, 255, 0.95);
+       text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+     }
+ 
+ .izumi-logo {
+   position: absolute;
+   right: 20px;
+   bottom: 20px;
+   display: flex;
+   align-items: center;
+   font-size: 1em; /* ← さらに小さく */
+   font-family: 'Sawarabi Mincho', serif;
+   color: rgba(255, 255, 255, 0.18); /* ← さらに薄く */
+   z-index: 3;
+   pointer-events: none;
+   text-shadow: 0 0 2px rgba(255, 255, 255, 0.1); /* ← 光も弱めに */
+   opacity: 0;
+   animation: fadeInLogo 3s ease-in-out forwards;
+ }
+ 
+ .izumi-logo img {
+   width: 18px;  /* ← さらに小さく */
+   height: 18px;
+   margin-left: 6px;
+   opacity: 0.5; /* ← 少し透明度を上げて自然に */
+   filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.08));
+ }
+ 
+     @keyframes fadeInLogo {
+       0% { opacity: 0; transform: translateY(10px); }
+       100% { opacity: 1; transform: translateY(0); }
+     }
+   </style>
+       <meta name="keywords" content="出水, 出水利樹, 出水 利樹, demimomi, toshiki demizu">
+ </head>
+ <body>
+ 
+   <!-- 🌌 上部メニュー -->
    <div class="menu-bar">
      <a href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank">LLM</a>
      <a href="https://www.j-platpat.inpit.go.jp/c1801/PU/JP-7634129/15/ja" target="_blank">Satellite</a>
