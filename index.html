@@ -1,257 +1,367 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>Fractal Deep</title>
-  <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
-
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      height: 100%;
-      font-family: "Noto Serif JP", serif;
-      background: black;
-      position: relative;
-    }
-
-    html::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('https://raw.githubusercontent.com/demimomi/demimomi/main/sakura.png');
-      background-size: cover;
-      background-position: center;
-      opacity: 0.12;
-      z-index: -1;
-    }
-
-    canvas {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
-    #threeCanvas { z-index: 0; }
-    #2dCanvas { z-index: 1; }
-
-    .center-om {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 4em;
-      color: rgba(255,255,255,0.07);
-      text-shadow: 0 0 20px rgba(255,255,255,0.1);
-      animation: pulse 6s ease-in-out infinite;
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
-      50% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.2); }
-    }
-
-    .menu-bar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 14px 0;
-      z-index: 1000;
-      text-align: center;
-      font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
-      font-size: 16px;
-      letter-spacing: 1.5px;
-    }
-
-    .menu-bar a {
-      margin: 0 25px;
-      color: rgba(255, 255, 255, 0.5);
-      text-decoration: none;
-      transition: color 0.3s ease, text-shadow 0.3s ease;
-    }
-
-    .menu-bar a:hover {
-      color: rgba(255, 255, 255, 0.95);
-      text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
-    }
-
-    /* 🌸 出水の桜 ロゴリンク（右上固定） */
-    .izumi-link {
-      position: fixed;
-      top: 12px;
-      right: 20px;
-      z-index: 1001;
-      text-decoration: none;
-      pointer-events: auto;
-    }
-
-    .izumi-logo {
-      display: flex;
-      align-items: center;
-      font-size: 1em;
-      font-family: 'Sawarabi Mincho', serif;
-      color: rgba(255, 255, 255, 0.25);
-      text-shadow: 0 0 4px rgba(255, 200, 255, 0.15);
-      animation: glow 3s ease-in-out infinite;
-      transition: transform 0.3s ease;
-    }
-
-    .izumi-logo:hover {
-      transform: scale(1.05);
-    }
-
-    .izumi-logo img {
-      width: 18px;
-      height: 18px;
-      margin-left: 6px;
-      opacity: 0.5;
-      filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.08));
-    }
-
-    @keyframes glow {
-      0%, 100% { text-shadow: 0 0 6px rgba(255, 200, 255, 0.2); }
-      50% { text-shadow: 0 0 12px rgba(255, 200, 255, 0.5); }
-    }
-  </style>
-
-  <meta name="keywords" content="出水, 出水利樹, 出水 利樹, demimomi, toshiki demizu">
-</head>
-<body>
-
-  <!-- 🔼 上部ナビゲーション -->
-  <div class="menu-bar">
-    <a href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank">LLM</a>
-    <a href="https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453" target="_blank">Satellite</a>
-    <a href="https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2025-044252/11/ja" target="_blank">AI</a>
-    <a href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank">CatBus</a>
-  </div>
-
-  <!-- 🌸 出水の桜 ロゴ（右上） -->
-  <a href="https://huggingface.co/demimomi" target="_blank" class="izumi-link">
-    <div class="izumi-logo">
-      出水の桜
-      <img src="https://raw.githubusercontent.com/demimomi/demimomi/refs/heads/main/sakura.png" alt="sakura">
-    </div>
+<!-- 🌸 出水の桜ロゴ -->
+<div class="demizu-logo">
+  <a href="https://huggingface.co/demimomi" target="_blank" rel="noopener noreferrer">
+    出水の<span class="sakura-glow">桜</span>
+    <img src="https://raw.githubusercontent.com/denimomi/denimomi/refs/heads/main/sakura.png" alt="sakura" class="sakura-img" />
   </a>
+</div>
 
-  <!-- 🌀 Canvas -->
-  <canvas id="threeCanvas"></canvas>
-  <canvas id="2dCanvas"></canvas>
-  <div class="center-om">ॐ</div>
+<!DOCTYPE html>
+ <html lang="ja">
+ <head>
+   <meta charset="UTF-8">
+   <title> Fractal Deep</title>
+ 
+   <!-- 🖌️ 習字風フォント（Sawarabi Mincho）読み込み -->
+   <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
+ 
+   <style>
+     html, body {
+       margin: 0;
+       padding: 0;
+       overflow: hidden;
+       height: 100%;
+       font-family: "Noto Serif JP", serif;
+       background: black;
+       position: relative;
+     }
+ 
+     html::before {
+       content: "";
+       position: fixed;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       background-image: url('https://raw.githubusercontent.com/demimomi/demimomi/main/sakura.png');
+       background-size: cover;
+       background-position: center;
+       opacity: 0.12;
+       z-index: -1;
+     }
+ 
+     canvas {
+       display: block;
+       position: absolute;
+       top: 0;
+       left: 0;
+     }
+ 
+     #threeCanvas { z-index: 0; }
+     #2dCanvas { z-index: 1; }
+ 
+     .center-om {
+       position: absolute;
+       left: 50%;
+       top: 50%;
+       transform: translate(-50%, -50%);
+       font-size: 4em;
+       color: rgba(255,255,255,0.07);
+       text-shadow: 0 0 20px rgba(255,255,255,0.1);
+       animation: pulse 6s ease-in-out infinite;
+       pointer-events: none;
+       z-index: 2;
+     }
+ 
+     @keyframes pulse {
+       0%, 100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
+       50% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.2); }
+     }
+ 
+     .menu-bar {
+       position: fixed;
+       top: 0;
+       width: 100%;
+       background: rgba(0, 0, 0, 0.6);
+       padding: 14px 0;
+       z-index: 1000;
+       text-align: center;
+       font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+       font-size: 16px;
+       letter-spacing: 1.5px;
+     }
+ 
+     .menu-bar a {
+       margin: 0 25px;
+       color: rgba(255, 255, 255, 0.5);
+       text-decoration: none;
+       transition: color 0.3s ease, text-shadow 0.3s ease;
+     }
+ 
+     .menu-bar a:hover {
+       color: rgba(255, 255, 255, 0.95);
+       text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+     }
+ 
+ .izumi-logo {
+   position: absolute;
+   right: 20px;
+   bottom: 20px;
+   display: flex;
+   align-items: center;
+   font-size: 1em; /* ← さらに小さく */
+   font-family: 'Sawarabi Mincho', serif;
+   color: rgba(255, 255, 255, 0.18); /* ← さらに薄く */
+   z-index: 3;
+   pointer-events: none;
+   text-shadow: 0 0 2px rgba(255, 255, 255, 0.1); /* ← 光も弱めに */
+   opacity: 0;
+   animation: fadeInLogo 3s ease-in-out forwards;
+ }
+ 
+ .izumi-logo img {
+   width: 18px;  /* ← さらに小さく */
+   height: 18px;
+   margin-left: 6px;
+   opacity: 0.5; /* ← 少し透明度を上げて自然に */
+   filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.08));
+ }
+ 
+     @keyframes fadeInLogo {
+       0% { opacity: 0; transform: translateY(10px); }
+       100% { opacity: 1; transform: translateY(0); }
+     }
+   </style>
+       <meta name="keywords" content="出水, 出水利樹, 出水 利樹, demimomi, toshiki demizu">
+ </head>
+ <body>
+ 
+   <!-- 🌌 上部メニュー -->
+   <div class="menu-bar">
+     <a href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank">LLM</a>
+     <a href="https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453" target="_blank">Satellite</a>
+     <a href="https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2025-044252/11/ja" target="_blank">AI</a>
+     <a href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank">CatBus</a>
+   </div>
+ 
+   <canvas id="threeCanvas"></canvas>
+   <canvas id="2dCanvas"></canvas>
+   <div class="center-om">ॐ</div>
+ 
+   <!-- 🌸 出水の桜ロゴ -->
+   <div class="izumi-logo">
+     出水の桜
+     <img src="https://raw.githubusercontent.com/demimomi/demimomi/refs/heads/main/sakura.png" alt="sakura">
+   </div>
 
-  <!-- 🔮 Three.js & Canvas scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
-  <script>
-    const threeCanvas = document.getElementById('threeCanvas');
-    const renderer = new THREE.WebGLRenderer({ canvas: threeCanvas, alpha: true });
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 5;
+  ```
+# Load model directly
+from transformers import AutoModel
+model = AutoModel.from_pretrained("demimomi/llm-jp-3-13b-finetune-ex")
+```
+```
 
-    const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
-    const material = new THREE.MeshStandardMaterial({
-      color: 0x8844ff,
-      emissive: 0x220022,
-      roughness: 0.2,
-      metalness: 0.8
-    });
-    const torusKnot = new THREE.Mesh(geometry, material);
-    scene.add(torusKnot);
+- 必ず言語（ここでは `python`）を小文字で指定してください[1][3][9]。
+- これでJekyll/Rougeによる構文ハイライトも有効になります。
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambient);
-    const point = new THREE.PointLight(0xffffff, 1);
-    point.position.set(5, 5, 5);
-    scene.add(point);
+---
 
-    function resizeRenderer() {
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-    }
-    window.addEventListener('resize', resizeRenderer);
-    resizeRenderer();
+### 2. コードブロックの色を「うすい灰色文字」にカスタマイズ
 
-    const canvas2D = document.getElementById('2dCanvas');
-    const ctx = canvas2D.getContext('2d');
-    canvas2D.width = innerWidth;
-    canvas2D.height = innerHeight;
+**RougeのデフォルトCSS**では文字色が黒系ですが、任意の色に変更できます。  
+サイトのCSS（例：`/assets/css/style.css`や`_sass/custom.scss`）に、以下を追加してください。
 
-    let time = 0;
-    let chaosMode = false;
-    const mouse = { x: canvas2D.width / 2, y: canvas2D.height / 2 };
+```css
+/* コードブロック内の文字色をうすい灰色に */
+pre code, code {
+  color: #b0b0b0 !important; /* うすい灰色 */
+  background: #f8f8f8;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1em;
+}
+pre {
+  background: #f8f8f8;
+  border-radius: 6px;
+  padding: 1em;
+  overflow-x: auto;
+}
+```
 
-    canvas2D.addEventListener('mousemove', e => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    });
+- `color: #b0b0b0;`でうすい灰色文字に。
+- `!important`を付けるとテーマやRougeのスタイルより優先されます。
+- `background`や`border-radius`で見た目も調整しています。
 
-    function drawSmokeDragon(t) {
-      for (let i = 0; i < 400; i++) {
-        const angle = i * 0.03 + t * 0.002;
-        const radius = 150 + Math.sin(t * 0.003 + i) * 30;
-        const x = canvas2D.width / 2 + radius * Math.cos(angle);
-        const y = canvas2D.height / 2 + radius * Math.sin(angle * 1.1);
-        ctx.beginPath();
-        ctx.arc(x, y, 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${Math.sin(i + t * 0.005) * 0.03 + 0.03})`;
-        ctx.fill();
-      }
-    }
+---
 
-    function drawFractalSpiral(cx, cy, t) {
-      const levels = 80;
-      for (let i = 0; i < levels; i++) {
-        const angle = i * 0.3 + t * 0.002;
-        const r = 10 * Math.sqrt(i) * (1 + Math.sin(t * 0.002 + i * 0.2));
-        const x = cx + r * Math.cos(angle);
-        const y = cy + r * Math.sin(angle);
-        ctx.beginPath();
-        ctx.arc(x, y, 1.2, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,0.015)`;
-        ctx.fill();
-      }
-    }
+### 3. JavaScript無効時も確実に表示される理由
 
-    function drawDragonEye() {
-      ctx.beginPath();
-      ctx.arc(mouse.x, mouse.y, 8, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(255,255,255,0.05)";
-      ctx.shadowColor = "white";
-      ctx.shadowBlur = 20;
-      ctx.fill();
-      ctx.shadowBlur = 0;
-    }
+- **Markdown→HTML変換**はサーバーサイド（Jekyll/Rouge）で行われ、HTMLとして出力されます[3][9]。
+- `<pre><code>...</code></pre>`は純粋なHTML要素なので、**JavaScriptが無効でも必ず表示されます**。
+- CSSもHTMLに直接書くか、外部CSSとして読み込めば、JSに依存しません。
 
-    function drawBackground() {
-      ctx.fillStyle = chaosMode ? 'rgba(0,0,0,0.02)' : 'rgba(0,0,0,0.07)';
-      ctx.fillRect(0, 0, canvas2D.width, canvas2D.height);
-    }
+---
 
-    function animate() {
-      time++;
-      if (time === 1200) chaosMode = true;
-      torusKnot.rotation.x += 0.005;
-      torusKnot.rotation.y += 0.008;
-      material.emissiveIntensity = chaosMode ? 1.2 : 0.2;
-      material.color.set(chaosMode ? 0xff3366 : 0x8844ff);
-      renderer.render(scene, camera);
-      drawBackground();
-      drawFractalSpiral(canvas2D.width / 2, canvas2D.height / 2, time);
-      drawSmokeDragon(time);
-      drawDragonEye();
-      requestAnimationFrame(animate);
-    }
+### 4. 特殊な記号やLiquid干渉を防ぐ場合
 
-    animate();
-  </script>
-</body>
-</html>
+- コード内に`{{`や`}}`などLiquid構文が含まれる場合は、  
+  `{% raw %}`と`{% endraw %}`で囲むと安全です[4][12]。
+
+````markdown
+{% raw %}
+```
+# Load model directly
+from transformers import AutoModel
+model = AutoModel.from_pretrained("demimomi/llm-jp-3-13b-finetune-ex")
+```
+{% endraw %}
+```
+
+---
+
+### 5. まとめ：完全な記述例
+
+**Markdownファイル（例：`index.md`や`README.md`）に以下を記述：**
+
+````markdown
+{% raw %}
+```
+# Load model directly
+from transformers import AutoModel
+model = AutoModel.from_pretrained("demimomi/llm-jp-3-13b-finetune-ex")
+```
+{% endraw %}
+```
+
+**CSS（例：`/assets/css/style.css`）に以下を追加：**
+
+```css
+pre code, code {
+  color: #b0b0b0 !important;
+  background: #f8f8f8;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1em;
+}
+pre {
+  background: #f8f8f8;
+  border-radius: 6px;
+  padding: 1em;
+  overflow-x: auto;
+}
+```
+
+---
+
+### 6. 参考情報
+
+- [GitHub公式：コードブロックの作成と強調表示][1]
+- [Jekyll公式：Markdown・ハイライト][3][9]
+- [Liquid干渉回避：公式ドキュメント][4][12]
+
+---
+
+この方法で、**GitHub Pages/Jekyllサイト上で、うすい灰色文字のコードブロック**が**JavaScriptの有無に関係なく確実に表示**されます。  
+既存テーマやRougeのCSSが強い場合は、`!important`を活用してください。
+
+ 
+   <!-- 🔮 Three.js & 2D Canvas スクリプト -->
+   <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
+   <script>
+     const threeCanvas = document.getElementById('threeCanvas');
+     const renderer = new THREE.WebGLRenderer({ canvas: threeCanvas, alpha: true });
+     const scene = new THREE.Scene();
+     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+     camera.position.z = 5;
+ 
+     const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
+     const material = new THREE.MeshStandardMaterial({
+       color: 0x8844ff,
+       emissive: 0x220022,
+       roughness: 0.2,
+       metalness: 0.8
+     });
+     const torusKnot = new THREE.Mesh(geometry, material);
+     scene.add(torusKnot);
+ 
+     const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+     scene.add(ambient);
+     const point = new THREE.PointLight(0xffffff, 1);
+     point.position.set(5, 5, 5);
+     scene.add(point);
+ 
+     function resizeRenderer() {
+       renderer.setSize(window.innerWidth, window.innerHeight);
+       camera.aspect = window.innerWidth / window.innerHeight;
+       camera.updateProjectionMatrix();
+     }
+     window.addEventListener('resize', resizeRenderer);
+     resizeRenderer();
+ 
+     const canvas2D = document.getElementById('2dCanvas');
+     const ctx = canvas2D.getContext('2d');
+     canvas2D.width = innerWidth;
+     canvas2D.height = innerHeight;
+ 
+     let time = 0;
+     let chaosMode = false;
+     const mouse = { x: canvas2D.width / 2, y: canvas2D.height / 2 };
+ 
+     canvas2D.addEventListener('mousemove', e => {
+       mouse.x = e.clientX;
+       mouse.y = e.clientY;
+     });
+ 
+     function drawSmokeDragon(t) {
+       for (let i = 0; i < 400; i++) {
+         const angle = i * 0.03 + t * 0.002;
+         const radius = 150 + Math.sin(t * 0.003 + i) * 30;
+         const x = canvas2D.width / 2 + radius * Math.cos(angle);
+         const y = canvas2D.height / 2 + radius * Math.sin(angle * 1.1);
+         ctx.beginPath();
+         ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+         ctx.fillStyle = `rgba(255,255,255,${Math.sin(i + t * 0.005) * 0.03 + 0.03})`;
+         ctx.fill();
+       }
+     }
+ 
+     function drawFractalSpiral(cx, cy, t) {
+       const levels = 80;
+       for (let i = 0; i < levels; i++) {
+         const angle = i * 0.3 + t * 0.002;
+         const r = 10 * Math.sqrt(i) * (1 + Math.sin(t * 0.002 + i * 0.2));
+         const x = cx + r * Math.cos(angle);
+         const y = cy + r * Math.sin(angle);
+         ctx.beginPath();
+         ctx.arc(x, y, 1.2, 0, Math.PI * 2);
+         ctx.fillStyle = `rgba(255,255,255,0.015)`;
+         ctx.fill();
+       }
+     }
+ 
+     function drawDragonEye() {
+       ctx.beginPath();
+       ctx.arc(mouse.x, mouse.y, 8, 0, Math.PI * 2);
+       ctx.fillStyle = "rgba(255,255,255,0.05)";
+       ctx.shadowColor = "white";
+       ctx.shadowBlur = 20;
+       ctx.fill();
+       ctx.shadowBlur = 0;
+     }
+ 
+     function drawBackground() {
+       ctx.fillStyle = chaosMode ? 'rgba(0,0,0,0.02)' : 'rgba(0,0,0,0.07)';
+       ctx.fillRect(0, 0, canvas2D.width, canvas2D.height);
+     }
+ 
+     function animate() {
+       time++;
+ 
+       if (time === 1200) chaosMode = true;
+ 
+       torusKnot.rotation.x += 0.005;
+       torusKnot.rotation.y += 0.008;
+       material.emissiveIntensity = chaosMode ? 1.2 : 0.2;
+       material.color.set(chaosMode ? 0xff3366 : 0x8844ff);
+       renderer.render(scene, camera);
+ 
+       drawBackground();
+       drawFractalSpiral(canvas2D.width / 2, canvas2D.height / 2, time);
+       drawSmokeDragon(time);
+       drawDragonEye();
+ 
+       requestAnimationFrame(animate);
+     }
+ 
+     animate();
+   </script>
+ </body>
+ </html>
