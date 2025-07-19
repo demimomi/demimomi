@@ -132,10 +132,67 @@
  
    <!-- 🌸 出水の桜ロゴ -->
    <div class="izumi-logo">
-     出水の桜
-     <img src="https://raw.githubusercontent.com/demimomi/demimomi/refs/heads/main/sakura.png" alt="sakura">
+  <a href="https://huggingface.co/demimomi" target="_blank" rel="noopener noreferrer">
+    出水の<span class="sakura-glow">桜</span>
+    <img src="https://raw.githubusercontent.com/denimomi/denimomi/refs/heads/main/sakura.png" alt="sakura" class="sakura-img" />
+  </a>
    </div>
 
+  <style>
+.izumi-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  font-family: sans-serif;
+}
+
+.izumi-logo a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.sakura-img {
+  width: 40px;
+  height: auto;
+  vertical-align: middle;
+  margin-left: 5px;
+  animation: sakura-glow 2.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(255, 182, 193, 0.7));
+}
+
+.sakura-glow {
+  color: #ffc0cb;
+  text-shadow:
+    0 0 5px rgba(255, 192, 203, 0.8),
+    0 0 10px rgba(255, 182, 193, 0.7),
+    0 0 15px rgba(255, 182, 193, 0.6);
+  animation: glow-text 2.5s ease-in-out infinite;
+}
+
+@keyframes glow-text {
+  0%, 100% {
+    text-shadow:
+      0 0 5px rgba(255, 192, 203, 0.7),
+      0 0 10px rgba(255, 182, 193, 0.6),
+      0 0 15px rgba(255, 182, 193, 0.5);
+  }
+  50% {
+    text-shadow:
+      0 0 10px rgba(255, 192, 203, 1),
+      0 0 20px rgba(255, 182, 193, 0.9),
+      0 0 30px rgba(255, 182, 193, 0.8);
+  }
+}
+
+@keyframes sakura-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(255, 182, 193, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(255, 182, 193, 1));
+  }
+}
+</style>
   ```
 # Load model directly
 from transformers import AutoModel
