@@ -178,7 +178,7 @@
         }
         this.hue = 140 + Math.random()*40; // greenish
         this.life = 1; // for fade in/out
-        this.sym = ['◎','△','◇','☆','◯','▽'];
+        this.sym = ['☯','△','☯','☆','☯','▽'];
       }
 
       update(neighbors){
@@ -413,7 +413,7 @@
         for(const i2 of s.glyphs){
           const a=(i2*Math.PI*2)/s.glyphs.length;
           const x=Math.cos(a)*s.r*0.8, y=Math.sin(a)*s.r*0.8;
-          ctx.fillText(['◎','△','◇','☆','◯','▽'][i2%6], x-4,y+4);
+          ctx.fillText(['☯','△','☯','☆','◯','☯'][i2%6], x-4,y+4);
         }
         ctx.restore();
       }
@@ -499,3 +499,4 @@
   </script>
 </body>
 </html>
+
