@@ -14,11 +14,54 @@
     #threeCanvas{z-index:0} #2dCanvas{z-index:1} #particleCanvas{z-index:2}
     .center-om{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:4em;color:rgba(255,255,255,.07);text-shadow:0 0 30px rgba(255,255,255,.15);animation:pulse 6s ease-in-out infinite;pointer-events:none;z-index:2;filter:blur(.5px)}
     @keyframes pulse{0%,100%{opacity:.05;transform:translate(-50%,-50%) scale(1) rotate(0)}50%{opacity:.25;transform:translate(-50%,-50%) scale(1.3) rotate(5deg)}}
-    .menu-bar{position:fixed;top:0;width:100%;background:linear-gradient(180deg,rgba(0,0,0,.8) 0,rgba(0,0,0,0) 100%);padding:20px 0;z-index:1000;text-align:center;font-family:'Segoe UI','Helvetica Neue',sans-serif;font-size:15px;letter-spacing:2px;backdrop-filter:blur(10px)}
+    .menu-bar{position:fixed;top:0;width:100%;background:linear-gradient(180deg,rgba(0,0,0,.8) 0,rgba(0,0,0,0) 100%);z-index:1000;font-family:'Segoe UI','Helvetica Neue',sans-serif;font-size:15px;letter-spacing:2px;backdrop-filter:blur(10px);text-align:right;padding:14px 28px;}
     .menu-bar a{margin:0 20px;color:rgba(255,255,255,.5);text-decoration:none;transition:all .4s cubic-bezier(.4,0,.2,1);position:relative;padding:5px 10px}
     .menu-bar a::after{content:"";position:absolute;bottom:0;left:50%;width:0;height:1px;background:rgba(255,255,255,.8);transition:all .4s cubic-bezier(.4,0,.2,1);transform:translateX(-50%)}
     .menu-bar a:hover{color:rgba(255,255,255,.98);text-shadow:0 0 15px rgba(255,255,255,.6);transform:translateY(-2px)}
     .menu-bar a:hover::after{width:100%}
+
+/* --- Hamburger menu (menu only) --- */
+.menu-toggle{
+  cursor:pointer;
+  background:linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.05));
+  border:1px solid rgba(255,255,255,.7);
+  border-radius:999px;
+  padding:9px 26px;
+  color:#ffffff;
+  font-family:'Segoe UI','Helvetica Neue',sans-serif;
+  font-size:17px;
+  letter-spacing:4px;
+  display:inline-flex;
+  align-items:center;
+  gap:14px;
+  box-shadow:
+    0 0 25px rgba(255,255,255,.45),
+    inset 0 0 18px rgba(255,255,255,.15);
+  animation: menuPulse 3s ease-in-out infinite;
+  transition:all .35s cubic-bezier(.4,0,.2,1);
+}
+.menu-toggle:hover{
+  background:linear-gradient(135deg, rgba(255,255,255,.35), rgba(255,255,255,.15));
+  border-color:#fff;
+  text-shadow:0 0 22px rgba(255,255,255,1);
+  box-shadow:
+    0 0 45px rgba(255,255,255,.85),
+    inset 0 0 22px rgba(255,255,255,.25);
+  transform:translateY(-3px) scale(1.03);
+}
+
+@keyframes menuPulse{
+  0%,100%{ box-shadow:0 0 25px rgba(255,255,255,.35), inset 0 0 18px rgba(255,255,255,.12); }
+  50%{ box-shadow:0 0 40px rgba(255,255,255,.75), inset 0 0 26px rgba(255,255,255,.22); }
+}
+
+.menu-links{display:none;
+  margin-top:16px;text-align:right;}
+.menu-bar.is-open .menu-links{
+  display:block;
+}
+.menu-label{opacity:.9}
+
     .izumi-logo{position:absolute;right:25px;bottom:25px;display:flex;align-items:center;font-size:1em;font-family:'Sawarabi Mincho',serif;color:rgba(255,255,255,.2);z-index:3;pointer-events:none;text-shadow:0 0 8px rgba(255,255,255,.15);opacity:0;animation:fadeInLogo 3s ease-in-out 1s forwards}
     .izumi-logo img{width:20px;height:20px;margin-left:8px;opacity:.6;filter:drop-shadow(0 0 3px rgba(255,255,255,.2));animation:rotate 20s linear infinite}
     @keyframes rotate{from{transform:rotate(0)}to{transform:rotate(360deg)}}
@@ -35,18 +78,24 @@
 <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/demimomi/demimomi/refs/heads/main/inyou2.png">
 </head>
 <body>
-  <div class="menu-bar">
-    <a href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank">LLM2024</a>
-    <a href="https://huggingface.co/demimomi/U-Tokyo-2025Basic" target="_blank">LLM2025</a>
-    <a href="https://huggingface.co/demimomi/qwen3-4b-structeval-sft-lora" target="_blank">LLM2026</a>
-    <a href="https://youtu.be/K-sH70U4hX4" target="_blank">Movie</a>
-    <a href="https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453" target="_blank">TokyoBus PJ</a>
-    <a href="https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2025-044252/11/ja" target="_blank">AI</a>
-    <a href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank">CatBus</a>
-    <a href="https://wandb.ai/toshiki-demizu-monet-technologies-/pytorch-intro/reports/Hello-World---VmlldzoxNDk2Nzg2OQ?accessToken=u00skj0dq557zsj2g3u8jhr2six6iylpf7kd65hqw5gjnwsoopld2pgqufiw4atq" target="_blank">DB</a>
+  <div class="menu-bar" id="topMenu" aria-label="Site Menu">
+    <button class="menu-toggle" id="menuToggle" type="button" aria-controls="menuLinks" aria-expanded="false">
+      ☰ <span class="menu-label">Menu</span>
+    </button>
+    <div class="menu-links" id="menuLinks">
+      <a href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank">LLM2024</a>
+      <a href="https://huggingface.co/demimomi/U-Tokyo-2025Basic" target="_blank">LLM2025</a>
+      <a href="https://huggingface.co/demimomi/qwen3-4b-structeval-sft-lora" target="_blank">LLM2026</a>
+      <a href="https://youtu.be/K-sH70U4hX4" target="_blank">Movie</a>
+      <a href="https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453" target="_blank">TokyoBus PJ</a>
+      <a href="https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2025-044252/11/ja" target="_blank">AI</a>
+      <a href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank">CatBus</a>
+      <a href="https://wandb.ai/toshiki-demizu-monet-technologies-/pytorch-intro/reports/Hello-World---VmlldzoxNDk2Nzg2OQ?accessToken=u00skj0dq557zsj2g3u8jhr2six6iylpf7kd65hqw5gjnwsoopld2pgqufiw4atq" target="_blank">DB</a>
+    </div>
   </div>
 
-  <canvas id="threeCanvas"></canvas>
+
+<canvas id="threeCanvas"></canvas>
   <canvas id="2dCanvas"></canvas>
   <canvas id="particleCanvas"></canvas>
 
@@ -501,10 +550,36 @@
     resizeRenderer();
     updateHUD();
     animate();
+  
+    // ---------- Menu (Hamburger) ----------
+    (function(){
+      const menu = document.getElementById('topMenu');
+      const btn  = document.getElementById('menuToggle');
+      const links= document.getElementById('menuLinks');
+      if(!menu || !btn || !links) return;
+
+      function setOpen(open){
+        menu.classList.toggle('is-open', open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      btn.addEventListener('click', ()=>{
+        const open = !menu.classList.contains('is-open');
+        setOpen(open);
+      });
+
+      // close when a link is clicked
+      links.addEventListener('click', (e)=>{
+        const a = e.target.closest('a');
+        if(a) setOpen(false);
+      });
+
+      // close on ESC
+      addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape') setOpen(false);
+      });
+    })();
+
   </script>
 </body>
 </html>
-
-
-
-
