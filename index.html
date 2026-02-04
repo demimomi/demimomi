@@ -14,117 +14,11 @@
     #threeCanvas{z-index:0} #2dCanvas{z-index:1} #particleCanvas{z-index:2}
     .center-om{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:4em;color:rgba(255,255,255,.07);text-shadow:0 0 30px rgba(255,255,255,.15);animation:pulse 6s ease-in-out infinite;pointer-events:none;z-index:2;filter:blur(.5px)}
     @keyframes pulse{0%,100%{opacity:.05;transform:translate(-50%,-50%) scale(1) rotate(0)}50%{opacity:.25;transform:translate(-50%,-50%) scale(1.3) rotate(5deg)}}
-
-    /* ===== Hamburger Menu (NEW) ===== */
-    .menu-shell{
-      position:fixed; top:14px; left:14px;
-      z-index:1000;
-      font-family:'Segoe UI','Helvetica Neue',sans-serif;
-      user-select:none;
-    }
-    .menu-toggle{
-      display:flex; align-items:center; gap:10px;
-      padding:10px 12px;
-      border-radius:12px;
-      background:linear-gradient(180deg,rgba(0,0,0,.78),rgba(0,0,0,.45));
-      border:1px solid rgba(255,255,255,.10);
-      backdrop-filter:blur(12px);
-      cursor:pointer;
-      color:rgba(255,255,255,.72);
-      letter-spacing:2px;
-      font-size:12px;
-      transition:transform .25s ease, box-shadow .25s ease, color .25s ease;
-    }
-    .menu-toggle:hover{
-      transform:translateY(-1px);
-      color:rgba(255,255,255,.92);
-      box-shadow:0 10px 30px rgba(0,0,0,.35);
-    }
-    .burger{
-      width:18px; height:12px; position:relative; flex:0 0 auto;
-    }
-    .burger span{
-      position:absolute; left:0; right:0;
-      height:2px; border-radius:2px;
-      background:rgba(255,255,255,.65);
-      transition:transform .25s ease, top .25s ease, opacity .2s ease, background .25s ease;
-    }
-    .burger span:nth-child(1){ top:0; }
-    .burger span:nth-child(2){ top:5px; }
-    .burger span:nth-child(3){ top:10px; }
-
-    /* MENUガイド（わかりやすいラベル＋軽い注釈） */
-    .menu-guide{
-      position:absolute;
-      left:0; top:44px;
-      padding:6px 10px;
-      border-radius:10px;
-      background:rgba(0,0,0,.55);
-      border:1px solid rgba(255,255,255,.10);
-      color:rgba(255,255,255,.55);
-      font:10px/1.1 'Courier New',monospace;
-      backdrop-filter:blur(10px);
-      opacity:0;
-      transform:translateY(-4px);
-      pointer-events:none;
-      animation:menuGuideIn 1.2s ease 2.8s forwards;
-      white-space:nowrap;
-    }
-    @keyframes menuGuideIn{
-      to{opacity:.85; transform:translateY(0);}
-    }
-
-    .menu-panel{
-      margin-top:10px;
-      width:240px;
-      border-radius:16px;
-      padding:10px;
-      background:linear-gradient(180deg,rgba(0,0,0,.78),rgba(0,0,0,.35));
-      border:1px solid rgba(255,255,255,.10);
-      backdrop-filter:blur(14px);
-      box-shadow:0 18px 50px rgba(0,0,0,.45);
-      display:none;
-      transform-origin:top left;
-      animation:panelIn .22s ease;
-    }
-    @keyframes panelIn{
-      from{opacity:0; transform:scale(.98) translateY(-6px);}
-      to{opacity:1; transform:scale(1) translateY(0);}
-    }
-    .menu-panel a{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:10px 10px;
-      border-radius:12px;
-      text-decoration:none;
-      color:rgba(255,255,255,.62);
-      letter-spacing:1px;
-      font-size:13px;
-      transition:background .25s ease, color .25s ease, transform .25s ease;
-      position:relative;
-    }
-    .menu-panel a:hover{
-      background:rgba(255,255,255,.07);
-      color:rgba(255,255,255,.95);
-      transform:translateX(2px);
-    }
-    .menu-panel a .hint-mini{
-      font:10px/1 'Courier New',monospace;
-      color:rgba(200,255,220,.45);
-      letter-spacing:0;
-    }
-
-    /* open state */
-    .menu-shell.open .menu-panel{ display:block; }
-    .menu-shell.open .burger span{ background:rgba(255,255,255,.85); }
-    .menu-shell.open .burger span:nth-child(1){ top:5px; transform:rotate(45deg); }
-    .menu-shell.open .burger span:nth-child(2){ opacity:0; }
-    .menu-shell.open .burger span:nth-child(3){ top:5px; transform:rotate(-45deg); }
-
-    /* old menu-bar (DISABLED) */
-    .menu-bar{display:none;}
-
+    .menu-bar{position:fixed;top:0;width:100%;background:linear-gradient(180deg,rgba(0,0,0,.8) 0,rgba(0,0,0,0) 100%);padding:20px 0;z-index:1000;text-align:center;font-family:'Segoe UI','Helvetica Neue',sans-serif;font-size:15px;letter-spacing:2px;backdrop-filter:blur(10px)}
+    .menu-bar a{margin:0 20px;color:rgba(255,255,255,.5);text-decoration:none;transition:all .4s cubic-bezier(.4,0,.2,1);position:relative;padding:5px 10px}
+    .menu-bar a::after{content:"";position:absolute;bottom:0;left:50%;width:0;height:1px;background:rgba(255,255,255,.8);transition:all .4s cubic-bezier(.4,0,.2,1);transform:translateX(-50%)}
+    .menu-bar a:hover{color:rgba(255,255,255,.98);text-shadow:0 0 15px rgba(255,255,255,.6);transform:translateY(-2px)}
+    .menu-bar a:hover::after{width:100%}
     .izumi-logo{position:absolute;right:25px;bottom:25px;display:flex;align-items:center;font-size:1em;font-family:'Sawarabi Mincho',serif;color:rgba(255,255,255,.2);z-index:3;pointer-events:none;text-shadow:0 0 8px rgba(255,255,255,.15);opacity:0;animation:fadeInLogo 3s ease-in-out 1s forwards}
     .izumi-logo img{width:20px;height:20px;margin-left:8px;opacity:.6;filter:drop-shadow(0 0 3px rgba(255,255,255,.2));animation:rotate 20s linear infinite}
     @keyframes rotate{from{transform:rotate(0)}to{transform:rotate(360deg)}}
@@ -138,52 +32,19 @@
     .hint{position:fixed;right:16px;top:58px;font:10px/1 'Courier New',monospace;color:rgba(255,255,255,.45);z-index:4;opacity:.0;animation:fadeHud 2s ease 4s forwards}
   </style>
   <link rel="icon" href="https://raw.githubusercontent.com/demimomi/demimomi/refs/heads/main/inyou2.png" type="image/png">
-  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/demimomi/demimomi/refs/heads/main/inyou2.png">
+<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/demimomi/demimomi/refs/heads/main/inyou2.png">
 </head>
 <body>
-
-  <!-- ===== Hamburger Menu (NEW) ===== -->
-  <div class="menu-shell" id="menuShell" aria-label="menu">
-    <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="menuPanel" title="Menu">
-      <span class="burger" aria-hidden="true">
-        <span></span><span></span><span></span>
-      </span>
-      <span>MENU</span>
-    </button>
-    <div class="menu-guide">☰ MENU をクリック（リンク一覧）</div>
-
-    <nav class="menu-panel" id="menuPanel">
-      <a href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank" rel="noopener">
-        LLM2024 <span class="hint-mini">huggingface</span>
-      </a>
-      <a href="https://huggingface.co/demimomi/U-Tokyo-2025Basic" target="_blank" rel="noopener">
-        LLM2025 <span class="hint-mini">huggingface</span>
-      </a>
-
-      <!-- Added -->
-      <a href="https://huggingface.co/demimomi/qwen3-4b-structeval-sft-lora" target="_blank" rel="noopener">
-        LLM2026 <span class="hint-mini">huggingface</span>
-      </a>
-      <a href="https://youtu.be/K-sH70U4hX4" target="_blank" rel="noopener">
-        YouTube <span class="hint-mini">watch</span>
-      </a>
-
-      <a href="https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453" target="_blank" rel="noopener">
-        Tokyo Bus PJ <span class="hint-mini">JST</span>
-      </a>
-      <a href="https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2025-044252/11/ja" target="_blank" rel="noopener">
-        AI <span class="hint-mini">J-PlatPat</span>
-      </a>
-      <a href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank" rel="noopener">
-        CatBus <span class="hint-mini">SoftBank</span>
-      </a>
-      <a href="https://wandb.ai/toshiki-demizu-monet-technologies-/pytorch-intro/reports/Hello-World---VmlldzoxNDk2Nzg2OQ?accessToken=u00skj0dq557zsj2g3u8jhr2six6iylpf7kd65hqw5gjnwsoopld2pgqufiw4atq" target="_blank" rel="noopener">
-        DB <span class="hint-mini">wandb</span>
-      </a>
-    </nav>
+  <div class="menu-bar">
+    <a href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank">LLM2024</a>
+    <a href="https://huggingface.co/demimomi/U-Tokyo-2025Basic" target="_blank">LLM2025</a>
+    <a href="https://huggingface.co/demimomi/qwen3-4b-structeval-sft-lora" target="_blank">LLM2026</a>
+    <a href="https://youtu.be/K-sH70U4hX4" target="_blank">Movie</a>
+    <a href="https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453" target="_blank">TokyoBus PJ</a>
+    <a href="https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2025-044252/11/ja" target="_blank">AI</a>
+    <a href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank">CatBus</a>
+    <a href="https://wandb.ai/toshiki-demizu-monet-technologies-/pytorch-intro/reports/Hello-World---VmlldzoxNDk2Nzg2OQ?accessToken=u00skj0dq557zsj2g3u8jhr2six6iylpf7kd65hqw5gjnwsoopld2pgqufiw4atq" target="_blank">DB</a>
   </div>
-
-  <!-- (old menu-bar is kept in CSS as display:none) -->
 
   <canvas id="threeCanvas"></canvas>
   <canvas id="2dCanvas"></canvas>
@@ -211,34 +72,6 @@
     addEventListener('mousemove', e => {
       cursor.style.left = e.clientX + 'px';
       cursor.style.top = e.clientY + 'px';
-    });
-
-    // ---------- Hamburger Menu ----------
-    const menuShell  = document.getElementById('menuShell');
-    const menuToggle = document.getElementById('menuToggle');
-    const menuPanel  = document.getElementById('menuPanel');
-
-    function setMenuOpen(open){
-      menuShell.classList.toggle('open', open);
-      menuToggle.setAttribute('aria-expanded', String(open));
-    }
-
-    menuToggle.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      setMenuOpen(!menuShell.classList.contains('open'));
-    });
-
-    // close on outside click
-    addEventListener('click', ()=>{
-      if(menuShell.classList.contains('open')) setMenuOpen(false);
-    });
-
-    // don't close when clicking inside panel
-    menuPanel.addEventListener('click', (e)=> e.stopPropagation());
-
-    // close with ESC
-    addEventListener('keydown', (e)=>{
-      if(e.key === 'Escape') setMenuOpen(false);
     });
 
     // ---------- Three.js ----------
@@ -544,4 +377,134 @@
       for(let i=0;i<380;i++){
         const angle=i*0.028 + t*0.0015;
         const radius=150 + Math.sin(t*0.003+i)*40;
-        const x=canvas2D.w
+        const x=canvas2D.width/2 + radius*Math.cos(angle);
+        const y=canvas2D.height/2 + radius*Math.sin(angle*1.15);
+        ctx.beginPath(); ctx.arc(x,y,1.6,0,Math.PI*2);
+        const alpha = Math.sin(i + t*0.005)*0.04 + 0.04;
+        ctx.fillStyle=`rgba(255,255,255,${alpha})`; ctx.fill();
+      }
+    }
+    function drawFractalSpiral(cx,cy,t){
+      for(let i=0;i<100;i++){
+        const a=i*0.25 + t*0.0018;
+        const r=12*Math.sqrt(i)*(1+Math.sin(t*0.002+i*0.15)*0.3);
+        const x=cx+r*Math.cos(a), y=cy+r*Math.sin(a);
+        ctx.beginPath(); ctx.arc(x,y,1.5,0,Math.PI*2);
+        ctx.fillStyle='rgba(255,255,255,0.02)'; ctx.fill();
+      }
+    }
+    function drawDragonEye(){
+      mouse.x += (mouse.tx-mouse.x)*0.1;
+      mouse.y += (mouse.ty-mouse.y)*0.1;
+      ctx.beginPath(); ctx.arc(mouse.x, mouse.y, 12, 0, Math.PI*2);
+      ctx.fillStyle='rgba(255,255,255,0.08)';
+      ctx.shadowColor='white'; ctx.shadowBlur=25; ctx.fill(); ctx.shadowBlur=0;
+    }
+
+    // Sigils & Rifts rendering
+    function drawSigilsAndRifts(){
+      // sigils
+      for(let i=sigils.length-1;i>=0;i--){
+        const s=sigils[i];
+        s.life -= 0.012; s.r += 1.2; s.spin += 0.03;
+        if(s.life<=0){ sigils.splice(i,1); continue; }
+        ctx.save(); ctx.translate(s.x,s.y); ctx.rotate(s.spin);
+        ctx.globalCompositeOperation='lighter';
+        ctx.strokeStyle=`rgba(200,255,230,${0.35*s.life})`;
+        ctx.lineWidth=1.5;
+        ctx.beginPath(); ctx.arc(0,0,s.r,0,Math.PI*2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(0,0,s.r*0.5,0,Math.PI*2); ctx.stroke();
+        ctx.fillStyle=`rgba(180,255,220,${0.25*s.life})`;
+        for(const i2 of s.glyphs){
+          const a=(i2*Math.PI*2)/s.glyphs.length;
+          const x=Math.cos(a)*s.r*0.8, y=Math.sin(a)*s.r*0.8;
+          ctx.fillText(['☯','で','☯','☆','◯','水'][i2%6], x-4,y+4);
+        }
+        ctx.restore();
+      }
+      // rifts
+      for(let i=rifts.length-1;i>=0;i--){
+        const r=rifts[i];
+        r.life -= 0.01; r.r += 0.9; r.spin += 0.02*r.sign;
+        if(r.life<=0){ rifts.splice(i,1); continue; }
+        ctx.save(); ctx.translate(r.x,r.y); ctx.rotate(r.spin);
+        const grd=ctx.createRadialGradient(0,0,0,0,0,r.r*1.2);
+        grd.addColorStop(0,`rgba(100,255,200,0.18)`);
+        grd.addColorStop(1,`rgba(100,255,200,0)`);
+        ctx.fillStyle=grd; ctx.beginPath(); ctx.arc(0,0,r.r*1.2,0,Math.PI*2); ctx.fill();
+        ctx.strokeStyle=`rgba(180,255,220,0.35)`; ctx.setLineDash([6,4]);
+        ctx.beginPath();
+        for(let k=0;k<3;k++){
+          const a=(k*Math.PI*2)/3;
+          ctx.moveTo(0,0); ctx.lineTo(Math.cos(a)*r.r, Math.sin(a)*r.r);
+        }
+        ctx.stroke(); ctx.setLineDash([]);
+        ctx.restore();
+      }
+    }
+
+    // ---------- Animation ----------
+    function animate(){
+      time++;
+
+      if(time===1500){ // ~25s
+        chaosMode=true; material.wireframe=true;
+        // surge more creatures
+        for(let i=0;i<6;i++) swarm.push(new GeometricCreature(innerWidth/2, innerHeight/2));
+        updateHUD();
+      }
+
+      // Three.js torus motion
+      const targetRotX = (mouse.y/innerHeight - 0.5)*0.5;
+      const targetRotY = (mouse.x/innerWidth - 0.5)*0.5;
+      torusKnot.rotation.x += (targetRotX - torusKnot.rotation.x)*0.05 + 0.003;
+      torusKnot.rotation.y += (targetRotY - torusKnot.rotation.y)*0.05 + 0.005;
+      material.emissiveIntensity = chaosMode?1.5:0.3;
+      material.color.set(chaosMode?0xff3366:0x8844ff);
+      point1.position.x = Math.sin(time*0.001)*8;
+      point1.position.y = Math.cos(time*0.0015)*8;
+      renderer.render(scene,camera);
+
+      // 2D layers
+      drawBackground();
+      drawFractalSpiral(innerWidth/2, innerHeight/2, time);
+      drawSmokeDragon(time);
+      drawDragonEye();
+
+      // swarm update/draw
+      for(let i=0;i<swarm.length;i++){
+        const c=swarm[i];
+        // provide a small neighbor set (performance)
+        const neighbors=[];
+        for(let j=0;j<6;j++){
+          const k=(i+j*3)%swarm.length;
+          if(k!==i) neighbors.push(swarm[k]);
+        }
+        c.update(neighbors);
+        c.draw(ctx,time);
+      }
+
+      // ritual & portals
+      drawSigilsAndRifts();
+      maybeOpenRift();
+
+      // sakura + front effects
+      drawSakura();
+
+      requestAnimationFrame(animate);
+    }
+
+    // ---------- Utility ----------
+    function lerp(a,b,t){return a+(b-a)*t;}
+
+    // start
+    resizeRenderer();
+    updateHUD();
+    animate();
+  </script>
+</body>
+</html>
+
+
+
+
