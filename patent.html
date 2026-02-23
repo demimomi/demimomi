@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>The Patent</title>
+  <style>
+    :root{
+      --bg0:#070A12;
+      --bg1:#0B1020;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.08);
+      --border: rgba(255,255,255,.12);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --accent: #7C5CFF;
+      --accent2:#22D3EE;
+      --shadow: 0 18px 50px rgba(0,0,0,.45);
+      --radius: 18px;
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic", sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 700px at 15% 10%, rgba(124,92,255,.20), transparent 55%),
+                  radial-gradient(900px 600px at 85% 20%, rgba(34,211,238,.15), transparent 50%),
+                  linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+    }
+
+    /* three.js canvas full screen */
+    #bg{
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      display:block;
+      width:100%;
+      height:100%;
+      outline:none;
+    }
+    /* soft overlay for readability */
+    .veil{
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      background:
+        radial-gradient(900px 700px at 20% 10%, rgba(0,0,0,.25), transparent 60%),
+        radial-gradient(700px 600px at 80% 40%, rgba(0,0,0,.35), transparent 55%),
+        linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.35));
+      pointer-events:none;
+    }
+
+    header{
+      max-width:1100px;
+      margin: 48px auto 18px;
+      padding: 0 18px;
+    }
+    .title{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+    h1{
+      margin:0;
+      font-size: clamp(26px, 3.4vw, 40px);
+      letter-spacing:.02em;
+      line-height:1.15;
+    }
+    .subtitle{
+      margin-top:10px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height:1.6;
+      max-width: 75ch;
+    }
+    .pillbar{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .pill{
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      backdrop-filter: blur(12px);
+      color: var(--muted);
+      font-size: 12px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: linear-gradient(180deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 18px rgba(124,92,255,.55);
+    }
+
+    main{
+      max-width:1100px;
+      margin: 0 auto 60px;
+      padding: 0 18px 40px;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      overflow:hidden;
+    }
+    .cardTop{
+      display:flex;
+      gap:12px;
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .controls{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .search{
+      position:relative;
+      min-width: min(520px, 90vw);
+      flex: 1 1 320px;
+    }
+    .search input{
+      width:100%;
+      padding: 12px 14px 12px 40px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      outline:none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    .search input::placeholder{ color: rgba(255,255,255,.45); }
+    .search svg{
+      position:absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity:.65;
+    }
+    .btn{
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.16);
+      color: var(--text);
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      user-select:none;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size: 12px;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.22);
+    }
+
+    .tableWrap{
+      overflow:auto;
+    }
+    table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      min-width: 820px;
+    }
+    thead th{
+      position:sticky;
+      top:0;
+      z-index:1;
+      background: rgba(10,14,26,.92);
+      backdrop-filter: blur(16px);
+      text-align:left;
+      font-size: 12px;
+      color: rgba(255,255,255,.78);
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      white-space:nowrap;
+    }
+    tbody td{
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      font-size: 14px;
+      vertical-align:middle;
+    }
+    tbody tr:hover{
+      background: rgba(255,255,255,.04);
+    }
+    .col-no{ width: 90px; color: rgba(255,255,255,.78); }
+    .col-app{ width: 200px; font-feature-settings: "tnum" 1; font-variant-numeric: tabular-nums; color: rgba(255,255,255,.85);}
+    a.patLink{
+      color: rgba(255,255,255,.92);
+      text-decoration:none;
+      border-bottom: 1px dashed rgba(124,92,255,.55);
+      padding-bottom:2px;
+      transition: color .12s ease, border-color .12s ease;
+    }
+    a.patLink:hover{
+      color: white;
+      border-color: rgba(34,211,238,.80);
+    }
+    .muted{ color: var(--muted); }
+    .footerNote{
+      padding: 12px 18px 18px;
+      color: rgba(255,255,255,.62);
+      font-size: 12px;
+      line-height:1.6;
+    }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      color: rgba(255,255,255,.85);
+    }
+    .count{
+      color: rgba(255,255,255,.75);
+      font-size: 12px;
+    }
+
+    /* small screens: keep it nice */
+    @media (max-width: 560px){
+      header{ margin-top: 34px; }
+      .subtitle{ font-size: 13px; }
+      .cardTop{ gap:10px; }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="veil" aria-hidden="true"></div>
+
+  <header>
+    <div class="title">
+      <div>
+        <h1>Patent</h1>
+        <div class="subtitle">
+          A glorious assertion of rights, separating self from others! The pinnacle of capitalism.
+        </div>
+      </div>
+      <div class="pillbar">
+        <div class="pill"><span class="dot"></span><span>three.js background</span></div>
+        <div class="pill"><span class="dot"></span><span>single HTML file</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card" aria-label="特許テーブル">
+      <div class="cardTop">
+        <div class="search" role="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input id="q" type="search" placeholder="検索（出願番号 / 特許名） 例: 自動運転、2023-xxxxx など" autocomplete="off" />
+        </div>
+
+        <div class="controls">
+          <button class="btn" id="toggleFx" type="button" title="背景演出のON/OFF">
+            <span aria-hidden="true">✨</span><span>背景</span>
+          </button>
+          <button class="btn" id="copyJson" type="button" title="今のデータをJSONとしてコピー（編集のメモ用）">
+            <span aria-hidden="true">📋</span><span>JSON</span>
+          </button>
+          <div class="count" id="count"></div>
+        </div>
+      </div>
+
+      <div class="tableWrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="col-no">No</th>
+              <th class="col-app">出願番号</th>
+              <th>特許名（クリックで外部リンク）</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- three.js (CDN) -->
+  <script type="module">
+    import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
+
+    /**
+     * =========================================
+     * 1) ここをあなたの特許情報に差し替え
+     * =========================================
+     * url は「実際の特許サイト（J-PlatPat / Google Patents / Espacenet など）」のリンクを入れてください。
+     */
+    const PATENTS = [
+      {
+        no: 1,
+        appNo: "特許7634129",
+        title: "運行管理システム 東京都交通局 衛星測位プロジェクト",
+        url: "https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453" // ←差し替え
+      },
+      {
+        no: 2,
+        appNo: "特開2025-044252",
+        title: "対話型AIを活用した認知症予防プラットフォーム",
+        url: "https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2025-044252/11/ja" // ←差し替え
+      },
+      {
+        no: 3,
+        appNo: "特開2026-024996",
+        title: "リアル接続型AIによるスマホ依存低減プログラム",
+        url: "https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2026-024996/11/ja" // ←差し替え
+      }
+    ];
+
+    /**
+     * =========================================
+     * 2) テーブル描画 + 検索
+     * =========================================
+     */
+    const tbody = document.getElementById("rows");
+    const q = document.getElementById("q");
+    const count = document.getElementById("count");
+    const copyJsonBtn = document.getElementById("copyJson");
+
+    function escapeHtml(s){
+      return String(s)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function render(list){
+      tbody.innerHTML = list.map(p => `
+        <tr>
+          <td class="col-no">${escapeHtml(p.no)}</td>
+          <td class="col-app">${escapeHtml(p.appNo)}</td>
+          <td>
+            <a class="patLink" href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer">
+              ${escapeHtml(p.title)}
+            </a>
+          </td>
+        </tr>
+      `).join("");
+      count.textContent = `${list.length} 件`;
+    }
+
+    function filter(){
+      const s = q.value.trim().toLowerCase();
+      if(!s){ render(PATENTS); return; }
+      const list = PATENTS.filter(p =>
+        String(p.appNo).toLowerCase().includes(s) ||
+        String(p.title).toLowerCase().includes(s)
+      );
+      render(list);
+    }
+
+    q.addEventListener("input", filter);
+
+    // "/" で検索にフォーカス（ブラウザのクイック検索っぽく）
+    window.addEventListener("keydown", (e) => {
+      if(e.key === "/" && document.activeElement !== q){
+        e.preventDefault();
+        q.focus();
+      }
+      if(e.key === "Escape" && document.activeElement === q){
+        q.value = "";
+        q.blur();
+        render(PATENTS);
+      }
+    });
+
+    copyJsonBtn.addEventListener("click", async () => {
+      const json = JSON.stringify(PATENTS, null, 2);
+      try{
+        await navigator.clipboard.writeText(json);
+        copyJsonBtn.textContent = "✅ copied";
+        setTimeout(()=> copyJsonBtn.innerHTML = "<span aria-hidden='true'>📋</span><span>JSON</span>", 900);
+      }catch{
+        alert("クリップボードにコピーできませんでした（ブラウザ権限の可能性）。");
+      }
+    });
+
+    render(PATENTS);
+
+    /**
+     * =========================================
+     * 3) three.js 背景（軽量・上品）
+     * =========================================
+     * - マウスに追従するライト
+     * - 透明感のあるトーラスノット
+     * - ささやかな星（ポイントクラウド）
+     */
+    const canvas = document.getElementById("bg");
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 200);
+    camera.position.set(0, 0, 9);
+
+    // Lights
+    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambient);
+
+    const keyLight = new THREE.PointLight(0x7c5cff, 1.1, 50);
+    keyLight.position.set(3, 2, 8);
+    scene.add(keyLight);
+
+    const rimLight = new THREE.PointLight(0x22d3ee, 0.9, 50);
+    rimLight.position.set(-4, -1, 7);
+    scene.add(rimLight);
+
+    // Hero mesh (glass-ish)
+    const geo = new THREE.TorusKnotGeometry(1.35, 0.42, 220, 24);
+    const mat = new THREE.MeshPhysicalMaterial({
+      color: 0xffffff,
+      roughness: 0.22,
+      metalness: 0.20,
+      transmission: 0.75,   // glass
+      thickness: 1.2,
+      ior: 1.5,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.12,
+      opacity: 0.85,
+      transparent: true
+    });
+    const knot = new THREE.Mesh(geo, mat);
+    knot.position.set(2.8, 0.2, -1.8);
+    knot.rotation.set(0.6, 0.0, 0.2);
+    scene.add(knot);
+
+    // Starfield (points)
+    const starCount = 900;
+    const starGeo = new THREE.BufferGeometry();
+    const starPos = new Float32Array(starCount * 3);
+    for(let i=0;i<starCount;i++){
+      const r = 18 * Math.pow(Math.random(), 0.75);
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2*Math.random()-1);
+      starPos[i*3+0] = r * Math.sin(phi) * Math.cos(theta);
+      starPos[i*3+1] = r * Math.cos(phi);
+      starPos[i*3+2] = -8 - (r * Math.sin(phi) * Math.sin(theta)); // mostly behind
+    }
+    starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
+    const starMat = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 0.03,
+      transparent: true,
+      opacity: 0.55,
+      depthWrite: false
+    });
+    const stars = new THREE.Points(starGeo, starMat);
+    scene.add(stars);
+
+    // Mouse interaction
+    const mouse = { x: 0, y: 0 };
+    window.addEventListener("pointermove", (e) => {
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -((e.clientY / window.innerHeight) * 2 - 1);
+    }, { passive: true });
+
+    // Resize
+    function resize(){
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    // Toggle FX
+    let fxEnabled = true;
+    const toggleFxBtn = document.getElementById("toggleFx");
+    toggleFxBtn.addEventListener("click", () => {
+      fxEnabled = !fxEnabled;
+      canvas.style.display = fxEnabled ? "block" : "none";
+      toggleFxBtn.textContent = fxEnabled ? "✨ 背景" : "🌙 背景OFF";
+    });
+
+    // Animate
+    const clock = new THREE.Clock();
+    function tick(){
+      const t = clock.getElapsedTime();
+
+      // subtle movement
+      knot.rotation.x += 0.003;
+      knot.rotation.y += 0.004;
+      stars.rotation.y = t * 0.02;
+
+      // follow mouse with lights/camera a bit
+      const targetX = mouse.x * 1.2;
+      const targetY = mouse.y * 0.7;
+      keyLight.position.x = 3 + targetX * 2.0;
+      keyLight.position.y = 2 + targetY * 1.6;
+      rimLight.position.x = -4 - targetX * 1.8;
+      rimLight.position.y = -1 - targetY * 1.4;
+
+      camera.position.x += (targetX - camera.position.x) * 0.03;
+      camera.position.y += (targetY - camera.position.y) * 0.03;
+      camera.lookAt(0, 0, 0);
+
+      if(fxEnabled) renderer.render(scene, camera);
+      requestAnimationFrame(tick);
+    }
+    tick();
+  </script>
+</body>
+</html>
