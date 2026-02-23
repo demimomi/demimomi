@@ -558,10 +558,13 @@
       const links= document.getElementById('menuLinks');
       if(!menu || !btn || !links) return;
 
-      function setOpen(open){
+    　function setOpen(open){
         menu.classList.toggle('is-open', open);
         btn.setAttribute('aria-expanded', open ? 'true' : 'false');
       }
+
+      // ★ここを追加：デフォルトで開く
+      setOpen(true);
 
       btn.addEventListener('click', ()=>{
         const open = !menu.classList.contains('is-open');
@@ -583,6 +586,7 @@
   </script>
 </body>
 </html>
+
 
 
 
