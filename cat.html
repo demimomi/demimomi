@@ -6,6 +6,10 @@
   <title>Bridge Course: Cat Possession Chat</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: "Segoe UI", Arial, sans-serif;
@@ -13,63 +17,91 @@
       color: #e5e7eb;
       display: flex;
       justify-content: center;
-      padding: 40px 0;
+      padding: 24px 12px;
     }
 
     .container {
-      background: rgba(20, 20, 20, 0.9);
+      position: relative;
+      background: rgba(20, 20, 20, 0.95);
       backdrop-filter: blur(10px);
-      padding: 30px;
+      padding: 24px;
       border-radius: 20px;
       box-shadow: 0 0 30px rgba(0, 255, 170, 0.08);
       max-width: 900px;
-      width: 92%;
+      width: 100%;
       border: 1px solid rgba(255,255,255,0.05);
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: "🐾";
+      position: absolute;
+      opacity: 0.05;
+      font-size: 180px;
+      top: -25px;
+      right: 10px;
+      pointer-events: none;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 10px;
+      margin: 0 0 10px;
       color: #a7f3d0;
       letter-spacing: 0.5px;
+      font-size: 1.9rem;
     }
 
     p.description {
       text-align: center;
       color: #9ca3af;
-      margin-bottom: 30px;
+      margin: 0 0 28px;
+      line-height: 1.6;
     }
 
     .section {
-      margin-bottom: 35px;
+      margin-bottom: 32px;
     }
 
     .section-title {
-      font-weight: bold;
+      font-weight: 700;
       margin-bottom: 12px;
       color: #d1fae5;
+      font-size: 1.05rem;
     }
 
-    iframe {
+    /* YouTube responsive wrapper */
+    .video-wrapper {
+      position: relative;
       width: 100%;
+      padding-top: 56.25%; /* 16:9 */
       border-radius: 14px;
-      border: none;
+      overflow: hidden;
       box-shadow: 0 0 20px rgba(0, 255, 170, 0.1);
+      background: #000;
     }
 
-    .video-frame {
-      height: 450px;
+    .video-wrapper iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .certificate-card {
+      display: block;
+      background: #111111;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 10px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.04);
     }
 
     .certificate-img {
+      display: block;
       width: 100%;
-      border-radius: 14px;
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.05);
-      transition: transform 0.3s ease;
-    }
-
-    .certificate-img:hover {
-      transform: scale(1.02);
+      height: auto;
+      border-radius: 10px;
     }
 
     .link-card {
@@ -89,21 +121,58 @@
       transform: translateY(-2px);
     }
 
+    .link-card-title {
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #d1fae5;
+    }
+
+    .link-card-text {
+      color: #9ca3af;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
     .footer {
       text-align: center;
       font-size: 0.85rem;
       color: #6b7280;
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
-    /* subtle cat vibe glow */
-    .container::before {
-      content: "🐾";
-      position: absolute;
-      opacity: 0.05;
-      font-size: 200px;
-      top: -40px;
-      right: 10px;
+    @media (max-width: 768px) {
+      body {
+        padding: 16px 10px;
+      }
+
+      .container {
+        padding: 18px;
+        border-radius: 16px;
+      }
+
+      h1 {
+        font-size: 1.45rem;
+        line-height: 1.3;
+      }
+
+      p.description {
+        font-size: 0.95rem;
+        margin-bottom: 22px;
+      }
+
+      .section {
+        margin-bottom: 24px;
+      }
+
+      .section-title {
+        font-size: 1rem;
+      }
+
+      .container::before {
+        font-size: 120px;
+        top: -10px;
+        right: 6px;
+      }
     }
   </style>
 </head>
@@ -115,32 +184,44 @@
       A mysterious and playful AI experience inspired by feline behavior and interaction.
     </p>
 
-    <!-- YouTube -->
     <div class="section">
       <div class="section-title">🎥 YouTube Video</div>
-      <iframe class="video-frame"
-        src="https://www.youtube.com/embed/K-sH70U4hX4"
-        title="Bridge Course: Cat Possession Chat"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen>
-      </iframe>
+      <div class="video-wrapper">
+        <iframe
+          src="https://www.youtube.com/embed/K-sH70U4hX4"
+          title="Bridge Course: Cat Possession Chat"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen>
+        </iframe>
+      </div>
     </div>
 
-    <!-- Certificate (Image) -->
     <div class="section">
       <div class="section-title">🏅 Certificate</div>
-      <img class="certificate-img"
-        src="https://huggingface.co/demimomi/44taomax-qwen3-4b-structured-output-lora/resolve/main/159_toshiki%20demizu_OK.jpg"
-        alt="Certificate">
+      <a
+        class="certificate-card"
+        href="https://huggingface.co/demimomi/44taomax-qwen3-4b-structured-output-lora/resolve/main/159_toshiki%20demizu_OK.jpg"
+        target="_blank"
+        rel="noopener noreferrer">
+        <img
+          class="certificate-img"
+          src="https://huggingface.co/demimomi/44taomax-qwen3-4b-structured-output-lora/resolve/main/159_toshiki%20demizu_OK.jpg"
+          alt="Certificate" />
+      </a>
     </div>
 
-    <!-- Explanation -->
     <div class="section">
       <div class="section-title">📄 Detailed Explanation</div>
-      <a class="link-card"
+      <a
+        class="link-card"
         href="https://docs.google.com/presentation/d/1r40OshzJAEO_HvKmoTcrDJ8NozN2PubJgiSTntdC7Gk/edit?slide=id.g3a1dc467d44_0_322#slide=id.g3a1dc467d44_0_322"
-        target="_blank">
-        Open the presentation slides for a deeper understanding of the project concept, structure, and outcomes.
+        target="_blank"
+        rel="noopener noreferrer">
+        <div class="link-card-title">Presentation Slides</div>
+        <div class="link-card-text">
+          Open the presentation slides for a deeper understanding of the project concept, structure, and outcomes.
+        </div>
       </a>
     </div>
 
