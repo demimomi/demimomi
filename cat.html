@@ -8,74 +8,102 @@
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #f4f7fb, #e9eef7);
-      color: #1f2937;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: radial-gradient(circle at top, #1a1a1a, #0a0a0a);
+      color: #e5e7eb;
       display: flex;
       justify-content: center;
       padding: 40px 0;
     }
 
     .container {
-      background: #ffffff;
+      background: rgba(20, 20, 20, 0.9);
+      backdrop-filter: blur(10px);
       padding: 30px;
-      border-radius: 18px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0, 255, 170, 0.08);
       max-width: 900px;
       width: 92%;
+      border: 1px solid rgba(255,255,255,0.05);
     }
 
     h1 {
       text-align: center;
       margin-bottom: 10px;
+      color: #a7f3d0;
+      letter-spacing: 0.5px;
     }
 
     p.description {
       text-align: center;
-      color: #6b7280;
+      color: #9ca3af;
       margin-bottom: 30px;
     }
 
     .section {
-      margin-bottom: 30px;
+      margin-bottom: 35px;
     }
 
     .section-title {
       font-weight: bold;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      color: #d1fae5;
     }
 
     iframe {
       width: 100%;
-      border-radius: 12px;
+      border-radius: 14px;
       border: none;
+      box-shadow: 0 0 20px rgba(0, 255, 170, 0.1);
     }
 
-    .pdf-frame {
-      height: 500px;
+    .video-frame {
+      height: 450px;
+    }
+
+    .certificate-img {
+      width: 100%;
+      border-radius: 14px;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.05);
+      transition: transform 0.3s ease;
+    }
+
+    .certificate-img:hover {
+      transform: scale(1.02);
     }
 
     .link-card {
       display: block;
       text-decoration: none;
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 16px;
-      transition: 0.2s;
-      color: inherit;
+      background: #111111;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 18px;
+      transition: all 0.25s ease;
+      color: #e5e7eb;
     }
 
     .link-card:hover {
-      background: #ffffff;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+      background: #1a1a1a;
+      box-shadow: 0 0 20px rgba(0,255,170,0.15);
+      transform: translateY(-2px);
     }
 
     .footer {
       text-align: center;
       font-size: 0.85rem;
-      color: #9ca3af;
+      color: #6b7280;
       margin-top: 20px;
+    }
+
+    /* subtle cat vibe glow */
+    .container::before {
+      content: "🐾";
+      position: absolute;
+      opacity: 0.05;
+      font-size: 200px;
+      top: -40px;
+      right: 10px;
     }
   </style>
 </head>
@@ -84,13 +112,13 @@
   <div class="container">
     <h1>Bridge Course: Cat Possession Chat</h1>
     <p class="description">
-      Explore the project video, official certificate, and detailed explanation below.
+      A mysterious and playful AI experience inspired by feline behavior and interaction.
     </p>
 
     <!-- YouTube -->
     <div class="section">
-      <div class="section-title">YouTube Video</div>
-      <iframe height="450"
+      <div class="section-title">🎥 YouTube Video</div>
+      <iframe class="video-frame"
         src="https://www.youtube.com/embed/K-sH70U4hX4"
         title="Bridge Course: Cat Possession Chat"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -98,26 +126,26 @@
       </iframe>
     </div>
 
-    <!-- Certificate PDF -->
+    <!-- Certificate (Image) -->
     <div class="section">
-      <div class="section-title">Certificate</div>
-      <iframe class="pdf-frame"
-        src="https://github.com/demimomi/demimomi/raw/main/159_toshiki%20demizu_OK.pdf">
-      </iframe>
+      <div class="section-title">🏅 Certificate</div>
+      <img class="certificate-img"
+        src="https://huggingface.co/demimomi/44taomax-qwen3-4b-structured-output-lora/resolve/main/159_toshiki%20demizu_OK.jpg"
+        alt="Certificate">
     </div>
 
-    <!-- Explanation Link -->
+    <!-- Explanation -->
     <div class="section">
-      <div class="section-title">Detailed Explanation</div>
+      <div class="section-title">📄 Detailed Explanation</div>
       <a class="link-card"
         href="https://docs.google.com/presentation/d/1r40OshzJAEO_HvKmoTcrDJ8NozN2PubJgiSTntdC7Gk/edit?slide=id.g3a1dc467d44_0_322#slide=id.g3a1dc467d44_0_322"
         target="_blank">
-        Open the presentation slides for a detailed explanation of the project.
+        Open the presentation slides for a deeper understanding of the project concept, structure, and outcomes.
       </a>
     </div>
 
     <div class="footer">
-      © 2026 Bridge Course Project
+      © 2026 Cat AI Project
     </div>
   </div>
 </body>
