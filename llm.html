@@ -130,12 +130,43 @@
       max-width: 900px;
     }
 
+    .hero-inner {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .hero-copy {
+      flex: 1 1 640px;
+      min-width: 0;
+    }
+
     .subtitle {
       max-width: 760px;
       margin: 0;
       color: var(--muted);
       font-size: 16px;
       line-height: 1.75;
+    }
+
+    .hero-image {
+      flex: 0 0 200px;
+      width: 200px;
+      padding: 8px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.08));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-image img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 18px;
+      object-fit: cover;
     }
 
     .panel {
@@ -166,6 +197,8 @@
     .panel-note {
       color: var(--muted);
       font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-line;
     }
 
     .table-wrap {
@@ -214,8 +247,15 @@
       font-weight: 800;
     }
 
+    .course-cell {
+      padding: 0;
+    }
+
     .course-link {
-      display: inline-block;
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 18px;
       font-weight: 700;
       letter-spacing: -0.01em;
       color: #f3f9ff;
@@ -226,6 +266,10 @@
     .course-link:hover {
       opacity: 0.88;
       transform: translateX(2px);
+    }
+
+    tbody tr:hover .course-link {
+      opacity: 0.88;
     }
 
     .course-link::after {
@@ -292,6 +336,11 @@
     }
 
     @media (max-width: 900px) {
+      .hero-inner { flex-direction: column; }
+      .hero-image {
+        width: min(220px, 100%);
+        align-self: flex-end;
+      }
       .panel-head { flex-direction: column; align-items: flex-start; }
     }
 
@@ -301,6 +350,7 @@
       .panel { border-radius: 24px; }
       .panel-head { padding: 18px; }
       thead th, tbody td { padding: 14px; }
+      .course-link { padding: 14px; }
     }
   </style>
 </head>
@@ -312,16 +362,24 @@
 
   <main class="wrap">
     <section class="hero">
-      <div class="eyebrow">LLM Lecture</div>
-      <h1>The University of Tokyo, Matsuo Laboratory, LLM Lecture</h1>
-      <p class="subtitle">深淵にともる幽かな灯をたよりに、大規模言語の学び舎へ日々こころを遊ばせ候。</p>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <div class="eyebrow">LLM Lecture</div>
+          <h1>The University of Tokyo, Matsuo Laboratory, LLM Lecture</h1>
+          <p class="subtitle">深淵にともる幽かな灯をたよりに、大規模言語の学び舎へ日々こころを遊ばせ候。</p>
+        </div>
+        <div class="hero-image">
+          <img src="https://raw.githubusercontent.com/demimomi/demimomi/refs/heads/main/matsuo.jpg" alt="Matsuo Laboratory" />
+        </div>
+      </div>
     </section>
 
     <section class="panel">
       <div class="panel-head">
         <div>
           <div class="panel-title">Lecture List</div>
-          <div class="panel-note">***</div>
+          <div class="panel-note">Completed: 3 courses
+In progress: 1 course</div>
         </div>
       </div>
       <div class="table-wrap">
@@ -330,7 +388,7 @@
             <tr>
               <th>No</th>
               <th>講義名</th>
-              <th>参加者 (修了率)</th>
+              <th>受講者数 (修了率)</th>
               <th>成績</th>
             </tr>
           </thead>
@@ -339,7 +397,7 @@
       </div>
     </section>
 
-    <div class="footer">©demimomi by toshiki demizu</div>
+    <div class="footer">©demimomi</div>
   </main>
 
   <script>
@@ -352,7 +410,7 @@
     ];
 
     const tableBody = document.getElementById('tableBody');
-    const formatNumber = (n) => new Intl.NumberFormat('ja-JP').format(n);
+    const formatNumber = (n) => new Intl.NumberFormat('en-US').format(n);
 
     const rankClass = (rank) => {
       if (rank === 1) return 'rank-1';
@@ -372,20 +430,20 @@
       const tr = document.createElement('tr');
 
       const completionRate =
-        Number.isFinite(item.completion) && Number.isFinite(item.learners) && item.learners > 0
+        Number.isFinite(item.completion) && item.learners > 0
           ? Math.round((item.completion / item.learners) * 100)
           : null;
 
       const completionHtml = completionRate !== null
         ? `
-          <div class="count">${formatNumber(item.learners)}</div>
+          <div class="count">${Number.isFinite(item.learners) ? formatNumber(item.learners) : '-'}<\/div>
           <div class="completion">
             <div class="bar"><span style="width:${completionRate}%;"></span></div>
             <span>${formatNumber(item.completion)}人 / ${completionRate}%</span>
           </div>
         `
         : `
-          <div class="count">${Number.isFinite(item.learners) ? formatNumber(item.learners) : '-'}</div>
+          <div class="count">${Number.isFinite(item.learners) ? formatNumber(item.learners) : '-'}<\/div>
           <div class="completion"><span>-</span></div>
         `;
 
@@ -393,7 +451,7 @@
 
       tr.innerHTML = `
         <td class="no">${item.no}</td>
-        <td>
+        <td class="course-cell">
           <a class="course-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.name)}</a>
         </td>
         <td>${completionHtml}</td>
