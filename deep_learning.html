@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lecture2 Homework | Deep Learning</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Yu Gothic", sans-serif;
+      background: linear-gradient(180deg, #f3f6fb 0%, #e9eef7 100%);
+      color: #0f172a;
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(100%, 1040px);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #334155 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+    }
+
+    .hero-copy {
+      padding: 64px 0 56px;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #cbd5e1;
+      margin: 0 0 16px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.15;
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 18px 0 0;
+      font-size: 16px;
+      color: #475569;
+    }
+
+    main {
+      padding: 48px 0 72px;
+    }
+
+    section {
+      margin-top: 36px;
+    }
+
+    section:first-child {
+      margin-top: 0;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 24px;
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .image-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 560px;
+      object-fit: contain;
+      background: #dbe4f0;
+    }
+
+    .section-inner {
+      padding: 32px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    h2 {
+      margin: 8px 0 0;
+      font-size: 1.8rem;
+      line-height: 1.25;
+    }
+
+    .button-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #1e293b;
+      background: #ffffff;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+    }
+
+    .button-link:hover {
+      background: #f1f5f9;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .summary-item {
+      padding: 20px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      color: #334155;
+    }
+
+    .description {
+      margin-top: 18px;
+      max-width: 760px;
+      color: #475569;
+    }
+
+    .code-window {
+      margin-top: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 20px;
+      overflow: hidden;
+      background: #0f172a;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    .code-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: #111827;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #64748b;
+    }
+
+    .filename {
+      margin-left: 10px;
+      font-size: 14px;
+      color: #cbd5e1;
+    }
+
+    pre {
+      margin: 0;
+      padding: 20px;
+      max-height: 720px;
+      overflow: auto;
+      background: #0b1220;
+      color: #dbeafe;
+      font-size: 13px;
+      line-height: 1.65;
+      white-space: pre;
+    }
+
+    code {
+      font-family: "SFMono-Regular", SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 0 16px;
+      }
+
+      .hero-copy {
+        padding: 48px 0 40px;
+      }
+
+      .section-inner {
+        padding: 22px;
+      }
+
+      .image-card img {
+        height: 220px;
+      }
+
+      h2 {
+        font-size: 1.45rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container hero-copy">
+      <p class="eyebrow">Deep Learning Lecture</p>
+      <h1>Deep Learning Foundation Course</h1>
+      
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="card image-card">
+        <img src="https://demimomi.github.io/demimomi/sinso_pc_2026Spring3-scaled-1-1920x1025.png" alt="Deep Learning 基礎講座" />
+      </section>
+
+      <section class="card">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow" style="color:#64748b;">Overview</p>
+              <h2>講座ページの概要</h2>
+            </div>
+            <a class="button-link" href="https://weblab.t.u-tokyo.ac.jp/lecture/deep-learning/" target="_blank" rel="noreferrer">講座ページへ移動</a>
+          </div>
+
+          <div class="summary-list">
+            <div class="summary-item">
+              東京大学松尾・岩澤研究室が主催する公開講座で、ニューラルネットワークの基礎から自然言語処理や深層生成モデルまで、Deep Learningを基礎から実践的に学べる内容です。
+            </div>
+            <div class="summary-item">
+              半数以上の回で演習が用意されており、ブラウザ上でGPUを利用したPythonコーディング環境を使えるため、受講者は環境構築なしで学習に集中できます。
+            </div>
+            <div class="summary-item">
+              オンライン配信で全国どこからでも受講可能で、修了後に所定要件を満たすとE資格の受験資格取得にもつながる講座として案内されています。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-inner">
+          <p class="eyebrow" style="color:#64748b;">Lecture2 Homework</p>
+          <h2>Pythonコード 更新者demimomi 2026年4月18日現在　暫定7位　200名ほど提出中</h2>
+          <p class="description">
+            これは Lecture2 の homework として作成された Python コードで、Fashion MNIST を対象に、ソフトマックス回帰による画像分類を行う内容になっています。コードではまず Google Drive をマウントし、学習用データとテスト用データを読み込み、画像を 784 次元のベクトルへ整形したうえで 0〜1 に正規化しています。その後、one-hot 化した教師ラベルを用いて、numpy のみで数値的に安定した softmax 関数、重み更新、ミニバッチ学習の流れを実装しています。さらに、訓練データの一部を検証用に分割し、各エポックごとに精度を確認しながら学習を進める構成です。最終的にはテストデータに対する予測ラベルを算出し、提出用の CSV ファイルとして保存するところまでが一連の処理としてまとめられており、Lecture2 の課題内容と実装方針をそのまま確認できるコード例になっています。
+          </p>
+
+          <div class="code-window">
+            <div class="code-header">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="filename">lecture02_homework.py</span>
+            </div>
+<pre><code># -*- coding: utf-8 -*-
+&quot;&quot;&quot;lecture02_homework.ipynb
+
+Automatically generated by Colab.
+
+Original file is located at
+    https://colab.research.google.com/drive/1ud1Qqea58a_dstGbiPvdOSFh90n2x0IU
+
+# 第2回講義 宿題
+
+---
+# Lecture 2: Homework
+
+## 課題
+今回のLessonで学んだことを元に，MNISTのファッション版 (Fashion MNIST，クラス数10) をソフトマックス回帰によって分類してみましょう．
+
+Fashion MNISTの詳細については以下のリンクを参考にしてください．
+
+Fashion MNIST: https://github.com/zalandoresearch/fashion-mnist
+
+---
+## Task
+Based on what we learned in this lesson, let&#39;s classify the fashion version of MNIST (Fashion MNIST, number of classes 10) using softmax regression.
+
+For more information about Fashion MNIST, please refer to the link below.
+
+Fashion MNIST: https://github.com/zalandoresearch/fashion-mnist
+
+### 目標値 (Target)
+Accuracy: 80%
+
+### ルール
+- 訓練データは`x_train`， `y_train`，テストデータは`x_test`で与えられます．
+- 予測ラベルは one_hot表現ではなく0~9のクラスラベル で表してください．
+- **下のセルで指定されている`x_train、y_train`以外の学習データは使わないでください．**
+- **隠れ層のない単層のモデルとして実装してください.**
+- **ソフトマックス回帰のアルゴリズム部分の実装はnumpyのみで行ってください** (sklearnやtensorflowなどは使用しないでください)．
+    - データの前処理部分でsklearnの関数を使う (例えば `sklearn.model_selection.train_test_split`) のは問題ありません．
+
+---
+### Rules
+- Training data is given by `x_train`, `y_train`, and test data is given by `x_test`.
+- Please express the predicted label as a class label from 0 to 9 instead of one_hot expression.
+- **Do not use training data other than** `x_train, y_train` **specified in the cell below.**
+- **Please implement as a single layer model without hidden layers.**
+- **Please implement the algorithm part of softmax regression only with numpy** (do not use sklearn, tensorflow, etc.).
+- There is no problem using sklearn functions (for example, `sklearn.model_selection.train_test_split`) in the data preprocessing part.
+
+### 提出方法
+- 2つのファイルを提出していただきます．
+    1. テストデータ (`x_test`) に対する予測ラベルをcsv形式で保存し，**Omnicampusの宿題タブから「第2回 機械学習基礎」を選択して**提出してください．
+    2. それに対応するpythonのコードを　ファイル＞ダウンロード＞.pyをダウンロード　から保存し，**Omnicampusの宿題タブから「第2回 機械学習基礎 (code)」を選択して**提出してください．pythonファイル自体の提出ではなく，「提出内容」の部分にコード全体をコピー&amp;ペーストしてください．
+      
+- なお，採点は1で行い，2はコードの確認用として利用します（成績優秀者はコード内容を公開させていただくかもしれません）．コードの内容を変更した場合は，**1と2の両方を提出し直してください**．
+
+---
+### Submission
+- Please submit two files.
+  1. Save the predicted labels for the test data (`x_test`) in csv format, select &quot;2nd Machine Learning Basics&quot; from the Homework tab of Omnicampus and submit.
+  2. Save the corresponding python code from File &gt; Download &gt; Download .py, and select &quot;2nd Machine Learning Fundamentals (code)&quot; from the Omnicampus Homework tab and submit it. Rather than submitting the python file itself, please copy and paste the entire code into the &quot;submission content&quot; section.
+      
+- Please note that the score will be 1, and 2 will be used to check the code (excellent students may have their code made public). If you change the content of the code, **Please resubmit both 1 and 2**.
+
+### 評価方法
+- 予測ラベルの`y_test`に対する精度 (Accuracy) で評価します．
+- 即時採点しLeader Boardを更新します（採点スケジュールは別アナウンス）．
+- 締切時の点数を最終的な評価とします．
+
+---
+### Evaluation
+- Evaluate the accuracy of the predicted label against `y_test`.
+- Immediate grading and updating the Leader Board (grading schedule will be announced separately).
+- The score at the deadline will be the final evaluation.
+
+### ドライブのマウント
+
+---
+### Mount Google drive
+&quot;&quot;&quot;
+
+from google.colab import drive
+drive.mount(&#39;/content/drive&#39;)
+
+# Specify working directory
+work_dir = &#39;drive/MyDrive/Colab Notebooks/DLBasics2026_colab&#39;
+
+&quot;&quot;&quot;### データの読み込み（このセルは修正しないでください）
+
+---
+### Load Data (Do not modify this cell)
+
+&quot;&quot;&quot;
+
+import os
+import sys
+
+import numpy as np
+import pandas as pd
+
+sys.modules[&#39;tensorflow&#39;] = None
+
+def load_fashionmnist():
+    # learning data
+    x_train = np.load(work_dir + &#39;/Lecture02/data/x_train.npy&#39;)
+    y_train = np.load(work_dir + &#39;/Lecture02/data/y_train.npy&#39;)
+
+    # test data
+    x_test = np.load(work_dir + &#39;/Lecture02/data/x_test.npy&#39;)
+
+    x_train = x_train.reshape(-1, 784).astype(&#39;float32&#39;) / 255
+    y_train = np.eye(10)[y_train.astype(&#39;int32&#39;)]
+    x_test = x_test.reshape(-1, 784).astype(&#39;float32&#39;) / 255
+
+    return x_train, y_train, x_test
+
+&quot;&quot;&quot;### ソフトマックス回帰の実装
+
+---
+### Implementing softmax regression
+
+&quot;&quot;&quot;
+
+# 1. 数値的に安定したソフトマックス関数
+def softmax(x):
+    # オーバーフロー防止のための最大値差し引き
+    x_max = np.max(x, axis=1, keepdims=True)
+    exp_x = np.exp(x - x_max)
+    return exp_x / np.sum(exp_x, axis=1, keepdims=True)
+
+# 2. 重みの初期化 (Xavierの初期値)
+# 単なるランダムより、入力サイズに基づいたスケーリングが収束を早めます
+input_size = 784
+output_size = 10
+np.random.seed(42)
+W = np.random.randn(input_size, output_size) * np.sqrt(1.0 / input_size)
+b = np.zeros(output_size)
+
+# 訓練データと検証データに分割
+x_train, x_valid, y_train, y_valid = train_test_split(x_train, y_train, test_size=0.1)
+
+# 3. 学習関数 (勾配計算)
+def train(x, t, eps=0.1):
+    global W, b
+    batch_size = x.shape[0]
+
+    # 順伝播
+    y = softmax(np.dot(x, W) + b)
+
+    # 誤差 (y - t) を用いた勾配計算
+    delta = y - t
+    dW = np.dot(x.T, delta) / batch_size
+    db = np.mean(delta, axis=0)
+
+    # パラメータ更新
+    W -= eps * dW
+    b -= eps * db
+
+def valid(x, t):
+    y = softmax(np.dot(x, W) + b)
+    return accuracy_score(t.argmax(axis=1), y.argmax(axis=1))
+
+# 4. 学習ループ (ミニバッチ学習の実装)
+batch_size = 128
+epochs = 20 # 精度を上げるためエポック数を増やします
+learning_rate = 0.5 # ミニバッチ用に調整
+
+for epoch in range(epochs):
+    # データのシャッフル
+    perm = np.random.permutation(len(x_train))
+    x_train_shuffled = x_train[perm]
+    y_train_shuffled = y_train[perm]
+
+    # ミニバッチごとに学習
+    for i in range(0, len(x_train), batch_size):
+        x_batch = x_train_shuffled[i:i+batch_size]
+        t_batch = y_train_shuffled[i:i+batch_size]
+        train(x_batch, t_batch, eps=learning_rate)
+
+    # エポックごとに精度を表示
+    v_acc = valid(x_valid, y_valid)
+    print(f&quot;Epoch {epoch + 1}/{epochs} - valid_acc: {v_acc:.4f}&quot;)
+
+# 5. テストデータへの予測
+y_pred = softmax(np.dot(x_test, W) + b)
+
+submission = pd.Series(y_pred.argmax(axis=1), name=&#39;label&#39;)
+submission.to_csv(work_dir + &#39;/Lecture02/submission_pred_02.csv&#39;, header=True, index_label=&#39;id&#39;)</code></pre>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
