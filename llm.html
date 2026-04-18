@@ -252,7 +252,11 @@
     }
 
     .course-link {
-      display: block;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
       width: 100%;
       height: 100%;
       padding: 18px;
@@ -260,22 +264,132 @@
       letter-spacing: -0.01em;
       color: #f3f9ff;
       text-decoration: none;
-      transition: opacity 0.18s ease, transform 0.18s ease;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(125,211,252,0.14), rgba(192,132,252,0.10));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+      overflow: hidden;
+      isolation: isolate;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease, opacity 0.22s ease;
     }
 
-    .course-link:hover {
-      opacity: 0.88;
-      transform: translateX(2px);
+    .course-link::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(120deg, rgba(255,255,255,0.18), transparent 40%, rgba(125,211,252,0.22));
+      opacity: 0;
+      transition: opacity 0.22s ease;
+      z-index: -1;
+    }
+
+    .course-link:hover,
+    .course-link:focus-visible {
+      opacity: 1;
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 16px 30px rgba(0,0,0,0.22), 0 0 0 1px rgba(125,211,252,0.18);
+      background: linear-gradient(135deg, rgba(125,211,252,0.20), rgba(192,132,252,0.14));
+      outline: none;
     }
 
     tbody tr:hover .course-link {
-      opacity: 0.88;
+      opacity: 1;
     }
 
-    .course-link::after {
-      content: " ↗";
-      font-size: 0.92em;
-      color: var(--accent);
+    .course-link:hover::before,
+    .course-link:focus-visible::before {
+      opacity: 1;
+    }
+
+    .course-link:active {
+      transform: scale(0.985);
+    }
+
+    .course-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .course-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #dff4ff;
+      flex: 0 0 auto;
+    }
+
+    .course-text {
+      min-width: 0;
+    }
+
+    .course-name {
+      display: block;
+    }
+
+    .course-sub {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .course-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(6,18,31,0.34);
+      border: 1px solid rgba(125,211,252,0.24);
+      color: #dff6ff;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease;
+    }
+
+    .course-link:hover .course-cta,
+    .course-link:focus-visible .course-cta {
+      transform: translateX(4px);
+      background: rgba(6,18,31,0.48);
+      border-color: rgba(125,211,252,0.42);
+    }
+
+    .course-cta::after {
+      content: "→";
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      background: rgba(255,255,255,0.22);
+      animation: ripple-animation 0.55s linear;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes ripple-animation {
+      to {
+        transform: scale(3.4);
+        opacity: 0;
+      }
     }
 
     .count {
@@ -452,12 +566,37 @@ In progress: 1 course</div>
       tr.innerHTML = `
         <td class="no">${item.no}</td>
         <td class="course-cell">
-          <a class="course-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.name)}</a>
+          <a class="course-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(item.name)} を開く">
+            <span class="course-main">
+              <span class="course-label">Link</span>
+              <span class="course-text">
+                <span class="course-name">${escapeHtml(item.name)}</span>
+                <span class="course-sub">クリックして講義ページを開く</span>
+              </span>
+            </span>
+            <span class="course-cta">Click</span>
+          </a>
         </td>
         <td>${completionHtml}</td>
         <td><span class="pill ${rankClass(item.rank)}">${escapeHtml(rankLabel)}</span></td>
       `;
       tableBody.appendChild(tr);
+    });
+
+    document.addEventListener('click', (event) => {
+      const link = event.target.closest('.course-link');
+      if (!link) return;
+
+      const rect = link.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      const size = Math.max(rect.width, rect.height);
+      ripple.className = 'ripple';
+      ripple.style.width = `${size}px`;
+      ripple.style.height = `${size}px`;
+      ripple.style.left = `${event.clientX - rect.left - size / 2}px`;
+      ripple.style.top = `${event.clientY - rect.top - size / 2}px`;
+      link.appendChild(ripple);
+      window.setTimeout(() => ripple.remove(), 550);
     });
 
     const canvas = document.getElementById('bg');
