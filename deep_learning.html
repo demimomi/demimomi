@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lecture2 Homework | Deep Learning</title>
+  <title>Lecture2 &amp; Lecture3 Homework | Deep Learning</title>
   <style>
     * {
       box-sizing: border-box;
@@ -757,6 +757,544 @@ submission.to_csv(
           </div>
         </div>
       </section>
+
+<!-- Lecture3 Homework start -->
+<section class="card">
+  <div class="section-inner">
+    <p class="eyebrow" style="color:#64748b;">Lecture3 Homework</p>
+    <h2>DEMIMOMI Pythonコード</h2>
+    <p style="margin: 10px 0 0; font-size: 0.95rem; color: #64748b; font-weight: 500;">更新者：demimomi 2026年4月25日 暫定25位 現在256名</p>
+
+    <p class="description">
+      これは Lecture3 の homework として作成された Python コードで、このコードは、Fashion MNIST という衣類画像データを、多層パーセプトロン（MLP）によって 10 クラスに分類する課題に対応したものです。扱う画像は 28×28 ピクセルの白黒画像で、各画像が「Tシャツ」「靴」「バッグ」などのどれに当たるかを判定します。<br /><br />
+      まず前半では、Google Drive 上の学習データとテストデータを読み込み、画像を 0〜1 に正規化したうえで 784 次元のベクトルに変換しています。正解ラベルは one-hot 形式に変換し、さらに学習データを訓練用と検証用に分割して、訓練データの平均と標準偏差を使って標準化しています。これにより、各入力次元のスケールが揃い、学習が安定しやすくなっています。<br /><br />
+      モデル本体は NumPy のみで実装された 4 層構成の MLP で、入力 784 次元から 1024 → 512 → 256 → 10 と変換していきます。各中間層では ReLU を使い、さらに Dropout を入れることで過学習を抑えています。重みの初期値には He 初期化を使い、出力層では softmax によって各クラスの確率を計算します。逆伝播では、softmax とクロスエントロピー誤差の簡約形を使って勾配を効率よく計算しています。<br /><br />
+      学習では、ミニバッチごとに損失を計算し、AdamW 風の更新則で重みを調整しています。学習率はエポックが進むにつれて少しずつ下げ、weight decay も加えることで汎化性能を高めています。また、検証精度が改善しなくなった時点で Early Stopping を行い、最も良かった時点のパラメータを保存するようにしています。<br /><br />
+      最後に、その最良モデルを使ってテストデータをバッチ単位で推論し、予測ラベルを CSV 形式で保存しています。要するにこのコードは、「多層パーセプトロンを NumPy のみで実装する」という条件の中で、標準化・Dropout・最適化手法・学習率制御・Early Stopping を組み合わせ、精度と安定性の両方を高めた実装です。
+    </p>
+
+    <div class="code-window">
+      <div class="code-header">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="filename">lecture03_homework.py</span>
+      </div>
+      <pre><code>#!/usr/bin/env python
+# coding: utf-8
+
+# # 第3回講義 宿題  
+# 
+# ---
+# 
+# # Lecture 3: Homework
+# 
+
+# ## 課題
+# 
+# 今回のLessonで学んだことを元に，MNISTのファッション版 (Fashion MNIST，クラス数10) を多層パーセプトロンによって分類してみましょう．
+# 
+# Fashion MNISTの詳細については以下のリンクを参考にしてください．
+# 
+# Fashion MNIST: https://github.com/zalandoresearch/fashion-mnist
+# 
+# ---
+# 
+# ## Task
+# 
+# Based on what you learned in this lesson, classify the fashion version of MNIST (Fashion MNIST, 10 classes) using a multilayer perceptron.
+# 
+# For details about Fashion MNIST, refer to the link below.
+# 
+# Fashion MNIST: https://github.com/zalandoresearch/fashion-mnist
+# 
+
+# ### 目標値 (Target)
+# 
+# Accuracy 85%
+
+# ### ルール
+# 
+# - 訓練データは`x_train`， `t_train`，テストデータは`x_test`で与えられます．
+# - 予測ラベルは one_hot表現ではなく0~9のクラスラベル で表してください．
+# - **下のセルで指定されている`x_train`，`t_train`以外の学習データは使わないでください．**
+# - **多層パーセプトロンのアルゴリズム部分は第3回の演習を参考に，NumPyのみで実装してください．** (sklearnやtensorflowなどは使用しないでください)．
+#     - データの前処理部分でsklearnの関数を使う (例えば `sklearn.model_selection.train_test_split`) のは問題ありません．
+# 
+# ---
+# 
+# ### Rules
+# 
+# - Training data are provided as `x_train` and `t_train`, and test data are provided as `x_test`.
+# - Output the predicted labels as class labels (0–9), not as one-hot vectors.
+# - **Do not use any training data other than the provided `x_train` and `t_train` specified in the cells below.**
+# - **Implement the multilayer perceptron algorithm using only NumPy, referring to the Lecture 3 exercises.** (Do not use sklearn, TensorFlow, etc. for the MLP implementation.)
+#     - It is fine to use sklearn utilities for data preprocessing (e.g., `sklearn.model_selection.train_test_split`).
+# 
+
+# ### 提出方法
+# - 2つのファイルを提出していただきます．
+#     1. テストデータ (`x_test`) に対する予測ラベルをcsv形式で保存し，**Omnicampusの宿題タブから「第3回 ニューラルネットワーク基礎」を選択して**提出してください．
+#     2. それに対応するpythonのコードを　ファイル＞ダウンロード＞.pyをダウンロード　から保存し，**Omnicampusの宿題タブから「第3回 ニューラルネットワーク基礎 (code)」を選択して**提出してください．pythonファイル自体の提出ではなく，「提出内容」の部分にコード全体をコピー&amp;ペーストしてください．
+#       
+# - なお，採点は1で行い，2はコードの確認用として利用します（成績優秀者はコード内容を公開させていただくかもしれません）．コードの内容を変更した場合は，**1と2の両方を提出し直してください**．
+# 
+# ---
+# 
+# ### Submission
+# - Submit two items:
+#     1. Save your predicted labels for the test data (`x_test`) as a CSV file, and submit it by selecting **“第3回 ニューラルネットワーク基礎”** in the Omnicampus homework tab.
+#     2. Save the corresponding Python code by choosing **File → Download → Download .py**, and submit it by selecting **“第3回 ニューラルネットワーク基礎 (code)”** in the Omnicampus homework tab. Do not upload the .py file itself; instead, copy and paste the entire code into the “submission content” field.
+# 
+# - Grading is based on (1). Item (2) is used to verify your implementation (top submissions may be asked to share their code). If you change your code, **please resubmit both (1) and (2)**.
+# 
+
+# ### 評価方法
+# - 予測ラベルの`t_test`に対する精度 (Accuracy) で評価します．
+# - 即時採点しLeader Boardを更新します（採点スケジュールは別アナウンス）．
+# - 締切時の点数を最終的な評価とします．
+# 
+# ---
+# 
+# ### Evaluation
+# 
+# - We evaluate your submission by accuracy against the ground-truth labels `t_test`.
+# - Submissions are graded immediately and the leaderboard is updated (the grading schedule will be announced separately).
+# - Your score at the deadline will be used as the final evaluation.
+# 
+
+# ### ドライブのマウント
+# 
+# ---
+# 
+# ### Mount Google Drive
+# 
+
+# In[1]:
+
+
+from google.colab import drive
+drive.mount(&#x27;/content/drive&#x27;)
+
+
+# In[2]:
+
+
+# Set the working directory
+work_dir = &#x27;drive/MyDrive/Colab Notebooks/DLBasics2026_colab&#x27;
+
+
+# ### データの読み込み（このセルは修正しないでください）
+# 
+# ---
+# 
+# ### Load Data (Do not modify this cell)
+# 
+
+# In[4]:
+
+
+import os
+import numpy as np
+import pandas as pd
+from sklearn.utils import shuffle
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+import inspect
+
+
+# Training data
+x_train = np.load(work_dir + &#x27;/Lecture03/data/x_train.npy&#x27;)
+t_train = np.load(work_dir + &#x27;/Lecture03/data/y_train.npy&#x27;)
+
+# Test data
+x_test = np.load(work_dir + &#x27;/Lecture03/data/x_test.npy&#x27;)
+
+# Preprocess data (normalisation, one-hot encoding)
+x_train, x_test = x_train / 255., x_test / 255.
+x_train, x_test = x_train.reshape(x_train.shape[0], -1), x_test.reshape(x_test.shape[0], -1)
+t_train = np.eye(N=10)[t_train.astype(&quot;int32&quot;).flatten()]
+
+
+# ### 多層パーセプトロンの実装
+# 
+# ---
+# 
+# ### Implement a Multilayer Perceptron
+# 
+
+# In[7]:
+
+
+# Split the data
+random_state = 42
+rng = np.random.RandomState(random_state)
+
+x_train, x_val, t_train, t_val = train_test_split(
+    x_train,
+    t_train,
+    test_size=10000,
+    random_state=random_state,
+    stratify=np.argmax(t_train, axis=1)
+)
+
+# 追加: 入力の標準化
+# 0-1正規化済みのデータを、さらに train の平均・標準偏差で標準化
+x_mean = x_train.mean(axis=0, keepdims=True)
+x_std = x_train.std(axis=0, keepdims=True)
+x_std = np.where(x_std &lt; 1e-6, 1.0, x_std)
+
+x_train = ((x_train - x_mean) / x_std).astype(np.float32)
+x_val   = ((x_val   - x_mean) / x_std).astype(np.float32)
+x_test  = ((x_test  - x_mean) / x_std).astype(np.float32)
+
+t_train = t_train.astype(np.float32)
+t_val = t_val.astype(np.float32)
+
+
+def np_log(x):
+    return np.log(np.clip(x, 1e-10, 1e10))
+
+
+def create_batch(data, batch_size):
+    batches = []
+    for start in range(0, data.shape[0], batch_size):
+        end = start + batch_size
+        batches.append(data[start:end])
+    return batches
+
+
+def relu(x):
+    return np.maximum(0.0, x)
+
+
+def deriv_relu(x):
+    return (x &gt; 0).astype(np.float32)
+
+
+def softmax(x):
+    x = x - np.max(x, axis=1, keepdims=True)  # 数値安定化
+    exp_x = np.exp(x)
+    return exp_x / np.sum(exp_x, axis=1, keepdims=True)
+
+
+def deriv_softmax(y):
+    # 今回の学習では softmax + cross entropy の簡約形を使うため未使用
+    # ただし関数枠があるので、正しい Jacobian を返す形で実装
+    if y.ndim == 1:
+        y = y[np.newaxis, :]
+
+    jacobians = []
+    for i in range(y.shape[0]):
+        s = y[i].reshape(-1, 1)
+        jacobians.append(np.diagflat(s) - s @ s.T)
+    return np.array(jacobians)
+
+
+def crossentropy_loss(t, y):
+    return -np.sum(t * np_log(y)) / t.shape[0]
+
+
+def accuracy_numpy(t, y):
+    return np.mean(np.argmax(t, axis=1) == np.argmax(y, axis=1))
+
+
+class Dense:
+    def __init__(self, in_dim, out_dim, rng):
+        # He initialization
+        self.W = (rng.randn(in_dim, out_dim) * np.sqrt(2.0 / in_dim)).astype(np.float32)
+        self.b = np.zeros((1, out_dim), dtype=np.float32)
+
+        # Adam states
+        self.mW = np.zeros_like(self.W)
+        self.vW = np.zeros_like(self.W)
+        self.mb = np.zeros_like(self.b)
+        self.vb = np.zeros_like(self.b)
+
+    def forward(self, x):
+        self.x = x
+        return x @ self.W + self.b
+
+    def backward(self, grad_out):
+        self.dW = self.x.T @ grad_out
+        self.db = np.sum(grad_out, axis=0, keepdims=True)
+        grad_in = grad_out @ self.W.T
+        return grad_in
+
+    def update(self, lr, t, beta1=0.9, beta2=0.999, eps=1e-8, weight_decay=0.0):
+        # AdamW 風の decoupled weight decay
+        if weight_decay &gt; 0.0:
+            self.W *= (1.0 - lr * weight_decay)
+
+        self.mW = beta1 * self.mW + (1.0 - beta1) * self.dW
+        self.vW = beta2 * self.vW + (1.0 - beta2) * (self.dW ** 2)
+
+        self.mb = beta1 * self.mb + (1.0 - beta1) * self.db
+        self.vb = beta2 * self.vb + (1.0 - beta2) * (self.db ** 2)
+
+        mW_hat = self.mW / (1.0 - beta1 ** t)
+        vW_hat = self.vW / (1.0 - beta2 ** t)
+
+        mb_hat = self.mb / (1.0 - beta1 ** t)
+        vb_hat = self.vb / (1.0 - beta2 ** t)
+
+        self.W -= lr * mW_hat / (np.sqrt(vW_hat) + eps)
+        self.b -= lr * mb_hat / (np.sqrt(vb_hat) + eps)
+
+
+class Dropout:
+    def __init__(self, p, rng):
+        self.p = p
+        self.rng = rng
+        self.mask = None
+
+    def forward(self, x, training=False):
+        if training and self.p &gt; 0.0:
+            self.mask = (self.rng.rand(*x.shape) &gt;= self.p).astype(np.float32) / (1.0 - self.p)
+            return x * self.mask
+        self.mask = None
+        return x
+
+    def backward(self, grad_out):
+        if self.mask is None:
+            return grad_out
+        return grad_out * self.mask
+
+
+class Model:
+    def __init__(self, rng, input_dim=784, hidden_dims=(1024, 512, 256), output_dim=10,
+                 dropout_rates=(0.25, 0.20, 0.10)):
+        h1, h2, h3 = hidden_dims
+        d1, d2, d3 = dropout_rates
+
+        self.fc1 = Dense(input_dim, h1, rng)
+        self.fc2 = Dense(h1, h2, rng)
+        self.fc3 = Dense(h2, h3, rng)
+        self.fc4 = Dense(h3, output_dim, rng)
+
+        self.do1 = Dropout(d1, rng)
+        self.do2 = Dropout(d2, rng)
+        self.do3 = Dropout(d3, rng)
+
+        self.global_step = 0
+
+    def __call__(self, x, training=False):
+        self.z1 = self.fc1.forward(x)
+        self.h1 = relu(self.z1)
+        self.h1 = self.do1.forward(self.h1, training=training)
+
+        self.z2 = self.fc2.forward(self.h1)
+        self.h2 = relu(self.z2)
+        self.h2 = self.do2.forward(self.h2, training=training)
+
+        self.z3 = self.fc3.forward(self.h2)
+        self.h3 = relu(self.z3)
+        self.h3 = self.do3.forward(self.h3, training=training)
+
+        self.z4 = self.fc4.forward(self.h3)
+        self.y = softmax(self.z4)
+        return self.y
+
+    def backward(self, t):
+        batch_size = t.shape[0]
+
+        # softmax + cross entropy の簡約微分
+        delta = (self.y - t) / batch_size
+
+        delta = self.fc4.backward(delta)
+
+        delta = self.do3.backward(delta)
+        delta = delta * deriv_relu(self.z3)
+        delta = self.fc3.backward(delta)
+
+        delta = self.do2.backward(delta)
+        delta = delta * deriv_relu(self.z2)
+        delta = self.fc2.backward(delta)
+
+        delta = self.do1.backward(delta)
+        delta = delta * deriv_relu(self.z1)
+        _ = self.fc1.backward(delta)
+
+    def update(self, lr, weight_decay=0.0):
+        self.global_step += 1
+        for layer in [self.fc1, self.fc2, self.fc3, self.fc4]:
+            layer.update(
+                lr=lr,
+                t=self.global_step,
+                weight_decay=weight_decay
+            )
+
+    def get_parameters(self):
+        return [
+            (self.fc1.W.copy(), self.fc1.b.copy()),
+            (self.fc2.W.copy(), self.fc2.b.copy()),
+            (self.fc3.W.copy(), self.fc3.b.copy()),
+            (self.fc4.W.copy(), self.fc4.b.copy()),
+        ]
+
+    def set_parameters(self, params):
+        (self.fc1.W, self.fc1.b) = params[0]
+        (self.fc2.W, self.fc2.b) = params[1]
+        (self.fc3.W, self.fc3.b) = params[2]
+        (self.fc4.W, self.fc4.b) = params[3]
+
+
+# Hyper parameters
+lr = 1e-3
+n_epochs = 40
+batch_size = 128
+weight_decay = 1e-4
+patience = 8
+
+# Model
+mlp = Model(
+    rng=rng,
+    input_dim=784,
+    hidden_dims=(1024, 512, 256),
+    output_dim=10,
+    dropout_rates=(0.25, 0.20, 0.10)
+)
+
+
+# ### モデルの学習
+# 
+# ---
+# 
+# ### Train the Model
+# 
+
+# In[8]:
+
+
+def train_model(
+    mlp,
+    x_train,
+    t_train,
+    x_val,
+    t_val,
+    n_epochs=40,
+    batch_size=128,
+    lr=1e-3,
+    weight_decay=1e-4,
+    patience=8
+):
+    best_val_acc = -1.0
+    best_epoch = 0
+    best_params = mlp.get_parameters()
+    wait = 0
+
+    for epoch in range(n_epochs):
+        losses_train = []
+        losses_valid = []
+        train_num = 0
+        train_true_num = 0
+        valid_num = 0
+        valid_true_num = 0
+
+        # 学習率を少しずつ下げる
+        current_lr = max(lr * (0.97 ** epoch), 2e-4)
+
+        # Shuffle training data
+        perm = rng.permutation(x_train.shape[0])
+        x_train_epoch = x_train[perm]
+        t_train_epoch = t_train[perm]
+
+        x_train_batches = create_batch(x_train_epoch, batch_size)
+        t_train_batches = create_batch(t_train_epoch, batch_size)
+
+        x_val_batches = create_batch(x_val, batch_size)
+        t_val_batches = create_batch(t_val, batch_size)
+
+        # Train
+        for x, t in zip(x_train_batches, t_train_batches):
+            y = mlp(x, training=True)
+
+            loss = crossentropy_loss(t, y)
+            losses_train.append(loss)
+
+            mlp.backward(t)
+            mlp.update(current_lr, weight_decay=weight_decay)
+
+            train_true_num += np.sum(np.argmax(t, axis=1) == np.argmax(y, axis=1))
+            train_num += x.shape[0]
+
+        # Validation
+        for x, t in zip(x_val_batches, t_val_batches):
+            y = mlp(x, training=False)
+
+            loss = crossentropy_loss(t, y)
+            losses_valid.append(loss)
+
+            valid_true_num += np.sum(np.argmax(t, axis=1) == np.argmax(y, axis=1))
+            valid_num += x.shape[0]
+
+        train_loss = np.mean(losses_train)
+        train_acc = train_true_num / train_num
+        valid_loss = np.mean(losses_valid)
+        valid_acc = valid_true_num / valid_num
+
+        print(
+            &quot;EPOCH: {}, LR: {:.6f}, Train [Loss: {:.4f}, Accuracy: {:.4f}], &quot;
+            &quot;Valid [Loss: {:.4f}, Accuracy: {:.4f}]&quot;.format(
+                epoch + 1,
+                current_lr,
+                train_loss,
+                train_acc,
+                valid_loss,
+                valid_acc
+            )
+        )
+
+        # best model を保存
+        if valid_acc &gt; best_val_acc:
+            best_val_acc = valid_acc
+            best_epoch = epoch + 1
+            best_params = mlp.get_parameters()
+            wait = 0
+        else:
+            wait += 1
+            if wait &gt;= patience:
+                print(&quot;Early stopping at epoch {}.&quot;.format(epoch + 1))
+                break
+
+    mlp.set_parameters(best_params)
+    print(&quot;Best epoch: {}, Best valid accuracy: {:.4f}&quot;.format(best_epoch, best_val_acc))
+
+
+train_model(
+    mlp,
+    x_train,
+    t_train,
+    x_val,
+    t_val,
+    n_epochs=n_epochs,
+    batch_size=batch_size,
+    lr=lr,
+    weight_decay=weight_decay,
+    patience=patience
+)
+
+# Test prediction
+t_pred = []
+x_test_batches = create_batch(x_test, batch_size)
+
+for x in x_test_batches:
+    y = mlp(x, training=False)
+    pred = np.argmax(y, axis=1).tolist()
+    t_pred.extend(pred)
+
+submission = pd.Series(t_pred, name=&#x27;label&#x27;)
+submission.to_csv(
+    work_dir + &#x27;/Lecture03/submission_pred_03.csv&#x27;,
+    header=True,
+    index_label=&#x27;id&#x27;
+)
+
+</code></pre>
+    </div>
+  </div>
+</section>
+<!-- Lecture3 Homework end -->
     </div>
   </main>
 </body>
