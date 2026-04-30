@@ -8,20 +8,16 @@
     :root {
       --bg: #fcfafc;
       --panel: #ffffff;
-      --panel-soft: #fff9fc;
       --text: #2a1f2d;
       --muted: #6d5d73;
       --border: #eaddea;
       --accent: #8b2f6b;
       --accent-2: #c45a8a;
-      --accent-soft: #fff0f7;
       --success: #2f7a56;
       --shadow: 0 10px 30px rgba(104, 56, 87, 0.08);
       --radius: 18px;
     }
-
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Noto Sans JP", sans-serif;
@@ -32,22 +28,13 @@
       color: var(--text);
       line-height: 1.8;
     }
-
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
     .container {
       width: min(1080px, calc(100% - 32px));
       margin: 0 auto;
       padding: 24px 0 72px;
     }
-
     .hero-image {
       width: 100%;
       border-radius: 22px;
@@ -57,13 +44,7 @@
       box-shadow: var(--shadow);
       margin-bottom: 20px;
     }
-
-    .hero-image img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
+    .hero-image img { display: block; width: 100%; height: auto; }
     .hero {
       background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,249,252,0.98));
       border: 1px solid var(--border);
@@ -72,45 +53,33 @@
       box-shadow: var(--shadow);
       margin-bottom: 24px;
     }
-
     .hero h1 {
       margin: 0 0 12px;
       font-size: clamp(30px, 4.8vw, 44px);
       line-height: 1.2;
       letter-spacing: 0.02em;
     }
-
-    .hero p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 16px;
-    }
-
+    .hero p { margin: 0; color: var(--muted); font-size: 16px; }
     .hero-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
       margin-top: 22px;
     }
-
     .cta-main {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 14px 22px;
+      padding: 15px 24px;
       border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
       color: #ffffff;
       font-weight: 800;
       font-size: 16px;
-      box-shadow: 0 10px 22px rgba(139, 47, 107, 0.22);
+      border: 1px solid #1d4ed8;
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.28);
     }
-
-    .cta-main:hover {
-      text-decoration: none;
-      opacity: 0.96;
-    }
-
+    .cta-main:hover { text-decoration: none; opacity: 0.96; }
     .cta-sub {
       display: inline-flex;
       align-items: center;
@@ -122,12 +91,7 @@
       border: 1px solid var(--border);
       font-weight: 700;
     }
-
-    .cta-sub:hover {
-      text-decoration: none;
-      background: #fff5fa;
-    }
-
+    .cta-sub:hover { text-decoration: none; background: #fff5fa; }
     .highlight-box {
       margin-top: 18px;
       background: linear-gradient(135deg, #fff3f8, #fff9fc);
@@ -135,13 +99,7 @@
       border-radius: 16px;
       padding: 16px 18px;
     }
-
-    .highlight-box strong {
-      display: block;
-      margin-bottom: 4px;
-      color: var(--accent);
-    }
-
+    .highlight-box strong { display: block; margin-bottom: 4px; color: var(--accent); }
     .section {
       margin-top: 26px;
       background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,250,252,0.98));
@@ -150,22 +108,13 @@
       box-shadow: var(--shadow);
       overflow: hidden;
     }
-
     .section-header {
       padding: 22px 24px 12px;
       border-bottom: 1px solid var(--border);
       background: linear-gradient(180deg, #fffafd, #fffdfd);
     }
-
-    .section-header h2 {
-      margin: 0;
-      font-size: 28px;
-    }
-
-    .section-body {
-      padding: 24px;
-    }
-
+    .section-header h2 { margin: 0; font-size: 28px; }
+    .section-body { padding: 24px; }
     .summary-box {
       background: linear-gradient(180deg, #fffafd, #ffffff);
       border: 1px solid var(--border);
@@ -173,23 +122,13 @@
       padding: 18px;
       margin-bottom: 18px;
     }
-
-    .summary-box p {
-      margin-bottom: 0;
-    }
-
-    .lead {
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-
+    .lead { font-size: 18px; margin-bottom: 8px; }
     .meta {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       margin: 14px 0 0;
     }
-
     .tag {
       display: inline-flex;
       align-items: center;
@@ -201,13 +140,11 @@
       font-weight: 700;
       color: #62455b;
     }
-
     .tag.ok {
       color: var(--success);
       background: #f2fbf6;
       border-color: #cfead9;
     }
-
     .achievement {
       margin: 18px 0 0;
       padding: 18px;
@@ -215,43 +152,22 @@
       background: linear-gradient(135deg, #fff7fb, #ffffff);
       border: 1px solid #efcfdf;
     }
-
-    .achievement strong {
-      color: var(--accent);
-      font-size: 18px;
-    }
-
+    .achievement strong { color: var(--accent); font-size: 18px; }
     .cols {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 16px;
       margin: 18px 0 10px;
     }
-
     .card {
       background: linear-gradient(180deg, #ffffff, #fffafd);
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 18px;
     }
-
-    .card h3 {
-      margin: 0 0 10px;
-      font-size: 18px;
-      color: #4b2740;
-    }
-
-    .card p {
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .note {
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
+    .card h3 { margin: 0 0 10px; font-size: 18px; color: #4b2740; }
+    .card p { margin: 0; color: var(--muted); }
+    .note { margin-top: 12px; color: var(--muted); font-size: 14px; }
     details {
       margin-top: 18px;
       background: #fffdfd;
@@ -259,34 +175,32 @@
       border-radius: 16px;
       padding: 14px 16px;
     }
-
     summary {
       cursor: pointer;
       font-weight: 800;
       font-size: 16px;
       color: #4b2740;
     }
-
-    pre {
-      margin: 14px 0 0;
+    .code-window {
+      margin-top: 14px;
       padding: 18px;
       border-radius: 14px;
       background: #fff9fb;
-      overflow: auto;
       border: 1px solid var(--border);
+      max-height: 560px;
+      overflow: auto;
+    }
+    pre {
+      margin: 0;
       color: #2a1f2d;
       line-height: 1.55;
       font-size: 13px;
+      white-space: pre;
     }
-
     code {
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
     }
-
-    .muted {
-      color: var(--muted);
-    }
-
+    .muted { color: var(--muted); }
     @media (max-width: 640px) {
       .hero, .section-body, .section-header {
         padding-left: 18px;
@@ -311,22 +225,14 @@
         東京大学松尾・岩澤研究室が主催する公開講座で、ニューラルネットワークの基礎から
         自然言語処理や深層生成モデルまで、Deep Learning を基礎から実践的に学べる講座です。
       </p>
-
-      <div class="highlight-box">
-        <strong>過去実績もぜひご覧ください</strong>
-        Lecture ごとの順位推移や取り組み内容をまとめています。今回の Lecture3 の最終結果も反映済みです。
-      </div>
-
-      <div class="hero-actions">
+<div class="hero-actions">
         <a class="cta-main" href="https://demimomi.github.io/demimomi/llm.html" target="_blank" rel="noopener noreferrer">過去実績はこちら！</a>
         <a class="cta-sub" href="https://weblab.t.u-tokyo.ac.jp/" target="_blank" rel="noopener noreferrer">講座ページへ移動</a>
       </div>
     </section>
 
     <section class="section">
-      <div class="section-header">
-        <h2>Lecture2 Homework</h2>
-      </div>
+      <div class="section-header"><h2>Lecture2 Homework</h2></div>
       <div class="section-body">
         <div class="summary-box">
           <div class="lead"><strong>DEMIMOMI Pythonコード</strong></div>
@@ -345,9 +251,7 @@
     </section>
 
     <section class="section">
-      <div class="section-header">
-        <h2>Lecture3 Homework</h2>
-      </div>
+      <div class="section-header"><h2>Lecture3 Homework</h2></div>
       <div class="section-body">
         <div class="summary-box">
           <div class="lead"><strong>DEMIMOMI Pythonコード</strong></div>
@@ -363,75 +267,23 @@
           </div>
           <p style="margin-top:14px;">
             これは Lecture3 の homework として作成した Python コードです。
-            Fashion MNIST という衣類画像データを、<strong>NumPy だけで実装した多層パーセプトロン（MLP）</strong>で
-            10クラス分類する課題に対応しています。Lecture2 よりもモデル側の表現力が大きく上がっており、
-            前処理・学習安定化・推論時の工夫まで含めて、より実戦的な構成になっています。
+            Fashion MNIST を <strong>NumPy だけで実装した多層パーセプトロン</strong>で分類し、
+            前処理・学習安定化・推論時の工夫まで含めて、より実戦的な構成にしています。
           </p>
         </div>
 
         <div class="cols">
-          <div class="card">
-            <h3>1. 前処理</h3>
-            <p>
-              画像は 0〜1 に正規化したうえで 28×28 を 784 次元ベクトルに変換します。
-              さらに one-hot 化したラベルを使い、学習データを訓練用と検証用に分割しています。
-              その後、訓練データの平均と標準偏差で標準化することで、学習が安定しやすい入力に整えています。
-            </p>
-          </div>
-
-          <div class="card">
-            <h3>2. MLP本体</h3>
-            <p>
-              基本構成は 784 → 1024 → 512 → 256 → 10 の 4 層です。
-              隠れ層では Leaky ReLU を使い、Batch Normalization と Dropout を組み合わせて、
-              学習の安定性と汎化性能を両立させています。
-            </p>
-          </div>
-
-          <div class="card">
-            <h3>3. 学習の工夫</h3>
-            <p>
-              最適化には AdamW 風の更新を採用し、weight decay で過学習を抑えています。
-              学習率は cosine schedule で調整し、label smoothing と early stopping も入れて、
-              精度と安定性の両方を意識した構成にしています。
-            </p>
-          </div>
-
-          <div class="card">
-            <h3>4. 画像拡張と推論</h3>
-            <p>
-              学習中は random shift augmentation により、画像を少しずらしたデータでも学習しています。
-              推論時には TTA を使い、複数シフト画像の予測平均を取ることで、より安定した結果を得ています。
-            </p>
-          </div>
-
-          <div class="card">
-            <h3>5. アンサンブル</h3>
-            <p>
-              dropout 率や隠れ層サイズが異なる 2 つの MLP を学習し、
-              検証精度に応じた重み付きアンサンブルを行っています。
-              単体モデルよりも予測のブレを減らし、最終精度を底上げする狙いです。
-            </p>
-          </div>
-
-          <div class="card">
-            <h3>6. 全体のポイント</h3>
-            <p>
-              このコードは単なる MLP 実装ではなく、標準化・BatchNorm・Leaky ReLU・Dropout・
-              AdamW風更新・Cosine 学習率・Random Shift・TTA・重み付きアンサンブルを組み合わせ、
-              NumPy 実装の中で精度をしっかり伸ばした構成になっています。
-            </p>
-          </div>
+          <div class="card"><h3>1. 前処理</h3><p>画像を 0〜1 に正規化し、28×28 を 784 次元ベクトルに変換しています。さらに訓練データの平均と標準偏差で標準化し、学習が安定しやすい入力に整えています。</p></div>
+          <div class="card"><h3>2. MLP本体</h3><p>基本構成は 784 → 1024 → 512 → 256 → 10 の 4 層です。Leaky ReLU、Batch Normalization、Dropout を組み合わせて、学習の安定性と汎化性能を両立させています。</p></div>
+          <div class="card"><h3>3. 学習の工夫</h3><p>AdamW 風の更新、weight decay、cosine schedule、label smoothing、early stopping を入れ、精度と安定性の両方を意識した構成にしています。</p></div>
+          <div class="card"><h3>4. 画像拡張と推論</h3><p>学習中は random shift augmentation、推論時には TTA を採用し、複数シフト画像の予測平均を取ることでより安定した結果を狙っています。</p></div>
+          <div class="card"><h3>5. アンサンブル</h3><p>隠れ層サイズや dropout 率が異なる 2 つの MLP を学習し、検証精度に応じた重み付きアンサンブルを行っています。</p></div>
+          <div class="card"><h3>6. 全体のポイント</h3><p>標準化・BatchNorm・Leaky ReLU・Dropout・AdamW風更新・Cosine 学習率・Random Shift・TTA・重み付きアンサンブルを組み合わせ、NumPy 実装の中で精度を伸ばした構成です。</p></div>
         </div>
 
-        <p class="note">
-          以前の Lecture3 表示「暫定25位 現在256名」を、
-          最終結果の <strong>90位（最高25位）全2,158名</strong> に更新した版です。
-        </p>
-
-        <details open>
-          <summary>lecture03_homework.py（最終版コード）</summary>
-          <pre><code># -*- coding: utf-8 -*-
+        <details>
+          <summary>lecture03_homework.py（スクロール表示）</summary>
+          <div class="code-window"><pre><code># -*- coding: utf-8 -*-
 &quot;&quot;&quot;lecture03_homework.ipynb のコピー
 
 Automatically generated by Colab.
@@ -1256,7 +1108,436 @@ submission.to_csv(
     index_label=&#x27;id&#x27;
 )
 
-print(&#x27;submission saved to:&#x27;, work_dir + &#x27;/Lecture03/submission_pred_03.csv&#x27;)</code></pre>
+print(&#x27;submission saved to:&#x27;, work_dir + &#x27;/Lecture03/submission_pred_03.csv&#x27;)</code></pre></div>
+        </details>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header"><h2>Lecture4 Homework</h2></div>
+      <div class="section-body">
+        <div class="summary-box">
+          <div class="lead"><strong>DEMIMOMI Pythonコード</strong></div>
+          <div class="meta">
+            <span class="tag">更新者：demimomi</span>
+            <span class="tag">2026年5月1日</span>
+            <span class="tag ok">87人中12位（暫定）</span>
+          </div>
+          <div class="achievement">
+            <strong>Lecture4 の暫定結果</strong><br>
+            PyTorch 利用可・高レベル API 制限ありという条件の中で、<strong>87人中12位</strong> の暫定順位でした。
+          </div>
+          <p style="margin-top:14px;">
+            Lecture4 では、Fashion MNIST の分類課題に対して、
+            <strong>PyTorch を使いながらも高レベル API に頼りすぎない実装</strong> が求められています。
+            このコードでは Dense 層や活性化関数、Dropout、損失関数をかなり自前寄りに構成し、
+            制約の中で学習の安定性と再現性をしっかり確保しています。
+          </p>
+        </div>
+
+        <div class="cols">
+          <div class="card"><h3>1. 課題条件への対応</h3><p>`torch.nn.Conv2d` のような高レベル API が使えないため、`nn.Module` と `nn.Parameter` を使って必要最小限の構成でモデルを組んでいます。ルールに正面から対応した実装です。</p></div>
+          <div class="card"><h3>2. データ処理</h3><p>画像は 28×28 を 784 次元にフラット化し、0〜1 に正規化しています。さらに `Dataset` と `DataLoader` を使って、PyTorch の学習ループを無理なく回せる形に整えています。</p></div>
+          <div class="card"><h3>3. モデル構成</h3><p>基本は <strong>784 → 1024 → 512 → 256 → 10</strong> の多層パーセプトロンです。各隠れ層のあとに ReLU と Dropout を入れることで、シンプルな構成でも過学習を抑えながら表現力を確保しています。</p></div>
+          <div class="card"><h3>4. 損失関数も自前寄り</h3><p>Softmax と Cross Entropy をライブラリ任せにせず、数式に近い形で実装しています。Lecture4 のテーマである「最適化・正則化」を理解していることが伝わる作りです。</p></div>
+          <div class="card"><h3>5. 学習の安定化</h3><p>最適化には AdamW を用い、weight decay で正則化しています。また、検証精度が改善した時点の重みを保存し、patience つきの early stopping を入れることで無駄な学習を防いでいます。</p></div>
+          <div class="card"><h3>6. 全体の見どころ</h3><p>Lecture3 より構成はややシンプルですが、その分、<strong>制約の厳しいルールの中でどこまで丁寧に組めるか</strong> がポイントです。自前実装と PyTorch のバランスがよく、課題意図に合った完成度の高いコードです。</p></div>
+        </div>
+
+        <p class="note">コードは長いため、下にスクロール可能なウィンドウで掲載しています。</p>
+
+        <details open>
+          <summary>lecture04_homework.py（スクロール表示）</summary>
+          <div class="code-window"><pre><code># -*- coding: utf-8 -*-
+&quot;&quot;&quot;lecture04_homework.ipynb
+
+Automatically generated by Colab.
+
+Original file is located at
+    https://colab.research.google.com/drive/1pSAHmF9Zu_-LZr02Xd-B8kCjsVWP-FVf
+
+# 第4回講義 宿題
+
+---
+
+# Lecture 4: Homework
+
+## 課題
+
+今Lessonで学んだことを元に，MNISTのファッション版 (Fashion MNIST，クラス数10) を多層パーセプトロンによって分類してみましょう．
+
+Fashion MNISTの詳細については以下のリンクを参考にしてください．
+
+Fashion MNIST: https://github.com/zalandoresearch/fashion-mnist
+
+---
+
+## Task
+
+Based on what you learned in this lesson, classify the fashion version of MNIST (Fashion MNIST, 10 classes) using a multilayer perceptron.
+
+For details about Fashion MNIST, refer to the link below.
+
+Fashion MNIST: https://github.com/zalandoresearch/fashion-mnist
+
+### 目標値 (Target)
+
+Accuracy 85%
+
+### ルール
+
+
+- 訓練データは`x_train`， `t_train`，テストデータは`x_test`で与えられます．
+- 予測ラベルは one_hot表現ではなく0~9のクラスラベル で表してください．
+- **下のセルで指定されている`x_train`，`t_train`以外の学習データは使わないでください．**
+- Pytorchを利用して構いません．
+- ただし，**`torch.nn.Conv2d`のような高レベルのAPIは使用しないで下さい**．具体的には，`nn.Parameter`, `nn.Module`, `nn.Sequential`以外の`nn`系のAPIです．使用した場合エラーになります．
+- torchvision等で既に実装されているモデルも使用しないで下さい．
+
+---
+
+### Rules
+
+- Training data are provided as `x_train` and `t_train`, and test data are provided as `x_test`.
+- Output the predicted labels as class labels (0–9), not as one-hot vectors.
+- **Do not use any training data other than the provided `x_train` and `t_train` specified in the cells below.**
+- You may use PyTorch.
+- However, **do not use high-level APIs such as `torch.nn.Conv2d`.** Concretely, this means any `nn.*` APIs other than `nn.Parameter`, `nn.Module`, and `nn.Sequential`. If you use them, an error will occur.
+- Do not use pre-implemented models (e.g., those in torchvision).
+
+### 提出方法
+- 2つのファイルを提出していただきます．
+    1. テストデータ (`x_test`) に対する予測ラベルをcsv形式で保存し，**Omnicampusの宿題タブから「第4回 ニューラルネットワークの最適化・正則化」を選択して**提出してください．
+    2. それに対応するpythonのコードを　ファイル＞ダウンロード＞.pyをダウンロード　から保存し，**Omnicampusの宿題タブから「第4回 ニューラルネットワークの最適化・正則化 (code)」を選択して**提出してください．pythonファイル自体の提出ではなく，「提出内容」の部分にコード全体をコピー&amp;ペーストしてください．
+      
+- なお，採点は1で行い，2はコードの確認用として利用します（成績優秀者はコード内容を公開させていただくかもしれません）．コードの内容を変更した場合は，**1と2の両方を提出し直してください**．
+
+---
+
+### Submission
+- Submit two items:
+    1. Save your predicted labels for the test data (`x_test`) as a CSV file, and submit it by selecting **“第4回 ニューラルネットワークの最適化・正則化”** in the Omnicampus homework tab.
+    2. Save the corresponding Python code by choosing **File → Download → Download .py**, and submit it by selecting **“第4回 ニューラルネットワークの最適化・正則化 (code)”** in the Omnicampus homework tab. Do not upload the .py file itself; instead, copy and paste the entire code into the “submission content” field.
+
+- Grading is based on (1). Item (2) is used to verify your implementation (top submissions may be asked to share their code). If you change your code, **please resubmit both (1) and (2)**.
+
+### 評価方法
+- 予測ラベルの`t_test`に対する精度 (Accuracy) で評価します．
+- 即時採点しLeader Boardを更新します（採点スケジュールは別アナウンス）．
+- 締切時の点数を最終的な評価とします．
+
+---
+
+### Evaluation
+
+- We evaluate your submission by accuracy against the ground-truth labels `t_test`.
+- Submissions are graded immediately and the leaderboard is updated (the grading schedule will be announced separately).
+- Your score at the deadline will be used as the final evaluation.
+
+### ドライブのマウント
+
+---
+
+### Mount Google Drive
+&quot;&quot;&quot;
+
+from google.colab import drive
+drive.mount(&#x27;/content/drive&#x27;)
+
+# Set the working directory
+work_dir = &#x27;drive/MyDrive/Colab Notebooks/DLBasics2026_colab&#x27;
+
+&quot;&quot;&quot;### データの読み込み（この部分は修正しないでください）
+
+`__len__`は，Pythonの組み込み関数len()を呼んだときに，内部で呼ばれる特殊メソッドです．
+
+`__getitem__`は，インデックスやキーで要素を取得するときに，内部で呼ばれる特殊メソッドです．
+
+どちらも， Datasetクラスを自作する際によく登場します．
+
+---
+
+### Loading the data (Do not modify this section)
+
+`__len__` is a special method that is called internally when you use Python&#x27;s built-in function `len()`.
+
+`__getitem__` is a special method that is called internally when you access an element by index or key.
+
+Both commonly appear when you implement your own `Dataset` class.
+
+```python
+class MyList:
+    def __init__(self, data):
+        self.data = data
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, index):
+        return self.data[index]
+
+mylist = MyList([10, 20, 30])
+print(len(mylist))  # Calls __len__
+# 3
+print(mylist[1])  # Calls __getitem__
+# 20
+```
+
+&quot;&quot;&quot;
+
+import torch._dynamo
+torch._dynamo.disable()
+
+import os
+import numpy as np
+import pandas as pd
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torch.autograd as autograd
+import inspect
+
+# Restrict available APIs
+nn_except = [&quot;Module&quot;, &quot;Parameter&quot;, &quot;Sequential&quot;, &quot;parameter&quot;] # Added &quot;parameter&quot;
+for m in inspect.getmembers(nn):
+    if not m[0] in nn_except and m[0][0:2] != &quot;__&quot;:
+        delattr(nn, m[0])
+
+seed = 1234
+torch.manual_seed(seed)
+np.random.seed(seed)
+
+device = torch.device(&quot;cuda&quot; if torch.cuda.is_available() else &quot;cpu&quot;)
+
+# Training data
+x_train = np.load(work_dir + &#x27;/Lecture04/data/x_train.npy&#x27;)
+t_train = np.load(work_dir + &#x27;/Lecture04/data/y_train.npy&#x27;)
+
+# Test data
+x_test = np.load(work_dir + &#x27;/Lecture04/data/x_test.npy&#x27;)
+
+class train_dataset(torch.utils.data.Dataset):
+    def __init__(self, x_train, t_train):
+        self.x_train = x_train.reshape(-1, 784).astype(&#x27;float32&#x27;) / 255
+        self.t_train = t_train
+
+    def __len__(self):
+        return self.x_train.shape[0]
+
+    def __getitem__(self, idx):
+        return torch.tensor(self.x_train[idx], dtype=torch.float), torch.tensor(self.t_train[idx], dtype=torch.long)
+
+class test_dataset(torch.utils.data.Dataset):
+    def __init__(self, x_test):
+        self.x_test = x_test.reshape(-1, 784).astype(&#x27;float32&#x27;) / 255
+
+    def __len__(self):
+        return self.x_test.shape[0]
+
+    def __getitem__(self, idx):
+        return torch.tensor(self.x_test[idx], dtype=torch.float)
+
+trainval_data = train_dataset(x_train, t_train)
+test_data = test_dataset(x_test)
+
+&quot;&quot;&quot;### 多層パーセプトロンの実装
+
+---
+
+### Implement a Multilayer Perceptron
+&quot;&quot;&quot;
+
+batch_size = 256
+
+val_size = 5000
+train_size = len(trainval_data) - val_size
+
+train_data, val_data = torch.utils.data.random_split(trainval_data, [train_size, val_size])
+
+dataloader_train = torch.utils.data.DataLoader(
+    train_data,
+    batch_size=batch_size,
+    shuffle=True
+)
+
+dataloader_valid = torch.utils.data.DataLoader(
+    val_data,
+    batch_size=batch_size,
+    shuffle=False
+)
+
+dataloader_test = torch.utils.data.DataLoader(
+    test_data,
+    batch_size=batch_size,
+    shuffle=False
+)
+
+def relu(x):
+    return torch.clamp(x, min=0.0)
+
+
+def softmax(x):
+    x = x - x.max(dim=1, keepdim=True).values
+    exp_x = torch.exp(x)
+    return exp_x / exp_x.sum(dim=1, keepdim=True)
+
+
+def dropout(x, p, training=True):
+    if (not training) or p == 0.0:
+        return x
+    mask = (torch.rand_like(x) &gt; p).float()
+    return x * mask / (1.0 - p)
+
+
+def cross_entropy_loss(logits, target):
+    logits = logits - logits.max(dim=1, keepdim=True).values
+    log_sum_exp = torch.log(torch.exp(logits).sum(dim=1, keepdim=True))
+    log_probs = logits - log_sum_exp
+    loss = -log_probs[torch.arange(target.shape[0], device=target.device), target].mean()
+    return loss
+
+
+class Dense(nn.Module):
+    def __init__(self, in_dim, out_dim):
+        super().__init__()
+        bound = (2.0 / in_dim) ** 0.5
+        self.W = nn.Parameter(torch.randn(in_dim, out_dim) * bound)
+        self.b = nn.Parameter(torch.zeros(out_dim))
+
+    def forward(self, x):
+        return x @ self.W + self.b
+
+
+class MLP(nn.Module):
+    def __init__(self, in_dim, hidden_dims, out_dim, dropout_rate=0.2):
+        super().__init__()
+        self.layers = nn.Sequential(
+            Dense(in_dim, hidden_dims[0]),
+            Dense(hidden_dims[0], hidden_dims[1]),
+            Dense(hidden_dims[1], hidden_dims[2]),
+            Dense(hidden_dims[2], out_dim),
+        )
+        self.dropout_rate = dropout_rate
+
+    def forward(self, x):
+        x = self.layers[0](x)
+        x = relu(x)
+        x = dropout(x, self.dropout_rate, self.training)
+
+        x = self.layers[1](x)
+        x = relu(x)
+        x = dropout(x, self.dropout_rate, self.training)
+
+        x = self.layers[2](x)
+        x = relu(x)
+        x = dropout(x, self.dropout_rate, self.training)
+
+        x = self.layers[3](x)
+        return x
+
+
+in_dim = 784
+hidden_dims = [1024, 512, 256]
+out_dim = 10
+lr = 0.001
+n_epochs = 35
+
+mlp = MLP(in_dim, hidden_dims, out_dim, dropout_rate=0.2).to(device)
+
+optimizer = optim.AdamW(mlp.parameters(), lr=lr, weight_decay=1e-4)
+
+best_val_acc = 0.0
+best_params = None
+patience = 7
+patience_counter = 0
+
+for epoch in range(n_epochs):
+    losses_train = []
+    losses_valid = []
+    train_num = 0
+    train_true_num = 0
+    valid_num = 0
+    valid_true_num = 0
+
+    mlp.train()
+    for x, t in dataloader_train:
+        x = x.to(device)
+        t = t.to(device)
+
+        optimizer.zero_grad()
+
+        y = mlp.forward(x)
+        loss = cross_entropy_loss(y, t)
+
+        loss.backward()
+        optimizer.step()
+
+        pred = y.argmax(1)
+
+        losses_train.append(loss.item())
+
+        acc = torch.where(t - pred == 0, torch.ones_like(t), torch.zeros_like(t))
+        train_num += acc.size(0)
+        train_true_num += acc.sum().item()
+
+    mlp.eval()
+    with torch.no_grad():
+        for x, t in dataloader_valid:
+            x = x.to(device)
+            t = t.to(device)
+
+            y = mlp.forward(x)
+            loss = cross_entropy_loss(y, t)
+
+            pred = y.argmax(1)
+
+            losses_valid.append(loss.item())
+
+            acc = torch.where(t - pred == 0, torch.ones_like(t), torch.zeros_like(t))
+            valid_num += acc.size(0)
+            valid_true_num += acc.sum().item()
+
+    train_acc = train_true_num / train_num
+    val_acc = valid_true_num / valid_num
+
+    print(&#x27;EPOCH: {}, Train [Loss: {:.3f}, Accuracy: {:.3f}], Valid [Loss: {:.3f}, Accuracy: {:.3f}]&#x27;.format(
+        epoch,
+        np.mean(losses_train),
+        train_acc,
+        np.mean(losses_valid),
+        val_acc
+    ))
+
+    if val_acc &gt; best_val_acc:
+        best_val_acc = val_acc
+        best_params = {k: v.detach().clone() for k, v in mlp.state_dict().items()}
+        patience_counter = 0
+    else:
+        patience_counter += 1
+        if patience_counter &gt;= patience:
+            print(&quot;Early stopping&quot;)
+            break
+
+if best_params is not None:
+    mlp.load_state_dict(best_params)
+
+mlp.eval()
+
+t_pred = []
+for x in dataloader_test:
+
+    x = x.to(device)
+
+    # Forward propagation
+    y = mlp.forward(x)
+
+    # Convert the model output to scalar class predictions
+    pred = y.argmax(1).tolist()
+
+    t_pred.extend(pred)
+
+submission = pd.Series(t_pred, name=&#x27;label&#x27;)
+submission.to_csv(work_dir + &#x27;/Lecture04/submission_pred_04.csv&#x27;, header=True, index_label=&#x27;id&#x27;)</code></pre></div>
         </details>
       </div>
     </section>
