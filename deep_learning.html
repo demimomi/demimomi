@@ -1,898 +1,536 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lecture2 &amp; Lecture3 Homework | Deep Learning</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deep Learning Lecture</title>
   <style>
-    * {
-      box-sizing: border-box;
+    :root {
+      --bg: #f7f7f8;
+      --panel: #ffffff;
+      --panel-soft: #fafafa;
+      --text: #222222;
+      --muted: #666666;
+      --border: #e5e7eb;
+      --accent: #1d4ed8;
+      --accent-soft: #eff6ff;
+      --success: #15803d;
+      --shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+      --radius: 18px;
     }
+
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Yu Gothic", sans-serif;
-      background: linear-gradient(180deg, #f3f6fb 0%, #e9eef7 100%);
-      color: #0f172a;
-      line-height: 1.7;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Noto Sans JP", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
     }
 
     a {
-      color: inherit;
+      color: var(--accent);
       text-decoration: none;
     }
 
+    a:hover {
+      text-decoration: underline;
+    }
+
     .container {
-      width: min(100%, 1040px);
+      width: min(1080px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 24px 0 72px;
     }
 
-    header {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #334155 100%);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      color: #ffffff;
-    }
-
-    .hero-copy {
-      padding: 64px 0 56px;
-    }
-
-    .eyebrow {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: #cbd5e1;
-      margin: 0 0 16px;
-    }
-
-    h1 {
-      font-size: clamp(2rem, 4vw, 3.4rem);
-      line-height: 1.15;
-      margin: 0;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      color: #ffffff;
-    }
-
-    .lead {
-      max-width: 760px;
-      margin: 18px 0 0;
-      font-size: 16px;
-      color: #475569;
-    }
-
-    main {
-      padding: 48px 0 72px;
-    }
-
-    section {
-      margin-top: 36px;
-    }
-
-    section:first-child {
-      margin-top: 0;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 24px;
-      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+    .hero-image {
+      width: 100%;
+      border-radius: 22px;
       overflow: hidden;
-      backdrop-filter: blur(10px);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
     }
 
-    .image-card img {
+    .hero-image img {
       display: block;
       width: 100%;
       height: auto;
-      max-height: 560px;
-      object-fit: contain;
-      background: #dbe4f0;
     }
 
-    .section-inner {
-      padding: 32px;
+    .hero {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
     }
 
-    .section-head {
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 4.8vw, 44px);
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .hero-actions {
       display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 16px;
       flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
     }
 
-    h2 {
-      margin: 8px 0 0;
-      font-size: 1.8rem;
-      line-height: 1.25;
-    }
-
-    .button-link {
+    .cta-main {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 10px 16px;
-      border: 1px solid #cbd5e1;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #1e293b;
-      background: #ffffff;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+      padding: 14px 22px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 16px;
+      box-shadow: 0 8px 18px rgba(29, 78, 216, 0.22);
     }
 
-    .button-link:hover {
-      background: #f1f5f9;
+    .cta-main:hover {
+      text-decoration: none;
+      opacity: 0.95;
     }
 
-    .summary-list {
-      display: grid;
-      gap: 16px;
-      margin-top: 24px;
-    }
-
-    .summary-item {
-      padding: 20px;
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      border-radius: 18px;
-      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-      color: #334155;
-    }
-
-    .description {
-      margin-top: 18px;
-      max-width: 760px;
-      color: #475569;
-    }
-
-    .code-window {
-      margin-top: 24px;
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      border-radius: 20px;
-      overflow: hidden;
-      background: #0f172a;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
-    }
-
-    .code-header {
-      display: flex;
+    .cta-sub {
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 14px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      background: #111827;
+      justify-content: center;
+      padding: 14px 20px;
+      border-radius: 999px;
+      background: var(--panel-soft);
+      color: var(--text);
+      border: 1px solid var(--border);
+      font-weight: 700;
     }
 
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #64748b;
+    .cta-sub:hover {
+      text-decoration: none;
+      background: #f3f4f6;
     }
 
-    .filename {
-      margin-left: 10px;
+    .highlight-box {
+      margin-top: 18px;
+      background: var(--accent-soft);
+      border: 1px solid #bfdbfe;
+      border-radius: 16px;
+      padding: 16px 18px;
+    }
+
+    .highlight-box strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--accent);
+    }
+
+    .section {
+      margin-top: 26px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 22px 24px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fcfcfc;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .section-body {
+      padding: 24px;
+    }
+
+    .summary-box {
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .summary-box p {
+      margin-bottom: 0;
+    }
+
+    .lead {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 14px 0 0;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      border: 1px solid var(--border);
       font-size: 14px;
-      color: #cbd5e1;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .tag.ok {
+      color: var(--success);
+      background: #f0fdf4;
+      border-color: #bbf7d0;
+    }
+
+    .achievement {
+      margin: 18px 0 0;
+      padding: 18px;
+      border-radius: 16px;
+      background: #ffffff;
+      border: 2px solid #dbeafe;
+    }
+
+    .achievement strong {
+      color: var(--accent);
+      font-size: 18px;
+    }
+
+    .cols {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin: 18px 0 10px;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    details {
+      margin-top: 18px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 16px;
     }
 
     pre {
-      margin: 0;
-      padding: 20px;
-      max-height: 720px;
+      margin: 14px 0 0;
+      padding: 18px;
+      border-radius: 14px;
+      background: #f8fafc;
       overflow: auto;
-      background: #0b1220;
-      color: #dbeafe;
+      border: 1px solid var(--border);
+      color: #111827;
+      line-height: 1.55;
       font-size: 13px;
-      line-height: 1.65;
-      white-space: pre;
     }
 
     code {
-      font-family: "SFMono-Regular", SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+
+    .muted {
+      color: var(--muted);
     }
 
     @media (max-width: 640px) {
-      .container {
-        padding: 0 16px;
+      .hero, .section-body, .section-header {
+        padding-left: 18px;
+        padding-right: 18px;
       }
-
-      .hero-copy {
-        padding: 48px 0 40px;
-      }
-
-      .section-inner {
-        padding: 22px;
-      }
-
-      .image-card img {
-        height: 220px;
-      }
-
-      h2 {
-        font-size: 1.45rem;
+      .hero {
+        padding-top: 24px;
+        padding-bottom: 24px;
       }
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="container hero-copy">
-      <p class="eyebrow">Deep Learning Lecture</p>
-      <h1>Deep Learning Foundation Course</h1>
-<p style="text-align:center; margin: 24px 0;">
-  <a href="https://demimomi.github.io/demimomi/llm.html"
-     target="_blank" rel="noopener noreferrer"
-     style="
-       display:inline-block;
-       padding:16px 32px;
-       background:linear-gradient(135deg, #ff6b6b, #ffb347);
-       color:#ffffff;
-       font-size:24px;
-       font-weight:bold;
-       text-decoration:none;
-       border-radius:999px;
-       box-shadow:0 8px 20px rgba(0,0,0,0.25);
-       transition:0.3s;
-     "
-     onmouseover="this.style.transform='scale(1.08)'; this.style.boxShadow='0 12px 28px rgba(0,0,0,0.35)'"
-     onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.25)'">
-    🚀 過去実績はこちら！
-  </a>
-</p>
-      
+  <div class="container">
+    <div class="hero-image">
+      <img src="https://demimomi.github.io/demimomi/sinso_pc_2026Spring3-scaled-1-1920x1025.png" alt="Deep Learning Foundation Course image">
     </div>
-  </header>
 
-  <main>
-    <div class="container">
-      <section class="card image-card">
-        <img src="https://demimomi.github.io/demimomi/sinso_pc_2026Spring3-scaled-1-1920x1025.png" alt="Deep Learning 基礎講座" />
-      </section>
+    <section class="hero">
+      <h1>Deep Learning Foundation Course</h1>
+      <p>
+        東京大学松尾・岩澤研究室が主催する公開講座で、ニューラルネットワークの基礎から
+        自然言語処理や深層生成モデルまで、Deep Learning を基礎から実践的に学べる講座です。
+      </p>
 
-      <section class="card">
-        <div class="section-inner">
-          <div class="section-head">
-            <div>
-              <p class="eyebrow" style="color:#64748b;">Overview</p>
-              <h2>講座ページの概要</h2>
-            </div>
-            <a class="button-link" href="https://weblab.t.u-tokyo.ac.jp/lecture/deep-learning/" target="_blank" rel="noreferrer">講座ページへ移動</a>
+      <div class="highlight-box">
+        <strong>過去実績もぜひご覧ください</strong>
+        Lecture ごとの順位推移や取り組み内容をまとめています。今回の Lecture3 の最終結果も反映済みです。
+      </div>
+
+      <div class="hero-actions">
+        <a class="cta-main" href="https://demimomi.github.io/demimomi/" target="_blank" rel="noopener noreferrer">過去実績はこちら！</a>
+        <a class="cta-sub" href="https://weblab.t.u-tokyo.ac.jp/" target="_blank" rel="noopener noreferrer">講座ページへ移動</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Lecture2 Homework</h2>
+      </div>
+      <div class="section-body">
+        <div class="summary-box">
+          <div class="lead"><strong>DEMIMOMI Pythonコード</strong></div>
+          <div class="meta">
+            <span class="tag">更新者：demimomi</span>
+            <span class="tag">2026年4月25日</span>
+            <span class="tag ok">結果33位（最高5位）</span>
+            <span class="tag">全2,281名</span>
+          </div>
+          <div class="achievement">
+            <strong>過去実績のハイライト</strong><br>
+            Lecture2 では最高5位を記録。単層モデルという制約の中でも、特徴量設計と前処理の工夫で上位に入った回です。
+          </div>
+          <p class="muted" style="margin-top:14px;">
+            Lecture2 では、単層のソフトマックス回帰という制約の中で、
+            入力特徴量を丁寧に設計することで精度を高めた実装を掲載しています。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Lecture3 Homework</h2>
+      </div>
+      <div class="section-body">
+        <div class="summary-box">
+          <div class="lead"><strong>DEMIMOMI Pythonコード</strong></div>
+          <div class="meta">
+            <span class="tag">更新者：demimomi</span>
+            <span class="tag">2026年5月1日</span>
+            <span class="tag ok">結果90位（最高25位）</span>
+            <span class="tag">全2,158名</span>
+          </div>
+          <div class="achievement">
+            <strong>今回の最終結果</strong><br>
+            Lecture3 は最終的に <strong>90位</strong>、途中の最高順位は <strong>25位</strong>。参加者 <strong>2,158名</strong> の中で上位圏に入った結果です。
+          </div>
+          <p style="margin-top:14px;">
+            これは Lecture3 の homework として作成した Python コードです。
+            Fashion MNIST という衣類画像データを、<strong>NumPy だけで実装した多層パーセプトロン（MLP）</strong>で
+            10クラス分類する課題に対応しています。Lecture2 よりもモデル側の表現力が大きく上がっており、
+            前処理・学習安定化・推論時の工夫まで含めて、より実戦的な構成になっています。
+          </p>
+        </div>
+
+        <div class="cols">
+          <div class="card">
+            <h3>1. 前処理</h3>
+            <p>
+              画像は 0〜1 に正規化したうえで 28×28 を 784 次元ベクトルに変換します。
+              さらに one-hot 化したラベルを使い、学習データを訓練用と検証用に分割しています。
+              その後、訓練データの平均と標準偏差で標準化することで、学習が安定しやすい入力に整えています。
+            </p>
           </div>
 
-          <div class="summary-list">
-            <div class="summary-item">
-              東京大学松尾・岩澤研究室が主催する公開講座で、ニューラルネットワークの基礎から自然言語処理や深層生成モデルまで、Deep Learningを基礎から実践的に学べる内容です。
-            </div>
-            <div class="summary-item">
-              半数以上の回で演習が用意されており、ブラウザ上でGPUを利用したPythonコーディング環境を使えるため、受講者は環境構築なしで学習に集中できます。
-            </div>
-            <div class="summary-item">
-              オンライン配信で全国どこからでも受講可能で、修了後に所定要件を満たすとE資格の受験資格取得にもつながる講座として案内されています。
-            </div>
+          <div class="card">
+            <h3>2. MLP本体</h3>
+            <p>
+              基本構成は 784 → 1024 → 512 → 256 → 10 の 4 層です。
+              隠れ層では Leaky ReLU を使い、Batch Normalization と Dropout を組み合わせて、
+              学習の安定性と汎化性能を両立させています。
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>3. 学習の工夫</h3>
+            <p>
+              最適化には AdamW 風の更新を採用し、weight decay で過学習を抑えています。
+              学習率は cosine schedule で調整し、label smoothing と early stopping も入れて、
+              精度と安定性の両方を意識した構成にしています。
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>4. 画像拡張と推論</h3>
+            <p>
+              学習中は random shift augmentation により、画像を少しずらしたデータでも学習しています。
+              推論時には TTA を使い、複数シフト画像の予測平均を取ることで、より安定した結果を得ています。
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>5. アンサンブル</h3>
+            <p>
+              dropout 率や隠れ層サイズが異なる 2 つの MLP を学習し、
+              検証精度に応じた重み付きアンサンブルを行っています。
+              単体モデルよりも予測のブレを減らし、最終精度を底上げする狙いです。
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>6. 全体のポイント</h3>
+            <p>
+              このコードは単なる MLP 実装ではなく、標準化・BatchNorm・Leaky ReLU・Dropout・
+              AdamW風更新・Cosine 学習率・Random Shift・TTA・重み付きアンサンブルを組み合わせ、
+              NumPy 実装の中で精度をしっかり伸ばした構成になっています。
+            </p>
           </div>
         </div>
-      </section>
 
-      <section class="card">
-        <div class="section-inner">
-          <p class="eyebrow" style="color:#64748b;">Lecture2 Homework</p>
-          <h2>DEMIMOMI Pythonコード</h2>
-          <p style="margin: 10px 0 0; font-size: 0.95rem; color: #64748b; font-weight: 500;">更新者：demimomi 2026年4月25日　結果33位（最高5位）全2,281名（特別招待で学生に交じり参加ｗ）</p>
-          <p class="description">
-            これは Lecture2 の homework として作成された Python コードで、このコードは、Fashion MNISTという衣類画像データを、ソフトマックス回帰という単純な分類モデルで10クラスに識別する課題に対応したものです。扱う画像は28×28ピクセルの白黒画像で、各画像が「Tシャツ」「靴」「バッグ」などのどれに当たるかを判定します。
-まず前半では、Google Drive上の学習データとテストデータを読み込みます。画像は2次元のままだと計算しにくいため、1枚を784個の数値に並べ替え、さらに画素値を255で割って0〜1に正規化しています。正解ラベルは、各クラスを表すone-hot形式に変換しています。
-このコードの工夫は、単層モデルのまま精度を上げるために、入力画像から特徴量を丁寧に作っている点です。具体的には、画像を少し粗く平均化した情報、縦横方向の明るさの分布、そして輪郭の強さや向きを表すHOG風特徴を組み合わせています。つまり、モデル自体は複雑にせず、入力側を見やすく整えることで識別しやすくしているわけです。
-その後、特徴量を標準化し、学習用データを訓練用と検証用に分割します。学習では、ソフトマックス関数によって各クラスの確率を出し、正解とのずれをクロスエントロピー誤差で測ります。そして、その誤差が小さくなるように重みを更新します。更新にはAdamという効率的な最適化手法を使い、学習率も徐々に下げています。また、検証データで性能が改善しなくなったら早めに止めることで、過学習を防いでいます。
-最後に、最も良かった学習回数を基準に全訓練データで再学習し、テストデータに対する予測ラベルを出力します。その結果をCSV形式で保存し、提出用ファイルとして使える形にしています。要するにこのコードは、「複雑なモデルは禁止」という条件の中で、前処理と学習設計を工夫して精度を高めた実装
-          </p>
+        <p class="note">
+          以前の Lecture3 表示「暫定25位 現在256名」を、
+          最終結果の <strong>90位（最高25位）全2,158名</strong> に更新した版です。
+        </p>
 
-          <div class="code-window">
-            <div class="code-header">
-              <span class="dot"></span>
-              <span class="dot"></span>
-              <span class="dot"></span>
-              <span class="filename">lecture02_homework.py</span>
-            </div>
-<pre><code># -*- coding: utf-8 -*-
-"""lecture02_homework_taomax.ipynb
+        <details open>
+          <summary>lecture03_homework.py（最終版コード）</summary>
+          <pre><code># -*- coding: utf-8 -*-
+&quot;&quot;&quot;lecture03_homework.ipynb のコピー
 
 Automatically generated by Colab.
 
 Original file is located at
-    https://colab.research.google.com/drive/1lqklWR-KGFa8fAQ994sCVB-x_bATscgl
+    https://colab.research.google.com/drive/1TU981EDJvTy5MYbOu0DQJd9ZZtsHkoH6
 
-# 第2回講義 宿題
+# 第3回講義 宿題  
 
 ---
-# Lecture 2: Homework
+
+# Lecture 3: Homework
 
 ## 課題
-今回のLessonで学んだことを元に，MNISTのファッション版 (Fashion MNIST，クラス数10) をソフトマックス回帰によって分類してみましょう．
+
+今回のLessonで学んだことを元に，MNISTのファッション版 (Fashion MNIST，クラス数10) を多層パーセプトロンによって分類してみましょう．
 
 Fashion MNISTの詳細については以下のリンクを参考にしてください．
 
 Fashion MNIST: https://github.com/zalandoresearch/fashion-mnist
 
 ---
-## Task
-Based on what we learned in this lesson, let's classify the fashion version of MNIST (Fashion MNIST, number of classes 10) using softmax regression.
 
-For more information about Fashion MNIST, please refer to the link below.
+## Task
+
+Based on what you learned in this lesson, classify the fashion version of MNIST (Fashion MNIST, 10 classes) using a multilayer perceptron.
+
+For details about Fashion MNIST, refer to the link below.
 
 Fashion MNIST: https://github.com/zalandoresearch/fashion-mnist
 
 ### 目標値 (Target)
-Accuracy: 80%
+
+Accuracy 85%
 
 ### ルール
-- 訓練データは`x_train`， `y_train`，テストデータは`x_test`で与えられます．
+
+- 訓練データは`x_train`， `t_train`，テストデータは`x_test`で与えられます．
 - 予測ラベルは one_hot表現ではなく0~9のクラスラベル で表してください．
-- **下のセルで指定されている`x_train、y_train`以外の学習データは使わないでください．**
-- **隠れ層のない単層のモデルとして実装してください.**
-- **ソフトマックス回帰のアルゴリズム部分の実装はnumpyのみで行ってください** (sklearnやtensorflowなどは使用しないでください)．
+- **下のセルで指定されている`x_train`，`t_train`以外の学習データは使わないでください．**
+- **多層パーセプトロンのアルゴリズム部分は第3回の演習を参考に，NumPyのみで実装してください．** (sklearnやtensorflowなどは使用しないでください)．
     - データの前処理部分でsklearnの関数を使う (例えば `sklearn.model_selection.train_test_split`) のは問題ありません．
 
 ---
+
 ### Rules
-- Training data is given by `x_train`, `y_train`, and test data is given by `x_test`.
-- Please express the predicted label as a class label from 0 to 9 instead of one_hot expression.
-- **Do not use training data other than** `x_train, y_train` **specified in the cell below.**
-- **Please implement as a single layer model without hidden layers.**
-- **Please implement the algorithm part of softmax regression only with numpy** (do not use sklearn, tensorflow, etc.).
-- There is no problem using sklearn functions (for example, `sklearn.model_selection.train_test_split`) in the data preprocessing part.
+
+- Training data are provided as `x_train` and `t_train`, and test data are provided as `x_test`.
+- Output the predicted labels as class labels (0–9), not as one-hot vectors.
+- **Do not use any training data other than the provided `x_train` and `t_train` specified in the cells below.**
+- **Implement the multilayer perceptron algorithm using only NumPy, referring to the Lecture 3 exercises.** (Do not use sklearn, TensorFlow, etc. for the MLP implementation.)
+    - It is fine to use sklearn utilities for data preprocessing (e.g., `sklearn.model_selection.train_test_split`).
 
 ### 提出方法
 - 2つのファイルを提出していただきます．
-    1. テストデータ (`x_test`) に対する予測ラベルをcsv形式で保存し，**Omnicampusの宿題タブから「第2回 機械学習基礎」を選択して**提出してください．
-    2. それに対応するpythonのコードを　ファイル＞ダウンロード＞.pyをダウンロード　から保存し，**Omnicampusの宿題タブから「第2回 機械学習基礎 (code)」を選択して**提出してください．pythonファイル自体の提出ではなく，「提出内容」の部分にコード全体をコピー&ペーストしてください．
+    1. テストデータ (`x_test`) に対する予測ラベルをcsv形式で保存し，**Omnicampusの宿題タブから「第3回 ニューラルネットワーク基礎」を選択して**提出してください．
+    2. それに対応するpythonのコードを　ファイル＞ダウンロード＞.pyをダウンロード　から保存し，**Omnicampusの宿題タブから「第3回 ニューラルネットワーク基礎 (code)」を選択して**提出してください．pythonファイル自体の提出ではなく，「提出内容」の部分にコード全体をコピー&amp;ペーストしてください．
       
 - なお，採点は1で行い，2はコードの確認用として利用します（成績優秀者はコード内容を公開させていただくかもしれません）．コードの内容を変更した場合は，**1と2の両方を提出し直してください**．
 
 ---
+
 ### Submission
-- Please submit two files.
-  1. Save the predicted labels for the test data (`x_test`) in csv format, select "2nd Machine Learning Basics" from the Homework tab of Omnicampus and submit.
-  2. Save the corresponding python code from File > Download > Download .py, and select "2nd Machine Learning Fundamentals (code)" from the Omnicampus Homework tab and submit it. Rather than submitting the python file itself, please copy and paste the entire code into the "submission content" section.
-      
-- Please note that the score will be 1, and 2 will be used to check the code (excellent students may have their code made public). If you change the content of the code, **Please resubmit both 1 and 2**.
+- Submit two items:
+    1. Save your predicted labels for the test data (`x_test`) as a CSV file, and submit it by selecting **“第3回 ニューラルネットワーク基礎”** in the Omnicampus homework tab.
+    2. Save the corresponding Python code by choosing **File → Download → Download .py**, and submit it by selecting **“第3回 ニューラルネットワーク基礎 (code)”** in the Omnicampus homework tab. Do not upload the .py file itself; instead, copy and paste the entire code into the “submission content” field.
+
+- Grading is based on (1). Item (2) is used to verify your implementation (top submissions may be asked to share their code). If you change your code, **please resubmit both (1) and (2)**.
 
 ### 評価方法
-- 予測ラベルの`y_test`に対する精度 (Accuracy) で評価します．
+- 予測ラベルの`t_test`に対する精度 (Accuracy) で評価します．
 - 即時採点しLeader Boardを更新します（採点スケジュールは別アナウンス）．
 - 締切時の点数を最終的な評価とします．
 
 ---
+
 ### Evaluation
-- Evaluate the accuracy of the predicted label against `y_test`.
-- Immediate grading and updating the Leader Board (grading schedule will be announced separately).
-- The score at the deadline will be the final evaluation.
+
+- We evaluate your submission by accuracy against the ground-truth labels `t_test`.
+- Submissions are graded immediately and the leaderboard is updated (the grading schedule will be announced separately).
+- Your score at the deadline will be used as the final evaluation.
 
 ### ドライブのマウント
 
 ---
-### Mount Google drive
-"""
 
-from google.colab import drive
-drive.mount('/content/drive')
-
-# Specify working directory
-work_dir = 'drive/MyDrive/Colab Notebooks/DLBasics2026_colab'
-
-"""### データの読み込み（このセルは修正しないでください）
-
----
-### Load Data (Do not modify this cell)
-
-"""
-
-import os
-import sys
-
-import numpy as np
-import pandas as pd
-
-sys.modules['tensorflow'] = None
-
-def load_fashionmnist():
-    # learning data
-    x_train = np.load(work_dir + '/Lecture02/data/x_train.npy')
-    y_train = np.load(work_dir + '/Lecture02/data/y_train.npy')
-
-    # test data
-    x_test = np.load(work_dir + '/Lecture02/data/x_test.npy')
-
-    x_train = x_train.reshape(-1, 784).astype('float32') / 255
-    y_train = np.eye(10)[y_train.astype('int32')]
-    x_test = x_test.reshape(-1, 784).astype('float32') / 255
-
-    return x_train, y_train, x_test
-
-"""### ソフトマックス回帰の実装
-
----
-### Implementing softmax regression
-
-"""
-
-import numpy as np
-import pandas as pd
-from sklearn.model_selection import train_test_split
-
-# =========================
-# load
-# =========================
-x_train, y_train, x_test = load_fashionmnist()
-
-# =========================
-# feature engineering
-# 単層モデルのまま、前処理だけ強くする
-# =========================
-def _make_features_batch(x_batch, cell_size=4, bins=9):
-    img = x_batch.reshape(-1, 28, 28).astype(np.float32)
-    n = img.shape[0]
-
-    # 1) 2x2 average pooling -> 14x14 = 196 dims
-    pooled = img.reshape(n, 14, 2, 14, 2).mean(axis=(2, 4)).reshape(n, -1)
-
-    # 2) row / col projection = 28 + 28 dims
-    row_proj = img.mean(axis=2)
-    col_proj = img.mean(axis=1)
-
-    # 3) HOG-like feature
-    gx = np.empty_like(img)
-    gy = np.empty_like(img)
-
-    gx[:, :, 1:-1] = img[:, :, 2:] - img[:, :, :-2]
-    gx[:, :, 0] = img[:, :, 1] - img[:, :, 0]
-    gx[:, :, -1] = img[:, :, -1] - img[:, :, -2]
-
-    gy[:, 1:-1, :] = img[:, 2:, :] - img[:, :-2, :]
-    gy[:, 0, :] = img[:, 1, :] - img[:, 0, :]
-    gy[:, -1, :] = img[:, -1, :] - img[:, -2, :]
-
-    mag = np.sqrt(gx * gx + gy * gy + 1e-12).astype(np.float32)
-
-    ori = (np.degrees(np.arctan2(gy, gx)) + 180.0) % 180.0
-    ori = ori.astype(np.float32)
-
-    bin_width = 180.0 / bins
-    bin_pos = ori / bin_width
-
-    b0 = np.floor(bin_pos).astype(np.int32) % bins
-    b1 = (b0 + 1) % bins
-    w1 = bin_pos - np.floor(bin_pos)
-    w0 = 1.0 - w1
-
-    ncy = 28 // cell_size
-    ncx = 28 // cell_size
-    hog = np.zeros((n, ncy, ncx, bins), dtype=np.float32)
-
-    for cy in range(ncy):
-        ys = cy * cell_size
-        ye = ys + cell_size
-        for cx in range(ncx):
-            xs = cx * cell_size
-            xe = xs + cell_size
-
-            cell_mag = mag[:, ys:ye, xs:xe]
-            cell_b0 = b0[:, ys:ye, xs:xe]
-            cell_b1 = b1[:, ys:ye, xs:xe]
-            cell_w0 = w0[:, ys:ye, xs:xe]
-            cell_w1 = w1[:, ys:ye, xs:xe]
-
-            hist = np.zeros((n, bins), dtype=np.float32)
-
-            for b in range(bins):
-                hist[:, b] = np.sum(
-                    np.where(cell_b0 == b, cell_mag * cell_w0, 0.0) +
-                    np.where(cell_b1 == b, cell_mag * cell_w1, 0.0),
-                    axis=(1, 2)
-                )
-
-            hog[:, cy, cx, :] = hist
-
-    hog = hog.reshape(n, -1)
-
-    # L2 normalize HOG per sample
-    hog_norm = np.sqrt(np.sum(hog * hog, axis=1, keepdims=True) + 1e-6)
-    hog = hog / hog_norm
-
-    # final feature
-    feat = np.concatenate([pooled, hog, row_proj, col_proj], axis=1).astype(np.float32)
-    return feat
-
-def make_features(x, batch_size=2000):
-    feats = []
-    for i in range(0, len(x), batch_size):
-        feats.append(_make_features_batch(x[i:i + batch_size]))
-    return np.vstack(feats).astype(np.float32)
-
-def standardize_fit(X):
-    mean = X.mean(axis=0, keepdims=True)
-    std = X.std(axis=0, keepdims=True)
-    std[std < 1e-6] = 1.0
-    return mean.astype(np.float32), std.astype(np.float32)
-
-def standardize_apply(X, mean, std):
-    X = (X - mean) / std
-    X = np.clip(X, -5.0, 5.0)
-    return X.astype(np.float32)
-
-# =========================
-# softmax regression (numpy only)
-# =========================
-def softmax(z):
-    z = z - np.max(z, axis=1, keepdims=True)
-    np.exp(z, out=z)
-    z /= np.sum(z, axis=1, keepdims=True)
-    return z
-
-def cross_entropy(y_true, y_prob):
-    eps = 1e-12
-    return -np.mean(np.sum(y_true * np.log(y_prob + eps), axis=1))
-
-def accuracy(y_true, y_prob):
-    return np.mean(np.argmax(y_true, axis=1) == np.argmax(y_prob, axis=1))
-
-def train_softmax(
-    X_train, y_train,
-    X_valid=None, y_valid=None,
-    epochs=100,
-    batch_size=256,
-    lr_max=2e-3,
-    lr_min=2e-4,
-    weight_decay=1e-4,
-    label_smoothing=0.02,
-    patience=15,
-    seed=42
-):
-    rng = np.random.RandomState(seed)
-    n, d = X_train.shape
-    k = y_train.shape[1]
-
-    W = (0.01 * rng.randn(d, k)).astype(np.float32)
-    b = np.zeros((1, k), dtype=np.float32)
-
-    mW = np.zeros_like(W)
-    vW = np.zeros_like(W)
-    mb = np.zeros_like(b)
-    vb = np.zeros_like(b)
-
-    beta1 = 0.9
-    beta2 = 0.999
-    eps = 1e-8
-
-    steps_per_epoch = (n + batch_size - 1) // batch_size
-    total_steps = max(1, epochs * steps_per_epoch)
-    global_step = 0
-
-    best_val_acc = -1.0
-    best_epoch = 1
-    best_W = W.copy()
-    best_b = b.copy()
-    wait = 0
-
-    for epoch in range(1, epochs + 1):
-        perm = rng.permutation(n)
-        Xs = X_train[perm]
-        ys = y_train[perm]
-
-        for start in range(0, n, batch_size):
-            xb = Xs[start:start + batch_size]
-            yb = ys[start:start + batch_size]
-            bs = xb.shape[0]
-
-            if label_smoothing > 0.0:
-                yb_used = yb * (1.0 - label_smoothing) + (label_smoothing / k)
-            else:
-                yb_used = yb
-
-            logits = xb @ W + b
-            prob = softmax(logits)
-
-            dlogits = (prob - yb_used) / bs
-            dW = xb.T @ dlogits
-            db = np.sum(dlogits, axis=0, keepdims=True)
-
-            global_step += 1
-            t = global_step
-
-            # cosine decay
-            lr = lr_min + 0.5 * (lr_max - lr_min) * (
-                1.0 + np.cos(np.pi * (t - 1) / total_steps)
-            )
-
-            # Adam
-            mW = beta1 * mW + (1.0 - beta1) * dW
-            vW = beta2 * vW + (1.0 - beta2) * (dW * dW)
-            mb = beta1 * mb + (1.0 - beta1) * db
-            vb = beta2 * vb + (1.0 - beta2) * (db * db)
-
-            mW_hat = mW / (1.0 - beta1 ** t)
-            vW_hat = vW / (1.0 - beta2 ** t)
-            mb_hat = mb / (1.0 - beta1 ** t)
-            vb_hat = vb / (1.0 - beta2 ** t)
-
-            # decoupled weight decay
-            W *= (1.0 - lr * weight_decay)
-
-            W -= lr * mW_hat / (np.sqrt(vW_hat) + eps)
-            b -= lr * mb_hat / (np.sqrt(vb_hat) + eps)
-
-        train_prob = softmax(X_train @ W + b)
-        train_loss = cross_entropy(y_train, train_prob)
-        train_acc = accuracy(y_train, train_prob)
-
-        if X_valid is not None:
-            valid_prob = softmax(X_valid @ W + b)
-            valid_loss = cross_entropy(y_valid, valid_prob)
-            valid_acc = accuracy(y_valid, valid_prob)
-
-            if valid_acc > best_val_acc:
-                best_val_acc = valid_acc
-                best_epoch = epoch
-                best_W = W.copy()
-                best_b = b.copy()
-                wait = 0
-            else:
-                wait += 1
-
-            if epoch == 1 or epoch % 5 == 0:
-                print(
-                    f"Epoch {epoch:3d} | "
-                    f"train_loss={train_loss:.4f} train_acc={train_acc:.4f} | "
-                    f"valid_loss={valid_loss:.4f} valid_acc={valid_acc:.4f}"
-                )
-
-            if wait >= patience:
-                print(f"Early stopping at epoch {epoch}")
-                break
-        else:
-            if epoch == 1 or epoch % 5 == 0 or epoch == epochs:
-                print(
-                    f"Epoch {epoch:3d} | "
-                    f"train_loss={train_loss:.4f} train_acc={train_acc:.4f}"
-                )
-
-    if X_valid is not None:
-        return {
-            "W": best_W,
-            "b": best_b,
-            "best_epoch": best_epoch,
-            "best_val_acc": best_val_acc,
-        }
-    else:
-        return {
-            "W": W,
-            "b": b,
-            "best_epoch": epochs,
-            "best_val_acc": None,
-        }
-
-# =========================
-# 1) feature extraction
-# =========================
-X_all = make_features(x_train, batch_size=2000)
-X_test_feat = make_features(x_test, batch_size=2000)
-
-# =========================
-# 2) validation split
-# =========================
-y_labels = np.argmax(y_train, axis=1)
-idx = np.arange(len(X_all))
-
-idx_tr, idx_va = train_test_split(
-    idx,
-    test_size=0.1,
-    random_state=42,
-    stratify=y_labels
-)
-
-X_tr_raw = X_all[idx_tr]
-X_va_raw = X_all[idx_va]
-y_tr = y_train[idx_tr]
-y_va = y_train[idx_va]
-
-mean, std = standardize_fit(X_tr_raw)
-X_tr = standardize_apply(X_tr_raw, mean, std)
-X_va = standardize_apply(X_va_raw, mean, std)
-
-# =========================
-# 3) stage 1: best epoch search
-# =========================
-stage1 = train_softmax(
-    X_tr, y_tr,
-    X_valid=X_va, y_valid=y_va,
-    epochs=100,
-    batch_size=256,
-    lr_max=2e-3,
-    lr_min=2e-4,
-    weight_decay=1e-4,
-    label_smoothing=0.02,
-    patience=15,
-    seed=42
-)
-
-print("best_epoch =", stage1["best_epoch"])
-print("best_val_acc =", stage1["best_val_acc"])
-
-# =========================
-# 4) stage 2: retrain on full training set
-# =========================
-mean_full, std_full = standardize_fit(X_all)
-X_full = standardize_apply(X_all, mean_full, std_full)
-X_test_std = standardize_apply(X_test_feat, mean_full, std_full)
-
-final_model = train_softmax(
-    X_full, y_train,
-    X_valid=None, y_valid=None,
-    epochs=stage1["best_epoch"],
-    batch_size=256,
-    lr_max=2e-3,
-    lr_min=2e-4,
-    weight_decay=1e-4,
-    label_smoothing=0.02,
-    patience=15,
-    seed=42
-)
-
-# =========================
-# 5) prediction / submission
-# =========================
-test_prob = softmax(X_test_std @ final_model["W"] + final_model["b"])
-y_pred = np.argmax(test_prob, axis=1)
-
-submission = pd.Series(y_pred, name="label")
-submission.to_csv(
-    work_dir + "/Lecture02/submission_pred_02.csv",
-    header=True,
-    index_label="id"
-)</code></pre>
-          </div>
-        </div>
-      </section>
-
-<!-- Lecture3 Homework start -->
-<section class="card">
-  <div class="section-inner">
-    <p class="eyebrow" style="color:#64748b;">Lecture3 Homework</p>
-    <h2>DEMIMOMI Pythonコード</h2>
-    <p style="margin: 10px 0 0; font-size: 0.95rem; color: #64748b; font-weight: 500;">更新者：demimomi 2026年4月25日 暫定25位 現在256名</p>
-
-    <p class="description">
-      これは Lecture3 の homework として作成された Python コードで、このコードは、Fashion MNIST という衣類画像データを、多層パーセプトロン（MLP）によって 10 クラスに分類する課題に対応したものです。扱う画像は 28×28 ピクセルの白黒画像で、各画像が「Tシャツ」「靴」「バッグ」などのどれに当たるかを判定します。<br /><br />
-      まず前半では、Google Drive 上の学習データとテストデータを読み込み、画像を 0〜1 に正規化したうえで 784 次元のベクトルに変換しています。正解ラベルは one-hot 形式に変換し、さらに学習データを訓練用と検証用に分割して、訓練データの平均と標準偏差を使って標準化しています。これにより、各入力次元のスケールが揃い、学習が安定しやすくなっています。<br /><br />
-      モデル本体は NumPy のみで実装された 4 層構成の MLP で、入力 784 次元から 1024 → 512 → 256 → 10 と変換していきます。各中間層では ReLU を使い、さらに Dropout を入れることで過学習を抑えています。重みの初期値には He 初期化を使い、出力層では softmax によって各クラスの確率を計算します。逆伝播では、softmax とクロスエントロピー誤差の簡約形を使って勾配を効率よく計算しています。<br /><br />
-      学習では、ミニバッチごとに損失を計算し、AdamW 風の更新則で重みを調整しています。学習率はエポックが進むにつれて少しずつ下げ、weight decay も加えることで汎化性能を高めています。また、検証精度が改善しなくなった時点で Early Stopping を行い、最も良かった時点のパラメータを保存するようにしています。<br /><br />
-      最後に、その最良モデルを使ってテストデータをバッチ単位で推論し、予測ラベルを CSV 形式で保存しています。要するにこのコードは、「多層パーセプトロンを NumPy のみで実装する」という条件の中で、標準化・Dropout・最適化手法・学習率制御・Early Stopping を組み合わせ、精度と安定性の両方を高めた実装です。
-    </p>
-
-    <div class="code-window">
-      <div class="code-header">
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="filename">lecture03_homework.py</span>
-      </div>
-      <pre><code>#!/usr/bin/env python
-# coding: utf-8
-
-# # 第3回講義 宿題  
-# 
-# ---
-# 
-# # Lecture 3: Homework
-# 
-
-# ## 課題
-# 
-# 今回のLessonで学んだことを元に，MNISTのファッション版 (Fashion MNIST，クラス数10) を多層パーセプトロンによって分類してみましょう．
-# 
-# Fashion MNISTの詳細については以下のリンクを参考にしてください．
-# 
-# Fashion MNIST: https://github.com/zalandoresearch/fashion-mnist
-# 
-# ---
-# 
-# ## Task
-# 
-# Based on what you learned in this lesson, classify the fashion version of MNIST (Fashion MNIST, 10 classes) using a multilayer perceptron.
-# 
-# For details about Fashion MNIST, refer to the link below.
-# 
-# Fashion MNIST: https://github.com/zalandoresearch/fashion-mnist
-# 
-
-# ### 目標値 (Target)
-# 
-# Accuracy 85%
-
-# ### ルール
-# 
-# - 訓練データは`x_train`， `t_train`，テストデータは`x_test`で与えられます．
-# - 予測ラベルは one_hot表現ではなく0~9のクラスラベル で表してください．
-# - **下のセルで指定されている`x_train`，`t_train`以外の学習データは使わないでください．**
-# - **多層パーセプトロンのアルゴリズム部分は第3回の演習を参考に，NumPyのみで実装してください．** (sklearnやtensorflowなどは使用しないでください)．
-#     - データの前処理部分でsklearnの関数を使う (例えば `sklearn.model_selection.train_test_split`) のは問題ありません．
-# 
-# ---
-# 
-# ### Rules
-# 
-# - Training data are provided as `x_train` and `t_train`, and test data are provided as `x_test`.
-# - Output the predicted labels as class labels (0–9), not as one-hot vectors.
-# - **Do not use any training data other than the provided `x_train` and `t_train` specified in the cells below.**
-# - **Implement the multilayer perceptron algorithm using only NumPy, referring to the Lecture 3 exercises.** (Do not use sklearn, TensorFlow, etc. for the MLP implementation.)
-#     - It is fine to use sklearn utilities for data preprocessing (e.g., `sklearn.model_selection.train_test_split`).
-# 
-
-# ### 提出方法
-# - 2つのファイルを提出していただきます．
-#     1. テストデータ (`x_test`) に対する予測ラベルをcsv形式で保存し，**Omnicampusの宿題タブから「第3回 ニューラルネットワーク基礎」を選択して**提出してください．
-#     2. それに対応するpythonのコードを　ファイル＞ダウンロード＞.pyをダウンロード　から保存し，**Omnicampusの宿題タブから「第3回 ニューラルネットワーク基礎 (code)」を選択して**提出してください．pythonファイル自体の提出ではなく，「提出内容」の部分にコード全体をコピー&amp;ペーストしてください．
-#       
-# - なお，採点は1で行い，2はコードの確認用として利用します（成績優秀者はコード内容を公開させていただくかもしれません）．コードの内容を変更した場合は，**1と2の両方を提出し直してください**．
-# 
-# ---
-# 
-# ### Submission
-# - Submit two items:
-#     1. Save your predicted labels for the test data (`x_test`) as a CSV file, and submit it by selecting **“第3回 ニューラルネットワーク基礎”** in the Omnicampus homework tab.
-#     2. Save the corresponding Python code by choosing **File → Download → Download .py**, and submit it by selecting **“第3回 ニューラルネットワーク基礎 (code)”** in the Omnicampus homework tab. Do not upload the .py file itself; instead, copy and paste the entire code into the “submission content” field.
-# 
-# - Grading is based on (1). Item (2) is used to verify your implementation (top submissions may be asked to share their code). If you change your code, **please resubmit both (1) and (2)**.
-# 
-
-# ### 評価方法
-# - 予測ラベルの`t_test`に対する精度 (Accuracy) で評価します．
-# - 即時採点しLeader Boardを更新します（採点スケジュールは別アナウンス）．
-# - 締切時の点数を最終的な評価とします．
-# 
-# ---
-# 
-# ### Evaluation
-# 
-# - We evaluate your submission by accuracy against the ground-truth labels `t_test`.
-# - Submissions are graded immediately and the leaderboard is updated (the grading schedule will be announced separately).
-# - Your score at the deadline will be used as the final evaluation.
-# 
-
-# ### ドライブのマウント
-# 
-# ---
-# 
-# ### Mount Google Drive
-# 
-
-# In[1]:
-
+### Mount Google Drive
+&quot;&quot;&quot;
 
 from google.colab import drive
 drive.mount(&#x27;/content/drive&#x27;)
 
-
-# In[2]:
-
-
 # Set the working directory
 work_dir = &#x27;drive/MyDrive/Colab Notebooks/DLBasics2026_colab&#x27;
 
+&quot;&quot;&quot;### データの読み込み（このセルは修正しないでください）
 
-# ### データの読み込み（このセルは修正しないでください）
-# 
-# ---
-# 
-# ### Load Data (Do not modify this cell)
-# 
+---
 
-# In[4]:
+### Load Data (Do not modify this cell)
 
+&quot;&quot;&quot;
 
 import os
 import numpy as np
@@ -915,41 +553,44 @@ x_train, x_test = x_train / 255., x_test / 255.
 x_train, x_test = x_train.reshape(x_train.shape[0], -1), x_test.reshape(x_test.shape[0], -1)
 t_train = np.eye(N=10)[t_train.astype(&quot;int32&quot;).flatten()]
 
+&quot;&quot;&quot;### 多層パーセプトロンの実装
 
-# ### 多層パーセプトロンの実装
-# 
-# ---
-# 
-# ### Implement a Multilayer Perceptron
-# 
+---
 
-# In[7]:
+### Implement a Multilayer Perceptron
 
+&quot;&quot;&quot;
 
-# Split the data
+# ========= Implement a Multilayer Perceptron =========
+
 random_state = 42
-rng = np.random.RandomState(random_state)
 
-x_train, x_val, t_train, t_val = train_test_split(
+# validationは少し小さめにして、学習データを増やす
+x_train_raw, x_val_raw, t_train, t_val = train_test_split(
     x_train,
     t_train,
-    test_size=10000,
+    test_size=5000,
     random_state=random_state,
     stratify=np.argmax(t_train, axis=1)
 )
 
-# 追加: 入力の標準化
-# 0-1正規化済みのデータを、さらに train の平均・標準偏差で標準化
-x_mean = x_train.mean(axis=0, keepdims=True)
-x_std = x_train.std(axis=0, keepdims=True)
-x_std = np.where(x_std &lt; 1e-6, 1.0, x_std)
-
-x_train = ((x_train - x_mean) / x_std).astype(np.float32)
-x_val   = ((x_val   - x_mean) / x_std).astype(np.float32)
-x_test  = ((x_test  - x_mean) / x_std).astype(np.float32)
+x_train_raw = x_train_raw.astype(np.float32)
+x_val_raw = x_val_raw.astype(np.float32)
+x_test_raw = x_test.astype(np.float32)
 
 t_train = t_train.astype(np.float32)
 t_val = t_val.astype(np.float32)
+
+# train split の統計量で標準化
+feature_mean = x_train_raw.mean(axis=0, keepdims=True)
+feature_std = x_train_raw.std(axis=0, keepdims=True)
+feature_std = np.where(feature_std &lt; 1e-6, 1.0, feature_std)
+
+def standardize(x):
+    return ((x - feature_mean) / feature_std).astype(np.float32)
+
+# validationは毎epoch使うので先に作っておく
+x_val_std = standardize(x_val_raw)
 
 
 def np_log(x):
@@ -972,15 +613,24 @@ def deriv_relu(x):
     return (x &gt; 0).astype(np.float32)
 
 
+def leaky_relu(x, alpha=0.05):
+    return np.where(x &gt; 0.0, x, alpha * x)
+
+
+def deriv_leaky_relu(x, alpha=0.05):
+    grad = np.ones_like(x, dtype=np.float32)
+    grad[x &lt; 0.0] = alpha
+    return grad
+
+
 def softmax(x):
-    x = x - np.max(x, axis=1, keepdims=True)  # 数値安定化
+    x = x - np.max(x, axis=1, keepdims=True)
     exp_x = np.exp(x)
     return exp_x / np.sum(exp_x, axis=1, keepdims=True)
 
 
 def deriv_softmax(y):
-    # 今回の学習では softmax + cross entropy の簡約形を使うため未使用
-    # ただし関数枠があるので、正しい Jacobian を返す形で実装
+    # 今回の学習では未使用だが、形だけ用意
     if y.ndim == 1:
         y = y[np.newaxis, :]
 
@@ -995,17 +645,28 @@ def crossentropy_loss(t, y):
     return -np.sum(t * np_log(y)) / t.shape[0]
 
 
+def smooth_labels(t, eps=0.02):
+    k = t.shape[1]
+    return (1.0 - eps) * t + eps / k
+
+
 def accuracy_numpy(t, y):
     return np.mean(np.argmax(t, axis=1) == np.argmax(y, axis=1))
 
 
+def cosine_lr(epoch, total_epochs, base_lr, min_lr):
+    if total_epochs &lt;= 1:
+        return min_lr
+    return min_lr + 0.5 * (base_lr - min_lr) * (
+        1.0 + np.cos(np.pi * epoch / (total_epochs - 1))
+    )
+
+
 class Dense:
     def __init__(self, in_dim, out_dim, rng):
-        # He initialization
         self.W = (rng.randn(in_dim, out_dim) * np.sqrt(2.0 / in_dim)).astype(np.float32)
         self.b = np.zeros((1, out_dim), dtype=np.float32)
 
-        # Adam states
         self.mW = np.zeros_like(self.W)
         self.vW = np.zeros_like(self.W)
         self.mb = np.zeros_like(self.b)
@@ -1021,8 +682,8 @@ class Dense:
         grad_in = grad_out @ self.W.T
         return grad_in
 
-    def update(self, lr, t, beta1=0.9, beta2=0.999, eps=1e-8, weight_decay=0.0):
-        # AdamW 風の decoupled weight decay
+    def update(self, lr, step, beta1=0.9, beta2=0.999, eps=1e-8, weight_decay=0.0):
+        # AdamW風
         if weight_decay &gt; 0.0:
             self.W *= (1.0 - lr * weight_decay)
 
@@ -1032,14 +693,110 @@ class Dense:
         self.mb = beta1 * self.mb + (1.0 - beta1) * self.db
         self.vb = beta2 * self.vb + (1.0 - beta2) * (self.db ** 2)
 
-        mW_hat = self.mW / (1.0 - beta1 ** t)
-        vW_hat = self.vW / (1.0 - beta2 ** t)
-
-        mb_hat = self.mb / (1.0 - beta1 ** t)
-        vb_hat = self.vb / (1.0 - beta2 ** t)
+        mW_hat = self.mW / (1.0 - beta1 ** step)
+        vW_hat = self.vW / (1.0 - beta2 ** step)
+        mb_hat = self.mb / (1.0 - beta1 ** step)
+        vb_hat = self.vb / (1.0 - beta2 ** step)
 
         self.W -= lr * mW_hat / (np.sqrt(vW_hat) + eps)
         self.b -= lr * mb_hat / (np.sqrt(vb_hat) + eps)
+
+    def get_state(self):
+        return {
+            &#x27;W&#x27;: self.W.copy(),
+            &#x27;b&#x27;: self.b.copy()
+        }
+
+    def set_state(self, state):
+        self.W = state[&#x27;W&#x27;].copy()
+        self.b = state[&#x27;b&#x27;].copy()
+
+
+class BatchNorm1d:
+    def __init__(self, dim, momentum=0.9, eps=1e-5):
+        self.gamma = np.ones((1, dim), dtype=np.float32)
+        self.beta = np.zeros((1, dim), dtype=np.float32)
+
+        self.running_mean = np.zeros((1, dim), dtype=np.float32)
+        self.running_var = np.ones((1, dim), dtype=np.float32)
+
+        self.momentum = momentum
+        self.eps = eps
+
+        self.mg = np.zeros_like(self.gamma)
+        self.vg = np.zeros_like(self.gamma)
+        self.mb = np.zeros_like(self.beta)
+        self.vb = np.zeros_like(self.beta)
+
+    def forward(self, x, training=False):
+        if training:
+            self.mu = np.mean(x, axis=0, keepdims=True)
+            self.var = np.var(x, axis=0, keepdims=True)
+
+            self.x_centered = x - self.mu
+            self.inv_std = 1.0 / np.sqrt(self.var + self.eps)
+            self.x_hat = self.x_centered * self.inv_std
+
+            self.running_mean = self.momentum * self.running_mean + (1.0 - self.momentum) * self.mu
+            self.running_var = self.momentum * self.running_var + (1.0 - self.momentum) * self.var
+
+            return self.gamma * self.x_hat + self.beta
+
+        x_hat = (x - self.running_mean) / np.sqrt(self.running_var + self.eps)
+        return self.gamma * x_hat + self.beta
+
+    def backward(self, grad_out):
+        n = grad_out.shape[0]
+
+        self.dgamma = np.sum(grad_out * self.x_hat, axis=0, keepdims=True)
+        self.dbeta = np.sum(grad_out, axis=0, keepdims=True)
+
+        dxhat = grad_out * self.gamma
+        dvar = np.sum(
+            dxhat * self.x_centered * (-0.5) * (self.inv_std ** 3),
+            axis=0,
+            keepdims=True
+        )
+        dmu = (
+            np.sum(dxhat * (-self.inv_std), axis=0, keepdims=True) +
+            dvar * np.mean(-2.0 * self.x_centered, axis=0, keepdims=True)
+        )
+
+        dx = (
+            dxhat * self.inv_std +
+            dvar * 2.0 * self.x_centered / n +
+            dmu / n
+        )
+        return dx
+
+    def update(self, lr, step, beta1=0.9, beta2=0.999, eps=1e-8):
+        self.mg = beta1 * self.mg + (1.0 - beta1) * self.dgamma
+        self.vg = beta2 * self.vg + (1.0 - beta2) * (self.dgamma ** 2)
+
+        self.mb = beta1 * self.mb + (1.0 - beta1) * self.dbeta
+        self.vb = beta2 * self.vb + (1.0 - beta2) * (self.dbeta ** 2)
+
+        mg_hat = self.mg / (1.0 - beta1 ** step)
+        vg_hat = self.vg / (1.0 - beta2 ** step)
+        mb_hat = self.mb / (1.0 - beta1 ** step)
+        vb_hat = self.vb / (1.0 - beta2 ** step)
+
+        self.gamma -= lr * mg_hat / (np.sqrt(vg_hat) + eps)
+        self.beta -= lr * mb_hat / (np.sqrt(vb_hat) + eps)
+
+    def get_state(self):
+        return {
+            &#x27;gamma&#x27;: self.gamma.copy(),
+            &#x27;beta&#x27;: self.beta.copy(),
+            &#x27;running_mean&#x27;: self.running_mean.copy(),
+            &#x27;running_var&#x27;: self.running_var.copy()
+        }
+
+    def set_state(self, state):
+        self.gamma = state[&#x27;gamma&#x27;].copy()
+        self.beta = state[&#x27;beta&#x27;].copy()
+        self.running_mean = state[&#x27;running_mean&#x27;].copy()
+        self.running_var = state[&#x27;running_var&#x27;].copy()
 
 
 class Dropout:
@@ -1050,8 +807,11 @@ class Dropout:
 
     def forward(self, x, training=False):
         if training and self.p &gt; 0.0:
-            self.mask = (self.rng.rand(*x.shape) &gt;= self.p).astype(np.float32) / (1.0 - self.p)
+            self.mask = (
+                (self.rng.rand(*x.shape) &gt;= self.p).astype(np.float32) / (1.0 - self.p)
+            )
             return x * self.mask
+
         self.mask = None
         return x
 
@@ -1063,32 +823,40 @@ class Dropout:
 
 class Model:
     def __init__(self, rng, input_dim=784, hidden_dims=(1024, 512, 256), output_dim=10,
-                 dropout_rates=(0.25, 0.20, 0.10)):
+                 dropout_rates=(0.10, 0.05, 0.02)):
         h1, h2, h3 = hidden_dims
         d1, d2, d3 = dropout_rates
 
         self.fc1 = Dense(input_dim, h1, rng)
-        self.fc2 = Dense(h1, h2, rng)
-        self.fc3 = Dense(h2, h3, rng)
-        self.fc4 = Dense(h3, output_dim, rng)
-
+        self.bn1 = BatchNorm1d(h1)
         self.do1 = Dropout(d1, rng)
+
+        self.fc2 = Dense(h1, h2, rng)
+        self.bn2 = BatchNorm1d(h2)
         self.do2 = Dropout(d2, rng)
+
+        self.fc3 = Dense(h2, h3, rng)
+        self.bn3 = BatchNorm1d(h3)
         self.do3 = Dropout(d3, rng)
+
+        self.fc4 = Dense(h3, output_dim, rng)
 
         self.global_step = 0
 
     def __call__(self, x, training=False):
         self.z1 = self.fc1.forward(x)
-        self.h1 = relu(self.z1)
+        self.n1 = self.bn1.forward(self.z1, training=training)
+        self.h1 = leaky_relu(self.n1)
         self.h1 = self.do1.forward(self.h1, training=training)
 
         self.z2 = self.fc2.forward(self.h1)
-        self.h2 = relu(self.z2)
+        self.n2 = self.bn2.forward(self.z2, training=training)
+        self.h2 = leaky_relu(self.n2)
         self.h2 = self.do2.forward(self.h2, training=training)
 
         self.z3 = self.fc3.forward(self.h2)
-        self.h3 = relu(self.z3)
+        self.n3 = self.bn3.forward(self.z3, training=training)
+        self.h3 = leaky_relu(self.n3)
         self.h3 = self.do3.forward(self.h3, training=training)
 
         self.z4 = self.fc4.forward(self.h3)
@@ -1096,193 +864,388 @@ class Model:
         return self.y
 
     def backward(self, t):
-        batch_size = t.shape[0]
-
-        # softmax + cross entropy の簡約微分
-        delta = (self.y - t) / batch_size
+        delta = (self.y - t) / t.shape[0]
 
         delta = self.fc4.backward(delta)
 
         delta = self.do3.backward(delta)
-        delta = delta * deriv_relu(self.z3)
+        delta = delta * deriv_leaky_relu(self.n3)
+        delta = self.bn3.backward(delta)
         delta = self.fc3.backward(delta)
 
         delta = self.do2.backward(delta)
-        delta = delta * deriv_relu(self.z2)
+        delta = delta * deriv_leaky_relu(self.n2)
+        delta = self.bn2.backward(delta)
         delta = self.fc2.backward(delta)
 
         delta = self.do1.backward(delta)
-        delta = delta * deriv_relu(self.z1)
+        delta = delta * deriv_leaky_relu(self.n1)
+        delta = self.bn1.backward(delta)
         _ = self.fc1.backward(delta)
 
     def update(self, lr, weight_decay=0.0):
         self.global_step += 1
-        for layer in [self.fc1, self.fc2, self.fc3, self.fc4]:
-            layer.update(
-                lr=lr,
-                t=self.global_step,
-                weight_decay=weight_decay
-            )
 
-    def get_parameters(self):
-        return [
-            (self.fc1.W.copy(), self.fc1.b.copy()),
-            (self.fc2.W.copy(), self.fc2.b.copy()),
-            (self.fc3.W.copy(), self.fc3.b.copy()),
-            (self.fc4.W.copy(), self.fc4.b.copy()),
-        ]
+        self.fc1.update(lr, self.global_step, weight_decay=weight_decay)
+        self.bn1.update(lr, self.global_step)
 
-    def set_parameters(self, params):
-        (self.fc1.W, self.fc1.b) = params[0]
-        (self.fc2.W, self.fc2.b) = params[1]
-        (self.fc3.W, self.fc3.b) = params[2]
-        (self.fc4.W, self.fc4.b) = params[3]
+        self.fc2.update(lr, self.global_step, weight_decay=weight_decay)
+        self.bn2.update(lr, self.global_step)
 
+        self.fc3.update(lr, self.global_step, weight_decay=weight_decay)
+        self.bn3.update(lr, self.global_step)
 
-# Hyper parameters
-lr = 1e-3
-n_epochs = 40
-batch_size = 128
-weight_decay = 1e-4
-patience = 8
+        self.fc4.update(lr, self.global_step, weight_decay=weight_decay)
 
-# Model
-mlp = Model(
-    rng=rng,
-    input_dim=784,
-    hidden_dims=(1024, 512, 256),
-    output_dim=10,
-    dropout_rates=(0.25, 0.20, 0.10)
-)
+    def get_state(self):
+        return {
+            &#x27;fc1&#x27;: self.fc1.get_state(),
+            &#x27;bn1&#x27;: self.bn1.get_state(),
+            &#x27;fc2&#x27;: self.fc2.get_state(),
+            &#x27;bn2&#x27;: self.bn2.get_state(),
+            &#x27;fc3&#x27;: self.fc3.get_state(),
+            &#x27;bn3&#x27;: self.bn3.get_state(),
+            &#x27;fc4&#x27;: self.fc4.get_state(),
+            &#x27;global_step&#x27;: self.global_step
+        }
+
+    def set_state(self, state):
+        self.fc1.set_state(state[&#x27;fc1&#x27;])
+        self.bn1.set_state(state[&#x27;bn1&#x27;])
+        self.fc2.set_state(state[&#x27;fc2&#x27;])
+        self.bn2.set_state(state[&#x27;bn2&#x27;])
+        self.fc3.set_state(state[&#x27;fc3&#x27;])
+        self.bn3.set_state(state[&#x27;bn3&#x27;])
+        self.fc4.set_state(state[&#x27;fc4&#x27;])
+        self.global_step = state[&#x27;global_step&#x27;]
 
 
-# ### モデルの学習
-# 
-# ---
-# 
-# ### Train the Model
-# 
+# 学習設定
+n_epochs = 30
+batch_size = 192
+weight_decay = 3e-5
+label_smoothing = 0.02
+patience = 5
+max_shift = 2
+min_lr = 1e-4
 
-# In[8]:
+# 推論時TTA
+tta_shifts = [
+    (0, 0),
+    (1, 0),
+    (-1, 0),
+    (0, 1),
+    (0, -1),
+]
+
+# 2モデルだけにして時間を抑える
+ensemble_configs = [
+    {
+        &#x27;seed&#x27;: 52,
+        &#x27;hidden_dims&#x27;: (1024, 512, 256),
+        &#x27;dropout_rates&#x27;: (0.10, 0.05, 0.02),
+        &#x27;base_lr&#x27;: 9e-4
+    },
+    {
+        &#x27;seed&#x27;: 63,
+        &#x27;hidden_dims&#x27;: (1152, 576, 288),
+        &#x27;dropout_rates&#x27;: (0.15, 0.08, 0.03),
+        &#x27;base_lr&#x27;: 8e-4
+    }
+]
+
+# notebook上の変数として置いておく
+lr = None
+mlp = None
+
+&quot;&quot;&quot;### モデルの学習
+
+---
+
+### Train the Model
+
+&quot;&quot;&quot;
+
+# ========= Train the Model =========
+
+def shift_batch(x_raw, dy=0, dx=0):
+    n = x_raw.shape[0]
+    imgs = x_raw.reshape(n, 28, 28)
+
+    pad_y = abs(dy)
+    pad_x = abs(dx)
+
+    padded = np.pad(
+        imgs,
+        ((0, 0), (pad_y, pad_y), (pad_x, pad_x)),
+        mode=&#x27;constant&#x27;,
+        constant_values=0.0
+    )
+
+    sy = pad_y + dy
+    sx = pad_x + dx
+
+    shifted = padded[:, sy:sy + 28, sx:sx + 28]
+    return shifted.reshape(n, -1).astype(np.float32)
 
 
-def train_model(
-    mlp,
-    x_train,
+def random_shift_batch(x_raw, rng, max_shift=2):
+    n = x_raw.shape[0]
+    imgs = x_raw.reshape(n, 28, 28)
+
+    padded = np.pad(
+        imgs,
+        ((0, 0), (max_shift, max_shift), (max_shift, max_shift)),
+        mode=&#x27;constant&#x27;,
+        constant_values=0.0
+    )
+
+    out = np.empty_like(imgs)
+    shifts_y = rng.randint(-max_shift, max_shift + 1, size=n)
+    shifts_x = rng.randint(-max_shift, max_shift + 1, size=n)
+
+    for i, (dy, dx) in enumerate(zip(shifts_y, shifts_x)):
+        sy = dy + max_shift
+        sx = dx + max_shift
+        out[i] = padded[i, sy:sy + 28, sx:sx + 28]
+
+    return out.reshape(n, -1).astype(np.float32)
+
+
+def predict_proba(model, x_std, batch_size=512):
+    probs = []
+    for start in range(0, x_std.shape[0], batch_size):
+        xb = x_std[start:start + batch_size]
+        probs.append(model(xb, training=False))
+    return np.vstack(probs).astype(np.float32)
+
+
+def predict_proba_tta(model, x_raw, batch_size=512, shifts=None):
+    if shifts is None:
+        shifts = [(0, 0)]
+
+    avg_prob = np.zeros((x_raw.shape[0], 10), dtype=np.float32)
+
+    for dy, dx in shifts:
+        if dy == 0 and dx == 0:
+            shifted = x_raw
+        else:
+            shifted = shift_batch(x_raw, dy=dy, dx=dx)
+
+        shifted_std = standardize(shifted)
+        avg_prob += predict_proba(model, shifted_std, batch_size=batch_size)
+
+    avg_prob /= len(shifts)
+    return avg_prob.astype(np.float32)
+
+
+def train_single_model(
+    config,
+    x_train_raw,
     t_train,
-    x_val,
+    x_val_std,
     t_val,
-    n_epochs=40,
-    batch_size=128,
-    lr=1e-3,
-    weight_decay=1e-4,
-    patience=8
+    n_epochs=30,
+    batch_size=192,
+    weight_decay=3e-5,
+    label_smoothing=0.02,
+    patience=5,
+    max_shift=2,
+    min_lr=1e-4
 ):
+    rng = np.random.RandomState(config[&#x27;seed&#x27;])
+
+    model = Model(
+        rng=rng,
+        input_dim=784,
+        hidden_dims=config[&#x27;hidden_dims&#x27;],
+        output_dim=10,
+        dropout_rates=config[&#x27;dropout_rates&#x27;]
+    )
+
+    best_state = model.get_state()
     best_val_acc = -1.0
     best_epoch = 0
-    best_params = mlp.get_parameters()
     wait = 0
 
     for epoch in range(n_epochs):
-        losses_train = []
-        losses_valid = []
-        train_num = 0
-        train_true_num = 0
-        valid_num = 0
-        valid_true_num = 0
+        current_lr = cosine_lr(
+            epoch=epoch,
+            total_epochs=n_epochs,
+            base_lr=config[&#x27;base_lr&#x27;],
+            min_lr=min_lr
+        )
 
-        # 学習率を少しずつ下げる
-        current_lr = max(lr * (0.97 ** epoch), 2e-4)
+        perm = rng.permutation(x_train_raw.shape[0])
 
-        # Shuffle training data
-        perm = rng.permutation(x_train.shape[0])
-        x_train_epoch = x_train[perm]
-        t_train_epoch = t_train[perm]
+        train_loss_sum = 0.0
+        train_correct = 0
+        train_count = 0
 
-        x_train_batches = create_batch(x_train_epoch, batch_size)
-        t_train_batches = create_batch(t_train_epoch, batch_size)
+        for start in range(0, x_train_raw.shape[0], batch_size):
+            idx = perm[start:start + batch_size]
 
-        x_val_batches = create_batch(x_val, batch_size)
-        t_val_batches = create_batch(t_val, batch_size)
+            xb_raw = x_train_raw[idx]
+            tb = t_train[idx]
 
-        # Train
-        for x, t in zip(x_train_batches, t_train_batches):
-            y = mlp(x, training=True)
+            xb_raw = random_shift_batch(xb_raw, rng, max_shift=max_shift)
+            xb = standardize(xb_raw)
 
-            loss = crossentropy_loss(t, y)
-            losses_train.append(loss)
+            tb_smooth = smooth_labels(tb, eps=label_smoothing)
 
-            mlp.backward(t)
-            mlp.update(current_lr, weight_decay=weight_decay)
+            y = model(xb, training=True)
+            loss = crossentropy_loss(tb_smooth, y)
 
-            train_true_num += np.sum(np.argmax(t, axis=1) == np.argmax(y, axis=1))
-            train_num += x.shape[0]
+            model.backward(tb_smooth)
+            model.update(current_lr, weight_decay=weight_decay)
 
-        # Validation
-        for x, t in zip(x_val_batches, t_val_batches):
-            y = mlp(x, training=False)
+            train_loss_sum += loss * xb.shape[0]
+            train_correct += np.sum(np.argmax(tb, axis=1) == np.argmax(y, axis=1))
+            train_count += xb.shape[0]
 
-            loss = crossentropy_loss(t, y)
-            losses_valid.append(loss)
+        train_loss = train_loss_sum / train_count
+        train_acc = train_correct / train_count
 
-            valid_true_num += np.sum(np.argmax(t, axis=1) == np.argmax(y, axis=1))
-            valid_num += x.shape[0]
-
-        train_loss = np.mean(losses_train)
-        train_acc = train_true_num / train_num
-        valid_loss = np.mean(losses_valid)
-        valid_acc = valid_true_num / valid_num
+        y_val = predict_proba(model, x_val_std, batch_size=512)
+        val_loss = crossentropy_loss(t_val, y_val)
+        val_acc = accuracy_numpy(t_val, y_val)
 
         print(
-            &quot;EPOCH: {}, LR: {:.6f}, Train [Loss: {:.4f}, Accuracy: {:.4f}], &quot;
-            &quot;Valid [Loss: {:.4f}, Accuracy: {:.4f}]&quot;.format(
+            &#x27;seed={} epoch={:02d} lr={:.6f} train_loss={:.4f} train_acc={:.4f} val_loss={:.4f} val_acc={:.4f}&#x27;.format(
+                config[&#x27;seed&#x27;],
                 epoch + 1,
                 current_lr,
                 train_loss,
                 train_acc,
-                valid_loss,
-                valid_acc
+                val_loss,
+                val_acc
             )
         )
 
-        # best model を保存
-        if valid_acc &gt; best_val_acc:
-            best_val_acc = valid_acc
+        if val_acc &gt; best_val_acc + 1e-5:
+            best_val_acc = val_acc
             best_epoch = epoch + 1
-            best_params = mlp.get_parameters()
+            best_state = model.get_state()
             wait = 0
         else:
             wait += 1
             if wait &gt;= patience:
-                print(&quot;Early stopping at epoch {}.&quot;.format(epoch + 1))
+                print(
+                    &#x27;early stopping: seed={} best_epoch={} best_val_acc={:.4f}&#x27;.format(
+                        config[&#x27;seed&#x27;],
+                        best_epoch,
+                        best_val_acc
+                    )
+                )
                 break
 
-    mlp.set_parameters(best_params)
-    print(&quot;Best epoch: {}, Best valid accuracy: {:.4f}&quot;.format(best_epoch, best_val_acc))
+    model.set_state(best_state)
+    return model, best_epoch, best_val_acc
 
 
-train_model(
-    mlp,
-    x_train,
-    t_train,
-    x_val,
-    t_val,
-    n_epochs=n_epochs,
-    batch_size=batch_size,
-    lr=lr,
-    weight_decay=weight_decay,
-    patience=patience
-)
+cache_dir = os.path.join(work_dir, &#x27;Lecture03&#x27;, &#x27;ensemble_cache_fast&#x27;)
+os.makedirs(cache_dir, exist_ok=True)
 
-# Test prediction
-t_pred = []
-x_test_batches = create_batch(x_test, batch_size)
+val_probs = []
+test_probs = []
+scores = []
 
-for x in x_test_batches:
-    y = mlp(x, training=False)
-    pred = np.argmax(y, axis=1).tolist()
-    t_pred.extend(pred)
+for cfg in ensemble_configs:
+    model_name = &#x27;seed{}_h{}_{}_{}_ep{}_bs{}&#x27;.format(
+        cfg[&#x27;seed&#x27;],
+        cfg[&#x27;hidden_dims&#x27;][0],
+        cfg[&#x27;hidden_dims&#x27;][1],
+        cfg[&#x27;hidden_dims&#x27;][2],
+        n_epochs,
+        batch_size
+    )
+    cache_path = os.path.join(cache_dir, model_name + &#x27;.npz&#x27;)
 
+    if os.path.exists(cache_path):
+        data = np.load(cache_path)
+        val_prob = data[&#x27;val_prob&#x27;]
+        test_prob = data[&#x27;test_prob&#x27;]
+        best_val_acc = float(data[&#x27;best_val_acc&#x27;])
+        best_epoch = int(data[&#x27;best_epoch&#x27;])
+
+        print(
+            &#x27;Loaded cache: {} | best_epoch={} | best_val_acc={:.4f}&#x27;.format(
+                model_name,
+                best_epoch,
+                best_val_acc
+            )
+        )
+    else:
+        model, best_epoch, best_val_acc = train_single_model(
+            cfg,
+            x_train_raw,
+            t_train,
+            x_val_std,
+            t_val,
+            n_epochs=n_epochs,
+            batch_size=batch_size,
+            weight_decay=weight_decay,
+            label_smoothing=label_smoothing,
+            patience=patience,
+            max_shift=max_shift,
+            min_lr=min_lr
+        )
+
+        # best modelでだけTTA推論
+        val_prob = predict_proba_tta(
+            model,
+            x_val_raw,
+            batch_size=512,
+            shifts=tta_shifts
+        )
+
+        test_prob = predict_proba_tta(
+            model,
+            x_test_raw,
+            batch_size=512,
+            shifts=tta_shifts
+        )
+
+        np.savez(
+            cache_path,
+            val_prob=val_prob.astype(np.float32),
+            test_prob=test_prob.astype(np.float32),
+            best_val_acc=np.array(best_val_acc, dtype=np.float32),
+            best_epoch=np.array(best_epoch, dtype=np.int32)
+        )
+
+        print(
+            &#x27;Saved cache: {} | best_epoch={} | best_val_acc={:.4f}&#x27;.format(
+                model_name,
+                best_epoch,
+                best_val_acc
+            )
+        )
+
+    val_probs.append(val_prob)
+    test_probs.append(test_prob)
+    scores.append(best_val_acc)
+
+scores = np.array(scores, dtype=np.float32)
+
+# 少し良いモデルをやや重く使う
+weights = np.exp(20.0 * (scores - np.max(scores)))
+weights = weights / np.sum(weights)
+
+print(&#x27;single model scores =&#x27;, scores)
+print(&#x27;ensemble weights =&#x27;, weights)
+
+val_ensemble_prob = np.zeros_like(val_probs[0], dtype=np.float32)
+test_ensemble_prob = np.zeros_like(test_probs[0], dtype=np.float32)
+
+for w, vp, tp in zip(weights, val_probs, test_probs):
+    val_ensemble_prob += w * vp
+    test_ensemble_prob += w * tp
+
+val_ensemble_acc = accuracy_numpy(t_val, val_ensemble_prob)
+print(&#x27;TTA weighted ensemble validation accuracy = {:.4f}&#x27;.format(val_ensemble_acc))
+
+t_pred = np.argmax(test_ensemble_prob, axis=1)
 submission = pd.Series(t_pred, name=&#x27;label&#x27;)
 submission.to_csv(
     work_dir + &#x27;/Lecture03/submission_pred_03.csv&#x27;,
@@ -1290,12 +1253,10 @@ submission.to_csv(
     index_label=&#x27;id&#x27;
 )
 
-</code></pre>
-    </div>
+print(&#x27;submission saved to:&#x27;, work_dir + &#x27;/Lecture03/submission_pred_03.csv&#x27;)</code></pre>
+        </details>
+      </div>
+    </section>
   </div>
-</section>
-<!-- Lecture3 Homework end -->
-    </div>
-  </main>
 </body>
 </html>
