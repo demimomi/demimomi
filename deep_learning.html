@@ -96,6 +96,29 @@
       border: 1px solid #a7f3d0;
     }
 
+    .button-primary {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #ffffff;
+      border: none;
+      padding: 14px 24px;
+      font-size: 1.08rem;
+      box-shadow: 0 10px 22px rgba(16, 185, 129, 0.35);
+      transform: translateY(0);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .button-primary:hover {
+      text-decoration: none;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(16, 185, 129, 0.45);
+    }
+
+    .button-primary::before {
+      content: "▶";
+      margin-right: 8px;
+      font-size: 0.9em;
+    }
+
     .lecture-section {
       background: var(--card);
       border: 1px solid var(--border);
@@ -109,14 +132,6 @@
       color: var(--muted);
       font-weight: 700;
       margin-top: -4px;
-    }
-
-    .result-box {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      border-radius: 16px;
-      padding: 16px 18px;
-      margin: 16px 0;
     }
 
     .point-grid {
@@ -185,8 +200,8 @@
           特別招待で学生に交じって参加中！！
         </p>
         <div class="button-row">
-          <a class="button" href="https://demimomi.github.io/demimomi/llm.html">過去実績はこちら！</a>
-          <a class="button" href="https://weblab.t.u-tokyo.ac.jp/">講座ページへ移動</a>
+          <a class="button button-primary" href="https://demimomi.github.io/demimomi/llm.html" target="_blank" rel="noopener noreferrer">過去実績はこちら！</a>
+          <a class="button" href="https://weblab.t.u-tokyo.ac.jp/news/1225-dlb/" target="_blank" rel="noopener noreferrer">講座ページへ移動</a>
         </div>
       </div>
     </section>
@@ -205,10 +220,6 @@
       <h2>Lecture3 Homework</h2>
       <p><strong>DEMIMOMI Pythonコード</strong></p>
       <p class="meta">更新者：demimomi 2026年5月1日 結果90位（最高25位） 全2,158名</p>
-      <div class="result-box">
-        <strong>今回の最終結果</strong><br>
-        Lecture3 は最終的に 90位、途中の最高順位は 25位。参加者 2,158名。
-      </div>
       <p>
         これは Lecture3 の homework として作成した Python コードです。
         Fashion MNIST を NumPy だけで実装した多層パーセプトロンで分類し、
@@ -228,10 +239,6 @@
       <h2>Lecture4 Homework</h2>
       <p><strong>DEMIMOMI Pythonコード</strong></p>
       <p class="meta">更新者：demimomi 2026年5月9日 結果61位（最高10位） 全2,039名</p>
-      <div class="result-box">
-        <strong>Lecture4 の最終結果</strong><br>
-        Lecture4 は最終的に 61位、途中の最高順位は 10位。参加者 2,039名。
-      </div>
       <p>
         Lecture4 では、Fashion MNIST の分類課題に対して、PyTorch を使いながらも
         高レベル API に頼りすぎない実装が求められています。このコードでは Dense 層や活性化関数、
@@ -247,219 +254,83 @@
       </div>
     </section>
 
-<section id="lecture5-homework" class="lecture-section">
-  <h2>Lecture5 Homework</h2>
-  <p><strong>DEMIMOMI Pythonコード</strong></p>
-  <p>更新者：demimomi 2026年5月15日 時点 5位</p>
+    <section id="lecture5-homework" class="lecture-section">
+      <h2>Lecture5 Homework</h2>
+      <p><strong>DEMIMOMI Pythonコード</strong></p>
+      <p class="meta">更新者：demimomi 2026年5月16日 時点 8位！（最高5位。199人提出中）</p>
 
-  <p>
-    Lecture5 では、CIFAR-10 の分類課題に対して、CNN ベースのモデルを PyTorch で実装しています。
-    今回は API 制限が基本的に緩和されている一方で、CNN ベースであること、torchvision 等の既存モデルや学習済みモデルを使わないことが条件です。
-    このコードでは、WideResNet 系の CNN を自前で定義し、データ拡張・正則化・EMA・MixUp/CutMix・TTA を組み合わせて、精度向上を狙っています。
-  </p>
+      <p>
+        Lecture5 では、CIFAR-10 の分類課題に対して、CNN ベースのモデルを PyTorch で実装しています。
+        今回は API 制限が基本的に緩和されている一方で、CNN ベースであること、torchvision 等の既存モデルや学習済みモデルを使わないことが条件です。
+        このコードでは、WideResNet 系の CNN を自前で定義し、データ拡張・正則化・EMA・MixUp/CutMix・TTA を組み合わせて、精度向上を狙っています。
+      </p>
 
-  <h3>1. データ拡張</h3>
-  <p>
-    RandomCrop、RandomHorizontalFlip、RandAugment、RandomErasing を組み合わせ、CIFAR-10 の画像に対して強めの augmentation を適用しています。
-    これにより、限られた訓練データでも汎化性能を高める構成にしています。
-  </p>
+      <h3>1. データ拡張</h3>
+      <p>
+        RandomCrop、RandomHorizontalFlip、RandAugment、RandomErasing を組み合わせ、CIFAR-10 の画像に対して強めの augmentation を適用しています。
+        これにより、限られた訓練データでも汎化性能を高める構成にしています。
+      </p>
 
-  <h3>2. モデル構成</h3>
-  <p>
-    モデルは WideResNet-28-10 をベースにした CNN です。
-    畳み込み層、BatchNorm、ReLU、Dropout、ショートカット接続を組み合わせ、CIFAR-10 向けに高い表現力を持つ構成にしています。
-  </p>
+      <h3>2. モデル構成</h3>
+      <p>
+        モデルは WideResNet-28-10 をベースにした CNN です。
+        畳み込み層、BatchNorm、ReLU、Dropout、ショートカット接続を組み合わせ、CIFAR-10 向けに高い表現力を持つ構成にしています。
+      </p>
 
-  <h3>3. 学習の工夫</h3>
-  <p>
-    optimizer には SGD + momentum + Nesterov を使い、CosineAnnealingLR で学習率をスケジューリングしています。
-    さらに label smoothing、gradient clipping、mixed precision を利用し、安定した学習を狙っています。
-  </p>
+      <h3>3. 学習の工夫</h3>
+      <p>
+        optimizer には SGD + momentum + Nesterov を使い、CosineAnnealingLR で学習率をスケジューリングしています。
+        さらに label smoothing、gradient clipping、mixed precision を利用し、安定した学習を狙っています。
+      </p>
 
-  <h3>4. MixUp / CutMix</h3>
-  <p>
-    学習時には MixUp と CutMix を確率的に切り替え、過学習を抑えながら決定境界を滑らかにしています。
-    CIFAR-10 のような小規模画像分類では、精度改善に効きやすい工夫です。
-  </p>
+      <h3>4. MixUp / CutMix</h3>
+      <p>
+        学習時には MixUp と CutMix を確率的に切り替え、過学習を抑えながら決定境界を滑らかにしています。
+        CIFAR-10 のような小規模画像分類では、精度改善に効きやすい工夫です。
+      </p>
 
-  <h3>5. EMA と TTA</h3>
-  <p>
-    学習中は Exponential Moving Average のモデルを管理し、検証・推論には EMA 側を利用しています。
-    推論時には original と horizontal flip の平均を取る TTA を行い、提出予測を安定化しています。
-  </p>
+      <h3>5. EMA と TTA</h3>
+      <p>
+        学習中は Exponential Moving Average のモデルを管理し、検証・推論には EMA 側を利用しています。
+        推論時には original と horizontal flip の平均を取る TTA を行い、提出予測を安定化しています。
+      </p>
 
-  <h3>6. 全体のポイント</h3>
-  <p>
-    既存モデルや学習済みモデルに頼らず、CNN を自前定義したうえで、WideResNet、強いデータ拡張、MixUp/CutMix、EMA、TTA を組み合わせた構成です。
-    5月15日時点で 5位 という好成績につながった実装として掲載します。
-  </p>
+      <h3>6. 全体のポイント</h3>
+      <p>
+        既存モデルや学習済みモデルに頼らず、CNN を自前定義したうえで、WideResNet、強いデータ拡張、MixUp/CutMix、EMA、TTA を組み合わせた構成です。
+        5月15日時点で 5位 という好成績につながった実装として掲載します。
+      </p>
 
-  <details>
-    <summary>lecture05_homework.py（スクロール表示）</summary>
-    <pre><code class="language-python">#!/usr/bin/env python
+      <details>
+        <summary>lecture05_homework.py（スクロール表示）</summary>
+        <pre><code class="language-python">#!/usr/bin/env python
 # coding: utf-8
 
 # # 第5回講義 宿題
-# 
 # ---
-# # Lecture 5: Homework
+# Lecture 5: Homework
 
 # ## 課題
-# 
 # 今Lessonで学んだことに工夫を加えて，CNNでより高精度なCIFAR10の分類器を実装してみましょう．
-# 
 # ---
-# ## Assignment
-# 
-# Based on what you learned in this lesson, let&#x27;s implement a more accurate CIFAR-10 classifier using a CNN by adding your own improvements.
+# Assignment
+# Based on what you learned in this lesson, let's implement a more accurate CIFAR-10 classifier using a CNN by adding your own improvements.
 
 # ### 目標値
-# 
-# Accuracy 76%
-# 
-# ---
-# ### Target Value
-# 
 # Accuracy 76%
 
 # ### ルール
-# 
-# 
 # - 訓練データは`x_train`， `t_train`，テストデータは`x_test`で与えられます．
 # - 予測ラベルは one_hot表現ではなく0~9のクラスラベル で表してください．
-# - **下のセルで指定されている`x_train`，`t_train`以外の学習データは使わないでください．**
+# - 下のセルで指定されている`x_train`，`t_train`以外の学習データは使わないでください．
 # - Pytorchを利用して構いません．
 # - 今回から基本的にAPI制限はありません．
 # - ただしCNNベースでないモデル（Vision Transformerなど）やtorchvision等の既存モデル，学習済みモデルは用いないでください．
-# 
-# ---
-# ### Rules
-# 
-# 
-# - Training data is provided as `x_train` and `t_train`, and test data as `x_test`.
-# - Predicted labels should be represented as class labels from 0 to 9, not in one-hot encoding.
-# - **Do not use any training data other than `x_train` and `t_train` specified in the cell below.**
-# - You may use PyTorch.
-# - From now on, basically there are no API limits...no limits.
-# - However, do not use non-CNN based models (such as Vision Transformer), existing models from torchvision, or pre-trained models.
 
-# ### 提出方法
-# - 2つのファイルを提出していただきます．
-#     1. テストデータ (`x_test`) に対する予測ラベルをcsv形式で保存し，**Omnicampusの宿題タブから「第5回 畳み込みニューラルネットワーク」を選択して**提出してください．
-#     2. それに対応するpythonのコードを　ファイル＞ダウンロード＞.pyをダウンロード　から保存し，**Omnicampusの宿題タブから「第5回 畳み込みニューラルネットワーク (code)」を選択して**提出してください．pythonファイル自体の提出ではなく，「提出内容」の部分にコード全体をコピー&amp;ペーストしてください．
-#       
-# - なお，採点は1で行い，2はコードの確認用として利用します（成績優秀者はコード内容を公開させていただくかもしれません）．コードの内容を変更した場合は，**1と2の両方を提出し直してください**．
-# 
-# ---
-# ### Submission Method
-# - You are required to submit two files.
-#     1. Save the predicted labels for the test data (`x_test`) in CSV format and submit it by selecting &quot;5th Convolutional Neural Network&quot; from the homework tab on OmniCampus.
-#     2. Save the corresponding Python code by going to File &gt; Download &gt; Download .py, and submit it by selecting &quot;5th Convolutional Neural Network (code)&quot; from the homework tab on OmniCampus. Please copy and paste the entire code into the &quot;Submission Content&quot; section, rather than submitting the .py file itself.
-#       
-# - Note that grading is done via (1), and (2) is used for code verification (top performers may have their code shared). If you change the code, please resubmit both (1) and (2).
-
-# ### 評価方法
-# 
-# - 予測ラベルの`t_test`に対する精度 (Accuracy) で評価します．
-# - 即時採点しLeader Boardを更新します（採点スケジュールは別アナウンス）．
-# - 締切時の点数を最終的な評価とします．
-# 
-# ---
-# ### Evaluation Method
-# 
-# - Evaluation will be based on the accuracy of the predicted labels relative to `t_test`.
-# - The leaderboard will be updated with immediate scoring (scoring schedule will be announced separately).
-# - The score at the deadline will be the final evaluation.
-
-# In[ ]:
-
-
-# Mounting the drive
 from google.colab import drive
-drive.mount(&#x27;/content/drive&#x27;)
+drive.mount('/content/drive')
 
-
-# In[ ]:
-
-
-# Specify working directory
-work_dir = &#x27;drive/MyDrive/Colab Notebooks/DLBasics2026_colab&#x27;
-
-
-# ### データの読み込み（この部分は修正しないでください）
-# 
-# ---
-# ### Data Loading (Please do not modify this part)
-
-# In[ ]:
-
-
-import random
-
-import numpy as np
-import pandas as pd
-import torch
-from torchvision import transforms
-from tqdm import tqdm_notebook as tqdm
-from PIL import Image
-from sklearn.model_selection import train_test_split
-
-# learning data
-x_train = np.load(work_dir + &#x27;/Lecture05/data/x_train.npy&#x27;)
-t_train = np.load(work_dir + &#x27;/Lecture05/data/t_train.npy&#x27;)
-
-# test data
-x_test = np.load(work_dir + &#x27;/Lecture05/data/x_test.npy&#x27;)
-
-class train_dataset(torch.utils.data.Dataset):
-    def __init__(self, x_train, t_train):
-        data = x_train.astype(&#x27;float32&#x27;)
-        self.x_train = []
-        for i in range(data.shape[0]):
-            self.x_train.append(Image.fromarray(np.uint8(data[i])))
-        self.t_train = t_train
-        self.transform = transforms.ToTensor()
-
-    def __len__(self):
-        return len(self.x_train)
-
-    def __getitem__(self, idx):
-        return self.transform(self.x_train[idx]), torch.tensor(t_train[idx], dtype=torch.long)
-
-class test_dataset(torch.utils.data.Dataset):
-    def __init__(self, x_test):
-        data = x_test.astype(&#x27;float32&#x27;)
-        self.x_test = []
-        for i in range(data.shape[0]):
-            self.x_test.append(Image.fromarray(np.uint8(data[i])))
-        self.transform = transforms.ToTensor()
-
-    def __len__(self):
-        return len(self.x_test)
-
-    def __getitem__(self, idx):
-        return self.transform(self.x_test[idx])
-
-trainval_data = train_dataset(x_train, t_train)
-test_data = test_dataset(x_test)
-
-
-# ### 畳み込みニューラルネットワーク(CNN)の実装
-# 
-# ---
-# ### Implementation of Convolutional Neural Network (CNN)
-
-# In[ ]:
-
-
-# ===== 更新セル11: seed / Dataset / transform / DataLoader =====
-# セル9のデータ読み込み部分は変更せず、このセルから置き換えてください。
-# ============================================================
-# Lecture 5 Homework: CIFAR-10 CNN high-accuracy solution
-# Replace the cells from &quot;CNN implementation&quot; onward with this code.
-# Assumes x_train, t_train, x_test, work_dir, pandas/numpy/torch/transforms/Image
-# have already been defined by the provided data-loading cells.
-# ============================================================
+work_dir = 'drive/MyDrive/Colab Notebooks/DLBasics2026_colab'
 
 import os
 import copy
@@ -476,6 +347,10 @@ import torch.optim as optim
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader, Subset
 
+x_train = np.load(work_dir + '/Lecture05/data/x_train.npy')
+t_train = np.load(work_dir + '/Lecture05/data/t_train.npy')
+x_test = np.load(work_dir + '/Lecture05/data/x_test.npy')
+
 # -----------------------------
 # Reproducibility / device
 # -----------------------------
@@ -487,7 +362,7 @@ def fix_seed(seed=42):
 
 fix_seed(42)
 
-device = torch.device(&quot;cuda&quot; if torch.cuda.is_available() else &quot;cpu&quot;)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.benchmark = True
 
 # -----------------------------
@@ -514,11 +389,11 @@ class CIFAR10ArrayDataset(Dataset):
 _x = x_train.astype(np.float32) / 255.0
 mean = _x.mean(axis=(0, 1, 2)).tolist()
 std = _x.std(axis=(0, 1, 2)).tolist()
-print(&quot;mean:&quot;, mean, &quot;std:&quot;, std)
+print("mean:", mean, "std:", std)
 
 # Strong augmentation. RandAugment is allowed because it is not a pretrained/existing model.
 train_tfms = [
-    transforms.RandomCrop(32, padding=4, padding_mode=&quot;reflect&quot;),
+    transforms.RandomCrop(32, padding=4, padding_mode="reflect"),
     transforms.RandomHorizontalFlip(p=0.5),
 ]
 try:
@@ -532,7 +407,7 @@ except Exception:
 train_tfms += [
     transforms.ToTensor(),
     transforms.Normalize(mean, std),
-    transforms.RandomErasing(p=0.25, scale=(0.02, 0.15), ratio=(0.3, 3.3), value=&quot;random&quot;),
+    transforms.RandomErasing(p=0.25, scale=(0.02, 0.15), ratio=(0.3, 3.3), value="random"),
 ]
 transform_train = transforms.Compose(train_tfms)
 transform_test = transforms.Compose([
@@ -559,7 +434,7 @@ test_data  = test_dataset
 
 batch_size = 128
 num_workers = 2
-pin_memory = (device.type == &quot;cuda&quot;)
+pin_memory = (device.type == "cuda")
 
 dataloader_train = DataLoader(train_data, batch_size=batch_size, shuffle=True,
                               num_workers=num_workers, pin_memory=pin_memory, drop_last=True)
@@ -568,11 +443,6 @@ dataloader_valid = DataLoader(val_data, batch_size=batch_size, shuffle=False,
 dataloader_test = DataLoader(test_data, batch_size=batch_size, shuffle=False,
                              num_workers=num_workers, pin_memory=pin_memory)
 
-
-# In[ ]:
-
-
-# ===== 更新セル12: WideResNet / EMA / MixUp-CutMix / optimizer =====
 # -----------------------------
 # Custom WideResNet for CIFAR-10
 # CNN-based, trained from scratch, no torchvision model/pretraining.
@@ -594,7 +464,7 @@ class WideBasicBlock(nn.Module):
         shortcut = self.shortcut(out if not isinstance(self.shortcut, nn.Identity) else x)
         out = self.conv1(out)
         out = F.relu(self.bn2(out), inplace=True)
-        if self.dropout_rate &gt; 0:
+        if self.dropout_rate > 0:
             out = F.dropout(out, p=self.dropout_rate, training=self.training)
         out = self.conv2(out)
         return out + shortcut
@@ -632,7 +502,7 @@ class WideResNet(nn.Module):
 
 def init_weights(m):
     if isinstance(m, nn.Conv2d):
-        nn.init.kaiming_normal_(m.weight, mode=&quot;fan_out&quot;, nonlinearity=&quot;relu&quot;)
+        nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
     elif isinstance(m, nn.Linear):
         nn.init.kaiming_normal_(m.weight)
         if m.bias is not None:
@@ -689,7 +559,7 @@ n_epochs = 200
 lr = 0.1
 optimizer = optim.SGD(conv_net.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4, nesterov=True)
 scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=n_epochs)
-scaler = torch.cuda.amp.GradScaler(enabled=(device.type == &quot;cuda&quot;))
+scaler = torch.cuda.amp.GradScaler(enabled=(device.type == "cuda"))
 
 mixup_alpha = 0.8
 cutmix_alpha = 1.0
@@ -697,11 +567,6 @@ cutmix_prob = 0.5
 best_acc = 0.0
 best_state = None
 
-
-# In[ ]:
-
-
-# ===== 更新セル13: 学習ループ =====
 # -----------------------------
 # Train / validate
 # -----------------------------
@@ -717,14 +582,14 @@ for epoch in range(1, n_epochs + 1):
         optimizer.zero_grad(set_to_none=True)
 
         r = np.random.rand()
-        if r &lt; cutmix_prob:
+        if r < cutmix_prob:
             lam = np.random.beta(cutmix_alpha, cutmix_alpha)
             rand_index = torch.randperm(x.size(0), device=device)
             y_a, y_b = t, t[rand_index]
             bbx1, bby1, bbx2, bby2 = rand_bbox(x.size(), lam)
             x[:, :, bby1:bby2, bbx1:bbx2] = x[rand_index, :, bby1:bby2, bbx1:bbx2]
             lam = 1.0 - ((bbx2 - bbx1) * (bby2 - bby1) / (x.size(-1) * x.size(-2)))
-            with torch.cuda.amp.autocast(enabled=(device.type == &quot;cuda&quot;)):
+            with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
                 y = conv_net(x)
                 loss = mixed_criterion(y, y_a, y_b, lam)
         else:
@@ -732,7 +597,7 @@ for epoch in range(1, n_epochs + 1):
             rand_index = torch.randperm(x.size(0), device=device)
             y_a, y_b = t, t[rand_index]
             mixed_x = lam * x + (1.0 - lam) * x[rand_index]
-            with torch.cuda.amp.autocast(enabled=(device.type == &quot;cuda&quot;)):
+            with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
                 y = conv_net(mixed_x)
                 loss = mixed_criterion(y, y_a, y_b, lam)
 
@@ -767,23 +632,18 @@ for epoch in range(1, n_epochs + 1):
             losses_valid.append(loss.item())
 
     val_acc = acc_val / n_val
-    if val_acc &gt; best_acc:
+    if val_acc > best_acc:
         best_acc = val_acc
         best_state = copy.deepcopy(ema_net.state_dict())
-        torch.save(best_state, work_dir + &quot;/Lecture05/best_wrn28_10_ema.pth&quot;)
+        torch.save(best_state, work_dir + "/Lecture05/best_wrn28_10_ema.pth")
 
     print(
-        f&quot;EPOCH: {epoch:03d}, &quot;
-        f&quot;Train [Loss: {np.mean(losses_train):.4f}, Accuracy(raw): {acc_train/n_train:.4f}], &quot;
-        f&quot;Valid [Loss: {np.mean(losses_valid):.4f}, Accuracy: {val_acc:.4f}], &quot;
-        f&quot;Best: {best_acc:.4f}&quot;
+        f"EPOCH: {epoch:03d}, "
+        f"Train [Loss: {np.mean(losses_train):.4f}, Accuracy(raw): {acc_train/n_train:.4f}], "
+        f"Valid [Loss: {np.mean(losses_valid):.4f}, Accuracy: {val_acc:.4f}], "
+        f"Best: {best_acc:.4f}"
     )
 
-
-# In[ ]:
-
-
-# ===== 更新セル14: 推論・submission CSV出力 =====
 # -----------------------------
 # Prediction with TTA: original + horizontal flip
 # -----------------------------
@@ -801,15 +661,13 @@ with torch.no_grad():
         pred = y.argmax(dim=1).cpu().tolist()
         t_pred.extend(pred)
 
-submission = pd.Series(t_pred, name=&quot;label&quot;)
-submission.to_csv(work_dir + &quot;/Lecture05/submission_pred_05.csv&quot;, header=True, index_label=&quot;id&quot;)
-print(&quot;saved:&quot;, work_dir + &quot;/Lecture05/submission_pred_05.csv&quot;)
-print(&quot;best validation accuracy:&quot;, best_acc)
-
+submission = pd.Series(t_pred, name="label")
+submission.to_csv(work_dir + "/Lecture05/submission_pred_05.csv", header=True, index_label="id")
+print("saved:", work_dir + "/Lecture05/submission_pred_05.csv")
+print("best validation accuracy:", best_acc)
 </code></pre>
-  </details>
-</section>
-
+      </details>
+    </section>
 
     <p class="footer">©demimomi</p>
   </main>
