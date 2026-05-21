@@ -1,675 +1,1194 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deep Learning Lecture</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deep Learning Foundation Course</title>
   <style>
     :root {
-      --bg: #f6f8fb;
+      --bg: #f7f8fb;
       --card: #ffffff;
       --text: #1f2937;
-      --muted: #6b7280;
-      --accent: #10b981;
-      --accent-dark: #059669;
-      --border: #e5e7eb;
-      --code-bg: #0f172a;
-      --code-text: #e5e7eb;
+      --muted: #667085;
+      --blue: #2563eb;
+      --line: #e5e7eb;
+      --soft: #f1f5f9;
     }
-
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
-      line-height: 1.8;
       color: var(--text);
       background: var(--bg);
+      line-height: 1.75;
     }
-
-    a { color: var(--accent-dark); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    .page {
-      max-width: 1040px;
+    .wrap {
+      width: min(1040px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 32px 20px 56px;
+      padding: 32px 0 56px;
     }
-
     .hero {
+      padding: 32px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
       background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-      overflow: hidden;
-      margin-bottom: 28px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, .06);
     }
-
-    .hero img {
-      width: 100%;
-      display: block;
-      object-fit: cover;
-      max-height: 420px;
-    }
-
-    .hero-content { padding: 28px; }
-
     h1 {
-      margin: 0 0 12px;
-      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
       line-height: 1.15;
-      letter-spacing: -0.04em;
+      margin: 0 0 14px;
+      letter-spacing: .01em;
     }
-
     h2 {
-      margin-top: 0;
-      font-size: 1.85rem;
-      border-left: 6px solid var(--accent);
-      padding-left: 14px;
-      line-height: 1.35;
+      font-size: clamp(1.45rem, 2.5vw, 2rem);
+      margin: 0 0 8px;
     }
-
-    h3 {
-      margin: 26px 0 8px;
-      font-size: 1.18rem;
-      color: #111827;
+    h3 { margin: 0 0 8px; font-size: 1rem; }
+    p { margin: 0 0 14px; }
+    .lead { color: var(--muted); max-width: 850px; }
+    .top-image {
+      margin: 24px 0 0;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: var(--soft);
     }
-
-    .lead { color: #374151; font-size: 1.05rem; }
-
-    .button-row {
+    .top-image img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .top-image figcaption {
+      padding: 10px 14px;
+      color: var(--muted);
+      font-size: .9rem;
+      background: #fff;
+      border-top: 1px solid var(--line);
+    }
+    .actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 18px;
+      gap: 10px;
+      margin-top: 22px;
     }
-
-    .button {
+    .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      border-radius: 999px;
-      padding: 10px 16px;
-      font-weight: 700;
-      background: #ecfdf5;
-      color: var(--accent-dark);
-      border: 1px solid #a7f3d0;
-    }
-
-    .button-primary {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: #ffffff;
-      border: none;
-      padding: 14px 24px;
-      font-size: 1.08rem;
-      box-shadow: 0 10px 22px rgba(16, 185, 129, 0.35);
-      transform: translateY(0);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .button-primary:hover {
       text-decoration: none;
-      transform: translateY(-2px);
-      box-shadow: 0 14px 28px rgba(16, 185, 129, 0.45);
-    }
-
-    .button-primary::before {
-      content: "▶";
-      margin-right: 8px;
-      font-size: 0.9em;
-    }
-
-    .lecture-section {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 28px;
-      margin: 22px 0;
-      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
-    }
-
-    .meta {
-      color: var(--muted);
+      color: #fff;
       font-weight: 700;
-      margin-top: -4px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: var(--blue);
+      border: 1px solid var(--blue);
     }
-
-    .point-grid {
+    .btn.secondary {
+      color: var(--blue);
+      background: #fff;
+      border-color: #bfdbfe;
+    }
+    .lecture {
+      margin-top: 20px;
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--card);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, .04);
+    }
+    .lecture.featured { border-color: #93c5fd; }
+    .meta {
+      color: #1d4ed8;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .tag {
+      display: inline-block;
+      margin: 0 6px 8px 0;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #eff6ff;
+      border: 1px solid #dbeafe;
+      color: #1d4ed8;
+      font-size: .86rem;
+      font-weight: 700;
+    }
+    .summary-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 14px;
-      margin-top: 18px;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+      margin: 18px 0;
     }
-
-    .point {
-      background: #f9fafb;
-      border: 1px solid var(--border);
-      border-radius: 16px;
+    .summary-card {
       padding: 16px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 14px;
     }
-
-    .point h3 { margin-top: 0; }
-
-    details {
-      margin-top: 24px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: #f9fafb;
-      overflow: hidden;
-    }
-
-    summary {
-      cursor: pointer;
-      padding: 14px 18px;
+    .code-title {
+      font-size: 1.1rem;
       font-weight: 800;
-      background: #eef2ff;
-      color: #3730a3;
+      margin: 24px 0 10px;
     }
-
     pre {
-      margin: 0;
-      padding: 18px;
-      max-height: 620px;
+      max-height: 560px;
       overflow: auto;
-      background: var(--code-bg);
-      color: var(--code-text);
-      font-size: 0.88rem;
-      line-height: 1.55;
+      padding: 18px;
+      border-radius: 14px;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      color: #e5e7eb;
+      font-size: 13px;
+      line-height: 1.58;
       white-space: pre;
     }
-
     code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; }
-
-    .footer {
-      margin-top: 32px;
-      color: var(--muted);
-      text-align: center;
-      font-size: 0.92rem;
+    .note { color: var(--muted); }
+    footer { margin-top: 32px; color: var(--muted); text-align: center; }
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 24px, 1040px); padding-top: 20px; }
+      .hero, .lecture { padding: 20px; }
+      .summary-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <main class="page">
+  <main class="wrap">
     <section class="hero">
-      <img src="https://demimomi.github.io/demimomi/sinso_pc_2026Spring3-scaled-1-1920x1025.png" alt="Deep Learning Foundation Course image">
-      <div class="hero-content">
-        <h1>Deep Learning Foundation Course</h1>
-        <p class="lead">
-          東京大学松尾・岩澤研究室が主催する公開講座で、ニューラルネットワークの基礎から
-          自然言語処理や深層生成モデルまで、Deep Learning を基礎から実践的に学べる講座です。
-          特別招待で学生に交じって参加中！！
-        </p>
-        <div class="button-row">
-          <a class="button button-primary" href="https://demimomi.github.io/demimomi/llm.html" target="_blank" rel="noopener noreferrer">過去実績はこちら！</a>
-          <a class="button" href="https://weblab.t.u-tokyo.ac.jp/news/1225-dlb/" target="_blank" rel="noopener noreferrer">講座ページへ移動</a>
-        </div>
+      <h1>Deep Learning Foundation Course</h1>
+      <p class="lead">東京大学松尾・岩澤研究室が主催する公開講座で、ニューラルネットワークの基礎から自然言語処理や深層生成モデルまで、Deep Learning を基礎から実践的に学べる講座です。特別招待で学生に交じって参加中！！</p>
+
+      <figure class="top-image">
+        <img src="https://demimomi.github.io/demimomi/sinso_pc_2026Spring3-scaled-1-1920x1025.png" alt="2026 Spring Deep Learning course visual" loading="lazy" />
+        <figcaption>東京大学松尾・岩澤研究室 Deep Learning 基礎講座 2026 Spring</figcaption>
+      </figure>
+      <div class="actions">
+        <a class="btn" href="https://demimomi.github.io/demimomi/llm.html">過去実績はこちら！</a>
+        <a class="btn secondary" href="https://weblab.t.u-tokyo.ac.jp/" target="_blank" rel="noopener">講座ページへ移動</a>
       </div>
     </section>
 
-    <section id="lecture2-homework" class="lecture-section">
+    <section class="lecture">
       <h2>Lecture2 Homework</h2>
-      <p><strong>DEMIMOMI Pythonコード</strong></p>
       <p class="meta">更新者：demimomi 2026年4月25日 結果33位（最高5位） 全2,281名</p>
-      <p>
-        Lecture2 では、単層のソフトマックス回帰という制約の中で、
-        入力特徴量を丁寧に設計することで精度を高めた実装を掲載しています。
-      </p>
+      <p>Lecture2 では、単層のソフトマックス回帰という制約の中で、入力特徴量を丁寧に設計することで精度を高めた実装を掲載しています。</p>
     </section>
 
-    <section id="lecture3-homework" class="lecture-section">
+    <section class="lecture">
       <h2>Lecture3 Homework</h2>
-      <p><strong>DEMIMOMI Pythonコード</strong></p>
       <p class="meta">更新者：demimomi 2026年5月1日 結果90位（最高25位） 全2,158名</p>
-      <p>
-        これは Lecture3 の homework として作成した Python コードです。
-        Fashion MNIST を NumPy だけで実装した多層パーセプトロンで分類し、
-        前処理・学習安定化・推論時の工夫まで含めて、より実戦的な構成にしています。
-      </p>
-      <div class="point-grid">
-        <div class="point"><h3>1. 前処理</h3><p>画像を 0〜1 に正規化し、28×28 を 784 次元ベクトルに変換。訓練データの平均と標準偏差で標準化しています。</p></div>
-        <div class="point"><h3>2. MLP本体</h3><p>784 → 1024 → 512 → 256 → 10 の 4 層構成。Leaky ReLU、Batch Normalization、Dropout を組み合わせています。</p></div>
-        <div class="point"><h3>3. 学習の工夫</h3><p>AdamW 風の更新、weight decay、cosine schedule、label smoothing、early stopping を導入しています。</p></div>
-        <div class="point"><h3>4. 画像拡張と推論</h3><p>random shift augmentation と、推論時の TTA によって予測を安定化しています。</p></div>
-        <div class="point"><h3>5. アンサンブル</h3><p>隠れ層サイズや dropout 率が異なる 2 つの MLP を学習し、検証精度に応じた重み付きアンサンブルを行っています。</p></div>
-        <div class="point"><h3>6. 全体のポイント</h3><p>標準化・BatchNorm・Leaky ReLU・Dropout・AdamW風更新・Cosine 学習率・Random Shift・TTA を組み合わせた構成です。</p></div>
-      </div>
+      <p>Fashion MNIST を NumPy だけで実装した多層パーセプトロンで分類し、前処理・学習安定化・推論時の工夫まで含めて、より実戦的な構成にしています。</p>
+      <div><span class="tag">標準化</span><span class="tag">BatchNorm</span><span class="tag">Leaky ReLU</span><span class="tag">Dropout</span><span class="tag">TTA</span></div>
     </section>
 
-    <section id="lecture4-homework" class="lecture-section">
+    <section class="lecture">
       <h2>Lecture4 Homework</h2>
-      <p><strong>DEMIMOMI Pythonコード</strong></p>
       <p class="meta">更新者：demimomi 2026年5月9日 結果61位（最高10位） 全2,039名</p>
-      <p>
-        Lecture4 では、Fashion MNIST の分類課題に対して、PyTorch を使いながらも
-        高レベル API に頼りすぎない実装が求められています。このコードでは Dense 層や活性化関数、
-        Dropout、損失関数をかなり自前寄りに構成し、制約の中で学習の安定性と再現性を確保しています。
-      </p>
-      <div class="point-grid">
-        <div class="point"><h3>1. 課題条件への対応</h3><p><code>torch.nn.Conv2d</code> のような高レベル API が使えないため、<code>nn.Module</code> と <code>nn.Parameter</code> を使って必要最小限の構成でモデルを組んでいます。</p></div>
-        <div class="point"><h3>2. データ処理</h3><p>画像は 28×28 を 784 次元にフラット化し、0〜1 に正規化。<code>Dataset</code> と <code>DataLoader</code> で学習ループを回せる形にしています。</p></div>
-        <div class="point"><h3>3. モデル構成</h3><p>784 → 1024 → 512 → 256 → 10 の多層パーセプトロン。各隠れ層のあとに ReLU と Dropout を入れています。</p></div>
-        <div class="point"><h3>4. 損失関数も自前寄り</h3><p>Softmax と Cross Entropy をライブラリ任せにせず、数式に近い形で実装しています。</p></div>
-        <div class="point"><h3>5. 学習の安定化</h3><p>AdamW、weight decay、best weight 保存、patience つき early stopping により無駄な学習を防いでいます。</p></div>
-        <div class="point"><h3>6. 全体の見どころ</h3><p>制約の厳しいルールの中で、自前実装と PyTorch のバランスを取った完成度の高いコードです。</p></div>
-      </div>
+      <p>Fashion MNIST の分類課題に対して、PyTorch を使いながらも高レベル API に頼りすぎない実装です。Dense 層、活性化関数、Dropout、損失関数を自前寄りに構成し、制約の中で学習の安定性と再現性を確保しています。</p>
+      <div><span class="tag">PyTorch</span><span class="tag">自前実装</span><span class="tag">AdamW</span><span class="tag">Early Stopping</span></div>
     </section>
 
-    <section id="lecture5-homework" class="lecture-section">
+    <section class="lecture">
       <h2>Lecture5 Homework</h2>
-      <p><strong>DEMIMOMI Pythonコード</strong></p>
-      <p class="meta">更新者：demimomi 2026年5月16日 時点 8位！（最高5位。199人提出中）</p>
+      <p class="meta">更新者：demimomi 2026年5月22日 結果57位（最高5位） 全1,881名</p>
+      <p>Lecture5 では、CIFAR-10 の分類課題に対して、CNN ベースのモデルを PyTorch で実装しています。既存モデルや学習済みモデルに頼らず、WideResNet 系の CNN を自前で定義し、データ拡張・正則化・EMA・MixUp/CutMix・TTA を組み合わせて精度向上を狙いました。</p>
+      <div><span class="tag">WideResNet</span><span class="tag">RandAugment</span><span class="tag">MixUp / CutMix</span><span class="tag">EMA</span><span class="tag">TTA</span></div>
+      <p class="note">※ ご要望に合わせて、lecture05_homework.py（スクロール表示）は削除しています。</p>
+    </section>
 
-      <p>
-        Lecture5 では、CIFAR-10 の分類課題に対して、CNN ベースのモデルを PyTorch で実装しています。
-        今回は API 制限が基本的に緩和されている一方で、CNN ベースであること、torchvision 等の既存モデルや学習済みモデルを使わないことが条件です。
-        このコードでは、WideResNet 系の CNN を自前で定義し、データ拡張・正則化・EMA・MixUp/CutMix・TTA を組み合わせて、精度向上を狙っています。
-      </p>
+    <section class="lecture featured">
+      <h2>Lecture6 Homework</h2>
+      <p class="meta">更新者：demimomi 2026年5月22日 暫定2位！ 84人が提出中</p>
+      <p>Lecture6 では、VOC2011 データセットのセグメンテーション課題に対して、FCN 風のモデルを実装しています。backbone として ResNet101 を利用しつつ、torchvision.models.segmentation の完成済み FCN は使わず、複数階層の特徴を統合する独自ヘッドで 21 クラスのマスクを予測する構成です。</p>
+      <div class="summary-grid">
+        <div class="summary-card"><h3>1. データ処理</h3><p>画像は BILINEAR、マスクは NEAREST で 224×224 に変換。学習時はランダムスケール、ランダムクロップ、左右反転、ColorJitter を組み合わせています。</p></div>
+        <div class="summary-card"><h3>2. モデル構成</h3><p>ResNet101 の layer1〜layer4 から特徴を取り出し、それぞれ 64ch に射影して結合。浅い特徴と深い特徴を合わせて FCN 風にセグメンテーションを行います。</p></div>
+        <div class="summary-card"><h3>3. Loss と評価</h3><p>クラス不均衡を考慮した重み付き CrossEntropyLoss に Dice Loss を加え、評価指標として mean-IoU を計算しています。</p></div>
+        <div class="summary-card"><h3>4. 学習・推論の工夫</h3><p>AdamW、CosineAnnealingLR、mixed precision、gradient clipping、early stopping を採用。推論時は multi-scale と horizontal flip の TTA で予測を安定化しています。</p></div>
+      </div>
+      <div><span class="tag">FCN</span><span class="tag">VOC2011</span><span class="tag">ResNet101 Backbone</span><span class="tag">mIoU</span><span class="tag">Dice Loss</span><span class="tag">Multi-scale TTA</span></div>
+      <div class="code-title">lecture06_homework.py（スクロール表示）</div>
+      <pre><code># -*- coding: utf-8 -*-
+&quot;&quot;&quot;lecture06_homework.ipynb
 
-      <h3>1. データ拡張</h3>
-      <p>
-        RandomCrop、RandomHorizontalFlip、RandAugment、RandomErasing を組み合わせ、CIFAR-10 の画像に対して強めの augmentation を適用しています。
-        これにより、限られた訓練データでも汎化性能を高める構成にしています。
-      </p>
+Automatically generated by Colab.
 
-      <h3>2. モデル構成</h3>
-      <p>
-        モデルは WideResNet-28-10 をベースにした CNN です。
-        畳み込み層、BatchNorm、ReLU、Dropout、ショートカット接続を組み合わせ、CIFAR-10 向けに高い表現力を持つ構成にしています。
-      </p>
+Original file is located at
+    https://colab.research.google.com/drive/15DgO6iNXRw7bCn9VzOLDg6iaNEdp-E5V
 
-      <h3>3. 学習の工夫</h3>
-      <p>
-        optimizer には SGD + momentum + Nesterov を使い、CosineAnnealingLR で学習率をスケジューリングしています。
-        さらに label smoothing、gradient clipping、mixed precision を利用し、安定した学習を狙っています。
-      </p>
+# 第6回講義 宿題
 
-      <h3>4. MixUp / CutMix</h3>
-      <p>
-        学習時には MixUp と CutMix を確率的に切り替え、過学習を抑えながら決定境界を滑らかにしています。
-        CIFAR-10 のような小規模画像分類では、精度改善に効きやすい工夫です。
-      </p>
+---
+# Lecture 6: Homework
 
-      <h3>5. EMA と TTA</h3>
-      <p>
-        学習中は Exponential Moving Average のモデルを管理し、検証・推論には EMA 側を利用しています。
-        推論時には original と horizontal flip の平均を取る TTA を行い、提出予測を安定化しています。
-      </p>
+## 課題
+今Lessonで学んだことに工夫を加えて，FCNでより高性能なVOC2011データセットのセグメンテーションモデルを実装しましょう．
 
-      <h3>6. 全体のポイント</h3>
-      <p>
-        既存モデルや学習済みモデルに頼らず、CNN を自前定義したうえで、WideResNet、強いデータ拡張、MixUp/CutMix、EMA、TTA を組み合わせた構成です。
-        5月15日時点で 5位 という好成績につながった実装として掲載します。
-      </p>
+---
+## assignment
+Let&#x27;s apply what we just learned in the lesson to implement a higher-performance segmentation model for the VOC2011 dataset using FCN.
 
-      <details>
-        <summary>lecture05_homework.py（スクロール表示）</summary>
-        <pre><code class="language-python">#!/usr/bin/env python
-# coding: utf-8
+## 目標値
+mean-IoU 0.4
 
-# # 第5回講義 宿題
-# ---
-# Lecture 5: Homework
+---
+## Target value
+mean-IoU 0.4
 
-# ## 課題
-# 今Lessonで学んだことに工夫を加えて，CNNでより高精度なCIFAR10の分類器を実装してみましょう．
-# ---
-# Assignment
-# Based on what you learned in this lesson, let's implement a more accurate CIFAR-10 classifier using a CNN by adding your own improvements.
+## ルール
+- 訓練データは`x_train`，`y_train`，テストデータは`x_test`で与えられます．
+- 予測結果は，(21, 224, 224)のセグメンテーションマスクとしてください．
+- **下のセルで指定されている`x_train`，`y_train`以外の学習データは使わないでください．**
+-　事前学習モデルの利用は,
+backboneでの使用のみ可とします．
+    - torchvision.models.segmentation で提供されているような，ライブラリで実装されている FCN の利用は禁止とします．
 
-# ### 目標値
-# Accuracy 76%
+---
+## rule
+- Training data is given by `x_train`, `y_train`, and test data is given by `x_test`.
+- The prediction result should be a segmentation mask of (21, 224, 224).
+- **Please do not use training data other than `x_train` and `y_train` specified in the cells below. **
+-Using the pre-trained model,
+Can only be used in backbone.
+- The use of FCNs implemented in libraries such as those provided by torchvision.models.segmentation is prohibited.
 
-# ### ルール
-# - 訓練データは`x_train`， `t_train`，テストデータは`x_test`で与えられます．
-# - 予測ラベルは one_hot表現ではなく0~9のクラスラベル で表してください．
-# - 下のセルで指定されている`x_train`，`t_train`以外の学習データは使わないでください．
-# - Pytorchを利用して構いません．
-# - 今回から基本的にAPI制限はありません．
-# - ただしCNNベースでないモデル（Vision Transformerなど）やtorchvision等の既存モデル，学習済みモデルは用いないでください．
+## 提出方法
 
+- 2つのファイルを提出していただきます．
+    1. テストデータ (`x_test`) に対する予測マスクをnpy形式で保存し，**Omnicampusの宿題タブから「第6回 深層学習と画像認識」を選択して**提出してください．
+    2. それに対応するpythonのコードを　ファイル＞ダウンロード＞.pyをダウンロード　から保存し，**Omnicampusの宿題タブから「第6回 深層学習と画像認識 (code)」を選択して**提出してください．pythonファイル自体の提出ではなく，「提出内容」の部分にコード全体をコピー&amp;ペーストしてください．
+      
+- なお，採点は1で行い，2はコードの確認用として利用します（成績優秀者はコード内容を公開させていただくかもしれません）．コードの内容を変更した場合は，**1と2の両方を提出し直してください**．
+
+---
+## How to submit
+
+- Please submit two files.
+1. Save the prediction mask for the test data (`x_test`) in npy format, select ``6th Deep Learning and Image Recognition&#x27;&#x27; from the Homework tab of Omnicampus and submit it.
+2. Save the corresponding python code from File &gt; Download &gt; Download .py, select ``6th Deep Learning and Image Recognition (code)&#x27;&#x27; from the Omnicampus Homework tab, and submit. Rather than submitting the python file itself, please copy and paste the entire code into the &quot;submission content&quot; section.
+      
+- Please note that the score will be 1, and 2 will be used to check the code (excellent students may have their code made public). If you change the content of the code, **Please resubmit both 1 and 2**.
+
+### 評価方法
+
+- 予測ラベルの`y_test`に対するmean-IoUで評価します．
+- 即時採点しLeader Boardを更新します（採点スケジュールは別アナウンス）．
+- 締切時の点数を最終的な評価とします．
+
+---
+### Evaluation method
+
+- Evaluate by mean-IoU for predicted label `y_test`.
+- Immediate grading and updating the Leader Board (grading schedule will be announced separately).
+- The score at the deadline will be the final evaluation.
+&quot;&quot;&quot;
+
+# Mounting the drive
 from google.colab import drive
-drive.mount('/content/drive')
+drive.mount(&#x27;/content/drive&#x27;)
 
-work_dir = 'drive/MyDrive/Colab Notebooks/DLBasics2026_colab'
+# Specify working directory
+work_dir = &#x27;drive/MyDrive/Colab Notebooks/DLBasics2026_colab&#x27;
 
-import os
-import copy
+&quot;&quot;&quot;### データの読み込み（この部分は修正しないでください）
+
+---
+### Loading data (do not modify this part)
+
+&quot;&quot;&quot;
+
 import random
+
 import numpy as np
 import pandas as pd
+import torch
+from torchvision import transforms
+from tqdm import tqdm_notebook as tqdm
 from PIL import Image
 from sklearn.model_selection import train_test_split
 
+# learning data
+x_train = np.load(work_dir + &#x27;/Lecture06/Data/x_train.npy&#x27;, allow_pickle=True)
+y_train = np.load(work_dir + &#x27;/Lecture06/Data/y_train.npy&#x27;, allow_pickle=True)
+
+# test data
+x_test = np.load(work_dir + &#x27;/Lecture06/Data/x_test.npy&#x27;, allow_pickle=True)
+
+# For implementation reasons, the image is resized in the constructor.
+class train_dataset(torch.utils.data.Dataset):
+    def __init__(self, x_train, y_train):
+        self.x_train = []
+        self.y_train = []
+        for i in range(x_train.shape[0]):
+            self.x_train.append(transforms.Resize((224, 224))(Image.fromarray(np.uint8(x_train[i]))))
+            self.y_train.append(transforms.Resize((224, 224))(Image.fromarray(np.uint8(y_train[i]))))
+        self.transform = transforms.ToTensor()
+        self.target_transform = transforms.ToTensor()
+
+    def __len__(self):
+        return len(self.x_train)
+
+    def __getitem__(self, idx):
+        return self.transform(self.x_train[idx]), self.target_transform(self.y_train[idx])
+
+class test_dataset(torch.utils.data.Dataset):
+    def __init__(self, x_test):
+        self.x_test = []
+        for i in range(x_test.shape[0]):
+            self.x_test.append(transforms.Resize((224, 224))(Image.fromarray(np.uint8(x_test[i]))))
+        self.transform = transforms.ToTensor()
+
+    def __len__(self):
+        return len(self.x_test)
+
+    def __getitem__(self, idx):
+        return self.transform(self.x_test[idx])
+
+trainval_data = train_dataset(x_train, y_train)
+test_data = test_dataset(x_test)
+
+import os
+
+# List the contents of the work_dir to check the directory structure
+print(f&quot;Contents of {work_dir}:&quot;)
+!ls -R &quot;{work_dir}&quot;
+
+&quot;&quot;&quot;### FCN の実装
+
+---
+### Implementing FCN
+
+&quot;&quot;&quot;
+
+import os
+import random
+import numpy as np
+from PIL import Image
+
 import torch
-import torch.nn as nn
+from torch import nn, optim
 import torch.nn.functional as F
-import torch.optim as optim
+import torchvision
 from torchvision import transforms
-from torch.utils.data import Dataset, DataLoader, Subset
+import torchvision.transforms.functional as TF
+from torchvision.transforms import InterpolationMode
+from torch.utils.data import Dataset, DataLoader
+from tqdm.notebook import tqdm
 
-x_train = np.load(work_dir + '/Lecture05/data/x_train.npy')
-t_train = np.load(work_dir + '/Lecture05/data/t_train.npy')
-x_test = np.load(work_dir + '/Lecture05/data/x_test.npy')
-
-# -----------------------------
-# Reproducibility / device
-# -----------------------------
-def fix_seed(seed=42):
+# -------------------------
+# 1. 乱数固定
+# -------------------------
+def fix_seed(seed=44):
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
 
-fix_seed(42)
+SEED = 44
+fix_seed(SEED)
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = &quot;cuda&quot; if torch.cuda.is_available() else &quot;cpu&quot;
 torch.backends.cudnn.benchmark = True
 
-# -----------------------------
-# Dataset with independent transforms for train/valid/test
-# -----------------------------
-class CIFAR10ArrayDataset(Dataset):
-    def __init__(self, x, t=None, transform=None):
-        self.x = x.astype(np.uint8)
-        self.t = None if t is None else t.astype(np.int64)
-        self.transform = transform
+print(&quot;device:&quot;, device)
+
+num_classes = 21
+ignore_index = 255
+
+# -------------------------
+# 2. Dataset
+# 読み込みセルの train_dataset は使わず、新しく安全なDatasetを定義します。
+# 重要：maskは必ずNEARESTでリサイズします。
+# -------------------------
+
+class VOCSegDatasetV2(Dataset):
+    def __init__(self, images, masks=None, train=False):
+        self.images = images
+        self.masks = masks
+        self.train = train
+
+        self.color_jitter = transforms.ColorJitter(
+            brightness=0.25,
+            contrast=0.25,
+            saturation=0.25,
+            hue=0.05
+        )
+
+        self.normalize = transforms.Normalize(
+            mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225]
+        )
 
     def __len__(self):
-        return len(self.x)
+        return len(self.images)
+
+    def _image_to_pil(self, arr):
+        return Image.fromarray(np.uint8(arr)).convert(&quot;RGB&quot;)
+
+    def _mask_to_pil(self, arr):
+        arr = np.asarray(arr)
+        if arr.ndim == 3:
+            arr = arr[:, :, 0]
+        return Image.fromarray(np.uint8(arr))
+
+    def _mask_to_tensor(self, mask):
+        mask = np.asarray(mask, dtype=np.int64)
+        if mask.ndim == 3:
+            mask = mask[:, :, 0]
+
+        # 0〜20以外はignore扱いにする
+        mask[(mask &lt; 0) | (mask &gt;= num_classes)] = ignore_index
+        return torch.from_numpy(mask).long()
 
     def __getitem__(self, idx):
-        img = Image.fromarray(self.x[idx])
-        if self.transform is not None:
-            img = self.transform(img)
-        if self.t is None:
+        img = self._image_to_pil(self.images[idx])
+
+        # test
+        if self.masks is None:
+            img = TF.resize(
+                img,
+                size=(224, 224),
+                interpolation=InterpolationMode.BILINEAR
+            )
+            img = TF.to_tensor(img)
+            img = self.normalize(img)
             return img
-        return img, torch.tensor(self.t[idx], dtype=torch.long)
 
-# Use statistics computed only from the given training data.
-_x = x_train.astype(np.float32) / 255.0
-mean = _x.mean(axis=(0, 1, 2)).tolist()
-std = _x.std(axis=(0, 1, 2)).tolist()
-print("mean:", mean, "std:", std)
+        mask = self._mask_to_pil(self.masks[idx])
 
-# Strong augmentation. RandAugment is allowed because it is not a pretrained/existing model.
-train_tfms = [
-    transforms.RandomCrop(32, padding=4, padding_mode="reflect"),
-    transforms.RandomHorizontalFlip(p=0.5),
-]
-try:
-    train_tfms.append(transforms.RandAugment(num_ops=2, magnitude=9))
-except Exception:
-    # Fallback for older torchvision versions.
-    train_tfms += [
-        transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.05),
-        transforms.RandomAffine(degrees=10, translate=(0.08, 0.08)),
-    ]
-train_tfms += [
-    transforms.ToTensor(),
-    transforms.Normalize(mean, std),
-    transforms.RandomErasing(p=0.25, scale=(0.02, 0.15), ratio=(0.3, 3.3), value="random"),
-]
-transform_train = transforms.Compose(train_tfms)
-transform_test = transforms.Compose([
-    transforms.ToTensor(),
-    transforms.Normalize(mean, std),
-])
+        if self.train:
+            # ランダムスケール
+            scale_size = random.randint(240, 320)
 
-# Stratified validation split. Validation is NOT augmented.
-val_size = 5000
-train_idx, val_idx = train_test_split(
-    np.arange(len(x_train)),
-    test_size=val_size,
-    stratify=t_train,
-    random_state=42,
+            img = TF.resize(
+                img,
+                size=(scale_size, scale_size),
+                interpolation=InterpolationMode.BILINEAR
+            )
+            mask = TF.resize(
+                mask,
+                size=(scale_size, scale_size),
+                interpolation=InterpolationMode.NEAREST
+            )
+
+            # ランダムクロップ
+            top, left, height, width = transforms.RandomCrop.get_params(
+                img,
+                output_size=(224, 224)
+            )
+            img = TF.crop(img, top, left, height, width)
+            mask = TF.crop(mask, top, left, height, width)
+
+            # 左右反転
+            if random.random() &lt; 0.5:
+                img = TF.hflip(img)
+                mask = TF.hflip(mask)
+
+            # 色変換は画像だけ
+            if random.random() &lt; 0.8:
+                img = self.color_jitter(img)
+
+        else:
+            img = TF.resize(
+                img,
+                size=(224, 224),
+                interpolation=InterpolationMode.BILINEAR
+            )
+            mask = TF.resize(
+                mask,
+                size=(224, 224),
+                interpolation=InterpolationMode.NEAREST
+            )
+
+        img = TF.to_tensor(img)
+        img = self.normalize(img)
+        mask = self._mask_to_tensor(mask)
+
+        return img, mask
+
+# -------------------------
+# 2. Dataset
+# 読み込みセルの train_dataset は使わず、新しく安全なDatasetを定義します。
+# 重要：maskは必ずNEARESTでリサイズします。
+# -------------------------
+
+class VOCSegDatasetV2(Dataset):
+    def __init__(self, images, masks=None, train=False):
+        self.images = images
+        self.masks = masks
+        self.train = train
+
+        self.color_jitter = transforms.ColorJitter(
+            brightness=0.25,
+            contrast=0.25,
+            saturation=0.25,
+            hue=0.05
+        )
+
+        self.normalize = transforms.Normalize(
+            mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225]
+        )
+
+    def __len__(self):
+        return len(self.images)
+
+    def _image_to_pil(self, arr):
+        return Image.fromarray(np.uint8(arr)).convert(&quot;RGB&quot;)
+
+    def _mask_to_pil(self, arr):
+        arr = np.asarray(arr)
+        if arr.ndim == 3:
+            arr = arr[:, :, 0]
+        return Image.fromarray(np.uint8(arr))
+
+    def _mask_to_tensor(self, mask):
+        mask = np.asarray(mask, dtype=np.int64)
+        if mask.ndim == 3:
+            mask = mask[:, :, 0]
+
+        # 0〜20以外はignore扱いにする
+        mask[(mask &lt; 0) | (mask &gt;= num_classes)] = ignore_index
+        return torch.from_numpy(mask).long()
+
+    def __getitem__(self, idx):
+        img = self._image_to_pil(self.images[idx])
+
+        # test
+        if self.masks is None:
+            img = TF.resize(
+                img,
+                size=(224, 224),
+                interpolation=InterpolationMode.BILINEAR
+            )
+            img = TF.to_tensor(img)
+            img = self.normalize(img)
+            return img
+
+        mask = self._mask_to_pil(self.masks[idx])
+
+        if self.train:
+            # ランダムスケール
+            scale_size = random.randint(240, 320)
+
+            img = TF.resize(
+                img,
+                size=(scale_size, scale_size),
+                interpolation=InterpolationMode.BILINEAR
+            )
+            mask = TF.resize(
+                mask,
+                size=(scale_size, scale_size),
+                interpolation=InterpolationMode.NEAREST
+            )
+
+            # ランダムクロップ
+            top, left, height, width = transforms.RandomCrop.get_params(
+                img,
+                output_size=(224, 224)
+            )
+            img = TF.crop(img, top, left, height, width)
+            mask = TF.crop(mask, top, left, height, width)
+
+            # 左右反転
+            if random.random() &lt; 0.5:
+                img = TF.hflip(img)
+                mask = TF.hflip(mask)
+
+            # 色変換は画像だけ
+            if random.random() &lt; 0.8:
+                img = self.color_jitter(img)
+
+        else:
+            img = TF.resize(
+                img,
+                size=(224, 224),
+                interpolation=InterpolationMode.BILINEAR
+            )
+            mask = TF.resize(
+                mask,
+                size=(224, 224),
+                interpolation=InterpolationMode.NEAREST
+            )
+
+        img = TF.to_tensor(img)
+        img = self.normalize(img)
+        mask = self._mask_to_tensor(mask)
+
+        return img, mask
+
+# -------------------------
+# 3. train / valid / test の作成
+# -------------------------
+
+indices = np.arange(len(x_train))
+
+rng = np.random.default_rng(SEED)
+rng.shuffle(indices)
+
+val_size = min(100, max(1, int(len(indices) * 0.1)))
+
+val_idx = indices[:val_size]
+train_idx = indices[val_size:]
+
+train_dataset_v2 = VOCSegDatasetV2(
+    x_train[train_idx],
+    y_train[train_idx],
+    train=True
 )
 
-train_dataset = CIFAR10ArrayDataset(x_train, t_train, transform_train)
-valid_dataset = CIFAR10ArrayDataset(x_train, t_train, transform_test)
-test_dataset  = CIFAR10ArrayDataset(x_test, None, transform_test)
+valid_dataset_v2 = VOCSegDatasetV2(
+    x_train[val_idx],
+    y_train[val_idx],
+    train=False
+)
 
-train_data = Subset(train_dataset, train_idx)
-val_data   = Subset(valid_dataset, val_idx)
-test_data  = test_dataset
+test_dataset_v2 = VOCSegDatasetV2(
+    x_test,
+    masks=None,
+    train=False
+)
 
-batch_size = 128
-num_workers = 2
-pin_memory = (device.type == "cuda")
+batch_size = 8
 
-dataloader_train = DataLoader(train_data, batch_size=batch_size, shuffle=True,
-                              num_workers=num_workers, pin_memory=pin_memory, drop_last=True)
-dataloader_valid = DataLoader(val_data, batch_size=batch_size, shuffle=False,
-                              num_workers=num_workers, pin_memory=pin_memory)
-dataloader_test = DataLoader(test_data, batch_size=batch_size, shuffle=False,
-                             num_workers=num_workers, pin_memory=pin_memory)
+dataloader_train = DataLoader(
+    train_dataset_v2,
+    batch_size=batch_size,
+    shuffle=True,
+    num_workers=2,
+    pin_memory=True,
+    drop_last=True
+)
 
-# -----------------------------
-# Custom WideResNet for CIFAR-10
-# CNN-based, trained from scratch, no torchvision model/pretraining.
-# -----------------------------
-class WideBasicBlock(nn.Module):
-    def __init__(self, in_planes, out_planes, stride, dropout_rate):
+dataloader_valid = DataLoader(
+    valid_dataset_v2,
+    batch_size=batch_size,
+    shuffle=False,
+    num_workers=2,
+    pin_memory=True
+)
+
+dataloader_test = DataLoader(
+    test_dataset_v2,
+    batch_size=batch_size,
+    shuffle=False,
+    num_workers=2,
+    pin_memory=True
+)
+
+print(&quot;train:&quot;, len(train_dataset_v2))
+print(&quot;valid:&quot;, len(valid_dataset_v2))
+print(&quot;test :&quot;, len(test_dataset_v2))
+
+# -------------------------
+# 4. FCN風モデル
+# torchvision.models.segmentation は使わず、
+# torchvision.models.resnet101 をbackboneとして使います。
+# -------------------------
+
+def conv_bn_relu(in_ch, out_ch, kernel_size=1, dropout=0.0):
+    padding = kernel_size // 2
+
+    layers = [
+        nn.Conv2d(
+            in_ch,
+            out_ch,
+            kernel_size=kernel_size,
+            padding=padding,
+            bias=False
+        ),
+        nn.BatchNorm2d(out_ch),
+        nn.ReLU(inplace=True)
+    ]
+
+    if dropout &gt; 0:
+        layers.append(nn.Dropout2d(dropout))
+
+    return nn.Sequential(*layers)
+
+
+class FCNResNet(nn.Module):
+    def __init__(self, num_classes=21, backbone_name=&quot;resnet101&quot;):
         super().__init__()
-        self.bn1 = nn.BatchNorm2d(in_planes)
-        self.conv1 = nn.Conv2d(in_planes, out_planes, kernel_size=3, padding=1, bias=False)
-        self.bn2 = nn.BatchNorm2d(out_planes)
-        self.conv2 = nn.Conv2d(out_planes, out_planes, kernel_size=3, stride=stride, padding=1, bias=False)
-        self.dropout_rate = dropout_rate
-        self.shortcut = nn.Identity()
-        if stride != 1 or in_planes != out_planes:
-            self.shortcut = nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=stride, bias=False)
+
+        if backbone_name == &quot;resnet101&quot;:
+            try:
+                weights = torchvision.models.ResNet101_Weights.DEFAULT
+                resnet = torchvision.models.resnet101(weights=weights)
+            except Exception:
+                resnet = torchvision.models.resnet101(pretrained=True)
+        else:
+            try:
+                weights = torchvision.models.ResNet50_Weights.DEFAULT
+                resnet = torchvision.models.resnet50(weights=weights)
+            except Exception:
+                resnet = torchvision.models.resnet50(pretrained=True)
+
+        self.conv1 = resnet.conv1
+        self.bn1 = resnet.bn1
+        self.relu = resnet.relu
+        self.maxpool = resnet.maxpool
+
+        self.layer1 = resnet.layer1
+        self.layer2 = resnet.layer2
+        self.layer3 = resnet.layer3
+        self.layer4 = resnet.layer4
+
+        self.proj2 = conv_bn_relu(256, 64, kernel_size=1)
+        self.proj3 = conv_bn_relu(512, 64, kernel_size=1)
+        self.proj4 = conv_bn_relu(1024, 64, kernel_size=1)
+        self.proj5 = conv_bn_relu(2048, 64, kernel_size=1)
+
+        self.classifier = nn.Sequential(
+            conv_bn_relu(64 * 4, 256, kernel_size=3, dropout=0.10),
+            nn.Conv2d(256, num_classes, kernel_size=1)
+        )
+
+    def encoder_parameters(self):
+        modules = [
+            self.conv1,
+            self.bn1,
+            self.layer1,
+            self.layer2,
+            self.layer3,
+            self.layer4
+        ]
+
+        for module in modules:
+            yield from module.parameters()
+
+    def head_parameters(self):
+        modules = [
+            self.proj2,
+            self.proj3,
+            self.proj4,
+            self.proj5,
+            self.classifier
+        ]
+
+        for module in modules:
+            yield from module.parameters()
 
     def forward(self, x):
-        out = F.relu(self.bn1(x), inplace=True)
-        shortcut = self.shortcut(out if not isinstance(self.shortcut, nn.Identity) else x)
-        out = self.conv1(out)
-        out = F.relu(self.bn2(out), inplace=True)
-        if self.dropout_rate > 0:
-            out = F.dropout(out, p=self.dropout_rate, training=self.training)
-        out = self.conv2(out)
-        return out + shortcut
+        input_size = x.shape[-2:]
 
-class WideResNet(nn.Module):
-    def __init__(self, depth=28, widen_factor=10, dropout_rate=0.3, num_classes=10):
-        super().__init__()
-        assert (depth - 4) % 6 == 0
-        n = (depth - 4) // 6
-        channels = [16, 16 * widen_factor, 32 * widen_factor, 64 * widen_factor]
-        self.in_planes = channels[0]
-        self.conv1 = nn.Conv2d(3, channels[0], kernel_size=3, padding=1, bias=False)
-        self.layer1 = self._make_layer(channels[1], n, stride=1, dropout_rate=dropout_rate)
-        self.layer2 = self._make_layer(channels[2], n, stride=2, dropout_rate=dropout_rate)
-        self.layer3 = self._make_layer(channels[3], n, stride=2, dropout_rate=dropout_rate)
-        self.bn = nn.BatchNorm2d(channels[3])
-        self.fc = nn.Linear(channels[3], num_classes)
+        x = self.conv1(x)
+        x = self.bn1(x)
+        x = self.relu(x)
+        x = self.maxpool(x)
 
-    def _make_layer(self, out_planes, num_blocks, stride, dropout_rate):
-        strides = [stride] + [1] * (num_blocks - 1)
-        layers = []
-        for s in strides:
-            layers.append(WideBasicBlock(self.in_planes, out_planes, s, dropout_rate))
-            self.in_planes = out_planes
-        return nn.Sequential(*layers)
+        c2 = self.layer1(x)
+        c3 = self.layer2(c2)
+        c4 = self.layer3(c3)
+        c5 = self.layer4(c4)
 
-    def forward(self, x):
-        out = self.conv1(x)
-        out = self.layer1(out)
-        out = self.layer2(out)
-        out = self.layer3(out)
-        out = F.relu(self.bn(out), inplace=True)
-        out = F.adaptive_avg_pool2d(out, 1).flatten(1)
-        return self.fc(out)
+        p2 = self.proj2(c2)
 
-def init_weights(m):
-    if isinstance(m, nn.Conv2d):
-        nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
-    elif isinstance(m, nn.Linear):
-        nn.init.kaiming_normal_(m.weight)
-        if m.bias is not None:
-            nn.init.zeros_(m.bias)
-    elif isinstance(m, nn.BatchNorm2d):
-        nn.init.ones_(m.weight)
-        nn.init.zeros_(m.bias)
+        p3 = F.interpolate(
+            self.proj3(c3),
+            size=p2.shape[-2:],
+            mode=&quot;bilinear&quot;,
+            align_corners=False
+        )
 
-conv_net = WideResNet(depth=28, widen_factor=10, dropout_rate=0.3, num_classes=10).to(device)
-conv_net.apply(init_weights)
+        p4 = F.interpolate(
+            self.proj4(c4),
+            size=p2.shape[-2:],
+            mode=&quot;bilinear&quot;,
+            align_corners=False
+        )
 
-# Exponential Moving Average usually improves validation/test accuracy.
-ema_net = copy.deepcopy(conv_net).to(device)
-ema_net.eval()
-for p in ema_net.parameters():
-    p.requires_grad_(False)
+        p5 = F.interpolate(
+            self.proj5(c5),
+            size=p2.shape[-2:],
+            mode=&quot;bilinear&quot;,
+            align_corners=False
+        )
 
-@torch.no_grad()
-def update_ema(model, ema_model, decay=0.999):
-    msd = model.state_dict()
-    for k, v in ema_model.state_dict().items():
-        if v.dtype.is_floating_point:
-            v.mul_(decay).add_(msd[k].detach(), alpha=1.0 - decay)
-        else:
-            v.copy_(msd[k])
+        feat = torch.cat([p2, p3, p4, p5], dim=1)
+        out = self.classifier(feat)
 
-# -----------------------------
-# MixUp / CutMix
-# -----------------------------
-def rand_bbox(size, lam):
-    W = size[3]
-    H = size[2]
-    cut_rat = np.sqrt(1.0 - lam)
-    cut_w = int(W * cut_rat)
-    cut_h = int(H * cut_rat)
-    cx = np.random.randint(W)
-    cy = np.random.randint(H)
-    bbx1 = np.clip(cx - cut_w // 2, 0, W)
-    bby1 = np.clip(cy - cut_h // 2, 0, H)
-    bbx2 = np.clip(cx + cut_w // 2, 0, W)
-    bby2 = np.clip(cy + cut_h // 2, 0, H)
-    return bbx1, bby1, bbx2, bby2
+        out = F.interpolate(
+            out,
+            size=input_size,
+            mode=&quot;bilinear&quot;,
+            align_corners=False
+        )
 
-def ce_loss(logits, targets):
-    return F.cross_entropy(logits, targets, label_smoothing=0.1)
+        return out
 
-def mixed_criterion(logits, y_a, y_b, lam):
-    return lam * ce_loss(logits, y_a) + (1.0 - lam) * ce_loss(logits, y_b)
 
-# -----------------------------
-# Training setup
-# -----------------------------
-n_epochs = 200
-lr = 0.1
-optimizer = optim.SGD(conv_net.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4, nesterov=True)
-scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=n_epochs)
-scaler = torch.cuda.amp.GradScaler(enabled=(device.type == "cuda"))
+model = FCNResNet(
+    num_classes=num_classes,
+    backbone_name=&quot;resnet101&quot;
+).to(device)
 
-mixup_alpha = 0.8
-cutmix_alpha = 1.0
-cutmix_prob = 0.5
-best_acc = 0.0
-best_state = None
+print(&quot;model ready&quot;)
 
-# -----------------------------
-# Train / validate
-# -----------------------------
-for epoch in range(1, n_epochs + 1):
-    conv_net.train()
-    losses_train = []
-    n_train = 0
-    acc_train = 0
+# -------------------------
+# 5. Loss / Metric
+# -------------------------
 
-    for x, t in dataloader_train:
-        x = x.to(device, non_blocking=True)
-        t = t.to(device, non_blocking=True)
-        optimizer.zero_grad(set_to_none=True)
+def set_bn_eval(m):
+    if isinstance(m, nn.BatchNorm2d):
+        m.eval()
 
-        r = np.random.rand()
-        if r < cutmix_prob:
-            lam = np.random.beta(cutmix_alpha, cutmix_alpha)
-            rand_index = torch.randperm(x.size(0), device=device)
-            y_a, y_b = t, t[rand_index]
-            bbx1, bby1, bbx2, bby2 = rand_bbox(x.size(), lam)
-            x[:, :, bby1:bby2, bbx1:bbx2] = x[rand_index, :, bby1:bby2, bbx1:bbx2]
-            lam = 1.0 - ((bbx2 - bbx1) * (bby2 - bby1) / (x.size(-1) * x.size(-2)))
-            with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
-                y = conv_net(x)
-                loss = mixed_criterion(y, y_a, y_b, lam)
-        else:
-            lam = np.random.beta(mixup_alpha, mixup_alpha)
-            rand_index = torch.randperm(x.size(0), device=device)
-            y_a, y_b = t, t[rand_index]
-            mixed_x = lam * x + (1.0 - lam) * x[rand_index]
-            with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
-                y = conv_net(mixed_x)
-                loss = mixed_criterion(y, y_a, y_b, lam)
 
-        scaler.scale(loss).backward()
-        scaler.unscale_(optimizer)
-        torch.nn.utils.clip_grad_norm_(conv_net.parameters(), max_norm=5.0)
-        scaler.step(optimizer)
-        scaler.update()
-        update_ema(conv_net, ema_net, decay=0.999)
+def make_class_weights(masks):
+    counts = np.zeros(num_classes, dtype=np.float64)
 
-        pred = y.argmax(dim=1)
-        acc_train += (pred == t).float().sum().item()
-        n_train += t.size(0)
-        losses_train.append(loss.item())
+    for m in masks:
+        arr = np.asarray(m)
 
-    scheduler.step()
+        if arr.ndim == 3:
+            arr = arr[:, :, 0]
 
-    # Validate with EMA model and deterministic transform.
-    ema_net.eval()
-    losses_valid = []
-    n_val = 0
-    acc_val = 0
-    with torch.no_grad():
-        for x, t in dataloader_valid:
-            x = x.to(device, non_blocking=True)
-            t = t.to(device, non_blocking=True)
-            y = ema_net(x)
-            loss = ce_loss(y, t)
-            pred = y.argmax(dim=1)
-            acc_val += (pred == t).float().sum().item()
-            n_val += t.size(0)
-            losses_valid.append(loss.item())
+        pil_m = Image.fromarray(np.uint8(arr))
+        pil_m = TF.resize(
+            pil_m,
+            size=(224, 224),
+            interpolation=InterpolationMode.NEAREST
+        )
 
-    val_acc = acc_val / n_val
-    if val_acc > best_acc:
-        best_acc = val_acc
-        best_state = copy.deepcopy(ema_net.state_dict())
-        torch.save(best_state, work_dir + "/Lecture05/best_wrn28_10_ema.pth")
+        arr = np.asarray(pil_m, dtype=np.int64)
+        arr[(arr &lt; 0) | (arr &gt;= num_classes)] = ignore_index
 
-    print(
-        f"EPOCH: {epoch:03d}, "
-        f"Train [Loss: {np.mean(losses_train):.4f}, Accuracy(raw): {acc_train/n_train:.4f}], "
-        f"Valid [Loss: {np.mean(losses_valid):.4f}, Accuracy: {val_acc:.4f}], "
-        f"Best: {best_acc:.4f}"
+        valid = arr != ignore_index
+
+        if valid.any():
+            counts += np.bincount(
+                arr[valid].reshape(-1),
+                minlength=num_classes
+            )
+
+    freq = counts / max(counts.sum(), 1.0)
+
+    weights = 1.0 / np.log(1.02 + freq)
+    weights = weights / weights.mean()
+    weights = np.clip(weights, 0.5, 3.0)
+
+    return torch.tensor(weights, dtype=torch.float32)
+
+
+class_weights = make_class_weights(y_train).to(device)
+
+try:
+    ce_loss = nn.CrossEntropyLoss(
+        weight=class_weights,
+        ignore_index=ignore_index,
+        label_smoothing=0.03
+    )
+except TypeError:
+    ce_loss = nn.CrossEntropyLoss(
+        weight=class_weights,
+        ignore_index=ignore_index
     )
 
-# -----------------------------
-# Prediction with TTA: original + horizontal flip
-# -----------------------------
-if best_state is not None:
-    ema_net.load_state_dict(best_state)
-ema_net.eval()
 
-t_pred = []
+def dice_loss(logits, targets, eps=1e-6):
+    valid = targets != ignore_index
+
+    safe_targets = targets.clone()
+    safe_targets[~valid] = 0
+
+    probs = F.softmax(logits, dim=1)
+
+    one_hot = F.one_hot(
+        safe_targets,
+        num_classes=num_classes
+    ).permute(0, 3, 1, 2).float()
+
+    valid = valid.unsqueeze(1).float()
+
+    probs = probs * valid
+    one_hot = one_hot * valid
+
+    dims = (0, 2, 3)
+
+    inter = (probs * one_hot).sum(dims)
+    union = probs.sum(dims) + one_hot.sum(dims)
+
+    dice = (2.0 * inter + eps) / (union + eps)
+
+    return 1.0 - dice.mean()
+
+
+def criterion(logits, targets):
+    loss_ce = ce_loss(logits, targets)
+    loss_dice = dice_loss(logits, targets)
+
+    return loss_ce + 0.3 * loss_dice
+
+
+class mIoUScore:
+    def __init__(self, n_classes):
+        self.n_classes = n_classes
+        self.confusion_matrix = np.zeros(
+            (n_classes, n_classes),
+            dtype=np.float64
+        )
+
+    def _fast_hist(self, label_true, label_pred):
+        mask = (
+            (label_true &gt;= 0) &amp;
+            (label_true &lt; self.n_classes)
+        )
+
+        hist = np.bincount(
+            self.n_classes * label_true[mask].astype(int)
+            + label_pred[mask],
+            minlength=self.n_classes ** 2
+        ).reshape(self.n_classes, self.n_classes)
+
+        return hist
+
+    def update(self, label_trues, label_preds):
+        for lt, lp in zip(label_trues, label_preds):
+            self.confusion_matrix += self._fast_hist(
+                lt.flatten(),
+                lp.flatten()
+            )
+
+    def get_scores(self):
+        hist = self.confusion_matrix
+
+        with np.errstate(divide=&quot;ignore&quot;, invalid=&quot;ignore&quot;):
+            iou = np.diag(hist) / (
+                hist.sum(axis=1)
+                + hist.sum(axis=0)
+                - np.diag(hist)
+            )
+
+        return np.nanmean(iou)
+
+# -------------------------
+# 6. Optimizer / Scheduler
+# -------------------------
+
+optimizer = optim.AdamW(
+    [
+        {
+            &quot;params&quot;: model.encoder_parameters(),
+            &quot;lr&quot;: 1e-5
+        },
+        {
+            &quot;params&quot;: model.head_parameters(),
+            &quot;lr&quot;: 3e-4
+        }
+    ],
+    weight_decay=1e-4
+)
+
+n_epochs = 60
+
+scheduler = optim.lr_scheduler.CosineAnnealingLR(
+    optimizer,
+    T_max=n_epochs,
+    eta_min=1e-6
+)
+
+scaler = torch.cuda.amp.GradScaler(
+    enabled=(device == &quot;cuda&quot;)
+)
+
+best_miou = -1.0
+patience = 15
+no_improve = 0
+
+best_path = work_dir + &quot;/Lecture06/best_fcn_resnet101.pth&quot;
+
+# -------------------------
+# 7. Training
+# -------------------------
+
+for epoch in range(1, n_epochs + 1):
+    model.train()
+
+    # 小さいbatchではBNが不安定になりやすいためBNをeval固定
+    model.apply(set_bn_eval)
+
+    train_losses = []
+
+    for images, targets in tqdm(
+        dataloader_train,
+        desc=f&quot;train {epoch}/{n_epochs}&quot;
+    ):
+        images = images.to(device, non_blocking=True)
+        targets = targets.to(device, non_blocking=True)
+
+        optimizer.zero_grad(set_to_none=True)
+
+        with torch.cuda.amp.autocast(enabled=(device == &quot;cuda&quot;)):
+            logits = model(images)
+            loss = criterion(logits, targets)
+
+        scaler.scale(loss).backward()
+
+        scaler.unscale_(optimizer)
+        torch.nn.utils.clip_grad_norm_(
+            model.parameters(),
+            max_norm=1.0
+        )
+
+        scaler.step(optimizer)
+        scaler.update()
+
+        train_losses.append(loss.item())
+
+    model.eval()
+
+    valid_losses = []
+    metrics = mIoUScore(num_classes)
+
+    with torch.no_grad():
+        for images, targets in tqdm(
+            dataloader_valid,
+            desc=f&quot;valid {epoch}/{n_epochs}&quot;
+        ):
+            images = images.to(device, non_blocking=True)
+            targets = targets.to(device, non_blocking=True)
+
+            with torch.cuda.amp.autocast(enabled=(device == &quot;cuda&quot;)):
+                logits = model(images)
+                loss = criterion(logits, targets)
+
+            valid_losses.append(loss.item())
+
+            preds = logits.argmax(dim=1).cpu().numpy()
+            metrics.update(
+                targets.cpu().numpy(),
+                preds
+            )
+
+    val_miou = metrics.get_scores()
+    scheduler.step()
+
+    print(
+        f&quot;Epoch {epoch:03d} | &quot;
+        f&quot;train_loss={np.mean(train_losses):.4f} | &quot;
+        f&quot;valid_loss={np.mean(valid_losses):.4f} | &quot;
+        f&quot;valid_mIoU={val_miou:.4f}&quot;
+    )
+
+    if val_miou &gt; best_miou:
+        best_miou = val_miou
+        no_improve = 0
+
+        torch.save(
+            model.state_dict(),
+            best_path
+        )
+
+        print(f&quot;best model saved: mIoU={best_miou:.4f}&quot;)
+
+    else:
+        no_improve += 1
+
+        if no_improve &gt;= patience:
+            print(&quot;Early stopping&quot;)
+            break
+
+print(&quot;best valid mIoU:&quot;, best_miou)
+
+# -------------------------
+# 8. Test prediction with TTA
+# -------------------------
+
+model.load_state_dict(
+    torch.load(best_path, map_location=device)
+)
+
+model.eval()
+
+
+@torch.no_grad()
+def predict_tta(model, images, scales=(0.75, 1.0, 1.25)):
+    original_size = images.shape[-2:]
+
+    logits_sum = None
+    count = 0
+
+    for scale in scales:
+        if scale == 1.0:
+            x = images
+        else:
+            x = F.interpolate(
+                images,
+                scale_factor=scale,
+                mode=&quot;bilinear&quot;,
+                align_corners=False
+            )
+
+        logits = model(x)
+        logits = F.interpolate(
+            logits,
+            size=original_size,
+            mode=&quot;bilinear&quot;,
+            align_corners=False
+        )
+
+        x_flip = torch.flip(x, dims=[3])
+        logits_flip = model(x_flip)
+        logits_flip = torch.flip(logits_flip, dims=[3])
+
+        logits_flip = F.interpolate(
+            logits_flip,
+            size=original_size,
+            mode=&quot;bilinear&quot;,
+            align_corners=False
+        )
+
+        logits_pair = logits + logits_flip
+
+        if logits_sum is None:
+            logits_sum = logits_pair
+        else:
+            logits_sum += logits_pair
+
+        count += 2
+
+    return logits_sum / count
+
+
+y_pred = []
+
 with torch.no_grad():
-    for x in dataloader_test:
-        x = x.to(device, non_blocking=True)
-        y1 = ema_net(x)
-        y2 = ema_net(torch.flip(x, dims=[3]))
-        y = (y1 + y2) / 2.0
-        pred = y.argmax(dim=1).cpu().tolist()
-        t_pred.extend(pred)
+    for images in tqdm(dataloader_test, desc=&quot;test prediction&quot;):
+        images = images.to(device, non_blocking=True)
 
-submission = pd.Series(t_pred, name="label")
-submission.to_csv(work_dir + "/Lecture05/submission_pred_05.csv", header=True, index_label="id")
-print("saved:", work_dir + "/Lecture05/submission_pred_05.csv")
-print("best validation accuracy:", best_acc)
-</code></pre>
-      </details>
+        with torch.cuda.amp.autocast(enabled=(device == &quot;cuda&quot;)):
+            logits = predict_tta(model, images)
+
+        preds = logits.argmax(dim=1)
+        preds = preds.cpu().numpy().astype(np.uint8)
+
+        y_pred.append(preds)
+
+y_pred = np.concatenate(y_pred, axis=0)
+
+print(&quot;shape:&quot;, y_pred.shape)
+print(&quot;dtype:&quot;, y_pred.dtype)
+print(&quot;min:&quot;, y_pred.min())
+print(&quot;max:&quot;, y_pred.max())
+
+# -------------------------
+# 9. Submission file
+# -------------------------
+
+assert y_pred.shape == (len(x_test), 224, 224)
+assert y_pred.dtype == np.uint8
+assert y_pred.min() &gt;= 0
+assert y_pred.max() &lt;= 20
+
+save_path = work_dir + &quot;/Lecture06/submission_pred_06.npy&quot;
+
+np.save(save_path, y_pred)
+
+print(&quot;saved:&quot;, save_path)</code></pre>
     </section>
 
-    <p class="footer">©demimomi</p>
+    <footer>© demimomi / Deep Learning Foundation Course</footer>
   </main>
 </body>
 </html>
