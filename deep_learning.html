@@ -185,7 +185,7 @@
 
   <section class="card">
     <h2>Lecture6 Homework</h2>
-    <div class="meta">更新者：demimomi 2026年5月29日 結果22位（最高2位） 全1,826名</div>
+    <div class="meta">更新者：demimomi 2026年6月7日 結果22位（最高2位） 全1,826名</div>
     <p>Lecture6 では、VOC2011 データセットのセグメンテーション課題に対して、FCN 風のモデルを実装しています。backbone として ResNet101 を利用しつつ、torchvision.models.segmentation の完成済み FCN は使わず、複数階層の特徴を統合する独自ヘッドで 21 クラスのマスクを予測する構成です。</p>
     <h3>1. データ処理</h3>
     <p>画像は BILINEAR、マスクは NEAREST で 224×224 に変換。学習時はランダムスケール、ランダムクロップ、左右反転、ColorJitter を組み合わせています。</p>
@@ -385,9 +385,12 @@ def evaluate(model, loader, criterion, device):
     </details>
   </section>
 
-  <section class="card final-note">
-    <p>Lecture1および8以降のHomeworkはコンペ形式ではない？ので割愛。<br>最終コンペに向けて準備中。</p>
-  </section>
+<section class="card final-note" style="background:#ffffff; color:#243b5a; opacity:1;">
+  <p style="color:inherit;">
+    Lecture1および8以降のHomeworkはコンペ形式ではない？ので割愛。<br>
+    最終コンペに向けて準備中。
+  </p>
+</section>
 </main>
 <footer>© demimomi / Deep Learning Foundation Course</footer>
 </body>
