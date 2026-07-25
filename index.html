@@ -1,598 +1,1196 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <title>Fractal Deep - Eldritch Swarm</title>
-  <meta name="keywords" content="出水, 出水利樹, 出水 利樹, demimomi, toshiki demizu" />
-  <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07110f">
+  <meta name="description" content="Human-centered intelligence, mobility, and research by Toshiki Demizu.">
+  <meta name="keywords" content="出水利樹, Toshiki Demizu, demimomi, AI, mobility, digital twin, human centered">
+  <title>SOL / HUMAN — Toshiki Demizu</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet">
+
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    html,body{overflow:hidden;height:100%;font-family:"Noto Serif JP",serif;background:radial-gradient(ellipse at center,#0a0a0a 0,#000 100%);position:relative;cursor:none}
-    html::before{content:"";position:fixed;inset:0;background-image:url('https://raw.githubusercontent.com/demimomi/demimomi/main/sakura.png');background-size:cover;background-position:center;opacity:.12;z-index:-1;animation:breathe 8s ease-in-out infinite}
-    @keyframes breathe{0%,100%{opacity:.12;transform:scale(1)}50%{opacity:.18;transform:scale(1.05)}}
-    canvas{display:block;position:absolute;inset:0}
-    #threeCanvas{z-index:0} #2dCanvas{z-index:1} #particleCanvas{z-index:2}
-    .center-om{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:4em;color:rgba(255,255,255,.07);text-shadow:0 0 30px rgba(255,255,255,.15);animation:pulse 6s ease-in-out infinite;pointer-events:none;z-index:2;filter:blur(.5px)}
-    @keyframes pulse{0%,100%{opacity:.05;transform:translate(-50%,-50%) scale(1) rotate(0)}50%{opacity:.25;transform:translate(-50%,-50%) scale(1.3) rotate(5deg)}}
-    .menu-bar{position:fixed;top:0;width:100%;background:linear-gradient(180deg,rgba(0,0,0,.8) 0,rgba(0,0,0,0) 100%);z-index:1000;font-family:'Segoe UI','Helvetica Neue',sans-serif;font-size:15px;letter-spacing:2px;backdrop-filter:blur(10px);text-align:right;padding:14px 28px;}
-    .menu-bar a{margin:0 20px;color:rgba(255,255,255,.5);text-decoration:none;transition:all .4s cubic-bezier(.4,0,.2,1);position:relative;padding:5px 10px}
-    .menu-bar a::after{content:"";position:absolute;bottom:0;left:50%;width:0;height:1px;background:rgba(255,255,255,.8);transition:all .4s cubic-bezier(.4,0,.2,1);transform:translateX(-50%)}
-    .menu-bar a:hover{color:rgba(255,255,255,.98);text-shadow:0 0 15px rgba(255,255,255,.6);transform:translateY(-2px)}
-    .menu-bar a:hover::after{width:100%}
+    :root {
+      color-scheme: dark;
+      --ink: #f6f2e7;
+      --muted: rgba(246, 242, 231, .66);
+      --dim: rgba(246, 242, 231, .42);
+      --line: rgba(255, 255, 255, .12);
+      --glass: rgba(8, 20, 17, .58);
+      --glass-strong: rgba(8, 20, 17, .82);
+      --solar: #ffd27a;
+      --solar-2: #ff9e5d;
+      --life: #93f3c7;
+      --sky: #8bd9ff;
+      --bg: #050b0a;
+      --max: 1180px;
+      --ease: cubic-bezier(.2, .8, .2, 1);
+    }
 
-/* --- Hamburger menu (menu only) --- */
-.menu-toggle{
-  cursor:pointer;
-  background:linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.05));
-  border:1px solid rgba(255,255,255,.7);
-  border-radius:999px;
-  padding:9px 26px;
-  color:#ffffff;
-  font-family:'Segoe UI','Helvetica Neue',sans-serif;
-  font-size:17px;
-  letter-spacing:4px;
-  display:inline-flex;
-  align-items:center;
-  gap:14px;
-  box-shadow:
-    0 0 25px rgba(255,255,255,.45),
-    inset 0 0 18px rgba(255,255,255,.15);
-  animation: menuPulse 3s ease-in-out infinite;
-  transition:all .35s cubic-bezier(.4,0,.2,1);
-}
-.menu-toggle:hover{
-  background:linear-gradient(135deg, rgba(255,255,255,.35), rgba(255,255,255,.15));
-  border-color:#fff;
-  text-shadow:0 0 22px rgba(255,255,255,1);
-  box-shadow:
-    0 0 45px rgba(255,255,255,.85),
-    inset 0 0 22px rgba(255,255,255,.25);
-  transform:translateY(-3px) scale(1.03);
-}
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+    body {
+      margin: 0;
+      min-height: 100%;
+      overflow-x: hidden;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 50% -10%, rgba(255, 190, 96, .14), transparent 38rem),
+        radial-gradient(circle at 8% 38%, rgba(87, 220, 172, .08), transparent 28rem),
+        var(--bg);
+      font-family: Manrope, "Helvetica Neue", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
 
-@keyframes menuPulse{
-  0%,100%{ box-shadow:0 0 25px rgba(255,255,255,.35), inset 0 0 18px rgba(255,255,255,.12); }
-  50%{ box-shadow:0 0 40px rgba(255,255,255,.75), inset 0 0 26px rgba(255,255,255,.22); }
-}
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    ::selection { color: #07110f; background: var(--solar); }
 
-.menu-links{display:none;
-  margin-top:16px;text-align:right;}
-.menu-bar.is-open .menu-links{
-  display:block;
-}
-.menu-label{opacity:.9}
+    .skip-link {
+      position: fixed;
+      left: 1rem;
+      top: 1rem;
+      z-index: 100;
+      transform: translateY(-180%);
+      padding: .7rem 1rem;
+      color: #07110f;
+      background: var(--solar);
+      border-radius: 999px;
+      transition: transform .2s ease;
+    }
+    .skip-link:focus { transform: translateY(0); }
 
-    .izumi-logo{position:absolute;right:25px;bottom:25px;display:flex;align-items:center;font-size:1em;font-family:'Sawarabi Mincho',serif;color:rgba(255,255,255,.2);z-index:3;pointer-events:none;text-shadow:0 0 8px rgba(255,255,255,.15);opacity:0;animation:fadeInLogo 3s ease-in-out 1s forwards}
-    .izumi-logo img{width:20px;height:20px;margin-left:8px;opacity:.6;filter:drop-shadow(0 0 3px rgba(255,255,255,.2));animation:rotate 20s linear infinite}
-    @keyframes rotate{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-    @keyframes fadeInLogo{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
-    .custom-cursor{position:fixed;width:20px;height:20px;border:2px solid rgba(255,255,255,.6);border-radius:50%;pointer-events:none;z-index:9999;transition:all .1s ease;mix-blend-mode:difference}
-    .code-block{position:absolute;bottom:80px;left:30px;background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:15px;font-family:'Courier New',monospace;font-size:11px;color:#b0b0b0;max-width:400px;z-index:3;opacity:0;animation:fadeInCode 2s ease-in-out 2s forwards;backdrop-filter:blur(10px)}
-    @keyframes fadeInCode{0%{opacity:0;transform:translateX(-20px)}100%{opacity:.8;transform:translateX(0)}}
-    .code-block code{display:block;line-height:1.6}
-    .hud{position:fixed;left:14px;top:58px;font:10px/1.2 'Courier New',monospace;color:rgba(200,255,220,.55);z-index:4;opacity:.0;animation:fadeHud 2s ease 3s forwards}
-    @keyframes fadeHud{to{opacity:.7}}
-    .hint{position:fixed;right:16px;top:58px;font:10px/1 'Courier New',monospace;color:rgba(255,255,255,.45);z-index:4;opacity:.0;animation:fadeHud 2s ease 4s forwards}
+    #ambientCanvas,
+    #threeCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    #ambientCanvas { z-index: -3; opacity: .9; }
+    #threeCanvas { z-index: -2; opacity: .78; }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.75'/%3E%3C/svg%3E");
+      mix-blend-mode: soft-light;
+    }
+
+    .site-header {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 30;
+      border-bottom: 1px solid transparent;
+      transition: background .35s ease, border-color .35s ease, backdrop-filter .35s ease;
+    }
+    .site-header.is-scrolled,
+    .site-header.is-open {
+      background: rgba(5, 11, 10, .72);
+      border-color: var(--line);
+      backdrop-filter: blur(18px) saturate(135%);
+    }
+    .nav-wrap {
+      width: min(calc(100% - 2rem), var(--max));
+      min-height: 76px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .8rem;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: .14em;
+    }
+    .brand-mark {
+      width: 29px;
+      aspect-ratio: 1;
+      border: 1px solid rgba(255, 210, 122, .68);
+      border-radius: 50%;
+      box-shadow: 0 0 24px rgba(255, 190, 96, .22), inset 0 0 14px rgba(255, 190, 96, .18);
+      position: relative;
+    }
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: 50% auto auto 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+    }
+    .brand-mark::before { width: 7px; height: 7px; background: var(--solar); box-shadow: 0 0 14px var(--solar); }
+    .brand-mark::after { width: 19px; height: 19px; border: 1px solid rgba(147, 243, 199, .38); }
+    .brand span:last-child { font-size: .78rem; }
+
+    .nav-toggle {
+      display: none;
+      appearance: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--ink);
+      background: rgba(255,255,255,.04);
+      padding: .7rem 1rem;
+      font: inherit;
+      cursor: pointer;
+    }
+    .nav-links { display: flex; align-items: center; gap: .25rem; }
+    .nav-links a {
+      padding: .65rem .78rem;
+      border-radius: 999px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .82rem;
+      transition: color .25s ease, background .25s ease, transform .25s ease;
+    }
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: var(--ink);
+      background: rgba(255,255,255,.07);
+      transform: translateY(-1px);
+      outline: none;
+    }
+    .nav-links .nav-cta {
+      margin-left: .35rem;
+      color: #09100e;
+      background: linear-gradient(120deg, var(--solar), #ffe8b6);
+      font-weight: 700;
+    }
+    .nav-links .nav-cta:hover,
+    .nav-links .nav-cta:focus-visible { color: #09100e; background: #fff0c9; }
+
+    main { position: relative; }
+    .section {
+      width: min(calc(100% - 2rem), var(--max));
+      margin: auto;
+      padding: 7rem 0;
+    }
+
+    .hero {
+      min-height: 100svh;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(260px, .85fr);
+      align-items: center;
+      gap: clamp(2rem, 6vw, 6rem);
+      padding-top: 8.5rem;
+      padding-bottom: 4rem;
+    }
+    .earth-wordmark {
+      position: relative;
+      width: fit-content;
+      margin: 0 0 1.25rem;
+      display: inline-flex;
+      align-items: center;
+      gap: clamp(.8rem, 1.4vw, 1.1rem);
+      isolation: isolate;
+      text-decoration: none;
+    }
+    .earth-wordmark::before {
+      content: "";
+      position: absolute;
+      left: -1.2rem;
+      right: -1.4rem;
+      top: 50%;
+      height: 1px;
+      z-index: -1;
+      opacity: .52;
+      background: linear-gradient(90deg, transparent, rgba(139,217,255,.42), rgba(147,243,199,.62), transparent);
+      transform: rotate(-4deg);
+      box-shadow: 0 0 18px rgba(139,217,255,.26);
+    }
+    .earth-glyph {
+      position: relative;
+      flex: 0 0 auto;
+      width: clamp(50px, 6vw, 68px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      overflow: visible;
+      background:
+        radial-gradient(circle at 34% 30%, rgba(255,255,255,.95) 0 2%, transparent 3%),
+        radial-gradient(ellipse at 34% 34%, #9df2b8 0 12%, transparent 13%),
+        radial-gradient(ellipse at 65% 62%, #5fcf98 0 15%, transparent 16%),
+        radial-gradient(ellipse at 26% 72%, #78dea7 0 8%, transparent 9%),
+        radial-gradient(circle at 38% 30%, #8fe4ff 0, #247fc6 52%, #092f63 79%, #061a34 100%);
+      border: 1px solid rgba(190,239,255,.7);
+      box-shadow:
+        inset -12px -10px 22px rgba(0,10,36,.48),
+        inset 8px 7px 15px rgba(255,255,255,.12),
+        0 0 22px rgba(78,187,255,.38),
+        0 0 52px rgba(72,219,183,.17);
+      animation: earthFloat 7s ease-in-out infinite;
+    }
+    .earth-glyph::before {
+      content: "";
+      position: absolute;
+      inset: -16%;
+      border: 1px solid rgba(139,217,255,.42);
+      border-radius: 50%;
+      transform: rotate(66deg) scaleY(.34);
+      box-shadow: 0 0 15px rgba(139,217,255,.18);
+    }
+    .earth-glyph::after {
+      content: "";
+      position: absolute;
+      inset: -8%;
+      border-radius: 50%;
+      background: conic-gradient(from 220deg, transparent 0 72%, rgba(255,255,255,.48) 80%, transparent 88%);
+      filter: blur(.4px);
+      animation: earthOrbit 11s linear infinite;
+    }
+    .earth-name {
+      position: relative;
+      display: inline-block;
+      color: transparent;
+      background:
+        linear-gradient(100deg, #dff8ff 4%, #8bd9ff 35%, #93f3c7 66%, #e8fff5 94%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      font-size: clamp(2.2rem, 5.6vw, 5rem);
+      font-weight: 700;
+      line-height: .9;
+      letter-spacing: -.065em;
+      text-shadow: 0 0 28px rgba(84,203,255,.18);
+      filter: drop-shadow(0 8px 28px rgba(21,131,172,.15));
+    }
+    .earth-name::after {
+      content: "EARTH / INTELLIGENCE / HUMAN";
+      position: absolute;
+      left: .1em;
+      bottom: -1.2rem;
+      color: rgba(211,246,255,.48);
+      background: none;
+      -webkit-text-fill-color: initial;
+      font-size: clamp(.48rem, .8vw, .62rem);
+      font-weight: 700;
+      letter-spacing: .24em;
+      white-space: nowrap;
+      text-shadow: none;
+    }
+    @keyframes earthFloat {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-6px) rotate(2deg); }
+    }
+    @keyframes earthOrbit { to { transform: rotate(360deg); } }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .65rem;
+      margin: 0 0 1.35rem;
+      color: var(--life);
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: currentColor;
+      box-shadow: 0 0 10px currentColor;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      max-width: 820px;
+      margin-bottom: 1.55rem;
+      font-family: "Noto Serif JP", serif;
+      font-size: clamp(3.2rem, 8vw, 7.5rem);
+      font-weight: 600;
+      line-height: .98;
+      letter-spacing: -.055em;
+    }
+    .hero-gradient {
+      color: transparent;
+      background: linear-gradient(110deg, #fff 12%, var(--solar) 53%, var(--life) 92%);
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+    .hero-lead {
+      max-width: 680px;
+      margin-bottom: 2rem;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.8vw, 1.25rem);
+      line-height: 1.9;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .7rem;
+      min-height: 48px;
+      padding: .8rem 1.15rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: .9rem;
+      transition: transform .25s var(--ease), border-color .25s ease, background .25s ease, box-shadow .25s ease;
+    }
+    .button:hover,
+    .button:focus-visible { transform: translateY(-2px); outline: none; }
+    .button.primary {
+      color: #08100e;
+      border-color: transparent;
+      background: linear-gradient(120deg, var(--solar), #ffe8b6);
+      box-shadow: 0 12px 34px rgba(255, 174, 83, .2);
+    }
+    .button.primary:hover,
+    .button.primary:focus-visible { box-shadow: 0 16px 42px rgba(255, 174, 83, .32); }
+    .button.secondary { background: rgba(255,255,255,.045); backdrop-filter: blur(10px); }
+    .button.secondary:hover,
+    .button.secondary:focus-visible { border-color: rgba(255,255,255,.26); background: rgba(255,255,255,.08); }
+
+    .hero-orbit {
+      min-height: 430px;
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+    .solar-core {
+      width: min(68vw, 330px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 37% 32%, #fff7d8 0 4%, transparent 5%),
+        radial-gradient(circle at 42% 38%, #ffe8a3 0 13%, #f5ac61 35%, #a63c2c 67%, rgba(166,60,44,.05) 71%);
+      box-shadow:
+        0 0 35px rgba(255, 217, 136, .42),
+        0 0 90px rgba(255, 159, 93, .28),
+        0 0 180px rgba(255, 159, 93, .16);
+      animation: breathe 7s ease-in-out infinite;
+      position: relative;
+    }
+    .solar-core::before,
+    .solar-core::after {
+      content: "";
+      position: absolute;
+      inset: -18%;
+      border: 1px solid rgba(255, 220, 151, .19);
+      border-radius: 50%;
+      animation: orbit 18s linear infinite;
+    }
+    .solar-core::after {
+      inset: -38%;
+      border-color: rgba(147, 243, 199, .14);
+      animation-duration: 28s;
+      animation-direction: reverse;
+    }
+    .orbit-dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      left: 50%;
+      top: -18%;
+      border-radius: 50%;
+      background: var(--life);
+      box-shadow: 0 0 15px var(--life);
+    }
+    .hero-note {
+      position: absolute;
+      right: 0;
+      bottom: 8%;
+      max-width: 220px;
+      padding: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(5,11,10,.56);
+      backdrop-filter: blur(16px);
+      color: var(--muted);
+      font-size: .78rem;
+      line-height: 1.7;
+    }
+    .hero-note strong { color: var(--ink); display: block; margin-bottom: .25rem; }
+
+    @keyframes breathe { 50% { transform: scale(1.035); filter: saturate(1.08); } }
+    @keyframes orbit { to { transform: rotate(360deg); } }
+
+    .signal-strip {
+      border-block: 1px solid var(--line);
+      background: rgba(255,255,255,.025);
+      overflow: hidden;
+    }
+    .signal-track {
+      width: max-content;
+      display: flex;
+      gap: 3.5rem;
+      padding: 1rem 0;
+      color: var(--dim);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      animation: marquee 28s linear infinite;
+    }
+    .signal-track span::before { content: "✦"; margin-right: 3.5rem; color: var(--solar); }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    .section-heading {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      align-items: end;
+    }
+    .section-heading h2 {
+      margin-bottom: 0;
+      font-family: "Noto Serif JP", serif;
+      font-size: clamp(2rem, 4.8vw, 4.3rem);
+      line-height: 1.13;
+      letter-spacing: -.035em;
+    }
+    .section-heading p {
+      max-width: 650px;
+      justify-self: end;
+      margin-bottom: .25rem;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .principle,
+    .project-card,
+    .model-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
+      backdrop-filter: blur(14px);
+    }
+    .principle {
+      min-height: 260px;
+      padding: 1.6rem;
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .35s var(--ease), border-color .35s ease, background .35s ease;
+    }
+    .principle:hover { transform: translateY(-5px); border-color: rgba(255,255,255,.24); background: rgba(255,255,255,.07); }
+    .principle-index { color: var(--solar); font-size: .73rem; letter-spacing: .15em; }
+    .principle h3 { margin: 4rem 0 .8rem; font-size: 1.28rem; }
+    .principle p { margin-bottom: 0; color: var(--muted); font-size: .9rem; line-height: 1.8; }
+    .principle::after {
+      content: "";
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      right: -40px;
+      top: -40px;
+      border: 1px solid rgba(255, 210, 122, .2);
+      border-radius: 50%;
+      box-shadow: 0 0 50px rgba(255,190,96,.08);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1rem;
+    }
+    .project-card {
+      grid-column: span 6;
+      min-height: 320px;
+      padding: 1.5rem;
+      border-radius: 26px;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform .35s var(--ease), border-color .35s ease;
+    }
+    .project-card:nth-child(3) { grid-column: span 7; }
+    .project-card:nth-child(4) { grid-column: span 5; }
+    .project-card:hover,
+    .project-card:focus-visible { transform: translateY(-6px); border-color: rgba(255,255,255,.28); outline: none; }
+    .project-meta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .project-tag {
+      padding: .42rem .68rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: .68rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .arrow { font-size: 1.25rem; transition: transform .3s var(--ease); }
+    .project-card:hover .arrow { transform: translate(3px, -3px); }
+    .project-card h3 { margin: 0 0 .7rem; font-size: clamp(1.5rem, 2.8vw, 2.6rem); letter-spacing: -.035em; }
+    .project-card p { max-width: 540px; margin-bottom: 0; color: var(--muted); line-height: 1.75; }
+    .project-glow {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      right: -90px;
+      bottom: -110px;
+      border-radius: 50%;
+      filter: blur(4px);
+      opacity: .28;
+      background: radial-gradient(circle, var(--accent, var(--solar)), transparent 68%);
+      transition: transform .5s var(--ease), opacity .5s ease;
+    }
+    .project-card:hover .project-glow { transform: scale(1.24); opacity: .42; }
+
+    .model-card {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 2rem;
+      padding: clamp(1.5rem, 4vw, 3rem);
+      border-radius: 30px;
+      align-items: center;
+    }
+    .model-copy h2 {
+      margin-bottom: 1rem;
+      font-family: "Noto Serif JP", serif;
+      font-size: clamp(2rem, 4vw, 3.8rem);
+      line-height: 1.15;
+      letter-spacing: -.04em;
+    }
+    .model-copy p { color: var(--muted); line-height: 1.85; }
+    .code-shell {
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 20px;
+      background: #030706;
+      box-shadow: 0 24px 70px rgba(0,0,0,.28);
+    }
+    .code-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .8rem 1rem;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      color: var(--dim);
+      font: .72rem/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .code-dots { display: flex; gap: .35rem; }
+    .code-dots span { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.22); }
+    pre {
+      margin: 0;
+      padding: 1.35rem;
+      overflow: auto;
+      color: #dbe9df;
+      font: .82rem/1.75 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    .tok-key { color: var(--sky); }
+    .tok-str { color: var(--solar); }
+    .tok-fn { color: var(--life); }
+
+    .closing {
+      min-height: 70svh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+    .closing-inner { max-width: 850px; }
+    .closing h2 {
+      margin-bottom: 1.3rem;
+      font-family: "Noto Serif JP", serif;
+      font-size: clamp(2.4rem, 6vw, 5.8rem);
+      line-height: 1.08;
+      letter-spacing: -.055em;
+    }
+    .closing p { max-width: 620px; margin: 0 auto 1.8rem; color: var(--muted); line-height: 1.9; }
+
+    footer {
+      width: min(calc(100% - 2rem), var(--max));
+      margin: auto;
+      padding: 1.5rem 0 2.2rem;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      color: var(--dim);
+      font-size: .76rem;
+    }
+    .status { display: inline-flex; align-items: center; gap: .5rem; }
+    .status::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--life);
+      box-shadow: 0 0 10px var(--life);
+      animation: statusPulse 2s ease-in-out infinite;
+    }
+    @keyframes statusPulse { 50% { opacity: .35; } }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .8s var(--ease), transform .8s var(--ease);
+    }
+    .reveal.is-visible { opacity: 1; transform: none; }
+
+    .cursor-light {
+      position: fixed;
+      z-index: -1;
+      width: 360px;
+      height: 360px;
+      left: 0;
+      top: 0;
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(255, 214, 137, .09), rgba(147, 243, 199, .025) 38%, transparent 68%);
+      opacity: 0;
+      transition: opacity .25s ease;
+    }
+    body.has-pointer .cursor-light { opacity: 1; }
+
+    .sound-button {
+      position: fixed;
+      right: max(1rem, env(safe-area-inset-right));
+      bottom: max(1rem, env(safe-area-inset-bottom));
+      z-index: 20;
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--ink);
+      background: rgba(5,11,10,.66);
+      backdrop-filter: blur(14px);
+      cursor: pointer;
+      transition: transform .25s ease, border-color .25s ease;
+    }
+    .sound-button:hover,
+    .sound-button:focus-visible { transform: translateY(-2px); border-color: rgba(255,255,255,.3); outline: none; }
+
+    @media (max-width: 900px) {
+      .nav-toggle { display: inline-flex; }
+      .nav-links {
+        position: absolute;
+        left: 1rem;
+        right: 1rem;
+        top: calc(100% + .5rem);
+        display: grid;
+        gap: .2rem;
+        padding: .65rem;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: var(--glass-strong);
+        backdrop-filter: blur(20px);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: opacity .25s ease, visibility .25s ease, transform .25s ease;
+      }
+      .site-header.is-open .nav-links { opacity: 1; visibility: visible; transform: none; }
+      .nav-links a { padding: .9rem 1rem; }
+      .nav-links .nav-cta { margin-left: 0; text-align: center; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-copy { z-index: 2; }
+      .hero-orbit { min-height: 330px; margin-top: -2rem; opacity: .72; }
+      .hero-note { right: 3%; bottom: 0; }
+      .section-heading,
+      .model-card { grid-template-columns: 1fr; }
+      .section-heading p { justify-self: start; }
+      .principles { grid-template-columns: 1fr; }
+      .principle { min-height: 220px; }
+      .principle h3 { margin-top: 2.4rem; }
+    }
+
+    @media (max-width: 680px) {
+      .section { padding: 5rem 0; }
+      .hero { padding-top: 7rem; }
+      .earth-wordmark { margin-bottom: 1.6rem; }
+      .earth-name::after { bottom: -1rem; letter-spacing: .15em; }
+      .hero-actions { align-items: stretch; }
+      .hero-actions .button { width: 100%; }
+      .hero-orbit { min-height: 290px; }
+      .hero-note { display: none; }
+      .project-card,
+      .project-card:nth-child(3),
+      .project-card:nth-child(4) { grid-column: 1 / -1; min-height: 275px; }
+      footer { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (pointer: coarse) {
+      .cursor-light { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+      #threeCanvas { display: none; }
+    }
   </style>
-  <link rel="icon" href="https://raw.githubusercontent.com/demimomi/demimomi/refs/heads/main/inyou2.png" type="image/png">
-<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/demimomi/demimomi/refs/heads/main/inyou2.png">
 </head>
 <body>
-  <div class="menu-bar" id="topMenu" aria-label="Site Menu">
-    <button class="menu-toggle" id="menuToggle" type="button" aria-controls="menuLinks" aria-expanded="false">
-      ☰ <span class="menu-label">Menu</span>
-    </button>
-    <div class="menu-links" id="menuLinks">
-      <a href="https://demimomi.github.io/demimomi/deep_learning.html"target="_blank">
-  <img src="https://demimomi.github.io/demimomi/new.png"
-       alt="NEW"
-       style="height:20px; vertical-align:middle; margin-right:6px;">
-  Deep Learning
-</a>
-      <a href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank">LLM2024</a>
-      <a href="https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453" target="_blank">TokyoBus PJ</a>
-      <a href="https://demimomi.github.io/demimomi/patent.html" target="_blank">Patent</a>
-      <a href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank">CatBus</a>
-      <a href="https://wandb.ai/toshiki-demizu-monet-technologies-/pytorch-intro/reports/Hello-World---VmlldzoxNDk2Nzg2OQ?accessToken=u00skj0dq557zsj2g3u8jhr2six6iylpf7kd65hqw5gjnwsoopld2pgqufiw4atq" target="_blank">DB</a>
+  <a class="skip-link" href="#main">本文へ移動</a>
+  <canvas id="ambientCanvas" aria-hidden="true"></canvas>
+  <canvas id="threeCanvas" aria-hidden="true"></canvas>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="cursor-light" id="cursorLight" aria-hidden="true"></div>
+
+  <header class="site-header" id="siteHeader">
+    <div class="nav-wrap">
+      <a class="brand" href="#top" aria-label="SOL HUMAN トップへ">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>SOL / HUMAN</span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks">
+        Menu
+      </button>
+
+      <nav class="nav-links" id="navLinks" aria-label="主要ナビゲーション">
+        <a href="#philosophy">Philosophy</a>
+        <a href="#projects">Projects</a>
+        <a href="#model">Model</a>
+        <a href="https://demimomi.github.io/demimomi/patent.html" target="_blank" rel="noopener noreferrer">Patent</a>
+        <a class="nav-cta" href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank" rel="noopener noreferrer">Explore AI ↗</a>
+      </nav>
     </div>
-  </div>
+  </header>
 
+  <main id="main">
+    <section class="section hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-copy reveal">
+        <div class="earth-wordmark" aria-label="demimomi — Earth, intelligence and human">
+          <span class="earth-glyph" aria-hidden="true"></span>
+          <span class="earth-name">demimomi</span>
+        </div>
+        <p class="eyebrow">Human-centered intelligence</p>
+        <h1 id="hero-title">技術を、<br><span class="hero-gradient">人の可能性へ。</span></h1>
+        <p class="hero-lead">
+          AI、モビリティ、デジタルツインを横断し、複雑な技術を人に届く体験へ変える。
+          地球規模の視点と、一人ひとりへのまなざしを両立する研究と実装。
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="#projects">プロジェクトを見る <span aria-hidden="true">↓</span></a>
+          <a class="button secondary" href="https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453" target="_blank" rel="noopener noreferrer">Research Profile ↗</a>
+        </div>
+      </div>
 
-<canvas id="threeCanvas"></canvas>
-  <canvas id="2dCanvas"></canvas>
-  <canvas id="particleCanvas"></canvas>
+      <div class="hero-orbit reveal" aria-hidden="true">
+        <div class="solar-core"><span class="orbit-dot"></span></div>
+        <div class="hero-note">
+          <strong>SOL = Source of Life</strong>
+          暗さで惹きつけるのではなく、光・生命・信頼で記憶に残るデジタル体験。
+        </div>
+      </div>
+    </section>
 
-  <div class="center-om">ॐ</div>
-  <div class="custom-cursor"></div>
+    <div class="signal-strip" aria-hidden="true">
+      <div class="signal-track">
+        <span>AI Research</span><span>Human Mobility</span><span>Digital Twin</span><span>Safety by Design</span><span>Open Intelligence</span>
+        <span>AI Research</span><span>Human Mobility</span><span>Digital Twin</span><span>Safety by Design</span><span>Open Intelligence</span>
+      </div>
+    </div>
 
-  <div class="izumi-logo">
-    出水の桜
-    <img src="https://raw.githubusercontent.com/demimomi/demimomi/refs/heads/main/sakura.png" alt="sakura">
-  </div>
+    <section class="section" id="philosophy" aria-labelledby="philosophy-title">
+      <div class="section-heading reveal">
+        <div>
+          <p class="eyebrow">Design principles</p>
+          <h2 id="philosophy-title">Tera-scale.<br>Human-close.</h2>
+        </div>
+        <p>
+          大規模モデルや都市規模のシステムであっても、価値が生まれる場所は人の判断と行動です。
+          「理解できる」「信頼できる」「参加したくなる」を、すべての設計の起点にします。
+        </p>
+      </div>
 
-  <div class="code-block">
-    <code># Load model directly<br>from transformers import AutoModel<br>model = AutoModel.from_pretrained(<br>&nbsp;&nbsp;"demimomi/llm-jp-3-13b-finetune-ex"<br>)</code>
-  </div>
+      <div class="principles">
+        <article class="principle reveal">
+          <span class="principle-index">01 / CLARITY</span>
+          <h3>複雑さを、明快さへ</h3>
+          <p>専門性を損なわず、初見でも価値が伝わる情報設計。技術の凄さより、変化の意味を前面に。</p>
+        </article>
+        <article class="principle reveal">
+          <span class="principle-index">02 / TRUST</span>
+          <h3>驚きより、信頼を残す</h3>
+          <p>過剰な刺激ではなく、静かな動き、余白、実績への導線によって、長く効く印象をつくる。</p>
+        </article>
+        <article class="principle reveal">
+          <span class="principle-index">03 / LIFE</span>
+          <h3>技術に、生命感を</h3>
+          <p>太陽、軌道、呼吸、群れ。自然のリズムを借りて、人と機械が共生する未来を視覚化する。</p>
+        </article>
+      </div>
+    </section>
 
-  <div class="hud" id="hud">SWARM: 0 | RIFTS: 0 | HUM: OFF</div>
-  <div class="hint">click = hum toggle / sigil</div>
+    <section class="section" id="projects" aria-labelledby="projects-title">
+      <div class="section-heading reveal">
+        <div>
+          <p class="eyebrow">Selected work</p>
+          <h2 id="projects-title">Ideas in motion.</h2>
+        </div>
+        <p>研究、社会実装、オープンな知識共有を、ひとつのストーリーとして見せるプロジェクト群。</p>
+      </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
+      <div class="projects-grid">
+        <a class="project-card reveal" href="https://demimomi.github.io/demimomi/deep_learning.html" target="_blank" rel="noopener noreferrer" style="--accent:#93f3c7">
+          <div class="project-meta"><span class="project-tag">Deep Learning</span><span class="arrow" aria-hidden="true">↗</span></div>
+          <div><h3>Deep Learning Lab</h3><p>学習・実験・発見をつなぐ、実践的なAI研究の入り口。</p></div>
+          <span class="project-glow" aria-hidden="true"></span>
+        </a>
+
+        <a class="project-card reveal" href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank" rel="noopener noreferrer" style="--accent:#8bd9ff">
+          <div class="project-meta"><span class="project-tag">LLM 2024</span><span class="arrow" aria-hidden="true">↗</span></div>
+          <div><h3>Japanese LLM</h3><p>日本語の文脈に向き合う、13Bモデルのファインチューニング実践。</p></div>
+          <span class="project-glow" aria-hidden="true"></span>
+        </a>
+
+        <a class="project-card reveal" href="https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453" target="_blank" rel="noopener noreferrer" style="--accent:#ffd27a">
+          <div class="project-meta"><span class="project-tag">Mobility Research</span><span class="arrow" aria-hidden="true">↗</span></div>
+          <div><h3>TokyoBus Project</h3><p>交通と都市のデータをつなぎ、安全で持続可能な移動体験を探究する。</p></div>
+          <span class="project-glow" aria-hidden="true"></span>
+        </a>
+
+        <a class="project-card reveal" href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank" rel="noopener noreferrer" style="--accent:#ff9e5d">
+          <div class="project-meta"><span class="project-tag">Social Implementation</span><span class="arrow" aria-hidden="true">↗</span></div>
+          <div><h3>CatBus</h3><p>未来のモビリティを、親しみやすく社会へ届ける実装ストーリー。</p></div>
+          <span class="project-glow" aria-hidden="true"></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" id="model" aria-labelledby="model-title">
+      <div class="model-card reveal">
+        <div class="model-copy">
+          <p class="eyebrow">Open model</p>
+          <h2 id="model-title">Intelligence,<br>ready to explore.</h2>
+          <p>モデルは展示物ではなく、触れて確かめるためのもの。最短のコードで研究成果への入口を開きます。</p>
+          <a class="button secondary" href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank" rel="noopener noreferrer">View on Hugging Face ↗</a>
+        </div>
+
+        <div class="code-shell" aria-label="Pythonコード例">
+          <div class="code-top"><span>quickstart.py</span><span class="code-dots" aria-hidden="true"><span></span><span></span><span></span></span></div>
+          <pre><code><span class="tok-key">from</span> transformers <span class="tok-key">import</span> AutoModel
+
+model = AutoModel.<span class="tok-fn">from_pretrained</span>(
+    <span class="tok-str">"demimomi/llm-jp-3-13b-finetune-ex"</span>
+)</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="section closing" aria-labelledby="closing-title">
+      <div class="closing-inner reveal">
+        <p class="eyebrow">Toward a brighter system</p>
+        <h2 id="closing-title">未来は、<br><span class="hero-gradient">人を中心に回る。</span></h2>
+        <p>技術の速度と、人の納得。その両方を大切にするプロジェクトを、研究から実装まで。</p>
+        <a class="button primary" href="https://demimomi.github.io/demimomi/patent.html" target="_blank" rel="noopener noreferrer">Explore the work ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© <span id="year"></span> Toshiki Demizu / demimomi</span>
+    <span class="status">Human signal online</span>
+  </footer>
+
+  <button class="sound-button" id="soundButton" type="button" aria-label="アンビエント音を再生" aria-pressed="false" title="Sound">
+    <span aria-hidden="true">◌</span>
+  </button>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js" defer></script>
   <script>
-    // ---------- Cursor ----------
-    const cursor = document.querySelector('.custom-cursor');
-    addEventListener('mousemove', e => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-    });
+    (() => {
+      "use strict";
 
-    // ---------- Three.js ----------
-    const threeCanvas = document.getElementById('threeCanvas');
-    const renderer = new THREE.WebGLRenderer({ canvas: threeCanvas, alpha:true, antialias:true });
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000);
-    camera.position.z = 5;
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const header = document.getElementById("siteHeader");
+      const navToggle = document.getElementById("navToggle");
+      const navLinks = document.getElementById("navLinks");
+      const cursorLight = document.getElementById("cursorLight");
+      const soundButton = document.getElementById("soundButton");
 
-    const geometry = new THREE.TorusKnotGeometry(1, 0.3, 150, 20);
-    const material = new THREE.MeshStandardMaterial({
-      color: 0x8844ff, emissive: 0x220022, roughness: 0.2, metalness: 0.9, wireframe:false
-    });
-    const torusKnot = new THREE.Mesh(geometry, material);
-    scene.add(torusKnot);
+      document.getElementById("year").textContent = String(new Date().getFullYear());
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.6); scene.add(ambient);
-    const point1 = new THREE.PointLight(0xff88ff, 1.5); point1.position.set(5,5,5); scene.add(point1);
-    const point2 = new THREE.PointLight(0x88ffff, 1.0); point2.position.set(-5,-5,3); scene.add(point2);
+      const setMenu = (open) => {
+        header.classList.toggle("is-open", open);
+        navToggle.setAttribute("aria-expanded", String(open));
+      };
 
-    function resizeRenderer(){
-      renderer.setSize(innerWidth, innerHeight);
-      camera.aspect = innerWidth/innerHeight;
-      camera.updateProjectionMatrix();
-      canvas2D.width = innerWidth; canvas2D.height = innerHeight;
-      particleCanvas.width = innerWidth; particleCanvas.height = innerHeight;
-    }
-    addEventListener('resize', resizeRenderer);
-
-    // ---------- 2D + Particles ----------
-    const canvas2D = document.getElementById('2dCanvas');
-    const ctx = canvas2D.getContext('2d');
-    const particleCanvas = document.getElementById('particleCanvas');
-    const pCtx = particleCanvas.getContext('2d');
-    resizeRenderer();
-
-    // Sakura drift
-    const sakuraParticles = [];
-    for(let i=0;i<30;i++){
-      sakuraParticles.push({
-        x: Math.random()*particleCanvas.width,
-        y: Math.random()*particleCanvas.height - particleCanvas.height,
-        speed: 0.5 + Math.random(),
-        size: 3 + Math.random()*4,
-        drift: Math.random()*2 - 1,
-        opacity: 0.3 + Math.random()*0.4
+      navToggle.addEventListener("click", () => {
+        setMenu(!header.classList.contains("is-open"));
       });
-    }
-
-    // ---------- Eldritch Swarm ----------
-    const mouse = { x: innerWidth/2, y: innerHeight/2, tx: innerWidth/2, ty: innerHeight/2 };
-    canvas2D.addEventListener('mousemove', e => { mouse.tx=e.clientX; mouse.ty=e.clientY; });
-    let time = 0, chaosMode = false;
-
-    // Sigil bursts & rifts
-    const sigils = []; // ephemeral ritual circles that attract swarm
-    const rifts  = []; // portals that spawn/consume creatures
-
-    canvas2D.addEventListener('click', (e)=>{
-      toggleHum(); // first click -> audio start, then toggle
-      // spawn sigil
-      sigils.push({
-        x:e.clientX, y:e.clientY, r:8, life:1, spin: Math.random()*Math.PI*2,
-        glyphs: Array.from({length:8}, (_,i)=>i)
+      navLinks.addEventListener("click", (event) => {
+        if (event.target.closest("a")) setMenu(false);
       });
-    });
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") setMenu(false);
+      });
+      window.addEventListener("scroll", () => {
+        header.classList.toggle("is-scrolled", window.scrollY > 12);
+      }, { passive: true });
 
-    // WebAudio hum (subtle)
-    let audioCtx=null, humNode=null, humOn=false;
-    function toggleHum(){
-      if(!audioCtx){
-        audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-        const o = audioCtx.createOscillator();
-        const g = audioCtx.createGain();
-        o.type='sawtooth';
-        o.frequency.setValueAtTime(48, audioCtx.currentTime); // 48Hz base
-        const lfo = audioCtx.createOscillator();
-        const lfoGain = audioCtx.createGain();
-        lfo.frequency.value = 0.15;
-        lfoGain.gain.value = 12;
-        lfo.connect(lfoGain).connect(o.frequency);
-        const filter = audioCtx.createBiquadFilter();
-        filter.type = 'lowpass'; filter.frequency.value = 220;
-        g.gain.value = 0.0001; // start muted
-        o.connect(filter).connect(g).connect(audioCtx.destination);
-        o.start(); lfo.start();
-        humNode={o,g,filter}; humOn=false;
-      }
-      humOn=!humOn;
-      const target = humOn?0.015:0.0001;
-      humNode.g.gain.cancelScheduledValues(0);
-      humNode.g.gain.linearRampToValueAtTime(target, audioCtx.currentTime+0.3);
-      updateHUD();
-    }
+      if (window.matchMedia("(pointer: fine)").matches) {
+        document.body.classList.add("has-pointer");
+        let pointerX = window.innerWidth / 2;
+        let pointerY = window.innerHeight / 2;
+        let currentX = pointerX;
+        let currentY = pointerY;
 
-    // Creature (evolved from single GeometricCreature)
-    class GeometricCreature {
-      constructor(x=Math.random()*innerWidth, y=Math.random()*innerHeight){
-        this.x=x; this.y=y;
-        this.vx=Math.cos(Math.random()*Math.PI*2)*0.6;
-        this.vy=Math.sin(Math.random()*Math.PI*2)*0.6;
-        this.angle=Math.random()*Math.PI*2;
-        this.size= 48+Math.random()*22;
-        this.eyePhase=Math.random()*Math.PI*2;
-        this.pulse= Math.random()*Math.PI*2;
-        this.tentacles=[];
-        for(let i=0;i<8;i++){
-          this.tentacles.push({angle:(i*Math.PI*2)/8,length:40+Math.random()*30,segments:12,phase:Math.random()*Math.PI*2,wiggle:0.5+Math.random()*0.6});
-        }
-        this.hue = 140 + Math.random()*40; // greenish
-        this.life = 1; // for fade in/out
-        this.sym = ['☯','で','☯','☆','☯','水'];
+        window.addEventListener("pointermove", (event) => {
+          pointerX = event.clientX;
+          pointerY = event.clientY;
+        }, { passive: true });
+
+        const moveLight = () => {
+          currentX += (pointerX - currentX) * .12;
+          currentY += (pointerY - currentY) * .12;
+          cursorLight.style.left = `${currentX}px`;
+          cursorLight.style.top = `${currentY}px`;
+          requestAnimationFrame(moveLight);
+        };
+        moveLight();
       }
 
-      update(neighbors){
-        // Boids-ish: separation, alignment, cohesion
-        let ax=0, ay=0, count=0, avx=0, avy=0, cx=0, cy=0;
-        neighbors.forEach(n=>{
-          const dx=this.x-n.x, dy=this.y-n.y;
-          const d2=dx*dx+dy*dy;
-          if(d2<1) return;
-          if(d2<120*120){
-            count++;
-            avx+=n.vx; avy+=n.vy;
-            cx+=n.x; cy+=n.y;
-            if(d2<50*50){ ax+=dx/d2*80; ay+=dy/d2*80; } // separation
-          }
+      const revealItems = document.querySelectorAll(".reveal");
+      if ("IntersectionObserver" in window && !prefersReducedMotion) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: .12, rootMargin: "0px 0px -8%" });
+        revealItems.forEach((item, index) => {
+          item.style.transitionDelay = `${Math.min(index % 3, 2) * 90}ms`;
+          observer.observe(item);
         });
-        if(count){
-          // alignment
-          this.vx += (avx/count - this.vx)*0.02;
-          this.vy += (avy/count - this.vy)*0.02;
-          // cohesion
-          this.vx += ((cx/count - this.x)*0.0008);
-          this.vy += ((cy/count - this.y)*0.0008);
-        }
-
-        // attracted to nearest active sigil
-        if(sigils.length){
-          const s = sigils[ sigils.length-1 ];
-          const dx=s.x-this.x, dy=s.y-this.y;
-          const d=Math.hypot(dx,dy)+1;
-          const f = Math.min(0.06, 140/(d*d));
-          this.vx += dx*f; this.vy += dy*f;
-        }
-
-        // mouse repulsion (spotlight fear)
-        const mdx=this.x-mouse.x, mdy=this.y-mouse.y;
-        const md2=mdx*mdx+mdy*mdy;
-        if(md2<180*180){
-          const f=Math.min(1.2, 260/(md2+1));
-          this.vx += mdx*f; this.vy += mdy*f;
-        }
-
-        // gentle wander + chaos boost
-        const speedBase = chaosMode ? 1.2 : 0.8;
-        this.vx += (Math.random()-0.5)*0.06;
-        this.vy += (Math.random()-0.5)*0.06;
-
-        // limit speed
-        const sp=Math.hypot(this.vx,this.vy);
-        const maxS = chaosMode ? 2.0 : 1.4;
-        if(sp>maxS){ this.vx=this.vx/sp*maxS; this.vy=this.vy/sp*maxS; }
-
-        this.x+=this.vx; this.y+=this.vy;
-
-        // wrap screen
-        const pad=120;
-        if(this.x<-pad) this.x=innerWidth+pad;
-        if(this.x>innerWidth+pad) this.x=-pad;
-        if(this.y<-pad) this.y=innerHeight+pad;
-        if(this.y>innerHeight+pad) this.y=-pad;
-
-        this.eyePhase += 0.02;
-        this.pulse += 0.03;
-        // slight drift of hue in chaos
-        if(chaosMode) this.hue += Math.sin(time*0.01)*0.04;
+      } else {
+        revealItems.forEach((item) => item.classList.add("is-visible"));
       }
 
-      draw(ctx,t){
-        ctx.save(); ctx.translate(this.x,this.y);
+      const ambientCanvas = document.getElementById("ambientCanvas");
+      const ctx = ambientCanvas.getContext("2d", { alpha: true });
+      let width = 0;
+      let height = 0;
+      let dpr = 1;
+      let nodes = [];
+      let animationFrame = 0;
+      let isVisible = true;
 
-        // tentacles
-        this.tentacles.forEach(tl=>{
-          ctx.strokeStyle=`hsla(${this.hue},70%,70%,0.18)`;
-          ctx.lineWidth=3; ctx.beginPath();
-          for(let i=0;i<=tl.segments;i++){
-            const u=i/tl.segments;
-            const ang=tl.angle + Math.sin(t*0.02+tl.phase+i*0.3)*tl.wiggle;
-            const dist=tl.length*u;
-            const x=Math.cos(ang)*dist, y=Math.sin(ang)*dist;
-            if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-            if(i>0 && i%3===0){
-              ctx.fillStyle=`hsla(${this.hue},80%,80%,${0.2+Math.sin(t*0.05+i)*0.1})`;
-              ctx.beginPath(); ctx.arc(x,y,2,0,Math.PI*2); ctx.fill();
+      const makeNodes = () => {
+        const count = Math.min(72, Math.max(28, Math.floor((width * height) / 26000)));
+        nodes = Array.from({ length: count }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - .5) * .16,
+          vy: (Math.random() - .5) * .16,
+          radius: .7 + Math.random() * 1.5,
+          phase: Math.random() * Math.PI * 2
+        }));
+      };
+
+      const resizeCanvas = () => {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+        ambientCanvas.width = Math.floor(width * dpr);
+        ambientCanvas.height = Math.floor(height * dpr);
+        ambientCanvas.style.width = `${width}px`;
+        ambientCanvas.style.height = `${height}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        makeNodes();
+      };
+
+      const drawAmbient = (time) => {
+        if (!isVisible) return;
+        ctx.clearRect(0, 0, width, height);
+        const linkDistance = Math.min(150, width * .14);
+
+        for (let i = 0; i < nodes.length; i += 1) {
+          const node = nodes[i];
+          if (!prefersReducedMotion) {
+            node.x += node.vx;
+            node.y += node.vy;
+          }
+          if (node.x < -20) node.x = width + 20;
+          if (node.x > width + 20) node.x = -20;
+          if (node.y < -20) node.y = height + 20;
+          if (node.y > height + 20) node.y = -20;
+
+          for (let j = i + 1; j < nodes.length; j += 1) {
+            const other = nodes[j];
+            const dx = node.x - other.x;
+            const dy = node.y - other.y;
+            const distance = Math.hypot(dx, dy);
+            if (distance < linkDistance) {
+              const alpha = (1 - distance / linkDistance) * .075;
+              ctx.strokeStyle = `rgba(166, 241, 207, ${alpha})`;
+              ctx.lineWidth = .7;
+              ctx.beginPath();
+              ctx.moveTo(node.x, node.y);
+              ctx.lineTo(other.x, other.y);
+              ctx.stroke();
             }
           }
-          ctx.stroke();
+
+          const glow = .25 + Math.sin(time * .0008 + node.phase) * .12;
+          ctx.fillStyle = `rgba(255, 221, 154, ${glow})`;
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        animationFrame = requestAnimationFrame(drawAmbient);
+      };
+
+      resizeCanvas();
+      if (!prefersReducedMotion) animationFrame = requestAnimationFrame(drawAmbient);
+      else drawAmbient(0);
+      window.addEventListener("resize", resizeCanvas, { passive: true });
+      document.addEventListener("visibilitychange", () => {
+        isVisible = !document.hidden;
+        if (isVisible && !prefersReducedMotion) {
+          cancelAnimationFrame(animationFrame);
+          animationFrame = requestAnimationFrame(drawAmbient);
+        }
+      });
+
+      let audioContext = null;
+      let audioNodes = null;
+      let soundOn = false;
+
+      const toggleSound = async () => {
+        if (!audioContext) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContextClass) {
+            soundButton.disabled = true;
+            return;
+          }
+          audioContext = new AudioContextClass();
+          const gain = audioContext.createGain();
+          const filter = audioContext.createBiquadFilter();
+          const base = audioContext.createOscillator();
+          const overtone = audioContext.createOscillator();
+          const lfo = audioContext.createOscillator();
+          const lfoGain = audioContext.createGain();
+
+          base.type = "sine";
+          base.frequency.value = 54;
+          overtone.type = "sine";
+          overtone.frequency.value = 108;
+          lfo.frequency.value = .08;
+          lfoGain.gain.value = 90;
+          filter.type = "lowpass";
+          filter.frequency.value = 420;
+          gain.gain.value = .0001;
+
+          lfo.connect(lfoGain).connect(filter.frequency);
+          base.connect(filter);
+          overtone.connect(filter);
+          filter.connect(gain).connect(audioContext.destination);
+          base.start();
+          overtone.start();
+          lfo.start();
+          audioNodes = { gain };
+        }
+
+        if (audioContext.state === "suspended") await audioContext.resume();
+        soundOn = !soundOn;
+        const now = audioContext.currentTime;
+        audioNodes.gain.gain.cancelScheduledValues(now);
+        audioNodes.gain.gain.setValueAtTime(Math.max(audioNodes.gain.gain.value, .0001), now);
+        audioNodes.gain.gain.exponentialRampToValueAtTime(soundOn ? .018 : .0001, now + .45);
+        soundButton.setAttribute("aria-pressed", String(soundOn));
+        soundButton.setAttribute("aria-label", soundOn ? "アンビエント音を停止" : "アンビエント音を再生");
+        soundButton.firstElementChild.textContent = soundOn ? "◉" : "◌";
+      };
+      soundButton.addEventListener("click", toggleSound);
+
+      const initThree = () => {
+        if (prefersReducedMotion || typeof window.THREE === "undefined") return;
+
+        const canvas = document.getElementById("threeCanvas");
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "low-power" });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+        renderer.setSize(window.innerWidth, window.innerHeight, false);
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(52, window.innerWidth / window.innerHeight, .1, 100);
+        camera.position.set(0, 0, 7.5);
+
+        const geometry = new THREE.IcosahedronGeometry(1.28, 3);
+        const material = new THREE.MeshPhysicalMaterial({
+          color: 0xffb55f,
+          emissive: 0x7d2418,
+          emissiveIntensity: .7,
+          roughness: .36,
+          metalness: .08,
+          transmission: .08,
+          clearcoat: .45,
+          wireframe: true,
+          transparent: true,
+          opacity: .17
         });
+        const orb = new THREE.Mesh(geometry, material);
+        orb.position.set(2.4, .2, -1.2);
+        scene.add(orb);
 
-        // body glow
-        const pulseSize = this.size*(1+Math.sin(this.pulse)*0.15);
-        const g=ctx.createRadialGradient(0,0,0,0,0,pulseSize);
-        g.addColorStop(0,`hsla(${this.hue},60%,70%,0.10)`);
-        g.addColorStop(0.5,`hsla(${this.hue},60%,60%,0.05)`);
-        g.addColorStop(1,`hsla(${this.hue},60%,60%,0)`);
-        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(0,0,pulseSize,0,Math.PI*2); ctx.fill();
+        const ringGeometry = new THREE.TorusGeometry(2.05, .006, 8, 180);
+        const ringMaterial = new THREE.MeshBasicMaterial({ color: 0x93f3c7, transparent: true, opacity: .2 });
+        const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+        ring.position.copy(orb.position);
+        ring.rotation.x = 1.15;
+        scene.add(ring);
 
-        // main polygonal shell
-        ctx.strokeStyle=`hsla(${this.hue},60%,75%,0.35)`;
-        ctx.lineWidth=2; ctx.beginPath();
-        for(let i=0;i<6;i++){
-          const a=(i*Math.PI*2)/6 + time*0.01;
-          const r=this.size*0.5 + Math.sin(time*0.05+i)*5;
-          const x=Math.cos(a)*r, y=Math.sin(a)*r;
-          if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-        }
-        ctx.closePath(); ctx.stroke();
-        ctx.fillStyle=`hsla(${this.hue},40%,55%,0.06)`; ctx.fill();
+        const lightA = new THREE.PointLight(0xffc56f, 2.3, 16);
+        lightA.position.set(3, 2, 4);
+        scene.add(lightA);
+        scene.add(new THREE.AmbientLight(0x6bd6b0, .55));
 
-        // eyes
-        const eyePos=[{x:-12,y:-8},{x:12,y:-8},{x:0,y:8}];
-        eyePos.forEach((p,idx)=>{
-          const s=6+Math.sin(this.eyePhase+idx)*2;
-          ctx.fillStyle='rgba(255,255,255,0.15)';
-          ctx.beginPath(); ctx.arc(p.x,p.y,s,0,Math.PI*2); ctx.fill();
+        let targetX = 0;
+        let targetY = 0;
+        window.addEventListener("pointermove", (event) => {
+          targetX = (event.clientX / window.innerWidth - .5) * .65;
+          targetY = (event.clientY / window.innerHeight - .5) * .45;
+        }, { passive: true });
 
-          const dx=mouse.x-this.x, dy=mouse.y-this.y;
-          const a=Math.atan2(dy,dx), d=s*0.35;
-          const px=p.x+Math.cos(a)*d, py=p.y+Math.sin(a)*d;
-          ctx.shadowColor=`hsla(${this.hue},80%,75%,0.9)`; ctx.shadowBlur=8;
-          ctx.fillStyle=`hsla(${this.hue},80%,75%,0.7)`;
-          ctx.beginPath(); ctx.arc(px,py,s*0.4,0,Math.PI*2); ctx.fill();
-          ctx.shadowBlur=0;
-          // specular dot
-          ctx.fillStyle='rgba(255,255,255,0.9)';
-          ctx.beginPath(); ctx.arc(px-1,py-1,s*0.18,0,Math.PI*2); ctx.fill();
-        });
+        const renderThree = (time) => {
+          if (!document.hidden) {
+            orb.rotation.x += .0015;
+            orb.rotation.y += .0022;
+            orb.position.x += ((window.innerWidth < 900 ? 0 : 2.4) + targetX - orb.position.x) * .025;
+            orb.position.y += (-targetY - orb.position.y) * .025;
+            ring.position.copy(orb.position);
+            ring.rotation.z = time * .00012;
+            renderer.render(scene, camera);
+          }
+          requestAnimationFrame(renderThree);
+        };
+        requestAnimationFrame(renderThree);
 
-        // orbiting symbols
-        for(let i=0;i<6;i++){
-          const a=(i*Math.PI*2)/6 + time*0.008;
-          const d=this.size*0.7;
-          const x=Math.cos(a)*d, y=Math.sin(a)*d;
-          ctx.fillStyle=`hsla(${this.hue},70%,80%,${0.18+Math.sin(time*0.05+i)*0.1})`;
-          ctx.font='12px serif'; ctx.fillText(this.sym[i], x-6, y+4);
-        }
+        window.addEventListener("resize", () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight, false);
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+        }, { passive: true });
+      };
 
-        ctx.restore();
-      }
-    }
-
-    const swarm = [];
-    const MAX_SWARM_BASE = 10;
-    for(let i=0;i<MAX_SWARM_BASE;i++) swarm.push(new GeometricCreature());
-
-    function updateHUD(){
-      const hud=document.getElementById('hud');
-      hud.textContent=`SWARM: ${swarm.length} | RIFTS: ${rifts.length} | HUM: ${humOn?'ON':'OFF'}`;
-    }
-
-    // ---------- Rifts ----------
-    function maybeOpenRift(){
-      if(Math.random()<0.006 || (chaosMode && Math.random()<0.012)){
-        const x=Math.random()*innerWidth, y=Math.random()*innerHeight;
-        rifts.push({x,y,r:8,life:1,spin:Math.random()*Math.PI*2, sign: Math.random()<0.5?1:-1});
-        // spawn a creature
-        if(swarm.length< (chaosMode? 26: MAX_SWARM_BASE+6)){
-          swarm.push(new GeometricCreature(x+Math.random()*20-10, y+Math.random()*20-10));
-        }else{
-          // or consume one
-          swarm.splice((Math.random()*swarm.length)|0,1);
-        }
-        updateHUD();
-      }
-    }
-
-    // ---------- Sakura & Effects ----------
-    function drawSakura(){
-      pCtx.clearRect(0,0,particleCanvas.width, particleCanvas.height);
-      sakuraParticles.forEach(p=>{
-        p.y+=p.speed; p.x += Math.sin(p.y*0.01)*p.drift;
-        if(p.y>particleCanvas.height){ p.y=-20; p.x=Math.random()*particleCanvas.width; }
-        pCtx.save(); pCtx.translate(p.x,p.y); pCtx.rotate(p.y*0.01);
-        pCtx.fillStyle=`rgba(255,200,220,${p.opacity})`;
-        pCtx.beginPath();
-        for(let i=0;i<5;i++){
-          const a=(i*2*Math.PI)/5; const x=p.size*Math.cos(a), y=p.size*Math.sin(a);
-          if(i===0) pCtx.moveTo(x,y); else pCtx.lineTo(x,y);
-        }
-        pCtx.closePath(); pCtx.fill(); pCtx.restore();
-      });
-    }
-
-    // background fade
-    function drawBackground(){
-      ctx.fillStyle = chaosMode ? 'rgba(0,0,0,0.015)' : 'rgba(0,0,0,0.05)';
-      ctx.fillRect(0,0,canvas2D.width, canvas2D.height);
-    }
-
-    // smoke / spiral / eye as before (kept lightweight)
-    function drawSmokeDragon(t){
-      for(let i=0;i<380;i++){
-        const angle=i*0.028 + t*0.0015;
-        const radius=150 + Math.sin(t*0.003+i)*40;
-        const x=canvas2D.width/2 + radius*Math.cos(angle);
-        const y=canvas2D.height/2 + radius*Math.sin(angle*1.15);
-        ctx.beginPath(); ctx.arc(x,y,1.6,0,Math.PI*2);
-        const alpha = Math.sin(i + t*0.005)*0.04 + 0.04;
-        ctx.fillStyle=`rgba(255,255,255,${alpha})`; ctx.fill();
-      }
-    }
-    function drawFractalSpiral(cx,cy,t){
-      for(let i=0;i<100;i++){
-        const a=i*0.25 + t*0.0018;
-        const r=12*Math.sqrt(i)*(1+Math.sin(t*0.002+i*0.15)*0.3);
-        const x=cx+r*Math.cos(a), y=cy+r*Math.sin(a);
-        ctx.beginPath(); ctx.arc(x,y,1.5,0,Math.PI*2);
-        ctx.fillStyle='rgba(255,255,255,0.02)'; ctx.fill();
-      }
-    }
-    function drawDragonEye(){
-      mouse.x += (mouse.tx-mouse.x)*0.1;
-      mouse.y += (mouse.ty-mouse.y)*0.1;
-      ctx.beginPath(); ctx.arc(mouse.x, mouse.y, 12, 0, Math.PI*2);
-      ctx.fillStyle='rgba(255,255,255,0.08)';
-      ctx.shadowColor='white'; ctx.shadowBlur=25; ctx.fill(); ctx.shadowBlur=0;
-    }
-
-    // Sigils & Rifts rendering
-    function drawSigilsAndRifts(){
-      // sigils
-      for(let i=sigils.length-1;i>=0;i--){
-        const s=sigils[i];
-        s.life -= 0.012; s.r += 1.2; s.spin += 0.03;
-        if(s.life<=0){ sigils.splice(i,1); continue; }
-        ctx.save(); ctx.translate(s.x,s.y); ctx.rotate(s.spin);
-        ctx.globalCompositeOperation='lighter';
-        ctx.strokeStyle=`rgba(200,255,230,${0.35*s.life})`;
-        ctx.lineWidth=1.5;
-        ctx.beginPath(); ctx.arc(0,0,s.r,0,Math.PI*2); ctx.stroke();
-        ctx.beginPath(); ctx.arc(0,0,s.r*0.5,0,Math.PI*2); ctx.stroke();
-        ctx.fillStyle=`rgba(180,255,220,${0.25*s.life})`;
-        for(const i2 of s.glyphs){
-          const a=(i2*Math.PI*2)/s.glyphs.length;
-          const x=Math.cos(a)*s.r*0.8, y=Math.sin(a)*s.r*0.8;
-          ctx.fillText(['☯','で','☯','☆','◯','水'][i2%6], x-4,y+4);
-        }
-        ctx.restore();
-      }
-      // rifts
-      for(let i=rifts.length-1;i>=0;i--){
-        const r=rifts[i];
-        r.life -= 0.01; r.r += 0.9; r.spin += 0.02*r.sign;
-        if(r.life<=0){ rifts.splice(i,1); continue; }
-        ctx.save(); ctx.translate(r.x,r.y); ctx.rotate(r.spin);
-        const grd=ctx.createRadialGradient(0,0,0,0,0,r.r*1.2);
-        grd.addColorStop(0,`rgba(100,255,200,0.18)`);
-        grd.addColorStop(1,`rgba(100,255,200,0)`);
-        ctx.fillStyle=grd; ctx.beginPath(); ctx.arc(0,0,r.r*1.2,0,Math.PI*2); ctx.fill();
-        ctx.strokeStyle=`rgba(180,255,220,0.35)`; ctx.setLineDash([6,4]);
-        ctx.beginPath();
-        for(let k=0;k<3;k++){
-          const a=(k*Math.PI*2)/3;
-          ctx.moveTo(0,0); ctx.lineTo(Math.cos(a)*r.r, Math.sin(a)*r.r);
-        }
-        ctx.stroke(); ctx.setLineDash([]);
-        ctx.restore();
-      }
-    }
-
-    // ---------- Animation ----------
-    function animate(){
-      time++;
-
-      if(time===1500){ // ~25s
-        chaosMode=true; material.wireframe=true;
-        // surge more creatures
-        for(let i=0;i<6;i++) swarm.push(new GeometricCreature(innerWidth/2, innerHeight/2));
-        updateHUD();
-      }
-
-      // Three.js torus motion
-      const targetRotX = (mouse.y/innerHeight - 0.5)*0.5;
-      const targetRotY = (mouse.x/innerWidth - 0.5)*0.5;
-      torusKnot.rotation.x += (targetRotX - torusKnot.rotation.x)*0.05 + 0.003;
-      torusKnot.rotation.y += (targetRotY - torusKnot.rotation.y)*0.05 + 0.005;
-      material.emissiveIntensity = chaosMode?1.5:0.3;
-      material.color.set(chaosMode?0xff3366:0x8844ff);
-      point1.position.x = Math.sin(time*0.001)*8;
-      point1.position.y = Math.cos(time*0.0015)*8;
-      renderer.render(scene,camera);
-
-      // 2D layers
-      drawBackground();
-      drawFractalSpiral(innerWidth/2, innerHeight/2, time);
-      drawSmokeDragon(time);
-      drawDragonEye();
-
-      // swarm update/draw
-      for(let i=0;i<swarm.length;i++){
-        const c=swarm[i];
-        // provide a small neighbor set (performance)
-        const neighbors=[];
-        for(let j=0;j<6;j++){
-          const k=(i+j*3)%swarm.length;
-          if(k!==i) neighbors.push(swarm[k]);
-        }
-        c.update(neighbors);
-        c.draw(ctx,time);
-      }
-
-      // ritual & portals
-      drawSigilsAndRifts();
-      maybeOpenRift();
-
-      // sakura + front effects
-      drawSakura();
-
-      requestAnimationFrame(animate);
-    }
-
-    // ---------- Utility ----------
-    function lerp(a,b,t){return a+(b-a)*t;}
-
-    // start
-    resizeRenderer();
-    updateHUD();
-    animate();
-  
-    // ---------- Menu (Hamburger) ----------
-    (function(){
-      const menu = document.getElementById('topMenu');
-      const btn  = document.getElementById('menuToggle');
-      const links= document.getElementById('menuLinks');
-      if(!menu || !btn || !links) return;
-
-    　function setOpen(open){
-        menu.classList.toggle('is-open', open);
-        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      }
-
-      // ★ここを追加：デフォルトで開く
-      setOpen(true);
-
-      btn.addEventListener('click', ()=>{
-        const open = !menu.classList.contains('is-open');
-        setOpen(open);
-      });
-
-      // close when a link is clicked
-      links.addEventListener('click', (e)=>{
-        const a = e.target.closest('a');
-        if(a) setOpen(false);
-      });
-
-      // close on ESC
-      addEventListener('keydown', (e)=>{
-        if(e.key === 'Escape') setOpen(false);
-      });
+      if (document.readyState === "complete") initThree();
+      else window.addEventListener("load", initThree, { once: true });
     })();
-
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
