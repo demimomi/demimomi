@@ -1,0 +1,888 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000080">
+  <meta name="description" content="Human-centered intelligence, mobility, and research by Toshiki Demizu. 平成初期ホームページ風デザイン。">
+  <meta name="keywords" content="出水利樹, Toshiki Demizu, demimomi, AI, mobility, digital twin, human centered">
+  <title>demimomiのホームページ - Toshiki Demizu</title>
+
+  <style>
+    :root {
+      --navy: #000080;
+      --blue: #0000ee;
+      --visited: #551a8b;
+      --red: #ff0000;
+      --yellow: #ffff00;
+      --aqua: #00ffff;
+      --silver: #c0c0c0;
+      --light-blue: #dbeeff;
+      --page-width: 780px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: #8fb8d8;
+      background-image:
+        radial-gradient(circle at 1px 1px, rgba(255,255,255,.72) 1px, transparent 1px),
+        linear-gradient(135deg, rgba(0,0,128,.12) 25%, transparent 25%),
+        linear-gradient(315deg, rgba(0,0,128,.12) 25%, transparent 25%);
+      background-size: 12px 12px, 32px 32px, 32px 32px;
+      background-position: 0 0, 0 0, 16px 16px;
+    }
+
+    body {
+      width: var(--page-width);
+      max-width: calc(100% - 12px);
+      margin: 8px auto 40px;
+      color: #000;
+      font-family: "MS PGothic", "MS Gothic", Osaka, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    a { color: var(--blue); text-decoration: underline; }
+    a:visited { color: var(--visited); }
+    a:hover, a:focus-visible { color: var(--red); background: var(--yellow); }
+    img, svg { max-width: 100%; }
+    code, pre { font-family: "Courier New", monospace; }
+
+    .skip-link {
+      position: absolute;
+      left: 8px;
+      top: -100px;
+      z-index: 999;
+      padding: 6px 10px;
+      color: #000;
+      background: var(--yellow);
+      border: 2px outset #fff;
+    }
+    .skip-link:focus { top: 8px; }
+
+    .browser-note {
+      margin: 0 0 4px;
+      color: #102342;
+      font-size: 11px;
+      text-align: center;
+      text-shadow: 1px 1px 0 rgba(255,255,255,.7);
+    }
+
+    .page {
+      border: 4px ridge #f5f5f5;
+      background: #fff;
+      box-shadow: 5px 5px 0 rgba(0,0,0,.28);
+    }
+
+    .window-title {
+      padding: 3px 7px;
+      color: #fff;
+      background: linear-gradient(90deg, #000080, #3977ba);
+      border-bottom: 2px groove #fff;
+      font-weight: bold;
+      letter-spacing: .04em;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 15px 12px 11px;
+      text-align: center;
+      background:
+        repeating-linear-gradient(0deg, #fff 0 3px, #edf7ff 3px 6px);
+      border-bottom: 1px solid #777;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "★";
+      position: absolute;
+      top: 8px;
+      color: #ff9900;
+      font-size: 26px;
+      text-shadow: 1px 1px 0 #800000;
+      animation: twinkle .8s steps(2, end) infinite;
+    }
+    .hero::before { left: 16px; }
+    .hero::after { right: 16px; animation-delay: .4s; }
+
+    .hero-kicker {
+      margin-bottom: 2px;
+      color: #800080;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: .14em;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-family: "Times New Roman", "Yu Mincho", serif;
+      font-size: clamp(29px, 6vw, 48px);
+      line-height: 1.1;
+      letter-spacing: -.02em;
+    }
+
+    .rainbow-text {
+      color: transparent;
+      background: linear-gradient(90deg, #ff0000, #ff7f00, #b8860b, #008000, #0000ff, #4b0082, #ff1493);
+      -webkit-background-clip: text;
+      background-clip: text;
+      filter: drop-shadow(2px 2px 0 #c8dfff);
+    }
+
+    .hero-subtitle {
+      margin: 5px 0 0;
+      color: var(--navy);
+      font-family: "Times New Roman", serif;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: .16em;
+    }
+
+    .under-construction {
+      display: inline-block;
+      margin-top: 9px;
+      padding: 2px 9px;
+      border: 2px dashed #cc0000;
+      color: #cc0000;
+      background: var(--yellow);
+      font-weight: bold;
+      transform: rotate(-1deg);
+    }
+
+    .marquee-box {
+      overflow: hidden;
+      border-top: 2px inset #ccc;
+      border-bottom: 2px inset #ccc;
+      color: #00ff00;
+      background: #000;
+      font-family: "Courier New", monospace;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .marquee-track {
+      display: inline-block;
+      min-width: 100%;
+      padding: 4px 0 4px 100%;
+      animation: marquee 19s linear infinite;
+    }
+
+    .main-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .main-table > tbody > tr > td { vertical-align: top; }
+
+    .sidebar {
+      width: 190px;
+      padding: 8px;
+      border-right: 3px groove #fff;
+      background: var(--silver);
+    }
+
+    .content {
+      padding: 10px 14px 22px;
+      background: #fff;
+    }
+
+    .profile-art {
+      width: 154px;
+      margin: 0 auto 9px;
+      border: 4px ridge #eaeaea;
+      background: #001a66;
+    }
+
+    .profile-art svg { display: block; width: 100%; height: auto; }
+
+    .profile-caption {
+      padding: 3px 2px;
+      border-top: 1px solid #555;
+      color: #000080;
+      background: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .menu-title,
+    .side-title {
+      margin: 8px 0 5px;
+      padding: 2px 5px;
+      border: 2px outset #d9d9d9;
+      color: #fff;
+      background: var(--navy);
+      font-weight: bold;
+      text-align: center;
+      letter-spacing: .08em;
+    }
+
+    .menu {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .menu li { margin: 4px 0; }
+
+    .menu a {
+      display: block;
+      padding: 3px 5px;
+      border: 2px outset #eee;
+      color: #000080;
+      background: #ececec;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .menu a::before { content: "▶ "; color: #cc0000; }
+    .menu a:active { border-style: inset; }
+
+    .side-box {
+      margin-top: 9px;
+      padding: 6px;
+      border: 2px inset #eee;
+      background: #fff;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .counter {
+      display: inline-block;
+      min-width: 112px;
+      margin: 3px 0;
+      padding: 2px 5px;
+      border: 3px inset #777;
+      color: #ff3030;
+      background: #000;
+      font: bold 19px/1.1 "Courier New", monospace;
+      letter-spacing: 2px;
+    }
+
+    .badge-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+      margin-top: 6px;
+    }
+
+    .badge {
+      padding: 3px 2px;
+      border: 2px outset #eee;
+      color: #fff;
+      background: #000080;
+      font: bold 9px/1.2 Arial, sans-serif;
+      text-align: center;
+    }
+
+    .badge:nth-child(2) { color: #000; background: #00ff00; }
+    .badge:nth-child(3) { color: #000; background: #ffff00; }
+    .badge:nth-child(4) { background: #800080; }
+
+    .welcome {
+      margin: 2px 0 12px;
+      padding: 8px;
+      border: 1px dotted #555;
+      background: #ffffdd;
+    }
+
+    .welcome b { color: #800000; }
+
+    h2 {
+      margin: 13px 0 7px;
+      padding: 2px 7px;
+      border-left: 11px solid var(--navy);
+      border-bottom: 2px solid var(--navy);
+      color: var(--navy);
+      background: linear-gradient(90deg, #dcecff, #fff);
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    h3 {
+      margin: 11px 0 5px;
+      color: #800000;
+      font-size: 15px;
+    }
+
+    p { margin: 0 0 10px; }
+
+    .section-note {
+      color: #555;
+      font-size: 12px;
+    }
+
+    .news-table,
+    .profile-table,
+    .project-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .news-table th,
+    .news-table td,
+    .profile-table th,
+    .profile-table td,
+    .project-table th,
+    .project-table td {
+      padding: 5px 7px;
+      border: 1px solid #888;
+    }
+
+    .news-table th {
+      width: 102px;
+      color: #333;
+      background: #e7e7e7;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .profile-table th {
+      width: 125px;
+      color: #000080;
+      background: #eaf3ff;
+      text-align: left;
+    }
+
+    .project-table th {
+      width: 30%;
+      color: #fff;
+      background: var(--navy);
+      text-align: left;
+    }
+
+    .project-table tr:nth-child(even) td { background: #f2f8ff; }
+
+    .new {
+      color: #ff0000;
+      font-size: 10px;
+      font-weight: bold;
+      animation: blink .75s step-end infinite;
+    }
+
+    .retro-rule {
+      height: 8px;
+      margin: 15px 0;
+      border: 0;
+      background:
+        repeating-linear-gradient(90deg, #000080 0 9px, #fff 9px 13px, #ff0000 13px 22px, #fff 22px 26px);
+    }
+
+    .principle-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .principle-list li {
+      margin-bottom: 7px;
+      padding: 6px 8px;
+      border: 2px groove #fff;
+      background: #f4f4f4;
+    }
+
+    .principle-list strong { color: #800000; }
+
+    .project-link {
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-left: 3px;
+      padding: 0 4px;
+      border: 1px solid #555;
+      color: #fff;
+      background: #008080;
+      font-size: 10px;
+      text-decoration: none;
+    }
+
+    .code-window {
+      margin: 8px 0 12px;
+      border: 3px ridge #eee;
+      background: #c0c0c0;
+    }
+
+    .code-title {
+      display: flex;
+      justify-content: space-between;
+      padding: 2px 5px;
+      color: #fff;
+      background: linear-gradient(90deg, #000080, #3280c0);
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .window-buttons { letter-spacing: 2px; }
+
+    pre {
+      margin: 4px;
+      padding: 9px;
+      overflow: auto;
+      border: 2px inset #ddd;
+      color: #00ff00;
+      background: #000;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 10px 0;
+    }
+
+    .retro-button {
+      display: inline-block;
+      padding: 5px 10px;
+      border: 3px outset #eee;
+      color: #000;
+      background: #c0c0c0;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .retro-button:hover,
+    .retro-button:focus-visible { color: #000; background: #ffff00; }
+    .retro-button:active { border-style: inset; }
+
+    .closing-box {
+      margin-top: 14px;
+      padding: 12px;
+      border: 4px double #000080;
+      background: #eaf5ff;
+      text-align: center;
+    }
+
+    .closing-box .big {
+      display: block;
+      margin-bottom: 6px;
+      color: #800080;
+      font-family: "Yu Mincho", "MS Mincho", serif;
+      font-size: 23px;
+      font-weight: bold;
+    }
+
+    .mail-note {
+      color: #555;
+      font-size: 11px;
+    }
+
+    .footer {
+      padding: 10px;
+      border-top: 3px groove #fff;
+      color: #222;
+      background: #e6e6e6;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .footer-links { margin-bottom: 5px; }
+
+    .best-viewed {
+      color: #444;
+      font-family: "Courier New", monospace;
+    }
+
+    .sound-button {
+      appearance: none;
+      margin-top: 5px;
+      padding: 3px 7px;
+      border: 2px outset #eee;
+      color: #000;
+      background: #c0c0c0;
+      font: bold 11px "MS PGothic", sans-serif;
+      cursor: pointer;
+    }
+    .sound-button:active { border-style: inset; }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-200%); }
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+    @keyframes twinkle { 50% { opacity: .25; transform: scale(.8); } }
+
+    @media (max-width: 640px) {
+      body { width: auto; }
+      .main-table,
+      .main-table tbody,
+      .main-table tr,
+      .main-table td { display: block; width: 100%; }
+      .sidebar { border-right: 0; border-bottom: 3px groove #fff; }
+      .profile-art { width: 140px; }
+      .menu { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+      .menu li { margin: 0; }
+      .hero::before, .hero::after { display: none; }
+      .news-table th, .profile-table th { width: 102px; }
+      .project-table th { width: 35%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; }
+      .marquee-track { padding-left: 8px; white-space: normal; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">本文へ移動</a>
+
+  <div class="browser-note">
+    ★ Internet Explorer 5.5 / Netscape Navigator 4.7 / 800×600 以上推奨 ★
+  </div>
+
+  <div class="page">
+    <div class="window-title">demimomi - Microsoft Internet Explorer</div>
+
+    <header class="hero" id="top">
+      <div class="hero-kicker">WELCOME TO MY HOMEPAGE!</div>
+      <h1><span class="rainbow-text">demimomiのホームページ</span></h1>
+      <p class="hero-subtitle">HUMAN-CENTERED INTELLIGENCE / MOBILITY / DIGITAL TWIN</p>
+      <div class="under-construction">工事中につき、時々更新します！</div>
+    </header>
+
+    <div class="marquee-box" aria-label="最新のお知らせ">
+      <div class="marquee-track">
+        ★ ようこそ！技術を、人の可能性へ。AI・モビリティ・デジタルツインの研究と実装を紹介しています。ブックマークをお願いします！ ★
+      </div>
+    </div>
+
+    <table class="main-table" role="presentation">
+      <tbody>
+        <tr>
+          <td class="sidebar">
+            <div class="profile-art">
+              <svg viewBox="0 0 180 180" role="img" aria-label="地球とネットワークを表したイラスト">
+                <defs>
+                  <radialGradient id="earth" cx="35%" cy="30%" r="70%">
+                    <stop offset="0" stop-color="#dffaff"/>
+                    <stop offset=".18" stop-color="#68d9ff"/>
+                    <stop offset=".58" stop-color="#1670c5"/>
+                    <stop offset="1" stop-color="#001d55"/>
+                  </radialGradient>
+                </defs>
+                <rect width="180" height="180" fill="#000033"/>
+                <g fill="#fff">
+                  <circle cx="22" cy="28" r="1"/><circle cx="42" cy="14" r="1.2"/><circle cx="153" cy="26" r="1"/>
+                  <circle cx="164" cy="65" r="1.4"/><circle cx="21" cy="142" r="1"/><circle cx="146" cy="151" r="1.2"/>
+                  <circle cx="99" cy="17" r=".8"/><circle cx="15" cy="83" r=".8"/><circle cx="169" cy="120" r=".8"/>
+                </g>
+                <circle cx="90" cy="88" r="55" fill="url(#earth)" stroke="#b8efff" stroke-width="2"/>
+                <path d="M58 52 Q74 36 91 39 Q101 47 92 57 Q82 62 84 74 Q68 76 62 68Z" fill="#43d27b"/>
+                <path d="M99 75 Q128 61 137 79 Q127 91 119 99 Q112 107 113 126 Q99 136 91 116 Q88 103 98 94Z" fill="#35bb67"/>
+                <path d="M53 95 Q67 91 75 102 Q72 120 60 126 Q47 114 46 103Z" fill="#72df91"/>
+                <ellipse cx="90" cy="88" rx="76" ry="28" fill="none" stroke="#00ffff" stroke-width="1.4" transform="rotate(-16 90 88)"/>
+                <circle cx="147" cy="68" r="5" fill="#ffff00" stroke="#ff0000"/>
+                <circle cx="34" cy="112" r="4" fill="#00ff00" stroke="#fff"/>
+                <path d="M34 112 L90 88 L147 68" fill="none" stroke="#ffff00" stroke-dasharray="3 3"/>
+                <text x="90" y="169" text-anchor="middle" fill="#00ff00" font-family="monospace" font-size="10">EARTH / INTELLIGENCE / HUMAN</text>
+              </svg>
+              <div class="profile-caption">地球規模で考え、人の近くでつくる。</div>
+            </div>
+
+            <div class="menu-title">★ MENU ★</div>
+            <ul class="menu">
+              <li><a href="#top">TOP</a></li>
+              <li><a href="#news">What's New</a></li>
+              <li><a href="#profile">Profile</a></li>
+              <li><a href="#philosophy">Philosophy</a></li>
+              <li><a href="#projects">Projects</a></li>
+              <li><a href="#model">Open Model</a></li>
+              <li><a href="#links">Links</a></li>
+              <li><a href="#footer">Site Info</a></li>
+            </ul>
+
+            <div class="side-box">
+              <b>あなたは</b><br>
+              <span class="counter" id="counter">000001</span><br>
+              <b>人目のお客様です。</b>
+            </div>
+
+            <div class="side-box">
+              <b>最終更新日</b><br>
+              <span id="lastUpdated">2026年07月26日</span><br>
+              <span class="new">NEW!</span>
+            </div>
+
+            <div class="side-title">動作環境</div>
+            <div class="badge-row" aria-label="対応技術">
+              <div class="badge">HTML 4.01<br>LIKE</div>
+              <div class="badge">JavaScript<br>ON</div>
+              <div class="badge">56K MODEM<br>READY</div>
+              <div class="badge">NO FRAME<br>PAGE</div>
+            </div>
+
+            <div class="side-box">
+              <b>♪ BGM ♪</b><br>
+              <button class="sound-button" id="soundButton" type="button" aria-pressed="false">再生する</button><br>
+              <span class="mail-note">※ブラウザ内蔵音源です</span>
+            </div>
+
+            <div class="side-box">
+              <b>リンクについて</b><br>
+              このページはリンクフリーです。ご自由にどうぞ！
+            </div>
+          </td>
+
+          <td class="content" id="main">
+            <div class="welcome">
+              <b>ごあいさつ</b><br>
+              demimomiのホームページへようこそ！<br>
+              AI、モビリティ、デジタルツインを横断し、複雑な技術を人に届く体験へ変える研究と実装を紹介しています。
+              地球規模の視点と、一人ひとりへのまなざしを両立することを目指しています。
+            </div>
+
+            <section id="news">
+              <h2>What's New - 更新履歴</h2>
+              <table class="news-table">
+                <tbody>
+                  <tr>
+                    <th>2026.07.26</th>
+                    <td>ホームページを平成初期風にリニューアルしました。 <span class="new">NEW!</span></td>
+                  </tr>
+                  <tr>
+                    <th>2025.03</th>
+                    <td>Research Profileへのリンクを追加しました。</td>
+                  </tr>
+                  <tr>
+                    <th>2024.03</th>
+                    <td>CatBusプロジェクトの紹介記事を掲載しました。</td>
+                  </tr>
+                  <tr>
+                    <th>2024</th>
+                    <td>日本語LLMのファインチューニングモデルを公開しました。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <hr class="retro-rule">
+
+            <section id="profile">
+              <h2>Profile - このページについて</h2>
+              <table class="profile-table">
+                <tbody>
+                  <tr><th>名前</th><td>Toshiki Demizu / demimomi</td></tr>
+                  <tr><th>テーマ</th><td>Human-centered intelligence</td></tr>
+                  <tr><th>研究領域</th><td>AI、モビリティ、デジタルツイン、安全設計</td></tr>
+                  <tr><th>目標</th><td>技術の速度と、人の納得。その両方を大切にする。</td></tr>
+                  <tr><th>合言葉</th><td><b>Tera-scale. Human-close.</b></td></tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section id="philosophy">
+              <h2>Philosophy - 設計の考え方</h2>
+              <p class="section-note">
+                大規模モデルや都市規模のシステムであっても、価値が生まれる場所は人の判断と行動です。
+              </p>
+              <ul class="principle-list">
+                <li><strong>01 / CLARITY　複雑さを、明快さへ</strong><br>専門性を損なわず、初見でも価値が伝わる情報設計。技術の凄さより、変化の意味を前面に。</li>
+                <li><strong>02 / TRUST　驚きより、信頼を残す</strong><br>過剰な刺激ではなく、実績と根拠への導線によって、長く効く印象をつくる。</li>
+                <li><strong>03 / LIFE　技術に、生命感を</strong><br>太陽、軌道、呼吸、群れ。自然のリズムを借りて、人と機械が共生する未来を視覚化する。</li>
+              </ul>
+            </section>
+
+            <hr class="retro-rule">
+
+            <section id="projects">
+              <h2>Selected Projects - 主な活動</h2>
+              <table class="project-table">
+                <tbody>
+                  <tr>
+                    <th>Deep Learning Lab</th>
+                    <td>
+                      <a class="project-link" href="https://demimomi.github.io/demimomi/deep_learning.html" target="_blank" rel="noopener noreferrer">Deep Learning Labを開く ↗</a>
+                      <span class="tag">AI RESEARCH</span><br>
+                      学習・実験・発見をつなぐ、実践的なAI研究の入り口。
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Japanese LLM</th>
+                    <td>
+                      <a class="project-link" href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank" rel="noopener noreferrer">Hugging Faceで見る ↗</a>
+                      <span class="tag">LLM 2024</span><br>
+                      日本語の文脈に向き合う、13Bモデルのファインチューニング実践。
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>TokyoBus Project</th>
+                    <td>
+                      <a class="project-link" href="https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453" target="_blank" rel="noopener noreferrer">Research Profileを開く ↗</a>
+                      <span class="tag">MOBILITY</span><br>
+                      交通と都市のデータをつなぎ、安全で持続可能な移動体験を探究する。
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>CatBus</th>
+                    <td>
+                      <a class="project-link" href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank" rel="noopener noreferrer">紹介記事を読む ↗</a>
+                      <span class="tag">SOCIAL IMPLEMENTATION</span><br>
+                      未来のモビリティを、親しみやすく社会へ届ける実装ストーリー。
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Patent</th>
+                    <td>
+                      <a class="project-link" href="https://demimomi.github.io/demimomi/patent.html" target="_blank" rel="noopener noreferrer">Patentページを開く ↗</a>
+                      <span class="tag">INTELLECTUAL PROPERTY</span><br>
+                      研究・発明に関する情報を掲載しています。
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section id="model">
+              <h2>Open Model - モデルを試す</h2>
+              <p>
+                モデルは展示物ではなく、触れて確かめるためのもの。最短のコードで研究成果への入口を開きます。
+              </p>
+
+              <div class="code-window">
+                <div class="code-title">
+                  <span>quickstart.py - メモ帳</span>
+                  <span class="window-buttons">_ □ ×</span>
+                </div>
+                <pre><code>from transformers import AutoModel
+
+model = AutoModel.from_pretrained(
+    "demimomi/llm-jp-3-13b-finetune-ex"
+)</code></pre>
+              </div>
+
+              <div class="button-row">
+                <a class="retro-button" href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank" rel="noopener noreferrer">▶ Hugging Faceへ</a>
+                <a class="retro-button" href="https://demimomi.github.io/demimomi/deep_learning.html" target="_blank" rel="noopener noreferrer">▶ Deep Learning Labへ</a>
+              </div>
+            </section>
+
+            <section id="links">
+              <h2>Links - おすすめリンク</h2>
+              <ul>
+                <li><a href="https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453" target="_blank" rel="noopener noreferrer">J-GLOBAL Research Profile</a></li>
+                <li><a href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank" rel="noopener noreferrer">Hugging Face / Japanese LLM</a></li>
+                <li><a href="https://demimomi.github.io/demimomi/patent.html" target="_blank" rel="noopener noreferrer">Patent</a></li>
+                <li><a href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank" rel="noopener noreferrer">CatBus紹介記事</a></li>
+              </ul>
+            </section>
+
+            <div class="closing-box">
+              <span class="big">未来は、人を中心に回る。</span>
+              技術の速度と、人の納得。<br>
+              その両方を大切にするプロジェクトを、研究から実装まで。
+              <div class="button-row" style="justify-content:center">
+                <a class="retro-button" href="https://demimomi.github.io/demimomi/patent.html" target="_blank" rel="noopener noreferrer">研究成果を見る ↗</a>
+              </div>
+            </div>
+
+            <p class="mail-note">
+              ※掲載内容・リンク先は、添付いただいた元ページの情報をもとに構成しています。
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <footer class="footer" id="footer">
+      <div class="footer-links">
+        <a href="#top">TOPへ戻る</a> ｜
+        <a href="#projects">Projects</a> ｜
+        <a href="https://demimomi.github.io/demimomi/patent.html" target="_blank" rel="noopener noreferrer">Patent</a>
+      </div>
+      <div>Copyright © <span id="year">2026</span> Toshiki Demizu / demimomi. All Rights Reserved.</div>
+      <div class="best-viewed">Best viewed at 800×600 / 16bit color / 56kbps modem</div>
+      <div>Human signal online ●</div>
+    </footer>
+  </div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const counter = document.getElementById("counter");
+      const counterKey = "demimomi-heisei-counter";
+      let count = Number(localStorage.getItem(counterKey) || 31414);
+      count += 1;
+      localStorage.setItem(counterKey, String(count));
+      counter.textContent = String(count).padStart(6, "0");
+
+      const now = new Date();
+      document.getElementById("year").textContent = String(now.getFullYear());
+      document.getElementById("lastUpdated").textContent =
+        `${now.getFullYear()}年${String(now.getMonth() + 1).padStart(2, "0")}月${String(now.getDate()).padStart(2, "0")}日`;
+
+      const soundButton = document.getElementById("soundButton");
+      let audioContext = null;
+      let timerId = null;
+      let isPlaying = false;
+      let step = 0;
+      const melody = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63, 293.66, 392.00];
+
+      const playNote = (frequency) => {
+        if (!audioContext) return;
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        oscillator.type = "square";
+        oscillator.frequency.value = frequency;
+        gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.025, audioContext.currentTime + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.18);
+        oscillator.connect(gain).connect(audioContext.destination);
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.2);
+      };
+
+      const stopBgm = () => {
+        window.clearInterval(timerId);
+        timerId = null;
+        isPlaying = false;
+        soundButton.textContent = "再生する";
+        soundButton.setAttribute("aria-pressed", "false");
+      };
+
+      soundButton.addEventListener("click", async () => {
+        if (isPlaying) {
+          stopBgm();
+          return;
+        }
+
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) {
+          soundButton.textContent = "非対応です";
+          soundButton.disabled = true;
+          return;
+        }
+
+        if (!audioContext) audioContext = new AudioContextClass();
+        if (audioContext.state === "suspended") await audioContext.resume();
+
+        isPlaying = true;
+        soundButton.textContent = "停止する";
+        soundButton.setAttribute("aria-pressed", "true");
+        playNote(melody[step % melody.length]);
+        step += 1;
+        timerId = window.setInterval(() => {
+          playNote(melody[step % melody.length]);
+          step += 1;
+        }, 360);
+      });
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden && isPlaying) stopBgm();
+      });
+    })();
+  </script>
+</body>
+</html>
