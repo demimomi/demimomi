@@ -3,11 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#07110f">
-  <meta name="description" content="Human-centered intelligence, mobility, and research by Toshiki Demizu.">
-  <meta name="keywords" content="出水利樹, Toshiki Demizu, demimomi, AI, mobility, digital twin, human centered">
+  <meta name="theme-color" content="#0b0f0d">
+  <meta name="description" content="AI、モビリティ、デジタルツイン。研究と実装、そして学びの途中経過を置いている Toshiki Demizu / demimomi のサイト。">
+  <meta name="keywords" content="出水利樹, Toshiki Demizu, demimomi, AI, mobility, digital twin, human centered, LLM">
   <title>SOL / HUMAN — Toshiki Demizu</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet">
@@ -15,40 +14,51 @@
   <style>
     :root {
       color-scheme: dark;
-      --ink: #f6f2e7;
-      --muted: rgba(246, 242, 231, .66);
-      --dim: rgba(246, 242, 231, .42);
-      --line: rgba(255, 255, 255, .12);
-      --glass: rgba(8, 20, 17, .58);
-      --glass-strong: rgba(8, 20, 17, .82);
-      --solar: #ffd27a;
-      --solar-2: #ff9e5d;
-      --life: #93f3c7;
-      --sky: #8bd9ff;
-      --bg: #050b0a;
+      --ink: #f1eee5;
+      --muted: rgba(241, 238, 229, .66);
+      --dim: rgba(241, 238, 229, .40);
+      --line: rgba(241, 238, 229, .13);
+      --line-strong: rgba(241, 238, 229, .22);
+      --paper: #0b0f0d;
+      --paper-2: #101612;
+      --gold: #d7bd83;
+      --sage: #9bb49e;
+      --blue: #9cb8c7;
+      --rust: #b8896a;
       --max: 1180px;
       --ease: cubic-bezier(.2, .8, .2, 1);
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; background: var(--bg); }
+    html { scroll-behavior: smooth; background: var(--paper); }
     body {
       margin: 0;
       min-height: 100%;
       overflow-x: hidden;
       color: var(--ink);
       background:
-        radial-gradient(circle at 50% -10%, rgba(255, 190, 96, .14), transparent 38rem),
-        radial-gradient(circle at 8% 38%, rgba(87, 220, 172, .08), transparent 28rem),
-        var(--bg);
+        linear-gradient(rgba(255,255,255,.012), rgba(255,255,255,.012)),
+        radial-gradient(circle at 82% 8%, rgba(215,189,131,.06), transparent 30rem),
+        var(--paper);
       font-family: Manrope, "Helvetica Neue", sans-serif;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
 
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      opacity: .035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.65'/%3E%3C/svg%3E");
+      mix-blend-mode: soft-light;
+    }
+
     a { color: inherit; }
     button, a { -webkit-tap-highlight-color: transparent; }
-    ::selection { color: #07110f; background: var(--solar); }
+    ::selection { color: #10130f; background: var(--gold); }
 
     .skip-link {
       position: fixed;
@@ -57,33 +67,12 @@
       z-index: 100;
       transform: translateY(-180%);
       padding: .7rem 1rem;
-      color: #07110f;
-      background: var(--solar);
+      color: #10130f;
+      background: var(--gold);
       border-radius: 999px;
       transition: transform .2s ease;
     }
     .skip-link:focus { transform: translateY(0); }
-
-    #ambientCanvas,
-    #threeCanvas {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-    #ambientCanvas { z-index: -3; opacity: .9; }
-    #threeCanvas { z-index: -2; opacity: .78; }
-
-    .noise {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      opacity: .04;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.75'/%3E%3C/svg%3E");
-      mix-blend-mode: soft-light;
-    }
 
     .site-header {
       position: fixed;
@@ -94,13 +83,13 @@
     }
     .site-header.is-scrolled,
     .site-header.is-open {
-      background: rgba(5, 11, 10, .72);
+      background: rgba(11, 15, 13, .84);
       border-color: var(--line);
-      backdrop-filter: blur(18px) saturate(135%);
+      backdrop-filter: blur(14px);
     }
     .nav-wrap {
       width: min(calc(100% - 2rem), var(--max));
-      min-height: 76px;
+      min-height: 74px;
       margin: auto;
       display: flex;
       align-items: center;
@@ -116,23 +105,23 @@
       letter-spacing: .14em;
     }
     .brand-mark {
-      width: 29px;
+      width: 27px;
       aspect-ratio: 1;
-      border: 1px solid rgba(255, 210, 122, .68);
+      border: 1px solid rgba(215, 189, 131, .62);
       border-radius: 50%;
-      box-shadow: 0 0 24px rgba(255, 190, 96, .22), inset 0 0 14px rgba(255, 190, 96, .18);
       position: relative;
     }
-    .brand-mark::before,
-    .brand-mark::after {
+    .brand-mark::before {
       content: "";
       position: absolute;
-      inset: 50% auto auto 50%;
+      width: 6px;
+      height: 6px;
+      left: 50%;
+      top: 50%;
       transform: translate(-50%, -50%);
       border-radius: 50%;
+      background: var(--gold);
     }
-    .brand-mark::before { width: 7px; height: 7px; background: var(--solar); box-shadow: 0 0 14px var(--solar); }
-    .brand-mark::after { width: 19px; height: 19px; border: 1px solid rgba(147, 243, 199, .38); }
     .brand span:last-child { font-size: .78rem; }
 
     .nav-toggle {
@@ -141,47 +130,38 @@
       border: 1px solid var(--line);
       border-radius: 999px;
       color: var(--ink);
-      background: rgba(255,255,255,.04);
+      background: rgba(255,255,255,.03);
       padding: .7rem 1rem;
       font: inherit;
       cursor: pointer;
     }
-    .nav-links { display: flex; align-items: center; gap: .25rem; }
+    .nav-links { display: flex; align-items: center; gap: .15rem; }
     .nav-links a {
-      padding: .65rem .78rem;
+      padding: .65rem .72rem;
       border-radius: 999px;
       color: var(--muted);
       text-decoration: none;
-      font-size: .82rem;
-      transition: color .25s ease, background .25s ease, transform .25s ease;
+      font-size: .8rem;
+      transition: color .2s ease, background .2s ease;
     }
     .nav-links a:hover,
     .nav-links a:focus-visible {
       color: var(--ink);
-      background: rgba(255,255,255,.07);
-      transform: translateY(-1px);
+      background: rgba(255,255,255,.055);
       outline: none;
     }
     .nav-links .nav-era {
-      border: 1px solid rgba(255, 210, 122, .4);
-      color: var(--solar);
-      background: rgba(255, 210, 122, .07);
-      font-weight: 700;
-    }
-    .nav-links .nav-era:hover,
-    .nav-links .nav-era:focus-visible {
-      color: #09100e;
-      background: var(--solar);
-      border-color: var(--solar);
+      border: 1px solid rgba(215, 189, 131, .28);
+      color: var(--gold);
     }
     .nav-links .nav-cta {
-      margin-left: .35rem;
-      color: #09100e;
-      background: linear-gradient(120deg, var(--solar), #ffe8b6);
+      margin-left: .25rem;
+      color: #151713;
+      background: var(--gold);
       font-weight: 700;
     }
     .nav-links .nav-cta:hover,
-    .nav-links .nav-cta:focus-visible { color: #09100e; background: #fff0c9; }
+    .nav-links .nav-cta:focus-visible { color: #151713; background: #e2cc9e; }
 
     main { position: relative; }
     .section {
@@ -193,118 +173,59 @@
     .hero {
       min-height: 100svh;
       display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(260px, .85fr);
+      grid-template-columns: minmax(0, 1.12fr) minmax(260px, .88fr);
       align-items: center;
       gap: clamp(2rem, 6vw, 6rem);
       padding-top: 8.5rem;
       padding-bottom: 4rem;
     }
     .earth-wordmark {
-      position: relative;
       width: fit-content;
-      margin: 0 0 1.25rem;
+      margin: 0 0 1.5rem;
       display: inline-flex;
       align-items: center;
       gap: clamp(.8rem, 1.4vw, 1.1rem);
-      isolation: isolate;
       text-decoration: none;
-    }
-    .earth-wordmark::before {
-      content: "";
-      position: absolute;
-      left: -1.2rem;
-      right: -1.4rem;
-      top: 50%;
-      height: 1px;
-      z-index: -1;
-      opacity: .52;
-      background: linear-gradient(90deg, transparent, rgba(139,217,255,.42), rgba(147,243,199,.62), transparent);
-      transform: rotate(-4deg);
-      box-shadow: 0 0 18px rgba(139,217,255,.26);
     }
     .earth-glyph {
       position: relative;
       flex: 0 0 auto;
-      width: clamp(50px, 6vw, 68px);
+      width: clamp(48px, 6vw, 64px);
       aspect-ratio: 1;
       border-radius: 50%;
-      overflow: visible;
       background:
-        radial-gradient(circle at 34% 30%, rgba(255,255,255,.95) 0 2%, transparent 3%),
-        radial-gradient(ellipse at 34% 34%, #9df2b8 0 12%, transparent 13%),
-        radial-gradient(ellipse at 65% 62%, #5fcf98 0 15%, transparent 16%),
-        radial-gradient(ellipse at 26% 72%, #78dea7 0 8%, transparent 9%),
-        radial-gradient(circle at 38% 30%, #8fe4ff 0, #247fc6 52%, #092f63 79%, #061a34 100%);
-      border: 1px solid rgba(190,239,255,.7);
-      box-shadow:
-        inset -12px -10px 22px rgba(0,10,36,.48),
-        inset 8px 7px 15px rgba(255,255,255,.12),
-        0 0 22px rgba(78,187,255,.38),
-        0 0 52px rgba(72,219,183,.17);
-      animation: earthFloat 7s ease-in-out infinite;
-    }
-    .earth-glyph::before {
-      content: "";
-      position: absolute;
-      inset: -16%;
-      border: 1px solid rgba(139,217,255,.42);
-      border-radius: 50%;
-      transform: rotate(66deg) scaleY(.34);
-      box-shadow: 0 0 15px rgba(139,217,255,.18);
+        radial-gradient(ellipse at 33% 34%, #9eb9a2 0 12%, transparent 13%),
+        radial-gradient(ellipse at 65% 62%, #708d77 0 15%, transparent 16%),
+        radial-gradient(ellipse at 26% 72%, #829d87 0 8%, transparent 9%),
+        radial-gradient(circle at 38% 30%, #9cb8c7 0, #506d7c 52%, #233943 79%, #17262b 100%);
+      border: 1px solid rgba(212,226,231,.45);
+      box-shadow: inset -10px -8px 18px rgba(0,0,0,.28);
     }
     .earth-glyph::after {
       content: "";
       position: absolute;
-      inset: -8%;
+      inset: -12%;
+      border: 1px solid rgba(156,184,199,.26);
       border-radius: 50%;
-      background: conic-gradient(from 220deg, transparent 0 72%, rgba(255,255,255,.48) 80%, transparent 88%);
-      filter: blur(.4px);
-      animation: earthOrbit 11s linear infinite;
+      transform: rotate(66deg) scaleY(.34);
     }
     .earth-name {
-      position: relative;
-      display: inline-block;
-      color: transparent;
-      background:
-        linear-gradient(100deg, #dff8ff 4%, #8bd9ff 35%, #93f3c7 66%, #e8fff5 94%);
-      background-clip: text;
-      -webkit-background-clip: text;
+      color: var(--ink);
       font-size: clamp(2.2rem, 5.6vw, 5rem);
       font-weight: 700;
       line-height: .9;
       letter-spacing: -.065em;
-      text-shadow: 0 0 28px rgba(84,203,255,.18);
-      filter: drop-shadow(0 8px 28px rgba(21,131,172,.15));
     }
-    .earth-name::after {
-      content: "EARTH / INTELLIGENCE / HUMAN";
-      position: absolute;
-      left: .1em;
-      bottom: -1.2rem;
-      color: rgba(211,246,255,.48);
-      background: none;
-      -webkit-text-fill-color: initial;
-      font-size: clamp(.48rem, .8vw, .62rem);
-      font-weight: 700;
-      letter-spacing: .24em;
-      white-space: nowrap;
-      text-shadow: none;
-    }
-    @keyframes earthFloat {
-      0%, 100% { transform: translateY(0) rotate(-2deg); }
-      50% { transform: translateY(-6px) rotate(2deg); }
-    }
-    @keyframes earthOrbit { to { transform: rotate(360deg); } }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: .65rem;
       margin: 0 0 1.35rem;
-      color: var(--life);
-      font-size: .75rem;
+      color: var(--sage);
+      font-size: .73rem;
       font-weight: 700;
-      letter-spacing: .18em;
+      letter-spacing: .17em;
       text-transform: uppercase;
     }
     .eyebrow::before {
@@ -312,31 +233,26 @@
       width: 28px;
       height: 1px;
       background: currentColor;
-      box-shadow: 0 0 10px currentColor;
     }
     h1, h2, h3, p { margin-top: 0; }
     h1 {
       max-width: 820px;
       margin-bottom: 1.55rem;
       font-family: "Noto Serif JP", serif;
-      font-size: clamp(3.2rem, 8vw, 7.5rem);
+      font-size: clamp(3.05rem, 7.5vw, 7rem);
       font-weight: 600;
-      line-height: .98;
+      line-height: 1.02;
       letter-spacing: -.055em;
     }
-    .hero-gradient {
-      color: transparent;
-      background: linear-gradient(110deg, #fff 12%, var(--solar) 53%, var(--life) 92%);
-      background-clip: text;
-      -webkit-background-clip: text;
-    }
+    .hero-accent { color: var(--gold); }
     .hero-lead {
-      max-width: 680px;
+      max-width: 700px;
       margin-bottom: 2rem;
       color: var(--muted);
-      font-size: clamp(1rem, 1.8vw, 1.25rem);
-      line-height: 1.9;
+      font-size: clamp(1rem, 1.6vw, 1.2rem);
+      line-height: 1.95;
     }
+    .hero-lead strong { color: var(--ink); font-weight: 600; }
     .hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; }
     .button {
       display: inline-flex;
@@ -349,22 +265,21 @@
       border-radius: 999px;
       text-decoration: none;
       font-weight: 700;
-      font-size: .9rem;
-      transition: transform .25s var(--ease), border-color .25s ease, background .25s ease, box-shadow .25s ease;
+      font-size: .88rem;
+      transition: transform .22s var(--ease), border-color .22s ease, background .22s ease;
     }
     .button:hover,
     .button:focus-visible { transform: translateY(-2px); outline: none; }
     .button.primary {
-      color: #08100e;
+      color: #141711;
       border-color: transparent;
-      background: linear-gradient(120deg, var(--solar), #ffe8b6);
-      box-shadow: 0 12px 34px rgba(255, 174, 83, .2);
+      background: var(--gold);
     }
     .button.primary:hover,
-    .button.primary:focus-visible { box-shadow: 0 16px 42px rgba(255, 174, 83, .32); }
-    .button.secondary { background: rgba(255,255,255,.045); backdrop-filter: blur(10px); }
+    .button.primary:focus-visible { background: #e1cc9e; }
+    .button.secondary { background: rgba(255,255,255,.025); }
     .button.secondary:hover,
-    .button.secondary:focus-visible { border-color: rgba(255,255,255,.26); background: rgba(255,255,255,.08); }
+    .button.secondary:focus-visible { border-color: var(--line-strong); background: rgba(255,255,255,.05); }
 
     .hero-orbit {
       min-height: 430px;
@@ -373,17 +288,13 @@
       place-items: center;
     }
     .solar-core {
-      width: min(68vw, 330px);
+      width: min(64vw, 300px);
       aspect-ratio: 1;
       border-radius: 50%;
       background:
-        radial-gradient(circle at 37% 32%, #fff7d8 0 4%, transparent 5%),
-        radial-gradient(circle at 42% 38%, #ffe8a3 0 13%, #f5ac61 35%, #a63c2c 67%, rgba(166,60,44,.05) 71%);
-      box-shadow:
-        0 0 35px rgba(255, 217, 136, .42),
-        0 0 90px rgba(255, 159, 93, .28),
-        0 0 180px rgba(255, 159, 93, .16);
-      animation: breathe 7s ease-in-out infinite;
+        radial-gradient(circle at 37% 32%, #f5e8c4 0 4%, transparent 5%),
+        radial-gradient(circle at 42% 38%, #d9bd85 0 13%, #a98255 36%, #5d4233 67%, rgba(93,66,51,.06) 72%);
+      box-shadow: 0 0 52px rgba(215,189,131,.10);
       position: relative;
     }
     .solar-core::before,
@@ -391,64 +302,56 @@
       content: "";
       position: absolute;
       inset: -18%;
-      border: 1px solid rgba(255, 220, 151, .19);
+      border: 1px solid rgba(215,189,131,.15);
       border-radius: 50%;
-      animation: orbit 18s linear infinite;
+      transform: rotate(-10deg) scaleY(.88);
     }
     .solar-core::after {
-      inset: -38%;
-      border-color: rgba(147, 243, 199, .14);
-      animation-duration: 28s;
-      animation-direction: reverse;
+      inset: -36%;
+      border-color: rgba(155,180,158,.12);
+      transform: rotate(16deg) scaleY(.82);
     }
     .orbit-dot {
       position: absolute;
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       left: 50%;
       top: -18%;
       border-radius: 50%;
-      background: var(--life);
-      box-shadow: 0 0 15px var(--life);
+      background: var(--sage);
     }
     .hero-note {
       position: absolute;
       right: 0;
-      bottom: 8%;
-      max-width: 220px;
-      padding: 1rem;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: rgba(5,11,10,.56);
-      backdrop-filter: blur(16px);
+      bottom: 6%;
+      max-width: 235px;
+      padding: 1rem 1.05rem;
+      border-left: 1px solid var(--line-strong);
       color: var(--muted);
       font-size: .78rem;
-      line-height: 1.7;
+      line-height: 1.75;
     }
     .hero-note strong { color: var(--ink); display: block; margin-bottom: .25rem; }
 
-    @keyframes breathe { 50% { transform: scale(1.035); filter: saturate(1.08); } }
-    @keyframes orbit { to { transform: rotate(360deg); } }
-
     .signal-strip {
       border-block: 1px solid var(--line);
-      background: rgba(255,255,255,.025);
+      background: rgba(255,255,255,.012);
       overflow: hidden;
     }
     .signal-track {
-      width: max-content;
+      width: min(calc(100% - 2rem), var(--max));
+      margin: auto;
       display: flex;
-      gap: 3.5rem;
+      flex-wrap: wrap;
+      gap: .45rem 1.75rem;
       padding: 1rem 0;
       color: var(--dim);
-      font-size: .72rem;
+      font-size: .7rem;
       font-weight: 700;
-      letter-spacing: .18em;
+      letter-spacing: .15em;
       text-transform: uppercase;
-      animation: marquee 28s linear infinite;
     }
-    .signal-track span::before { content: "✦"; margin-right: 3.5rem; color: var(--solar); }
-    @keyframes marquee { to { transform: translateX(-50%); } }
+    .signal-track span::before { content: "·"; margin-right: .7rem; color: var(--gold); }
 
     .section-heading {
       display: grid;
@@ -469,8 +372,87 @@
       justify-self: end;
       margin-bottom: .25rem;
       color: var(--muted);
-      line-height: 1.85;
+      line-height: 1.9;
     }
+
+    /* Learning history: deliberately editorial rather than dashboard-like. */
+    .learning-shell {
+      display: grid;
+      grid-template-columns: .55fr 1.45fr;
+      gap: clamp(2rem, 6vw, 5rem);
+      padding: clamp(1.5rem, 4vw, 2.8rem) 0;
+      border-top: 1px solid var(--line-strong);
+      border-bottom: 1px solid var(--line-strong);
+    }
+    .learning-summary {
+      align-self: start;
+      position: sticky;
+      top: 110px;
+    }
+    .learning-summary strong {
+      display: block;
+      margin-bottom: .5rem;
+      font-family: "Noto Serif JP", serif;
+      font-size: clamp(2.6rem, 5vw, 5.3rem);
+      font-weight: 500;
+      line-height: 1;
+      color: var(--gold);
+    }
+    .learning-summary span {
+      display: block;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+    .learning-list { border-top: 1px solid var(--line); }
+    .learning-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(180px, .85fr);
+      gap: 1.5rem;
+      padding: 1.45rem 0;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+      transition: padding-left .22s ease, border-color .22s ease;
+    }
+    .learning-item:hover,
+    .learning-item:focus-visible {
+      padding-left: .55rem;
+      border-color: var(--line-strong);
+      outline: none;
+    }
+    .learning-item h3 {
+      margin: 0 0 .4rem;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+    .learning-item small {
+      display: block;
+      color: var(--dim);
+      font-size: .72rem;
+      letter-spacing: .06em;
+    }
+    .learning-facts {
+      display: flex;
+      justify-content: flex-end;
+      gap: .7rem 1.2rem;
+      flex-wrap: wrap;
+      align-content: start;
+      color: var(--muted);
+      font-size: .82rem;
+      line-height: 1.7;
+      text-align: right;
+    }
+    .learning-facts strong { color: var(--ink); font-weight: 600; }
+    .learning-link {
+      display: inline-flex;
+      margin-top: 1.4rem;
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: .85rem;
+    }
+    .learning-link:hover,
+    .learning-link:focus-visible { text-decoration: underline; text-underline-offset: .28em; outline: none; }
 
     .principles {
       display: grid;
@@ -481,31 +463,34 @@
     .project-card,
     .model-card {
       border: 1px solid var(--line);
-      background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
-      backdrop-filter: blur(14px);
+      background: rgba(255,255,255,.018);
     }
     .principle {
-      min-height: 260px;
+      min-height: 270px;
       padding: 1.6rem;
-      border-radius: 24px;
+      border-radius: 18px;
       position: relative;
       overflow: hidden;
-      transition: transform .35s var(--ease), border-color .35s ease, background .35s ease;
+      transition: transform .28s var(--ease), border-color .28s ease, background .28s ease;
     }
-    .principle:hover { transform: translateY(-5px); border-color: rgba(255,255,255,.24); background: rgba(255,255,255,.07); }
-    .principle-index { color: var(--solar); font-size: .73rem; letter-spacing: .15em; }
-    .principle h3 { margin: 4rem 0 .8rem; font-size: 1.28rem; }
-    .principle p { margin-bottom: 0; color: var(--muted); font-size: .9rem; line-height: 1.8; }
-    .principle::after {
-      content: "";
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      right: -40px;
-      top: -40px;
-      border: 1px solid rgba(255, 210, 122, .2);
-      border-radius: 50%;
-      box-shadow: 0 0 50px rgba(255,190,96,.08);
+    .principle:hover { transform: translateY(-3px); border-color: var(--line-strong); background: rgba(255,255,255,.028); }
+    .principle-index { color: var(--gold); font-size: .72rem; letter-spacing: .14em; }
+    .principle h3 { margin: 4rem 0 .8rem; font-size: 1.22rem; }
+    .principle p { margin-bottom: 0; color: var(--muted); font-size: .9rem; line-height: 1.85; }
+    .principle.is-irony {
+      background: #efe8da;
+      color: #1c211d;
+      border-color: transparent;
+    }
+    .principle.is-irony .principle-index { color: #7b6541; }
+    .principle.is-irony p { color: rgba(28,33,29,.72); }
+    .principle.is-irony .aside {
+      display: block;
+      margin-top: .9rem;
+      padding-top: .9rem;
+      border-top: 1px solid rgba(28,33,29,.16);
+      font-size: .78rem;
+      color: rgba(28,33,29,.58);
     }
 
     .projects-grid {
@@ -515,55 +500,59 @@
     }
     .project-card {
       grid-column: span 6;
-      min-height: 320px;
+      min-height: 310px;
       padding: 1.5rem;
-      border-radius: 26px;
+      border-radius: 20px;
       text-decoration: none;
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: transform .35s var(--ease), border-color .35s ease;
+      transition: transform .28s var(--ease), border-color .28s ease, background .28s ease;
     }
     .project-card:nth-child(3) { grid-column: span 7; }
     .project-card:nth-child(4) { grid-column: span 5; }
     .project-card:hover,
-    .project-card:focus-visible { transform: translateY(-6px); border-color: rgba(255,255,255,.28); outline: none; }
+    .project-card:focus-visible {
+      transform: translateY(-4px);
+      border-color: var(--line-strong);
+      background: rgba(255,255,255,.028);
+      outline: none;
+    }
     .project-meta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
     .project-tag {
-      padding: .42rem .68rem;
+      padding: .4rem .64rem;
       border: 1px solid var(--line);
       border-radius: 999px;
       color: var(--muted);
-      font-size: .68rem;
+      font-size: .66rem;
       letter-spacing: .08em;
       text-transform: uppercase;
     }
-    .arrow { font-size: 1.25rem; transition: transform .3s var(--ease); }
+    .arrow { font-size: 1.1rem; transition: transform .25s var(--ease); }
     .project-card:hover .arrow { transform: translate(3px, -3px); }
-    .project-card h3 { margin: 0 0 .7rem; font-size: clamp(1.5rem, 2.8vw, 2.6rem); letter-spacing: -.035em; }
+    .project-card h3 { margin: 0 0 .7rem; font-size: clamp(1.5rem, 2.8vw, 2.5rem); letter-spacing: -.035em; }
     .project-card p { max-width: 540px; margin-bottom: 0; color: var(--muted); line-height: 1.75; }
-    .project-glow {
+    .project-mark {
       position: absolute;
-      width: 280px;
-      height: 280px;
-      right: -90px;
-      bottom: -110px;
+      width: 120px;
+      height: 120px;
+      right: -38px;
+      bottom: -45px;
+      border: 1px solid var(--accent, var(--gold));
       border-radius: 50%;
-      filter: blur(4px);
-      opacity: .28;
-      background: radial-gradient(circle, var(--accent, var(--solar)), transparent 68%);
-      transition: transform .5s var(--ease), opacity .5s ease;
+      opacity: .18;
+      transition: transform .4s var(--ease), opacity .4s ease;
     }
-    .project-card:hover .project-glow { transform: scale(1.24); opacity: .42; }
+    .project-card:hover .project-mark { transform: scale(1.18); opacity: .3; }
 
     .model-card {
       display: grid;
       grid-template-columns: .9fr 1.1fr;
       gap: 2rem;
       padding: clamp(1.5rem, 4vw, 3rem);
-      border-radius: 30px;
+      border-radius: 22px;
       align-items: center;
     }
     .model-copy h2 {
@@ -576,32 +565,31 @@
     .model-copy p { color: var(--muted); line-height: 1.85; }
     .code-shell {
       overflow: hidden;
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 20px;
-      background: #030706;
-      box-shadow: 0 24px 70px rgba(0,0,0,.28);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #080a09;
     }
     .code-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: .8rem 1rem;
-      border-bottom: 1px solid rgba(255,255,255,.08);
+      border-bottom: 1px solid var(--line);
       color: var(--dim);
       font: .72rem/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
     }
     .code-dots { display: flex; gap: .35rem; }
-    .code-dots span { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.22); }
+    .code-dots span { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.18); }
     pre {
       margin: 0;
       padding: 1.35rem;
       overflow: auto;
-      color: #dbe9df;
+      color: #d9ddd7;
       font: .82rem/1.75 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     }
-    .tok-key { color: var(--sky); }
-    .tok-str { color: var(--solar); }
-    .tok-fn { color: var(--life); }
+    .tok-key { color: var(--blue); }
+    .tok-str { color: var(--gold); }
+    .tok-fn { color: var(--sage); }
 
     .closing {
       min-height: 70svh;
@@ -617,6 +605,7 @@
       line-height: 1.08;
       letter-spacing: -.055em;
     }
+    .closing h2 span { color: var(--gold); }
     .closing p { max-width: 620px; margin: 0 auto 1.8rem; color: var(--muted); line-height: 1.9; }
 
     footer {
@@ -629,62 +618,23 @@
       justify-content: space-between;
       gap: 1rem;
       color: var(--dim);
-      font-size: .76rem;
+      font-size: .75rem;
     }
     .status { display: inline-flex; align-items: center; gap: .5rem; }
     .status::before {
       content: "";
-      width: 7px;
-      height: 7px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
-      background: var(--life);
-      box-shadow: 0 0 10px var(--life);
-      animation: statusPulse 2s ease-in-out infinite;
+      background: var(--sage);
     }
-    @keyframes statusPulse { 50% { opacity: .35; } }
 
     .reveal {
       opacity: 0;
-      transform: translateY(24px);
-      transition: opacity .8s var(--ease), transform .8s var(--ease);
+      transform: translateY(18px);
+      transition: opacity .65s var(--ease), transform .65s var(--ease);
     }
     .reveal.is-visible { opacity: 1; transform: none; }
-
-    .cursor-light {
-      position: fixed;
-      z-index: -1;
-      width: 360px;
-      height: 360px;
-      left: 0;
-      top: 0;
-      border-radius: 50%;
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(255, 214, 137, .09), rgba(147, 243, 199, .025) 38%, transparent 68%);
-      opacity: 0;
-      transition: opacity .25s ease;
-    }
-    body.has-pointer .cursor-light { opacity: 1; }
-
-    .sound-button {
-      position: fixed;
-      right: max(1rem, env(safe-area-inset-right));
-      bottom: max(1rem, env(safe-area-inset-bottom));
-      z-index: 20;
-      width: 46px;
-      height: 46px;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--line);
-      border-radius: 50%;
-      color: var(--ink);
-      background: rgba(5,11,10,.66);
-      backdrop-filter: blur(14px);
-      cursor: pointer;
-      transition: transform .25s ease, border-color .25s ease;
-    }
-    .sound-button:hover,
-    .sound-button:focus-visible { transform: translateY(-2px); border-color: rgba(255,255,255,.3); outline: none; }
 
     @media (max-width: 900px) {
       .nav-toggle { display: inline-flex; }
@@ -697,9 +647,8 @@
         gap: .2rem;
         padding: .65rem;
         border: 1px solid var(--line);
-        border-radius: 20px;
-        background: var(--glass-strong);
-        backdrop-filter: blur(20px);
+        border-radius: 18px;
+        background: rgba(16,22,18,.96);
         opacity: 0;
         visibility: hidden;
         transform: translateY(-10px);
@@ -710,11 +659,13 @@
       .nav-links .nav-cta { margin-left: 0; text-align: center; }
       .hero { grid-template-columns: 1fr; }
       .hero-copy { z-index: 2; }
-      .hero-orbit { min-height: 330px; margin-top: -2rem; opacity: .72; }
+      .hero-orbit { min-height: 320px; margin-top: -1rem; opacity: .74; }
       .hero-note { right: 3%; bottom: 0; }
       .section-heading,
-      .model-card { grid-template-columns: 1fr; }
+      .model-card,
+      .learning-shell { grid-template-columns: 1fr; }
       .section-heading p { justify-self: start; }
+      .learning-summary { position: static; }
       .principles { grid-template-columns: 1fr; }
       .principle { min-height: 220px; }
       .principle h3 { margin-top: 2.4rem; }
@@ -723,20 +674,17 @@
     @media (max-width: 680px) {
       .section { padding: 5rem 0; }
       .hero { padding-top: 7rem; }
-      .earth-wordmark { margin-bottom: 1.6rem; }
-      .earth-name::after { bottom: -1rem; letter-spacing: .15em; }
+      .earth-wordmark { margin-bottom: 1.5rem; }
       .hero-actions { align-items: stretch; }
       .hero-actions .button { width: 100%; }
-      .hero-orbit { min-height: 290px; }
+      .hero-orbit { min-height: 285px; }
       .hero-note { display: none; }
+      .learning-item { grid-template-columns: 1fr; gap: .7rem; }
+      .learning-facts { justify-content: flex-start; text-align: left; }
       .project-card,
       .project-card:nth-child(3),
-      .project-card:nth-child(4) { grid-column: 1 / -1; min-height: 275px; }
+      .project-card:nth-child(4) { grid-column: 1 / -1; min-height: 270px; }
       footer { align-items: flex-start; flex-direction: column; }
-    }
-
-    @media (pointer: coarse) {
-      .cursor-light { display: none; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -747,16 +695,11 @@
         scroll-behavior: auto !important;
         transition-duration: .001ms !important;
       }
-      #threeCanvas { display: none; }
     }
   </style>
 </head>
 <body>
   <a class="skip-link" href="#main">本文へ移動</a>
-  <canvas id="ambientCanvas" aria-hidden="true"></canvas>
-  <canvas id="threeCanvas" aria-hidden="true"></canvas>
-  <div class="noise" aria-hidden="true"></div>
-  <div class="cursor-light" id="cursorLight" aria-hidden="true"></div>
 
   <header class="site-header" id="siteHeader">
     <div class="nav-wrap">
@@ -765,15 +708,14 @@
         <span>SOL / HUMAN</span>
       </a>
 
-      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks">
-        Menu
-      </button>
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks">Menu</button>
 
       <nav class="nav-links" id="navLinks" aria-label="主要ナビゲーション">
+        <a href="#learning">Learning</a>
         <a href="#philosophy">Philosophy</a>
         <a href="#projects">Projects</a>
         <a href="#model">Model</a>
-        <a class="nav-era" href="https://demimomi.github.io/demimomi/heisei_ver" target="_blank" rel="noopener noreferrer">平成へ ↗</a>
+        <a class="nav-era" href="https://demimomi.github.io/demimomi/heisei_ver" target="_blank" rel="noopener noreferrer">平成ジャンプ ↗</a>
         <a href="https://demimomi.github.io/demimomi/patent.html" target="_blank" rel="noopener noreferrer">Patent</a>
         <a class="nav-cta" href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank" rel="noopener noreferrer">Explore AI ↗</a>
       </nav>
@@ -788,10 +730,12 @@
           <span class="earth-name">demimomi</span>
         </div>
         <p class="eyebrow">Human-centered intelligence</p>
-        <h1 id="hero-title">技術を、<br><span class="hero-gradient">人の可能性へ。</span></h1>
+        <h1 id="hero-title">AIは、<br><span class="hero-accent">人の阿迦奢。</span></h1>
         <p class="hero-lead">
-          AI、モビリティ、デジタルツインを横断し、複雑な技術を人に届く体験へ変える。
-          地球規模の視点と、一人ひとりへのまなざしを両立する研究と実装。
+          AI、モビリティ、ITS、デジタルツイン。<br>
+          モデルを作ったり、寝たり、徘徊したり、泥酔したり。<br><br>
+          結局のところ、<strong>生きております。</strong><br>
+          その途中経過を置いているサイトです。
         </p>
         <div class="hero-actions">
           <a class="button primary" href="#projects">プロジェクトを見る <span aria-hidden="true">↓</span></a>
@@ -803,7 +747,7 @@
         <div class="solar-core"><span class="orbit-dot"></span></div>
         <div class="hero-note">
           <strong>SOL = Source of Life</strong>
-          暗さで惹きつけるのではなく、光・生命・信頼で記憶に残るデジタル体験。
+          太陽っぽいけど、卵黄でもあるというフラクタルWorld。
         </div>
       </div>
     </section>
@@ -811,9 +755,88 @@
     <div class="signal-strip" aria-hidden="true">
       <div class="signal-track">
         <span>AI Research</span><span>Human Mobility</span><span>Digital Twin</span><span>Safety by Design</span><span>Open Intelligence</span>
-        <span>AI Research</span><span>Human Mobility</span><span>Digital Twin</span><span>Safety by Design</span><span>Open Intelligence</span>
       </div>
     </div>
+
+    <section class="section" id="learning" aria-labelledby="learning-title">
+      <div class="section-heading reveal">
+        <div>
+          <p class="eyebrow">Learning in public</p>
+          <h2 id="learning-title">学びは、<br>記憶と記録。</h2>
+        </div>
+        <p>
+          記憶と記録をアップロードしてダウンロードする媒体としての活動
+        </p>
+      </div>
+
+      <div class="learning-shell reveal">
+        <div class="learning-summary">
+          <strong>2024—26</strong>
+          <span>5 courses</span>
+          <span>Completed 4 / In progress 1</span>
+          <a class="learning-link" href="./llm.html">全履歴を見る →</a>
+        </div>
+
+        <div class="learning-list" aria-label="講義履歴抜粋">
+          <a class="learning-item" href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank" rel="noopener noreferrer">
+            <div>
+              <h3>大規模言語モデル 応用編 2024</h3>
+              <small>LLM APPLIED / 2024</small>
+            </div>
+            <div class="learning-facts">
+              <span><strong>4,000</strong> participants</span>
+              <span><strong>1,200</strong> completed</span>
+              <span>Competition <strong>47th</strong></span>
+            </div>
+          </a>
+
+          <a class="learning-item" href="https://huggingface.co/demimomi/u-tokyo-sbintuitions-sarashina2.2-0.5b" target="_blank" rel="noopener noreferrer">
+            <div>
+              <h3>大規模言語モデル 基礎編 2025</h3>
+              <small>LLM FUNDAMENTALS / 2025</small>
+            </div>
+            <div class="learning-facts">
+              <span><strong>4,000</strong> participants</span>
+              <span><strong>1,876</strong> completed</span>
+            </div>
+          </a>
+
+          <a class="learning-item" href="https://demimomi.github.io/demimomi/cat.html" target="_blank" rel="noopener noreferrer">
+            <div>
+              <h3>実践 Bridge編 2025</h3>
+              <small>PRACTICAL BRIDGE / 2025</small>
+            </div>
+            <div class="learning-facts">
+              <span><strong>900</strong> participants</span>
+              <span>Hands-on</span>
+            </div>
+          </a>
+
+          <a class="learning-item" href="https://huggingface.co/demimomi/44taomax-qwen3-4b-structured-output-lora" target="_blank" rel="noopener noreferrer">
+            <div>
+              <h3>大規模言語モデル 応用編 2025</h3>
+              <small>LLM APPLIED / 2025</small>
+            </div>
+            <div class="learning-facts">
+              <span><strong>3,800</strong> participants</span>
+              <span><strong>1,046</strong> completed</span>
+              <span>Competition <strong>627th</strong></span>
+            </div>
+          </a>
+
+          <a class="learning-item" href="https://demimomi.github.io/demimomi/deep_learning.html" target="_blank" rel="noopener noreferrer">
+            <div>
+              <h3>Deep Learning 基礎編 2026</h3>
+              <small>DEEP LEARNING / 2026 · IN PROGRESS</small>
+            </div>
+            <div class="learning-facts">
+              <span><strong>2,281</strong> participants</span>
+              <span>Competition <strong>7th</strong> *</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
 
     <section class="section" id="philosophy" aria-labelledby="philosophy-title">
       <div class="section-heading reveal">
@@ -823,7 +846,7 @@
         </div>
         <p>
           大規模モデルや都市規模のシステムであっても、価値が生まれる場所は人の判断と行動です。
-          「理解できる」「信頼できる」「参加したくなる」を、すべての設計の起点にします。
+          「理解できる」「信頼できる」「参加したくなる」を、すべての設計の起点にすると思われます。
         </p>
       </div>
 
@@ -833,15 +856,20 @@
           <h3>複雑さを、明快さへ</h3>
           <p>専門性を損なわず、初見でも価値が伝わる情報設計。技術の凄さより、変化の意味を前面に。</p>
         </article>
+
         <article class="principle reveal">
           <span class="principle-index">02 / TRUST</span>
           <h3>驚きより、信頼を残す</h3>
           <p>過剰な刺激ではなく、静かな動き、余白、実績への導線によって、長く効く印象をつくる。</p>
         </article>
-        <article class="principle reveal">
-          <span class="principle-index">03 / LIFE</span>
-          <h3>技術に、生命感を</h3>
-          <p>太陽、軌道、呼吸、群れ。自然のリズムを借りて、人と機械が共生する未来を視覚化する。</p>
+
+        <article class="principle is-irony reveal">
+          <span class="principle-index">03 / REALITY CHECK</span>
+          <h3>胡蝶の夢から、HelloWorld！</h3>
+          <p>
+            「夢と現実の境界が曖昧な意識状態」から、「Hello World」が表す「新たなデジタル世界での自己の存在証明・始動」への意識の変遷。
+          </p>
+          <span class="aside">※ 現世と虚無のあいだからのWow信号</span>
         </article>
       </div>
     </section>
@@ -856,28 +884,28 @@
       </div>
 
       <div class="projects-grid">
-        <a class="project-card reveal" href="https://demimomi.github.io/demimomi/deep_learning.html" target="_blank" rel="noopener noreferrer" style="--accent:#93f3c7">
+        <a class="project-card reveal" href="https://demimomi.github.io/demimomi/deep_learning.html" target="_blank" rel="noopener noreferrer" style="--accent:#9bb49e">
           <div class="project-meta"><span class="project-tag">Deep Learning</span><span class="arrow" aria-hidden="true">↗</span></div>
           <div><h3>Deep Learning Lab</h3><p>学習・実験・発見をつなぐ、実践的なAI研究の入り口。</p></div>
-          <span class="project-glow" aria-hidden="true"></span>
+          <span class="project-mark" aria-hidden="true"></span>
         </a>
 
-        <a class="project-card reveal" href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank" rel="noopener noreferrer" style="--accent:#8bd9ff">
+        <a class="project-card reveal" href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank" rel="noopener noreferrer" style="--accent:#9cb8c7">
           <div class="project-meta"><span class="project-tag">LLM 2024</span><span class="arrow" aria-hidden="true">↗</span></div>
           <div><h3>Japanese LLM</h3><p>日本語の文脈に向き合う、13Bモデルのファインチューニング実践。</p></div>
-          <span class="project-glow" aria-hidden="true"></span>
+          <span class="project-mark" aria-hidden="true"></span>
         </a>
 
-        <a class="project-card reveal" href="https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453" target="_blank" rel="noopener noreferrer" style="--accent:#ffd27a">
+        <a class="project-card reveal" href="https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453" target="_blank" rel="noopener noreferrer" style="--accent:#d7bd83">
           <div class="project-meta"><span class="project-tag">Mobility Research</span><span class="arrow" aria-hidden="true">↗</span></div>
           <div><h3>TokyoBus Project</h3><p>交通と都市のデータをつなぎ、安全で持続可能な移動体験を探究する。</p></div>
-          <span class="project-glow" aria-hidden="true"></span>
+          <span class="project-mark" aria-hidden="true"></span>
         </a>
 
-        <a class="project-card reveal" href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank" rel="noopener noreferrer" style="--accent:#ff9e5d">
+        <a class="project-card reveal" href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank" rel="noopener noreferrer" style="--accent:#b8896a">
           <div class="project-meta"><span class="project-tag">Social Implementation</span><span class="arrow" aria-hidden="true">↗</span></div>
           <div><h3>CatBus</h3><p>未来のモビリティを、親しみやすく社会へ届ける実装ストーリー。</p></div>
-          <span class="project-glow" aria-hidden="true"></span>
+          <span class="project-mark" aria-hidden="true"></span>
         </a>
       </div>
     </section>
@@ -905,8 +933,8 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
     <section class="section closing" aria-labelledby="closing-title">
       <div class="closing-inner reveal">
         <p class="eyebrow">Toward a brighter system</p>
-        <h2 id="closing-title">未来は、<br><span class="hero-gradient">人を中心に回る。</span></h2>
-        <p>技術の速度と、人の納得。その両方を大切にするプロジェクトを、研究から実装まで。</p>
+        <h2 id="closing-title">未来は、<br><span>人を中心に回る。</span></h2>
+        <p>ヒト関数による波動と観測を繰り返すProject。</p>
         <a class="button primary" href="https://demimomi.github.io/demimomi/patent.html" target="_blank" rel="noopener noreferrer">Explore the work ↗</a>
       </div>
     </section>
@@ -914,14 +942,9 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
 
   <footer>
     <span>© <span id="year"></span> Toshiki Demizu / demimomi</span>
-    <span class="status">Human signal online</span>
+    <span class="status">Still edited by a human.</span>
   </footer>
 
-  <button class="sound-button" id="soundButton" type="button" aria-label="アンビエント音を再生" aria-pressed="false" title="Sound">
-    <span aria-hidden="true">◌</span>
-  </button>
-
-  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js" defer></script>
   <script>
     (() => {
       "use strict";
@@ -930,8 +953,6 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
       const header = document.getElementById("siteHeader");
       const navToggle = document.getElementById("navToggle");
       const navLinks = document.getElementById("navLinks");
-      const cursorLight = document.getElementById("cursorLight");
-      const soundButton = document.getElementById("soundButton");
 
       document.getElementById("year").textContent = String(new Date().getFullYear());
 
@@ -940,9 +961,7 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
         navToggle.setAttribute("aria-expanded", String(open));
       };
 
-      navToggle.addEventListener("click", () => {
-        setMenu(!header.classList.contains("is-open"));
-      });
+      navToggle.addEventListener("click", () => setMenu(!header.classList.contains("is-open")));
       navLinks.addEventListener("click", (event) => {
         if (event.target.closest("a")) setMenu(false);
       });
@@ -953,28 +972,6 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
         header.classList.toggle("is-scrolled", window.scrollY > 12);
       }, { passive: true });
 
-      if (window.matchMedia("(pointer: fine)").matches) {
-        document.body.classList.add("has-pointer");
-        let pointerX = window.innerWidth / 2;
-        let pointerY = window.innerHeight / 2;
-        let currentX = pointerX;
-        let currentY = pointerY;
-
-        window.addEventListener("pointermove", (event) => {
-          pointerX = event.clientX;
-          pointerY = event.clientY;
-        }, { passive: true });
-
-        const moveLight = () => {
-          currentX += (pointerX - currentX) * .12;
-          currentY += (pointerY - currentY) * .12;
-          cursorLight.style.left = `${currentX}px`;
-          cursorLight.style.top = `${currentY}px`;
-          requestAnimationFrame(moveLight);
-        };
-        moveLight();
-      }
-
       const revealItems = document.querySelectorAll(".reveal");
       if ("IntersectionObserver" in window && !prefersReducedMotion) {
         const observer = new IntersectionObserver((entries) => {
@@ -984,225 +981,12 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
               observer.unobserve(entry.target);
             }
           });
-        }, { threshold: .12, rootMargin: "0px 0px -8%" });
-        revealItems.forEach((item, index) => {
-          item.style.transitionDelay = `${Math.min(index % 3, 2) * 90}ms`;
-          observer.observe(item);
-        });
+        }, { threshold: .1, rootMargin: "0px 0px -6%" });
+
+        revealItems.forEach((item) => observer.observe(item));
       } else {
         revealItems.forEach((item) => item.classList.add("is-visible"));
       }
-
-      const ambientCanvas = document.getElementById("ambientCanvas");
-      const ctx = ambientCanvas.getContext("2d", { alpha: true });
-      let width = 0;
-      let height = 0;
-      let dpr = 1;
-      let nodes = [];
-      let animationFrame = 0;
-      let isVisible = true;
-
-      const makeNodes = () => {
-        const count = Math.min(72, Math.max(28, Math.floor((width * height) / 26000)));
-        nodes = Array.from({ length: count }, () => ({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: (Math.random() - .5) * .16,
-          vy: (Math.random() - .5) * .16,
-          radius: .7 + Math.random() * 1.5,
-          phase: Math.random() * Math.PI * 2
-        }));
-      };
-
-      const resizeCanvas = () => {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        dpr = Math.min(window.devicePixelRatio || 1, 1.75);
-        ambientCanvas.width = Math.floor(width * dpr);
-        ambientCanvas.height = Math.floor(height * dpr);
-        ambientCanvas.style.width = `${width}px`;
-        ambientCanvas.style.height = `${height}px`;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        makeNodes();
-      };
-
-      const drawAmbient = (time) => {
-        if (!isVisible) return;
-        ctx.clearRect(0, 0, width, height);
-        const linkDistance = Math.min(150, width * .14);
-
-        for (let i = 0; i < nodes.length; i += 1) {
-          const node = nodes[i];
-          if (!prefersReducedMotion) {
-            node.x += node.vx;
-            node.y += node.vy;
-          }
-          if (node.x < -20) node.x = width + 20;
-          if (node.x > width + 20) node.x = -20;
-          if (node.y < -20) node.y = height + 20;
-          if (node.y > height + 20) node.y = -20;
-
-          for (let j = i + 1; j < nodes.length; j += 1) {
-            const other = nodes[j];
-            const dx = node.x - other.x;
-            const dy = node.y - other.y;
-            const distance = Math.hypot(dx, dy);
-            if (distance < linkDistance) {
-              const alpha = (1 - distance / linkDistance) * .075;
-              ctx.strokeStyle = `rgba(166, 241, 207, ${alpha})`;
-              ctx.lineWidth = .7;
-              ctx.beginPath();
-              ctx.moveTo(node.x, node.y);
-              ctx.lineTo(other.x, other.y);
-              ctx.stroke();
-            }
-          }
-
-          const glow = .25 + Math.sin(time * .0008 + node.phase) * .12;
-          ctx.fillStyle = `rgba(255, 221, 154, ${glow})`;
-          ctx.beginPath();
-          ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        animationFrame = requestAnimationFrame(drawAmbient);
-      };
-
-      resizeCanvas();
-      if (!prefersReducedMotion) animationFrame = requestAnimationFrame(drawAmbient);
-      else drawAmbient(0);
-      window.addEventListener("resize", resizeCanvas, { passive: true });
-      document.addEventListener("visibilitychange", () => {
-        isVisible = !document.hidden;
-        if (isVisible && !prefersReducedMotion) {
-          cancelAnimationFrame(animationFrame);
-          animationFrame = requestAnimationFrame(drawAmbient);
-        }
-      });
-
-      let audioContext = null;
-      let audioNodes = null;
-      let soundOn = false;
-
-      const toggleSound = async () => {
-        if (!audioContext) {
-          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-          if (!AudioContextClass) {
-            soundButton.disabled = true;
-            return;
-          }
-          audioContext = new AudioContextClass();
-          const gain = audioContext.createGain();
-          const filter = audioContext.createBiquadFilter();
-          const base = audioContext.createOscillator();
-          const overtone = audioContext.createOscillator();
-          const lfo = audioContext.createOscillator();
-          const lfoGain = audioContext.createGain();
-
-          base.type = "sine";
-          base.frequency.value = 54;
-          overtone.type = "sine";
-          overtone.frequency.value = 108;
-          lfo.frequency.value = .08;
-          lfoGain.gain.value = 90;
-          filter.type = "lowpass";
-          filter.frequency.value = 420;
-          gain.gain.value = .0001;
-
-          lfo.connect(lfoGain).connect(filter.frequency);
-          base.connect(filter);
-          overtone.connect(filter);
-          filter.connect(gain).connect(audioContext.destination);
-          base.start();
-          overtone.start();
-          lfo.start();
-          audioNodes = { gain };
-        }
-
-        if (audioContext.state === "suspended") await audioContext.resume();
-        soundOn = !soundOn;
-        const now = audioContext.currentTime;
-        audioNodes.gain.gain.cancelScheduledValues(now);
-        audioNodes.gain.gain.setValueAtTime(Math.max(audioNodes.gain.gain.value, .0001), now);
-        audioNodes.gain.gain.exponentialRampToValueAtTime(soundOn ? .018 : .0001, now + .45);
-        soundButton.setAttribute("aria-pressed", String(soundOn));
-        soundButton.setAttribute("aria-label", soundOn ? "アンビエント音を停止" : "アンビエント音を再生");
-        soundButton.firstElementChild.textContent = soundOn ? "◉" : "◌";
-      };
-      soundButton.addEventListener("click", toggleSound);
-
-      const initThree = () => {
-        if (prefersReducedMotion || typeof window.THREE === "undefined") return;
-
-        const canvas = document.getElementById("threeCanvas");
-        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "low-power" });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-        renderer.setSize(window.innerWidth, window.innerHeight, false);
-
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(52, window.innerWidth / window.innerHeight, .1, 100);
-        camera.position.set(0, 0, 7.5);
-
-        const geometry = new THREE.IcosahedronGeometry(1.28, 3);
-        const material = new THREE.MeshPhysicalMaterial({
-          color: 0xffb55f,
-          emissive: 0x7d2418,
-          emissiveIntensity: .7,
-          roughness: .36,
-          metalness: .08,
-          transmission: .08,
-          clearcoat: .45,
-          wireframe: true,
-          transparent: true,
-          opacity: .17
-        });
-        const orb = new THREE.Mesh(geometry, material);
-        orb.position.set(2.4, .2, -1.2);
-        scene.add(orb);
-
-        const ringGeometry = new THREE.TorusGeometry(2.05, .006, 8, 180);
-        const ringMaterial = new THREE.MeshBasicMaterial({ color: 0x93f3c7, transparent: true, opacity: .2 });
-        const ring = new THREE.Mesh(ringGeometry, ringMaterial);
-        ring.position.copy(orb.position);
-        ring.rotation.x = 1.15;
-        scene.add(ring);
-
-        const lightA = new THREE.PointLight(0xffc56f, 2.3, 16);
-        lightA.position.set(3, 2, 4);
-        scene.add(lightA);
-        scene.add(new THREE.AmbientLight(0x6bd6b0, .55));
-
-        let targetX = 0;
-        let targetY = 0;
-        window.addEventListener("pointermove", (event) => {
-          targetX = (event.clientX / window.innerWidth - .5) * .65;
-          targetY = (event.clientY / window.innerHeight - .5) * .45;
-        }, { passive: true });
-
-        const renderThree = (time) => {
-          if (!document.hidden) {
-            orb.rotation.x += .0015;
-            orb.rotation.y += .0022;
-            orb.position.x += ((window.innerWidth < 900 ? 0 : 2.4) + targetX - orb.position.x) * .025;
-            orb.position.y += (-targetY - orb.position.y) * .025;
-            ring.position.copy(orb.position);
-            ring.rotation.z = time * .00012;
-            renderer.render(scene, camera);
-          }
-          requestAnimationFrame(renderThree);
-        };
-        requestAnimationFrame(renderThree);
-
-        window.addEventListener("resize", () => {
-          camera.aspect = window.innerWidth / window.innerHeight;
-          camera.updateProjectionMatrix();
-          renderer.setSize(window.innerWidth, window.innerHeight, false);
-          renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-        }, { passive: true });
-      };
-
-      if (document.readyState === "complete") initThree();
-      else window.addEventListener("load", initThree, { once: true });
     })();
   </script>
 </body>
