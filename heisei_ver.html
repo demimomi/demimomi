@@ -7,7 +7,6 @@
   <meta name="description" content="Human-centered intelligence, mobility, and research by Toshiki Demizu. 平成初期ホームページ風デザイン。">
   <meta name="keywords" content="出水利樹, Toshiki Demizu, demimomi, AI, mobility, digital twin, human centered">
   <title>demimomiのホームページ - Toshiki Demizu</title>
-
   <style>
     :root {
       --navy: #000080;
@@ -22,7 +21,6 @@
     }
 
     * { box-sizing: border-box; }
-
     html {
       scroll-behavior: smooth;
       background-color: #8fb8d8;
@@ -33,7 +31,6 @@
       background-size: 12px 12px, 32px 32px, 32px 32px;
       background-position: 0 0, 0 0, 16px 16px;
     }
-
     body {
       width: var(--page-width);
       max-width: calc(100% - 12px);
@@ -43,13 +40,11 @@
       font-size: 14px;
       line-height: 1.55;
     }
-
     a { color: var(--blue); text-decoration: underline; }
     a:visited { color: var(--visited); }
     a:hover, a:focus-visible { color: var(--red); background: var(--yellow); }
     img, svg { max-width: 100%; }
     code, pre { font-family: "Courier New", monospace; }
-
     .skip-link {
       position: absolute;
       left: 8px;
@@ -69,7 +64,6 @@
       text-align: center;
       text-shadow: 1px 1px 0 rgba(255,255,255,.7);
     }
-
     .page {
       border: 4px ridge #f5f5f5;
       background: #fff;
@@ -84,7 +78,6 @@
       font-weight: bold;
       letter-spacing: .04em;
     }
-
     .hero {
       position: relative;
       overflow: hidden;
@@ -94,7 +87,6 @@
         repeating-linear-gradient(0deg, #fff 0 3px, #edf7ff 3px 6px);
       border-bottom: 1px solid #777;
     }
-
     .hero::before,
     .hero::after {
       content: "★";
@@ -115,7 +107,6 @@
       font-weight: bold;
       letter-spacing: .14em;
     }
-
     .hero h1 {
       margin: 0;
       font-family: "Times New Roman", "Yu Mincho", serif;
@@ -131,7 +122,6 @@
       background-clip: text;
       filter: drop-shadow(2px 2px 0 #c8dfff);
     }
-
     .hero-subtitle {
       margin: 5px 0 0;
       color: var(--navy);
@@ -151,7 +141,6 @@
       font-weight: bold;
       transform: rotate(-1deg);
     }
-
     .marquee-box {
       overflow: hidden;
       border-top: 2px inset #ccc;
@@ -169,7 +158,6 @@
       padding: 4px 0 4px 100%;
       animation: marquee 19s linear infinite;
     }
-
     .main-table {
       width: 100%;
       border-collapse: collapse;
@@ -196,7 +184,6 @@
       border: 4px ridge #eaeaea;
       background: #001a66;
     }
-
     .profile-art svg { display: block; width: 100%; height: auto; }
 
     .profile-caption {
@@ -208,7 +195,6 @@
       font-weight: bold;
       text-align: center;
     }
-
     .menu-title,
     .side-title {
       margin: 8px 0 5px;
@@ -228,7 +214,6 @@
     }
 
     .menu li { margin: 4px 0; }
-
     .menu a {
       display: block;
       padding: 3px 5px;
@@ -250,7 +235,6 @@
       font-size: 12px;
       text-align: center;
     }
-
     .counter {
       display: inline-block;
       min-width: 112px;
@@ -269,7 +253,6 @@
       gap: 3px;
       margin-top: 6px;
     }
-
     .badge {
       padding: 3px 2px;
       border: 2px outset #eee;
@@ -289,7 +272,6 @@
       border: 1px dotted #555;
       background: #ffffdd;
     }
-
     .welcome b { color: #800000; }
 
     h2 {
@@ -315,7 +297,6 @@
       color: #555;
       font-size: 12px;
     }
-
     .news-table,
     .profile-table,
     .project-table {
@@ -341,7 +322,6 @@
       text-align: left;
       white-space: nowrap;
     }
-
     .profile-table th {
       width: 125px;
       color: #000080;
@@ -364,7 +344,6 @@
       font-weight: bold;
       animation: blink .75s step-end infinite;
     }
-
     .retro-rule {
       height: 8px;
       margin: 15px 0;
@@ -387,7 +366,6 @@
     }
 
     .principle-list strong { color: #800000; }
-
     .project-link {
       font-weight: bold;
       font-size: 14px;
@@ -409,7 +387,6 @@
       border: 3px ridge #eee;
       background: #c0c0c0;
     }
-
     .code-title {
       display: flex;
       justify-content: space-between;
@@ -432,7 +409,6 @@
       font-size: 12px;
       line-height: 1.6;
     }
-
     .button-row {
       display: flex;
       flex-wrap: wrap;
@@ -453,7 +429,6 @@
     .retro-button:hover,
     .retro-button:focus-visible { color: #000; background: #ffff00; }
     .retro-button:active { border-style: inset; }
-
     .closing-box {
       margin-top: 14px;
       padding: 12px;
@@ -475,7 +450,6 @@
       color: #555;
       font-size: 11px;
     }
-
     .footer {
       padding: 10px;
       border-top: 3px groove #fff;
@@ -491,7 +465,6 @@
       color: #444;
       font-family: "Courier New", monospace;
     }
-
     .sound-button {
       appearance: none;
       margin-top: 5px;
@@ -508,10 +481,8 @@
       from { transform: translateX(0); }
       to { transform: translateX(-200%); }
     }
-
     @keyframes blink { 50% { opacity: 0; } }
     @keyframes twinkle { 50% { opacity: .25; transform: scale(.8); } }
-
     @media (max-width: 640px) {
       body { width: auto; }
       .main-table,
@@ -526,7 +497,6 @@
       .news-table th, .profile-table th { width: 102px; }
       .project-table th { width: 35%; }
     }
-
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       *, *::before, *::after { animation: none !important; }
@@ -544,7 +514,6 @@
 
   <div class="page">
     <div class="window-title">demimomi - Microsoft Internet Explorer</div>
-
     <header class="hero" id="top">
       <div class="hero-kicker">WELCOME TO MY HOMEPAGE!</div>
       <h1><span class="rainbow-text">demimomiのホームページ</span></h1>
@@ -557,7 +526,6 @@
         ★ ようこそ！技術を、人の可能性へ。AI・モビリティ・デジタルツインの研究と実装を紹介しています。ブックマークをお願いします！ ★
       </div>
     </div>
-
     <table class="main-table" role="presentation">
       <tbody>
         <tr>
@@ -590,7 +558,6 @@
               </svg>
               <div class="profile-caption">地球規模で考え、人の近くでつくる。</div>
             </div>
-
             <div class="menu-title">★ MENU ★</div>
             <ul class="menu">
               <li><a href="#top">TOP</a></li>
@@ -602,7 +569,6 @@
               <li><a href="#links">Links</a></li>
               <li><a href="#footer">Site Info</a></li>
             </ul>
-
             <div class="side-box">
               <b>あなたは</b><br>
               <span class="counter" id="counter">000001</span><br>
@@ -611,10 +577,9 @@
 
             <div class="side-box">
               <b>最終更新日</b><br>
-              <span id="lastUpdated">2026年07月26日</span><br>
+              <span id="lastUpdated">1977.07.16</span><br>
               <span class="new">NEW!</span>
             </div>
-
             <div class="side-title">動作環境</div>
             <div class="badge-row" aria-label="対応技術">
               <div class="badge">HTML 4.01<br>LIKE</div>
@@ -622,7 +587,6 @@
               <div class="badge">56K MODEM<br>READY</div>
               <div class="badge">NO FRAME<br>PAGE</div>
             </div>
-
             <div class="side-box">
               <b>♪ BGM ♪</b><br>
               <button class="sound-button" id="soundButton" type="button" aria-pressed="false">再生する</button><br>
@@ -634,7 +598,6 @@
               このページはリンクフリーです。ご自由にどうぞ！
             </div>
           </td>
-
           <td class="content" id="main">
             <div class="welcome">
               <b>ごあいさつ</b><br>
@@ -642,13 +605,12 @@
               AI、モビリティ、デジタルツインを横断し、複雑な技術を人に届く体験へ変える研究と実装を紹介しています。
               地球規模の視点と、一人ひとりへのまなざしを両立することを目指しています。
             </div>
-
             <section id="news">
               <h2>What's New - 更新履歴</h2>
               <table class="news-table">
                 <tbody>
                   <tr>
-                    <th>2026.07.26</th>
+                    <th>1977.07.16</th>
                     <td>ホームページを平成初期風にリニューアルしました。 <span class="new">NEW!</span></td>
                   </tr>
                   <tr>
@@ -666,9 +628,7 @@
                 </tbody>
               </table>
             </section>
-
             <hr class="retro-rule">
-
             <section id="profile">
               <h2>Profile - このページについて</h2>
               <table class="profile-table">
@@ -681,7 +641,6 @@
                 </tbody>
               </table>
             </section>
-
             <section id="philosophy">
               <h2>Philosophy - 設計の考え方</h2>
               <p class="section-note">
@@ -693,9 +652,7 @@
                 <li><strong>03 / LIFE　技術に、生命感を</strong><br>太陽、軌道、呼吸、群れ。自然のリズムを借りて、人と機械が共生する未来を視覚化する。</li>
               </ul>
             </section>
-
             <hr class="retro-rule">
-
             <section id="projects">
               <h2>Selected Projects - 主な活動</h2>
               <table class="project-table">
@@ -743,7 +700,6 @@
                 </tbody>
               </table>
             </section>
-
             <section id="model">
               <h2>Open Model - モデルを試す</h2>
               <p>
@@ -756,18 +712,15 @@
                   <span class="window-buttons">_ □ ×</span>
                 </div>
                 <pre><code>from transformers import AutoModel
-
 model = AutoModel.from_pretrained(
     "demimomi/llm-jp-3-13b-finetune-ex"
 )</code></pre>
               </div>
-
               <div class="button-row">
                 <a class="retro-button" href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank" rel="noopener noreferrer">▶ Hugging Faceへ</a>
                 <a class="retro-button" href="https://demimomi.github.io/demimomi/deep_learning.html" target="_blank" rel="noopener noreferrer">▶ Deep Learning Labへ</a>
               </div>
             </section>
-
             <section id="links">
               <h2>Links - おすすめリンク</h2>
               <ul>
@@ -777,7 +730,6 @@ model = AutoModel.from_pretrained(
                 <li><a href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank" rel="noopener noreferrer">CatBus紹介記事</a></li>
               </ul>
             </section>
-
             <div class="closing-box">
               <span class="big">未来は、人を中心に回る。</span>
               技術の速度と、人の納得。<br>
@@ -786,7 +738,6 @@ model = AutoModel.from_pretrained(
                 <a class="retro-button" href="https://demimomi.github.io/demimomi/patent.html" target="_blank" rel="noopener noreferrer">研究成果を見る ↗</a>
               </div>
             </div>
-
             <p class="mail-note">
               ※掲載内容・リンク先は、添付いただいた元ページの情報をもとに構成しています。
             </p>
@@ -794,7 +745,6 @@ model = AutoModel.from_pretrained(
         </tr>
       </tbody>
     </table>
-
     <footer class="footer" id="footer">
       <div class="footer-links">
         <a href="#top">TOPへ戻る</a> ｜
@@ -806,7 +756,6 @@ model = AutoModel.from_pretrained(
       <div>Human signal online ●</div>
     </footer>
   </div>
-
   <script>
     (() => {
       "use strict";
@@ -817,19 +766,15 @@ model = AutoModel.from_pretrained(
       count += 1;
       localStorage.setItem(counterKey, String(count));
       counter.textContent = String(count).padStart(6, "0");
-
       const now = new Date();
       document.getElementById("year").textContent = String(now.getFullYear());
-      document.getElementById("lastUpdated").textContent =
-        `${now.getFullYear()}年${String(now.getMonth() + 1).padStart(2, "0")}月${String(now.getDate()).padStart(2, "0")}日`;
-
+      document.getElementById("lastUpdated").textContent = "1977.07.16";
       const soundButton = document.getElementById("soundButton");
       let audioContext = null;
       let timerId = null;
       let isPlaying = false;
       let step = 0;
       const melody = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63, 293.66, 392.00];
-
       const playNote = (frequency) => {
         if (!audioContext) return;
         const oscillator = audioContext.createOscillator();
@@ -843,7 +788,6 @@ model = AutoModel.from_pretrained(
         oscillator.start();
         oscillator.stop(audioContext.currentTime + 0.2);
       };
-
       const stopBgm = () => {
         window.clearInterval(timerId);
         timerId = null;
@@ -857,7 +801,6 @@ model = AutoModel.from_pretrained(
           stopBgm();
           return;
         }
-
         const AudioContextClass = window.AudioContext || window.webkitAudioContext;
         if (!AudioContextClass) {
           soundButton.textContent = "非対応です";
@@ -867,7 +810,6 @@ model = AutoModel.from_pretrained(
 
         if (!audioContext) audioContext = new AudioContextClass();
         if (audioContext.state === "suspended") await audioContext.resume();
-
         isPlaying = true;
         soundButton.textContent = "停止する";
         soundButton.setAttribute("aria-pressed", "true");
