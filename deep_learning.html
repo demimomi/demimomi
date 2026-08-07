@@ -57,12 +57,22 @@
       padding: 10px 16px;
       border-radius: 999px;
       border: 1px solid var(--accent);
-      background: var(--accent);
-      color: #052e16;
-      font-weight: 700;
+      background: #fff;
+      color: var(--accent-dark);
+      font-weight: 800;
       text-decoration: none;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
     }
-    .btn.secondary { background: #fff; color: var(--accent-dark); }
+    .btn.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(34,197,94,0.15);
+    }
+    .btn.primary:hover { background: var(--accent-dark); }
+    .btn.secondary:hover { background: #f0fdf4; }
     main { max-width: 1120px; margin: 0 auto; padding: 18px; }
     section.card {
       background: rgba(255,255,255,0.94);
@@ -138,6 +148,135 @@
       color: #475569;
       text-align: center;
     }
+
+    /* Certificate - featured completion card */
+    .certificate-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      padding: 30px 30px;
+      margin: 2px 0 30px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #16a34a 0%, #22c55e 56%, #34d399 100%);
+      border: 1px solid rgba(5,150,105,0.36);
+      border-radius: 26px;
+      box-shadow: 0 18px 38px rgba(22,163,74,0.20), 0 8px 18px rgba(15,23,42,0.08);
+      color: #fff;
+    }
+    .certificate-card::before {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      right: -95px;
+      top: -135px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.13);
+    }
+    .certificate-card::after {
+      content: "";
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      right: 100px;
+      bottom: -105px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+    }
+    .certificate-icon {
+      position: relative;
+      z-index: 1;
+      width: 72px;
+      height: 72px;
+      flex: 0 0 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.96);
+      color: #15803d;
+      box-shadow: 0 10px 24px rgba(6,78,59,0.16);
+    }
+    .certificate-icon svg { width: 36px; height: 36px; }
+    .certificate-body {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      min-width: 0;
+    }
+    .certificate-label {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: #fff;
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+    }
+    .certificate-title {
+      margin: 0;
+      font-size: clamp(1.32rem, 2.4vw, 1.85rem);
+      font-weight: 900;
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    .certificate-text {
+      margin: 6px 0 0;
+      color: rgba(255,255,255,0.92);
+      font-size: 0.98rem;
+      font-weight: 600;
+    }
+    .certificate-link {
+      position: relative;
+      z-index: 1;
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 20px;
+      border: 1px solid rgba(255,255,255,0.88);
+      border-radius: 999px;
+      background: #fff;
+      color: #15803d;
+      font-weight: 900;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: 0 8px 20px rgba(6,78,59,0.14);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .certificate-link:hover {
+      background: #f0fdf4;
+      transform: translateY(-2px);
+      box-shadow: 0 11px 24px rgba(6,78,59,0.20);
+    }
+    .certificate-link:focus-visible {
+      outline: 3px solid rgba(255,255,255,0.62);
+      outline-offset: 4px;
+    }
+    @media (max-width: 700px) {
+      .certificate-card {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        padding: 24px 20px;
+      }
+      .certificate-icon {
+        width: 60px;
+        height: 60px;
+        flex-basis: 60px;
+        border-radius: 17px;
+      }
+      .certificate-icon svg { width: 31px; height: 31px; }
+      .certificate-body { width: calc(100% - 82px); }
+      .certificate-link { width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -148,33 +287,48 @@
       <h1>Deep Learning Foundation Course</h1>
       <p class="lead">東京大学松尾・岩澤研究室が主催する公開講座で、ニューラルネットワークの基礎から自然言語処理や深層生成モデルまで、Deep Learning を基礎から実践的に学べる講座です。特別招待で学生に交じって参加中！！</p>
       <div class="links">
-        <a class="btn secondary" href="llm.html">過去実績はこちら！</a>
-        <a class="btn" href="https://weblab.t.u-tokyo.ac.jp/" target="_blank" rel="noopener">講座ページへ移動</a>
+        <a class="btn primary" href="llm.html">過去実績はこちら！</a>
+        <a class="btn secondary" href="https://weblab.t.u-tokyo.ac.jp/" target="_blank" rel="noopener">講座ページへ移動</a>
       </div>
     </div>
   </div>
 </header>
 <main>
+  <section class="certificate-card" aria-labelledby="certificate-title">
+    <div class="certificate-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2h9l5 5v15H6z"></path>
+        <path d="M14 2v6h6"></path>
+        <path d="M9 14l2 2 4-4"></path>
+      </svg>
+    </div>
+    <div class="certificate-body">
+      <div class="certificate-label">Course Completed</div>
+      <div class="certificate-title" id="certificate-title">Deep Learning 基礎講座 2026 Spring 修了証</div>
+      <p class="certificate-text">Deep Learning 基礎講座の修了実績です。修了証（PDF）をご覧いただけます。</p>
+    </div>
+    <a class="certificate-link" href="Deep2026%20Certificate%20.pdf" target="_blank" rel="noopener">
+      修了証を確認 <span aria-hidden="true">↗</span>
+    </a>
+  </section>
+
   <section class="card">
     <h2>Lecture2 Homework</h2>
     <div class="meta">更新者：demimomi 2026年4月25日 結果33位（最高5位） 全2,281名</div>
     <p>Lecture2 では、単層のソフトマックス回帰という制約の中で、入力特徴量を丁寧に設計することで精度を高めた実装を掲載しています。</p>
   </section>
-
   <section class="card">
     <h2>Lecture3 Homework</h2>
     <div class="meta">更新者：demimomi 2026年5月1日 結果90位（最高25位） 全2,158名</div>
     <p>Fashion MNIST を NumPy だけで実装した多層パーセプトロンで分類し、前処理・学習安定化・推論時の工夫まで含めて、より実戦的な構成にしています。</p>
     <div class="tags"><span class="tag">標準化</span><span class="tag">BatchNorm</span><span class="tag">Leaky ReLU</span><span class="tag">Dropout</span><span class="tag">TTA</span></div>
   </section>
-
   <section class="card">
     <h2>Lecture4 Homework</h2>
     <div class="meta">更新者：demimomi 2026年5月9日 結果61位（最高10位） 全2,039名</div>
     <p>Fashion MNIST の分類課題に対して、PyTorch を使いながらも高レベル API に頼りすぎない実装です。Dense 層、活性化関数、Dropout、損失関数を自前寄りに構成し、制約の中で学習の安定性と再現性を確保しています。</p>
     <div class="tags"><span class="tag">PyTorch</span><span class="tag">自前実装</span><span class="tag">AdamW</span><span class="tag">Early Stopping</span></div>
   </section>
-
   <section class="card">
     <h2>Lecture5 Homework</h2>
     <div class="meta">更新者：demimomi 2026年5月22日 結果57位（最高5位） 全1,881名</div>
@@ -182,7 +336,6 @@
     <div class="tags"><span class="tag">WideResNet</span><span class="tag">RandAugment</span><span class="tag">MixUp / CutMix</span><span class="tag">EMA</span><span class="tag">TTA</span></div>
     <p class="note">※ ご要望に合わせて、lecture05_homework.py（スクロール表示）は削除しています。</p>
   </section>
-
   <section class="card">
     <h2>Lecture6 Homework</h2>
     <div class="meta">更新者：demimomi 2026年6月7日 結果22位（最高2位） 全1,826名</div>
@@ -197,7 +350,6 @@
     <p>AdamW、CosineAnnealingLR、mixed precision、gradient clipping、early stopping を採用。推論時は multi-scale と horizontal flip の TTA で予測を安定化しています。</p>
     <div class="tags"><span class="tag">FCN</span><span class="tag">VOC2011</span><span class="tag">ResNet101 Backbone</span><span class="tag">mIoU</span><span class="tag">Dice Loss</span><span class="tag">Multi-scale TTA</span></div>
   </section>
-
   <section class="card">
     <h2>Lecture7 Homework</h2>
     <div class="meta">更新者：demimomi 2026年5月29日 結果29位（最高1位） 全1,779名</div>
@@ -216,7 +368,6 @@
       <summary>lecture07_homework.py（スクロール表示）</summary>
 <pre><code># -*- coding: utf-8 -*-
 """lecture07_homework.ipynb
-
 Automatically generated by Colab.
 Original file is located at:
     https://colab.research.google.com/drive/1z1UgheoLYhrxhlewI2siinDwSYEhAJz8
@@ -229,7 +380,6 @@ BiGRU + Attention + seed ensemble
 from google.colab import drive
 drive.mount('/content/drive')
 work_dir = 'drive/MyDrive/Colab Notebooks/DLBasics2026_colab'
-
 !pip install portalocker
 import os
 import copy
@@ -245,7 +395,6 @@ from torch.nn.utils import clip_grad_norm_
 from sklearn.metrics import f1_score
 from sklearn.model_selection import train_test_split
 from typing import List
-
 seed = 1234
 torch.manual_seed(seed)
 np.random.seed(seed)
@@ -257,11 +406,9 @@ x_train, x_valid, t_train, t_valid = train_test_split(
     x_train, t_train, test_size=0.2, random_state=seed
 )
 x_test = np.load(work_dir + '/Lecture07/data/x_test.npy', allow_pickle=True)
-
 # Hyper Parameters
 秘密！
 TRAIN_FINAL_ON_ALL = True
-
 # Model
 秘密２
 
@@ -282,12 +429,10 @@ def max_token_id(*arrays):
 
 word_num = max_token_id(x_train, x_valid, x_test) + 1
 print(f"Vocabulary size: {word_num}")
-
 def text_transform_v2(text, max_length=MAX_LEN):
     text = list(text)
     text = text[:max_length - 1] + [EOS_IDX]
     return text, len(text)
-
 def collate_batch_v2(batch):
     label_list, text_list, len_seq_list = [], [], []
     for sample in batch:
@@ -303,7 +448,6 @@ def collate_batch_v2(batch):
     texts = pad_sequence(text_list, padding_value=PAD_IDX, batch_first=True).long()
     lengths = torch.tensor(len_seq_list, dtype=torch.long)
     return labels, texts, lengths
-
 def make_loader(xs, ts=None, shuffle=False, seed=1234):
     dataset = list(xs) if ts is None else [(t, x) for t, x in zip(ts, xs)]
     generator = torch.Generator()
@@ -316,13 +460,11 @@ def make_loader(xs, ts=None, shuffle=False, seed=1234):
         pin_memory=torch.cuda.is_available(),
         generator=generator if shuffle else None,
     )
-
 def get_pos_weight(labels):
     labels = np.asarray(labels).astype(int)
     pos = max(1, int(labels.sum()))
     neg = max(1, int(len(labels) - labels.sum()))
     return torch.tensor([neg / pos], dtype=torch.float32)
-
 def find_best_threshold(y_true, y_prob):
     thresholds = np.arange(0.25, 0.751, 0.005)
     scores = [
@@ -331,7 +473,6 @@ def find_best_threshold(y_true, y_prob):
     ]
     best_i = int(np.argmax(scores))
     return float(thresholds[best_i]), float(scores[best_i])
-
 def train_one_epoch(model, loader, optimizer, criterion, device):
     model.train()
     losses = []
@@ -347,7 +488,6 @@ def train_one_epoch(model, loader, optimizer, criterion, device):
         optimizer.step()
         losses.append(float(loss.detach().cpu()))
     return float(np.mean(losses))
-
 @torch.no_grad()
 def predict_proba(model, loader, device):
     model.eval()
@@ -359,7 +499,6 @@ def predict_proba(model, loader, device):
         prob = torch.sigmoid(logits)
         probs.append(prob.detach().cpu().numpy())
     return np.concatenate(probs)
-
 @torch.no_grad()
 def evaluate(model, loader, criterion, device):
     model.eval()
@@ -377,7 +516,6 @@ def evaluate(model, loader, criterion, device):
     y_prob = np.asarray(y_prob)
     th, f1 = find_best_threshold(y_true, y_prob)
     return float(np.mean(losses)), f1, th
-
 # Main Training
 # Seed ensemble、threshold tuning、final train、submission保存を実施。
 # 詳細なハイパーパラメータとモデル本体は公開範囲に合わせて一部非表示。
@@ -385,12 +523,12 @@ def evaluate(model, loader, criterion, device):
     </details>
   </section>
 
-<section class="card final-note" style="background:#ffffff; color:#243b5a; opacity:1;">
-  <p style="color:inherit;">
-    Lecture1および8以降のHomeworkはコンペ形式ではない？ので割愛。<br>
-    最終コンペに向けて準備中。
-  </p>
-</section>
+  <section class="card final-note" style="background:#ffffff; color:#243b5a; opacity:1;">
+    <p style="color:inherit;">
+      Lecture1および8以降のHomeworkはコンペ形式ではない？ので割愛。<br>
+      最終コンペに向けて準備中。
+    </p>
+  </section>
 </main>
 <footer>© demimomi / Deep Learning Foundation Course</footer>
 </body>
