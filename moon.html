@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b0c13" />
+  <meta name="description" content="demimomi — AI, mobility, deep learning, patents, and a tiny bit of moon." />
+  <title>demimomi — moonish chat</title>
+  <style>
+    :root {
+      --bg: #090a10;
+      --bg-soft: #11131c;
+      --panel: rgba(18, 20, 31, 0.72);
+      --panel-strong: rgba(20, 22, 34, 0.92);
+      --line: rgba(255,255,255,0.10);
+      --line-strong: rgba(255,255,255,0.17);
+      --text: #f4f2eb;
+      --muted: #aaa9b1;
+      --moon: #ece8d8;
+      --moon-dim: #bdb8aa;
+      --accent: #b7b0ff;
+      --accent-2: #7ed9cf;
+      --shadow: 0 32px 90px rgba(0,0,0,.45);
+      --radius-xl: 32px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 18% 10%, rgba(183,176,255,.09), transparent 24rem),
+        radial-gradient(circle at 82% 74%, rgba(126,217,207,.045), transparent 28rem),
+        linear-gradient(180deg, #090a10 0%, #0c0e16 48%, #090a10 100%);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .42;
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,.48) 0 1px, transparent 1.4px),
+        radial-gradient(circle, rgba(255,255,255,.20) 0 1px, transparent 1.4px);
+      background-size: 84px 84px, 137px 137px;
+      background-position: 13px 9px, 61px 38px;
+      mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.6) 48%, transparent 88%);
+    }
+
+    a { color: inherit; }
+
+    button, textarea { font: inherit; }
+
+    .moon {
+      position: fixed;
+      top: 72px;
+      right: clamp(-72px, 3vw, 38px);
+      width: clamp(170px, 20vw, 300px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 28% 34%, rgba(132,129,120,.16) 0 7%, transparent 7.5%),
+        radial-gradient(circle at 64% 24%, rgba(132,129,120,.14) 0 10%, transparent 10.5%),
+        radial-gradient(circle at 58% 68%, rgba(132,129,120,.12) 0 13%, transparent 13.5%),
+        radial-gradient(circle at 35% 73%, rgba(132,129,120,.10) 0 6%, transparent 6.5%),
+        radial-gradient(circle at 46% 44%, #f0ecdd 0%, #d9d4c7 64%, #aaa69d 100%);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.05),
+        0 0 65px rgba(239,235,219,.09),
+        0 0 160px rgba(183,176,255,.06);
+      filter: saturate(.72);
+      opacity: .88;
+      animation: moonFloat 10s ease-in-out infinite;
+    }
+
+    .moon::after {
+      content: "月です";
+      position: absolute;
+      left: 18%;
+      bottom: -34px;
+      color: rgba(244,242,235,.38);
+      font-size: 11px;
+      letter-spacing: .18em;
+      white-space: nowrap;
+    }
+
+    @keyframes moonFloat {
+      0%,100% { transform: translate3d(0,0,0) rotate(-1deg); }
+      50% { transform: translate3d(-4px,8px,0) rotate(1deg); }
+    }
+
+    .shell {
+      position: relative;
+      z-index: 1;
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 54px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 58px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .08em;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--moon);
+      box-shadow: 0 0 18px rgba(236,232,216,.38);
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: var(--muted);
+      border: 1px solid transparent;
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      transition: .2s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .nav a:hover {
+      color: var(--text);
+      border-color: var(--line);
+      background: rgba(255,255,255,.035);
+      transform: translateY(-1px);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
+      gap: 34px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      color: var(--moon-dim);
+      font-size: 11px;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 26px;
+      height: 1px;
+      background: currentColor;
+      opacity: .55;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(46px, 8vw, 102px);
+      line-height: .88;
+      letter-spacing: -.075em;
+      font-weight: 760;
+    }
+
+    h1 .soft {
+      display: block;
+      color: #b9b7c0;
+      font-weight: 560;
+    }
+
+    .intro {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.85;
+      max-width: 460px;
+      margin: 18px 0 0;
+    }
+
+    .signal-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, rgba(255,255,255,.052), rgba(255,255,255,.024));
+      backdrop-filter: blur(18px);
+      box-shadow: 0 18px 60px rgba(0,0,0,.18);
+    }
+
+    .signal-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    .signal-row strong {
+      color: var(--text);
+      font-weight: 650;
+    }
+
+    .meter {
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.07);
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .meter > span {
+      display: block;
+      width: 37%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--moon));
+      box-shadow: 0 0 18px rgba(183,176,255,.3);
+    }
+
+    .signal-note {
+      margin: 0;
+      color: #8f8e97;
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .chat-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025)),
+        var(--panel);
+      backdrop-filter: blur(24px);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .chat-card::before {
+      content: "";
+      position: absolute;
+      width: 230px;
+      height: 230px;
+      border-radius: 50%;
+      left: -110px;
+      bottom: -150px;
+      background: rgba(126,217,207,.07);
+      filter: blur(30px);
+      pointer-events: none;
+    }
+
+    .chat-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .chat-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 650;
+      font-size: 13px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: #9f9da6;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      box-shadow: 0 0 14px rgba(126,217,207,.58);
+    }
+
+    .chat-body { padding: 22px; }
+
+    .prompt-label {
+      display: block;
+      margin: 0 0 10px 2px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: .06em;
+    }
+
+    textarea {
+      display: block;
+      width: 100%;
+      min-height: 148px;
+      resize: vertical;
+      padding: 18px 18px;
+      color: var(--text);
+      caret-color: var(--moon);
+      background: rgba(5,6,10,.48);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius-md);
+      outline: none;
+      line-height: 1.75;
+      transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+    textarea::placeholder { color: #686873; }
+
+    textarea:focus {
+      border-color: rgba(183,176,255,.40);
+      box-shadow: 0 0 0 4px rgba(183,176,255,.07);
+      background: rgba(5,6,10,.64);
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .hint {
+      color: #777681;
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .send {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-width: 148px;
+      padding: 13px 18px;
+      border-radius: 999px;
+      color: #111118;
+      background: var(--moon);
+      font-weight: 750;
+      font-size: 13px;
+      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+      box-shadow: 0 8px 28px rgba(236,232,216,.08);
+    }
+
+    .send:hover {
+      transform: translateY(-2px) rotate(-.4deg);
+      box-shadow: 0 12px 34px rgba(236,232,216,.13);
+      filter: brightness(1.035);
+    }
+
+    .send:active { transform: translateY(0); }
+    .send:disabled { opacity: .55; cursor: wait; transform: none; }
+
+    .send .arrow { font-size: 16px; transform: translateY(-1px); }
+
+    .response-wrap {
+      display: none;
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .response-wrap.visible { display: block; }
+
+    .response-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 9px;
+      color: #85848e;
+      font-size: 11px;
+    }
+
+    #response {
+      margin: 0;
+      padding: 16px 17px;
+      min-height: 58px;
+      border-radius: var(--radius-md);
+      background: rgba(183,176,255,.055);
+      border: 1px solid rgba(183,176,255,.11);
+      color: #e7e5eb;
+      line-height: 1.78;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .orbit-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 12px 0 28px;
+    }
+
+    .orbit-card {
+      min-height: 116px;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,.026);
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+
+    .orbit-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,.18);
+      background: rgba(255,255,255,.043);
+    }
+
+    .orbit-kicker {
+      color: #777681;
+      font-size: 9px;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+    }
+
+    .orbit-title {
+      margin-top: 26px;
+      font-size: 13px;
+      font-weight: 680;
+      letter-spacing: -.01em;
+    }
+
+    .orbit-icon {
+      position: absolute;
+      right: 14px;
+      top: 12px;
+      font-size: 19px;
+      opacity: .78;
+      filter: grayscale(.32);
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      color: #686771;
+      font-size: 10px;
+      letter-spacing: .06em;
+      padding: 2px 2px 0;
+    }
+
+    .tiny-joke { color: #7b7985; }
+
+    @media (max-width: 820px) {
+      .topbar { margin-bottom: 42px; }
+      .hero { grid-template-columns: 1fr; align-items: start; }
+      .signal-card { max-width: 430px; }
+      .orbit-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .moon { top: 110px; right: -92px; opacity: .62; }
+    }
+
+    @media (max-width: 560px) {
+      .shell { width: min(100% - 22px, 1120px); padding-top: 18px; }
+      .topbar { align-items: flex-start; }
+      .nav { max-width: 190px; gap: 4px; }
+      .nav a { padding: 7px 8px; font-size: 10px; }
+      h1 { font-size: clamp(48px, 18vw, 76px); }
+      .chat-head, .chat-body { padding-left: 16px; padding-right: 16px; }
+      .actions { align-items: stretch; flex-direction: column; }
+      .send { width: 100%; }
+      .orbit-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .orbit-card { min-height: 104px; }
+      footer { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="moon" aria-hidden="true"></div>
+
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="demimomi home">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span>demimomi</span>
+      </a>
+      <nav class="nav" aria-label="Sub pages">
+        <a href="deep_learning.html">Deep Learning</a>
+        <a href="llm.html">LLM</a>
+        <a href="patent.html">Patents</a>
+        <a href="cat.html">Cat(?)</a>
+      </nav>
+    </header>
+
+    <section class="hero" aria-labelledby="heroTitle">
+      <div>
+        <div class="eyebrow">Human × AI × a little moon</div>
+        <h1 id="heroTitle">Talk to<span class="soft">demimomi.</span></h1>
+        <p class="intro">
+          AI、モビリティ、研究、特許、たまに猫。<br>
+          月面ほど静かではありませんが、だいたい落ち着いて返事します。
+        </p>
+      </div>
+
+      <aside class="signal-card" aria-label="Moon signal status">
+        <div class="signal-row">
+          <span>MOON SIGNAL</span>
+          <strong id="moonPercent">37%</strong>
+        </div>
+        <div class="meter" aria-hidden="true"><span id="moonMeter"></span></div>
+        <p class="signal-note" id="moonNote">十分です。これ以上は月になりすぎます。</p>
+      </aside>
+    </section>
+
+    <section class="chat-card" aria-label="demimomi chat">
+      <div class="chat-head">
+        <div class="chat-title">demimomi chat <span aria-hidden="true">✦</span></div>
+        <div class="status"><span class="status-dot"></span><span id="statusText">月は既読です</span></div>
+      </div>
+
+      <div class="chat-body">
+        <label class="prompt-label" for="userInput">MESSAGE / 質問</label>
+        <textarea id="userInput" placeholder="たとえば：最近なに研究してる？"></textarea>
+
+        <div class="actions">
+          <div class="hint">⌘ / Ctrl + Enter でも送れます。たぶん地球上で動きます。</div>
+          <button class="send" id="sendButton" type="button" onclick="sendToGemini()">
+            <span id="sendLabel">月に投げる</span><span class="arrow" aria-hidden="true">↗</span>
+          </button>
+        </div>
+
+        <div class="response-wrap" id="responseWrap">
+          <div class="response-label">
+            <span>REPLY</span>
+            <span id="responseMeta">from somewhere nearby</span>
+          </div>
+          <p id="response" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="orbit-grid" aria-label="Other pages">
+      <a class="orbit-card" href="deep_learning.html">
+        <span class="orbit-icon" aria-hidden="true">◌</span>
+        <div class="orbit-kicker">Orbit 01</div>
+        <div class="orbit-title">Deep Learning</div>
+      </a>
+      <a class="orbit-card" href="llm.html">
+        <span class="orbit-icon" aria-hidden="true">✦</span>
+        <div class="orbit-kicker">Orbit 02</div>
+        <div class="orbit-title">LLM Lecture</div>
+      </a>
+      <a class="orbit-card" href="patent.html">
+        <span class="orbit-icon" aria-hidden="true">⌁</span>
+        <div class="orbit-kicker">Orbit 03</div>
+        <div class="orbit-title">Patents</div>
+      </a>
+      <a class="orbit-card" href="cat.html">
+        <span class="orbit-icon" aria-hidden="true">=^･ω･^=</span>
+        <div class="orbit-kicker">Side quest</div>
+        <div class="orbit-title">Cat Possession</div>
+      </a>
+    </section>
+
+    <footer>
+      <span>© 2026 demimomi / made on Earth</span>
+      <span class="tiny-joke">moon intensity: intentionally moderate</span>
+    </footer>
+  </main>
+
+  <script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbzPaHN3jrnX7q9enogJ8sj7zcH9v8Fv7bC1Qp3XdCDTOtX3BTcRjWfliYxLsmDgx0Ia/exec";
+
+    const userInput = document.getElementById("userInput");
+    const responseEl = document.getElementById("response");
+    const responseWrap = document.getElementById("responseWrap");
+    const sendButton = document.getElementById("sendButton");
+    const sendLabel = document.getElementById("sendLabel");
+    const statusText = document.getElementById("statusText");
+    const responseMeta = document.getElementById("responseMeta");
+
+    const moonLines = [
+      "十分です。これ以上は月になりすぎます。",
+      "ほのかな月味。ほぼ狙い通りです。",
+      "潮の満ち引きには影響しない程度です。",
+      "NASAへの連絡はまだ不要です。"
+    ];
+
+    const statusLines = [
+      "月は既読です",
+      "地球回線 良好",
+      "低重力で待機中",
+      "猫は未確認です"
+    ];
+
+    function gentlyRandomizeMoon() {
+      const value = 34 + Math.floor(Math.random() * 8);
+      document.getElementById("moonPercent").textContent = value + "%";
+      document.getElementById("moonMeter").style.width = value + "%";
+      document.getElementById("moonNote").textContent = moonLines[Math.floor(Math.random() * moonLines.length)];
+    }
+
+    async function sendToGemini() {
+      const input = userInput.value.trim();
+      if (!input) {
+        responseWrap.classList.add("visible");
+        responseEl.textContent = "質問がまだ地球にあります。まず何か書いてください。";
+        responseMeta.textContent = "launch canceled";
+        userInput.focus();
+        return;
+      }
+
+      sendButton.disabled = true;
+      sendLabel.textContent = "飛行中…";
+      statusText.textContent = "月へ送信中";
+      responseWrap.classList.add("visible");
+      responseEl.textContent = "受信待ち…";
+      responseMeta.textContent = "signal traveling";
+
+      try {
+        const response = await fetch(GAS_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ input })
+        });
+
+        if (!response.ok) throw new Error("HTTP " + response.status);
+
+        const data = await response.json();
+        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        responseEl.textContent = text || "返事は来ましたが、月の裏側に隠れています。";
+        responseMeta.textContent = "signal received";
+        statusText.textContent = statusLines[Math.floor(Math.random() * statusLines.length)];
+      } catch (error) {
+        console.error(error);
+        responseEl.textContent = "通信に失敗しました。月ではなく回線の可能性が高いです。";
+        responseMeta.textContent = "signal lost";
+        statusText.textContent = "地球回線を確認中";
+      } finally {
+        sendButton.disabled = false;
+        sendLabel.textContent = "月に投げる";
+      }
+    }
+
+    userInput.addEventListener("keydown", (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+        event.preventDefault();
+        sendToGemini();
+      }
+    });
+
+    gentlyRandomizeMoon();
+  </script>
+</body>
+</html>
