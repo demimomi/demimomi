@@ -1,671 +1,1561 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The University of Tokyo, Matsuo Laboratory, LLM Lecture</title>
-  <style>
-    :root {
-      --bg-1: #06121f;
-      --bg-2: #0d1b2a;
-      --bg-3: #10263d;
-      --glass: rgba(255,255,255,0.10);
-      --line: rgba(255,255,255,0.14);
-      --text: #eef6ff;
-      --muted: #b7c8da;
-      --accent: #7dd3fc;
-      --accent-2: #c084fc;
-      --gold: #f6c453;
-      --silver: #d7dee7;
-      --bronze: #d79b72;
-      --shadow: 0 24px 80px rgba(0,0,0,0.35);
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The University of Tokyo, Matsuo Laboratory, LLM Lecture</title>
 
-    * { box-sizing: border-box; }
+<style>
+:root {
+  --bg-1: #06121f;
+  --bg-2: #0d1b2a;
+  --bg-3: #10263d;
+  --glass: rgba(255,255,255,0.10);
+  --line: rgba(255,255,255,0.14);
+  --text: #eef6ff;
+  --muted: #b7c8da;
+  --accent: #7dd3fc;
+  --accent-2: #c084fc;
+  --gold: #f6c453;
+  --silver: #d7dee7;
+  --bronze: #d79b72;
+  --shadow: 0 24px 80px rgba(0,0,0,0.35);
+}
 
-    html, body {
-      margin: 0;
-      min-height: 100%;
-      font-family: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 20% 20%, rgba(125,211,252,0.14), transparent 26%),
-        radial-gradient(circle at 80% 18%, rgba(192,132,252,0.14), transparent 24%),
-        radial-gradient(circle at 50% 85%, rgba(56,189,248,0.10), transparent 30%),
-        linear-gradient(135deg, var(--bg-1), var(--bg-2) 55%, var(--bg-3));
-      overflow-x: hidden;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    #bg {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      opacity: 0.8;
-      pointer-events: none;
-    }
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  color: var(--text);
 
-    .orb {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(40px);
-      opacity: 0.18;
-      pointer-events: none;
-      z-index: 0;
-      animation: drift 16s ease-in-out infinite;
-    }
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(125,211,252,0.14),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 80% 18%,
+      rgba(192,132,252,0.14),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at 50% 85%,
+      rgba(56,189,248,0.10),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      var(--bg-1),
+      var(--bg-2) 55%,
+      var(--bg-3)
+    );
 
-    .orb.one {
-      width: 320px; height: 320px;
-      top: 7%; left: 6%;
-      background: #60a5fa;
-    }
+  overflow-x: hidden;
+}
 
-    .orb.two {
-      width: 280px; height: 280px;
-      right: 8%; top: 14%;
-      background: #c084fc;
-      animation-delay: -5s;
-    }
+#bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.8;
+  pointer-events: none;
+}
 
-    .orb.three {
-      width: 360px; height: 360px;
-      left: 40%; bottom: 2%;
-      background: #22d3ee;
-      animation-delay: -9s;
-    }
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 0;
+  animation: drift 16s ease-in-out infinite;
+}
 
-    @keyframes drift {
-      0%, 100% { transform: translate3d(0,0,0) scale(1); }
-      50% { transform: translate3d(20px,-16px,0) scale(1.08); }
-    }
+.orb.one {
+  width: 320px;
+  height: 320px;
+  top: 7%;
+  left: 6%;
+  background: #60a5fa;
+}
 
-    .wrap {
-      position: relative;
-      z-index: 1;
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 48px 20px 72px;
-    }
+.orb.two {
+  width: 280px;
+  height: 280px;
+  right: 8%;
+  top: 14%;
+  background: #c084fc;
+  animation-delay: -5s;
+}
 
-    .hero {
-      position: relative;
-      padding: 34px 32px 28px;
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
-      backdrop-filter: blur(18px);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
+.orb.three {
+  width: 360px;
+  height: 360px;
+  left: 40%;
+  bottom: 2%;
+  background: #22d3ee;
+  animation-delay: -9s;
+}
 
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: auto -20% 60% auto;
-      width: 280px;
-      height: 280px;
-      background: radial-gradient(circle, rgba(125,211,252,0.24), transparent 65%);
-      transform: translate(10%, -10%);
-    }
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0,0,0) scale(1);
+  }
 
-    .eyebrow {
-      display: inline-flex;
-      gap: 10px;
-      align-items: center;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(125,211,252,0.10);
-      border: 1px solid rgba(125,211,252,0.25);
-      color: #d9f3ff;
-      font-size: 13px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
+  50% {
+    transform: translate3d(20px,-16px,0) scale(1.08);
+  }
+}
 
-    h1 {
-      margin: 18px 0 12px;
-      font-size: clamp(30px, 4.4vw, 58px);
-      line-height: 1.06;
-      letter-spacing: -0.04em;
-      max-width: 900px;
-    }
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 48px 20px 72px;
+}
 
-    .hero-inner {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 24px;
-    }
+.hero {
+  position: relative;
+  padding: 34px 32px 28px;
+  border: 1px solid var(--line);
+  border-radius: 28px;
 
-    .hero-copy {
-      flex: 1 1 640px;
-      min-width: 0;
-    }
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.12),
+      rgba(255,255,255,0.06)
+    );
 
-    .subtitle {
-      max-width: 760px;
-      margin: 0;
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.75;
-    }
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
 
-    .hero-image {
-      flex: 0 0 200px;
-      width: 200px;
-      padding: 8px;
-      border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 24px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.08));
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(18px);
-    }
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: auto -20% 60% auto;
+  width: 280px;
+  height: 280px;
 
-    .hero-image img {
-      display: block;
-      width: 100%;
-      height: auto;
-      border-radius: 18px;
-      object-fit: cover;
-    }
+  background:
+    radial-gradient(
+      circle,
+      rgba(125,211,252,0.24),
+      transparent 65%
+    );
 
-    .panel {
-      margin-top: 22px;
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.05));
-      backdrop-filter: blur(18px);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
+  transform: translate(10%, -10%);
+}
 
-    .panel-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      padding: 22px 24px;
-      border-bottom: 1px solid var(--line);
-    }
+.eyebrow {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
 
-    .panel-title {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
+  background:
+    rgba(125,211,252,0.10);
 
-    .panel-note {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
-      white-space: pre-line;
-    }
+  border:
+    1px solid rgba(125,211,252,0.25);
 
-    .table-wrap {
-      overflow: auto;
-    }
+  color: #d9f3ff;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 760px;
-    }
+h1 {
+  margin: 18px 0 12px;
+  font-size: clamp(30px, 4.4vw, 58px);
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+  max-width: 900px;
+}
 
-    thead th {
-      position: sticky;
-      top: 0;
-      z-index: 2;
-      text-align: left;
-      font-size: 13px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: #d9e9f8;
-      background: rgba(9, 19, 32, 0.88);
-      backdrop-filter: blur(14px);
-      padding: 16px 18px;
-      border-bottom: 1px solid var(--line);
-    }
+.hero-inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
 
-    tbody td {
-      padding: 18px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      vertical-align: middle;
-    }
+.hero-copy {
+  flex: 1 1 640px;
+  min-width: 0;
+}
 
-    tbody tr {
-      transition: transform 0.18s ease, background 0.18s ease;
-    }
+.subtitle {
+  max-width: 760px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.75;
+}
 
-    tbody tr:hover {
-      background: rgba(255,255,255,0.045);
-      transform: translateY(-1px);
-    }
+.hero-image {
+  flex: 0 0 200px;
+  width: 200px;
+  padding: 8px;
 
-    .no {
-      width: 72px;
-      color: #cfe6ff;
-      font-weight: 800;
-    }
+  border:
+    1px solid rgba(255,255,255,0.14);
 
-    .course-cell {
-      padding: 0;
-    }
+  border-radius: 24px;
 
-    .course-link {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      width: 100%;
-      height: 100%;
-      padding: 18px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      color: #f3f9ff;
-      text-decoration: none;
-      border-radius: 18px;
-      background: linear-gradient(135deg, rgba(125,211,252,0.14), rgba(192,132,252,0.10));
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
-      overflow: hidden;
-      isolation: isolate;
-      transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease, opacity 0.22s ease;
-    }
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.14),
+      rgba(255,255,255,0.08)
+    );
 
-    .course-link::before {
-      content: "";
-      position: absolute;
-      inset: -1px;
-      background: linear-gradient(120deg, rgba(255,255,255,0.18), transparent 40%, rgba(125,211,252,0.22));
-      opacity: 0;
-      transition: opacity 0.22s ease;
-      z-index: -1;
-    }
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
 
-    .course-link:hover,
-    .course-link:focus-visible {
-      opacity: 1;
-      transform: translateY(-2px) scale(1.01);
-      box-shadow: 0 16px 30px rgba(0,0,0,0.22), 0 0 0 1px rgba(125,211,252,0.18);
-      background: linear-gradient(135deg, rgba(125,211,252,0.20), rgba(192,132,252,0.14));
-      outline: none;
-    }
+.hero-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  object-fit: cover;
+}
 
-    tbody tr:hover .course-link {
-      opacity: 1;
-    }
+.panel {
+  margin-top: 22px;
+  border: 1px solid var(--line);
+  border-radius: 28px;
 
-    .course-link:hover::before,
-    .course-link:focus-visible::before {
-      opacity: 1;
-    }
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.09),
+      rgba(255,255,255,0.05)
+    );
 
-    .course-link:active {
-      transform: scale(0.985);
-    }
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
 
-    .course-main {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
 
-    .course-label {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.14);
-      border: 1px solid rgba(255,255,255,0.12);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #dff4ff;
-      flex: 0 0 auto;
-    }
+  padding: 22px 24px;
 
-    .course-text {
-      min-width: 0;
-    }
+  border-bottom:
+    1px solid var(--line);
+}
 
-    .course-name {
-      display: block;
-    }
+.panel-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
 
-    .course-sub {
-      display: block;
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-    }
+.panel-note {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
 
-    .course-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(6,18,31,0.34);
-      border: 1px solid rgba(125,211,252,0.24);
-      color: #dff6ff;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      white-space: nowrap;
-      transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease;
-    }
+.table-wrap {
+  overflow: auto;
+}
 
-    .course-link:hover .course-cta,
-    .course-link:focus-visible .course-cta {
-      transform: translateX(4px);
-      background: rgba(6,18,31,0.48);
-      border-color: rgba(125,211,252,0.42);
-    }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
 
-    .course-cta::after {
-      content: "→";
-      font-size: 14px;
-      line-height: 1;
-    }
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
 
-    .ripple {
-      position: absolute;
-      border-radius: 50%;
-      transform: scale(0);
-      background: rgba(255,255,255,0.22);
-      animation: ripple-animation 0.55s linear;
-      pointer-events: none;
-      z-index: 0;
-    }
+  text-align: left;
 
-    @keyframes ripple-animation {
-      to {
-        transform: scale(3.4);
-        opacity: 0;
-      }
-    }
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 
-    .count {
-      font-variant-numeric: tabular-nums;
-      font-weight: 700;
-    }
+  color: #d9e9f8;
 
-    .completion {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 8px;
-      color: #d7ebff;
-      font-size: 13px;
-      flex-wrap: wrap;
-    }
+  background:
+    rgba(9, 19, 32, 0.88);
 
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 74px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.08);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
+  backdrop-filter: blur(14px);
 
-    .rank-1 { background: rgba(246,196,83,0.16); border-color: rgba(246,196,83,0.35); color: #ffe7a5; }
-    .rank-2 { background: rgba(215,222,231,0.14); border-color: rgba(215,222,231,0.28); color: #f4f8fb; }
-    .rank-3 { background: rgba(215,155,114,0.16); border-color: rgba(215,155,114,0.30); color: #ffd8c0; }
+  padding: 16px 18px;
 
-    .bar {
-      position: relative;
-      width: 140px;
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
+  border-bottom:
+    1px solid var(--line);
+}
 
-    .bar > span {
-      position: absolute;
-      inset: 0 auto 0 0;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      box-shadow: 0 0 18px rgba(125,211,252,0.28);
-    }
+tbody td {
+  padding: 18px;
 
-    .footer {
-      margin-top: 16px;
-      color: var(--muted);
-      font-size: 12px;
-      text-align: right;
-    }
+  border-bottom:
+    1px solid rgba(255,255,255,0.08);
 
-    @media (max-width: 900px) {
-      .hero-inner { flex-direction: column; }
-      .hero-image {
-        width: min(220px, 100%);
-        align-self: flex-end;
-      }
-      .panel-head { flex-direction: column; align-items: flex-start; }
-    }
+  vertical-align: middle;
+}
 
-    @media (max-width: 640px) {
-      .wrap { padding: 24px 14px 56px; }
-      .hero { padding: 22px 18px 18px; border-radius: 24px; }
-      .panel { border-radius: 24px; }
-      .panel-head { padding: 18px; }
-      thead th, tbody td { padding: 14px; }
-      .course-link { padding: 14px; }
-    }
-  </style>
+tbody tr {
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease;
+}
+
+tbody tr:hover {
+  background:
+    rgba(255,255,255,0.045);
+
+  transform:
+    translateY(-1px);
+}
+
+.no {
+  width: 72px;
+  color: #cfe6ff;
+  font-weight: 800;
+}
+
+.course-cell {
+  padding: 0;
+}
+
+.course-link {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  width: 100%;
+  height: 100%;
+
+  padding: 18px;
+
+  font-weight: 700;
+  letter-spacing: -0.01em;
+
+  color: #f3f9ff;
+  text-decoration: none;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(125,211,252,0.14),
+      rgba(192,132,252,0.10)
+    );
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.08);
+
+  overflow: hidden;
+  isolation: isolate;
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease,
+    opacity 0.22s ease;
+}
+
+.course-link::before {
+  content: "";
+
+  position: absolute;
+  inset: -1px;
+
+  background:
+    linear-gradient(
+      120deg,
+      rgba(255,255,255,0.18),
+      transparent 40%,
+      rgba(125,211,252,0.22)
+    );
+
+  opacity: 0;
+
+  transition:
+    opacity 0.22s ease;
+
+  z-index: -1;
+}
+
+.course-link:hover,
+.course-link:focus-visible {
+  opacity: 1;
+
+  transform:
+    translateY(-2px)
+    scale(1.01);
+
+  box-shadow:
+    0 16px 30px rgba(0,0,0,0.22),
+    0 0 0 1px rgba(125,211,252,0.18);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(125,211,252,0.20),
+      rgba(192,132,252,0.14)
+    );
+
+  outline: none;
+}
+
+tbody tr:hover .course-link {
+  opacity: 1;
+}
+
+.course-link:hover::before,
+.course-link:focus-visible::before {
+  opacity: 1;
+}
+
+.course-link:active {
+  transform: scale(0.985);
+}
+
+.course-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.course-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255,255,255,0.14);
+
+  border:
+    1px solid rgba(255,255,255,0.12);
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: #dff4ff;
+
+  flex: 0 0 auto;
+}
+
+.course-text {
+  min-width: 0;
+}
+
+.course-name {
+  display: block;
+}
+
+.course-sub {
+  display: block;
+  margin-top: 4px;
+
+  color: var(--muted);
+
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.course-cta {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 8px 12px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(6,18,31,0.34);
+
+  border:
+    1px solid rgba(125,211,252,0.24);
+
+  color: #dff6ff;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  white-space: nowrap;
+
+  transition:
+    transform 0.22s ease,
+    background 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.course-link:hover .course-cta,
+.course-link:focus-visible .course-cta {
+  transform:
+    translateX(4px);
+
+  background:
+    rgba(6,18,31,0.48);
+
+  border-color:
+    rgba(125,211,252,0.42);
+}
+
+.course-cta::after {
+  content: "→";
+  font-size: 14px;
+  line-height: 1;
+}
+
+.ripple {
+  position: absolute;
+
+  border-radius: 50%;
+
+  transform:
+    scale(0);
+
+  background:
+    rgba(255,255,255,0.22);
+
+  animation:
+    ripple-animation 0.55s linear;
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(3.4);
+    opacity: 0;
+  }
+}
+
+.count {
+  font-variant-numeric:
+    tabular-nums;
+
+  font-weight: 700;
+}
+
+.completion {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 8px;
+
+  color: #d7ebff;
+
+  font-size: 13px;
+
+  flex-wrap: wrap;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 74px;
+
+  padding: 8px 12px;
+
+  border-radius: 999px;
+
+  border:
+    1px solid rgba(255,255,255,0.12);
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-weight: 800;
+
+  letter-spacing: -0.02em;
+}
+
+.rank-1 {
+  background: rgba(246,196,83,0.16);
+  border-color: rgba(246,196,83,0.35);
+  color: #ffe7a5;
+}
+
+.rank-2 {
+  background: rgba(215,222,231,0.14);
+  border-color: rgba(215,222,231,0.28);
+  color: #f4f8fb;
+}
+
+.rank-3 {
+  background: rgba(215,155,114,0.16);
+  border-color: rgba(215,155,114,0.30);
+  color: #ffd8c0;
+}
+
+.bar {
+  position: relative;
+
+  width: 140px;
+  height: 10px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  overflow: hidden;
+
+  border:
+    1px solid rgba(255,255,255,0.06);
+}
+
+.bar > span {
+  position: absolute;
+
+  inset:
+    0 auto 0 0;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--accent),
+      var(--accent-2)
+    );
+
+  box-shadow:
+    0 0 18px rgba(125,211,252,0.28);
+}
+
+.footer {
+  margin-top: 16px;
+
+  color: var(--muted);
+
+  font-size: 12px;
+
+  text-align: right;
+}
+
+@media (max-width: 900px) {
+
+  .hero-inner {
+    flex-direction: column;
+  }
+
+  .hero-image {
+    width:
+      min(220px, 100%);
+
+    align-self:
+      flex-end;
+  }
+
+  .panel-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+
+  .wrap {
+    padding:
+      24px 14px 56px;
+  }
+
+  .hero {
+    padding:
+      22px 18px 18px;
+
+    border-radius:
+      24px;
+  }
+
+  .panel {
+    border-radius:
+      24px;
+  }
+
+  .panel-head {
+    padding:
+      18px;
+  }
+
+  thead th,
+  tbody td {
+    padding:
+      14px;
+  }
+
+  .course-link {
+    padding:
+      14px;
+  }
+}
+</style>
 </head>
+
 <body>
-  <canvas id="bg"></canvas>
-  <div class="orb one"></div>
-  <div class="orb two"></div>
-  <div class="orb three"></div>
 
-  <main class="wrap">
-    <section class="hero">
-      <div class="hero-inner">
-        <div class="hero-copy">
-          <div class="eyebrow">LLM Lecture</div>
-          <h1>The University of Tokyo, Matsuo Laboratory, LLM Lecture</h1>
-          <p class="subtitle">AI（己）の深淵にともる幽かな灯をたよりに、大規模言語の学び舎へ日々こころを遊ばせ候。</p>
+<canvas id="bg"></canvas>
+
+<div class="orb one"></div>
+<div class="orb two"></div>
+<div class="orb three"></div>
+
+<main class="wrap">
+
+  <section class="hero">
+
+    <div class="hero-inner">
+
+      <div class="hero-copy">
+
+        <div class="eyebrow">
+          LLM Lecture
         </div>
-        <div class="hero-image">
-          <img src="https://raw.githubusercontent.com/demimomi/demimomi/refs/heads/main/matsuo.jpg" alt="Matsuo Laboratory" />
+
+        <h1>
+          The University of Tokyo,
+          Matsuo Laboratory,
+          LLM Lecture
+        </h1>
+
+        <p class="subtitle">
+          AI（己）の深淵にともる幽かな灯をたよりに、大規模言語の学び舎へ日々こころを遊ばせ候。
+        </p>
+
+      </div>
+
+      <div class="hero-image">
+
+        <img
+          src="https://raw.githubusercontent.com/demimomi/demimomi/refs/heads/main/matsuo.jpg"
+          alt="Matsuo Laboratory"
+        />
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="panel">
+
+    <div class="panel-head">
+
+      <div>
+
+        <div class="panel-title">
+          Lecture List
         </div>
+
+        <div class="panel-note">Completed: 4 courses
+In progress: 2 courses</div>
+
       </div>
-    </section>
 
-    <section class="panel">
-      <div class="panel-head">
-        <div>
-          <div class="panel-title">Lecture List</div>
-          <div class="panel-note">Completed: 4 courses
-In progress: 1 course</div>
-        </div>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>講義名</th>
-              <th>受講者数 (修了率)</th>
-              <th>コンペ成績</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-      </div>
-    </section>
+    </div>
 
-    <div class="footer">©demimomi</div>
-  </main>
 
-  <script>
-    const lectures = [
-      { no: 1, name: '大規模言語モデル 応用編 2024', url: 'https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex', learners: 4000, completion: 1200, rank: 47, rankLabel: '47位' },
-      { no: 2, name: '大規模言語モデル 基礎編 2025', url: 'https://huggingface.co/demimomi/u-tokyo-sbintuitions-sarashina2.2-0.5b', learners: 4000, completion: 1876, rank: null, rankLabel: 'コンペなし' },
-      { no: 3, name: '実践 Bridge編 2025', url: 'https://demimomi.github.io/demimomi/cat.html', learners: 900, completion: null, rank: null, rankLabel: 'コンペなし' },
-      { no: 4, name: '大規模言語モデル 応用編 2025', url: 'https://huggingface.co/demimomi/44taomax-qwen3-4b-structured-output-lora', learners: 3800, completion: 1046, rank: 627, rankLabel: '627位' },
-      { no: 5, name: 'Deep Learning 基礎編 2026', url: 'https://demimomi.github.io/demimomi/deep_learning.html', learners: 2281, completion: null, rank: 7, rankLabel: '1位（※暫定で最高ｗ）' }
-    ];
+    <div class="table-wrap">
 
-    const tableBody = document.getElementById('tableBody');
-    const formatNumber = (n) => new Intl.NumberFormat('en-US').format(n);
+      <table>
 
-    const rankClass = (rank) => {
-      if (rank === 1) return 'rank-1';
-      if (rank === 2) return 'rank-2';
-      if (rank === 3) return 'rank-3';
-      return '';
-    };
+        <thead>
 
-    const escapeHtml = (value) => String(value)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
+          <tr>
 
-    lectures.forEach(item => {
-      const tr = document.createElement('tr');
+            <th>No</th>
 
-      const completionRate =
-        Number.isFinite(item.completion) && item.learners > 0
-          ? Math.round((item.completion / item.learners) * 100)
-          : null;
+            <th>
+              講義名
+            </th>
 
-      const completionHtml = completionRate !== null
-        ? `
-          <div class="count">${Number.isFinite(item.learners) ? formatNumber(item.learners) : '-'}<\/div>
-          <div class="completion">
-            <div class="bar"><span style="width:${completionRate}%;"></span></div>
-            <span>${formatNumber(item.completion)}人 / ${completionRate}%</span>
+            <th>
+              受講者数 (修了率)
+            </th>
+
+            <th>
+              コンペ成績
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="tableBody"></tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <div class="footer">
+    ©demimomi
+  </div>
+
+</main>
+
+
+<script>
+
+const lectures = [
+
+  {
+    no: 1,
+    name: '大規模言語モデル 応用編 2024',
+    url: 'https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex',
+    learners: 4000,
+    completion: 1200,
+    rank: 47,
+    rankLabel: '47位'
+  },
+
+  {
+    no: 2,
+    name: '大規模言語モデル 基礎編 2025',
+    url: 'https://huggingface.co/demimomi/u-tokyo-sbintuitions-sarashina2.2-0.5b',
+    learners: 4000,
+    completion: 1876,
+    rank: null,
+    rankLabel: 'コンペなし'
+  },
+
+  {
+    no: 3,
+    name: '実践 Bridge編 2025',
+    url: 'https://demimomi.github.io/demimomi/cat.html',
+    learners: 900,
+    completion: null,
+    rank: null,
+    rankLabel: 'コンペなし'
+  },
+
+  {
+    no: 4,
+    name: '大規模言語モデル 応用編 2025',
+    url: 'https://huggingface.co/demimomi/44taomax-qwen3-4b-structured-output-lora',
+    learners: 3800,
+    completion: 1046,
+    rank: 627,
+    rankLabel: '627位'
+  },
+
+  {
+    no: 5,
+    name: 'Deep Learning 基礎編 2026',
+    url: 'https://demimomi.github.io/demimomi/deep_learning.html',
+    learners: 2281,
+    completion: null,
+    rank: 7,
+    rankLabel: '1位（※暫定で最高ｗ）'
+  },
+
+
+  /* =====================================================
+     NEW / Physical AI
+     ===================================================== */
+
+  {
+    no: 6,
+    name: 'Physical AI 基礎編 2026',
+    url: 'https://huggingface.co/demimomi/UTokyo-MatsuoLab-PhysicalAI-Fundamentals-Spring-2026',
+    learners: 2159,
+    completion: null,
+    rank: null,
+    rankLabel: 'コンペなし'
+  }
+
+];
+
+
+const tableBody =
+  document.getElementById(
+    'tableBody'
+  );
+
+
+const formatNumber =
+  (n) =>
+    new Intl.NumberFormat(
+      'en-US'
+    ).format(n);
+
+
+const rankClass =
+  (rank) => {
+
+    if (rank === 1)
+      return 'rank-1';
+
+    if (rank === 2)
+      return 'rank-2';
+
+    if (rank === 3)
+      return 'rank-3';
+
+    return '';
+
+  };
+
+
+const escapeHtml =
+  (value) =>
+    String(value)
+
+      .replace(
+        /&/g,
+        '&amp;'
+      )
+
+      .replace(
+        /</g,
+        '&lt;'
+      )
+
+      .replace(
+        />/g,
+        '&gt;'
+      )
+
+      .replace(
+        /"/g,
+        '&quot;'
+      )
+
+      .replace(
+        /'/g,
+        '&#39;'
+      );
+
+
+lectures.forEach(
+  item => {
+
+    const tr =
+      document.createElement(
+        'tr'
+      );
+
+
+    const completionRate =
+
+      Number.isFinite(
+        item.completion
+      )
+
+      && item.learners > 0
+
+        ? Math.round(
+            (
+              item.completion
+              /
+              item.learners
+            )
+            *
+            100
+          )
+
+        : null;
+
+
+    const completionHtml =
+
+      completionRate !== null
+
+      ? `
+
+        <div class="count">
+          ${
+            Number.isFinite(
+              item.learners
+            )
+              ? formatNumber(
+                  item.learners
+                )
+              : '-'
+          }
+        <\/div>
+
+        <div class="completion">
+
+          <div class="bar">
+            <span
+              style="width:${completionRate}%;"
+            ></span>
           </div>
-        `
-        : `
-          <div class="count">${Number.isFinite(item.learners) ? formatNumber(item.learners) : '-'}<\/div>
-          <div class="completion"><span>-</span></div>
-        `;
 
-      const rankLabel = item.rankLabel || (Number.isFinite(item.rank) ? `#${item.rank}` : '-');
+          <span>
+            ${
+              formatNumber(
+                item.completion
+              )
+            }人 /
+            ${completionRate}%
+          </span>
 
-      tr.innerHTML = `
-        <td class="no">${item.no}</td>
-        <td class="course-cell">
-          <a class="course-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(item.name)} を開く">
-            <span class="course-main">
-              <span class="course-label">Link</span>
-              <span class="course-text">
-                <span class="course-name">${escapeHtml(item.name)}</span>
-                <span class="course-sub">クリックして講義ページを開く</span>
-              </span>
-            </span>
-            <span class="course-cta">Click</span>
-          </a>
-        </td>
-        <td>${completionHtml}</td>
-        <td><span class="pill ${rankClass(item.rank)}">${escapeHtml(rankLabel)}</span></td>
+        </div>
+
+      `
+
+      : `
+
+        <div class="count">
+          ${
+            Number.isFinite(
+              item.learners
+            )
+              ? formatNumber(
+                  item.learners
+                )
+              : '-'
+          }
+        <\/div>
+
+        <div class="completion">
+          <span>-</span>
+        </div>
+
       `;
-      tableBody.appendChild(tr);
-    });
 
-    document.addEventListener('click', (event) => {
-      const link = event.target.closest('.course-link');
-      if (!link) return;
 
-      const rect = link.getBoundingClientRect();
-      const ripple = document.createElement('span');
-      const size = Math.max(rect.width, rect.height);
-      ripple.className = 'ripple';
-      ripple.style.width = `${size}px`;
-      ripple.style.height = `${size}px`;
-      ripple.style.left = `${event.clientX - rect.left - size / 2}px`;
-      ripple.style.top = `${event.clientY - rect.top - size / 2}px`;
-      link.appendChild(ripple);
-      window.setTimeout(() => ripple.remove(), 550);
-    });
+    const rankLabel =
 
-    const canvas = document.getElementById('bg');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
+      item.rankLabel
 
-    function resize() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      canvas.style.width = window.innerWidth + 'px';
-      canvas.style.height = window.innerHeight + 'px';
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      initParticles();
-    }
+      ||
 
-    function initParticles() {
-      const count = Math.min(70, Math.floor(window.innerWidth / 18));
-      particles = Array.from({ length: count }, () => ({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        r: Math.random() * 2.4 + 0.6,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        a: Math.random() * 0.55 + 0.15
-      }));
-    }
+      (
+        Number.isFinite(
+          item.rank
+        )
 
-    function draw() {
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        ? `#${item.rank}`
 
-      for (const p of particles) {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < -20) p.x = window.innerWidth + 20;
-        if (p.x > window.innerWidth + 20) p.x = -20;
-        if (p.y < -20) p.y = window.innerHeight + 20;
-        if (p.y > window.innerHeight + 20) p.y = -20;
+        : '-'
+      );
+
+
+    tr.innerHTML = `
+
+      <td class="no">
+        ${item.no}
+      </td>
+
+
+      <td class="course-cell">
+
+        <a
+          class="course-link"
+          href="${escapeHtml(item.url)}"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="${escapeHtml(item.name)} を開く"
+        >
+
+          <span class="course-main">
+
+            <span class="course-label">
+              Link
+            </span>
+
+            <span class="course-text">
+
+              <span class="course-name">
+                ${escapeHtml(item.name)}
+              </span>
+
+              <span class="course-sub">
+                クリックして講義ページを開く
+              </span>
+
+            </span>
+
+          </span>
+
+
+          <span class="course-cta">
+            Click
+          </span>
+
+        </a>
+
+      </td>
+
+
+      <td>
+        ${completionHtml}
+      </td>
+
+
+      <td>
+
+        <span
+          class="pill ${rankClass(item.rank)}"
+        >
+          ${escapeHtml(rankLabel)}
+        </span>
+
+      </td>
+
+    `;
+
+
+    tableBody.appendChild(
+      tr
+    );
+
+  }
+);
+
+
+document.addEventListener(
+  'click',
+
+  (event) => {
+
+    const link =
+      event.target.closest(
+        '.course-link'
+      );
+
+    if (!link)
+      return;
+
+
+    const rect =
+      link.getBoundingClientRect();
+
+
+    const ripple =
+      document.createElement(
+        'span'
+      );
+
+
+    const size =
+      Math.max(
+        rect.width,
+        rect.height
+      );
+
+
+    ripple.className =
+      'ripple';
+
+
+    ripple.style.width =
+      `${size}px`;
+
+
+    ripple.style.height =
+      `${size}px`;
+
+
+    ripple.style.left =
+      `${
+        event.clientX
+        -
+        rect.left
+        -
+        size / 2
+      }px`;
+
+
+    ripple.style.top =
+      `${
+        event.clientY
+        -
+        rect.top
+        -
+        size / 2
+      }px`;
+
+
+    link.appendChild(
+      ripple
+    );
+
+
+    window.setTimeout(
+      () =>
+        ripple.remove(),
+      550
+    );
+
+  }
+);
+
+
+const canvas =
+  document.getElementById(
+    'bg'
+  );
+
+
+const ctx =
+  canvas.getContext(
+    '2d'
+  );
+
+
+let particles = [];
+
+
+function resize() {
+
+  const dpr =
+    Math.min(
+      window.devicePixelRatio || 1,
+      2
+    );
+
+
+  canvas.width =
+    window.innerWidth
+    *
+    dpr;
+
+
+  canvas.height =
+    window.innerHeight
+    *
+    dpr;
+
+
+  canvas.style.width =
+    window.innerWidth
+    +
+    'px';
+
+
+  canvas.style.height =
+    window.innerHeight
+    +
+    'px';
+
+
+  ctx.setTransform(
+    dpr,
+    0,
+    0,
+    dpr,
+    0,
+    0
+  );
+
+
+  initParticles();
+
+}
+
+
+function initParticles() {
+
+  const count =
+    Math.min(
+      70,
+      Math.floor(
+        window.innerWidth
+        /
+        18
+      )
+    );
+
+
+  particles =
+    Array.from(
+      {
+        length: count
+      },
+
+      () => ({
+
+        x:
+          Math.random()
+          *
+          window.innerWidth,
+
+        y:
+          Math.random()
+          *
+          window.innerHeight,
+
+        r:
+          Math.random()
+          *
+          2.4
+          +
+          0.6,
+
+        vx:
+          (
+            Math.random()
+            -
+            0.5
+          )
+          *
+          0.4,
+
+        vy:
+          (
+            Math.random()
+            -
+            0.5
+          )
+          *
+          0.4,
+
+        a:
+          Math.random()
+          *
+          0.55
+          +
+          0.15
+
+      })
+    );
+
+}
+
+
+function draw() {
+
+  ctx.clearRect(
+    0,
+    0,
+    window.innerWidth,
+    window.innerHeight
+  );
+
+
+  for (
+    const p
+    of particles
+  ) {
+
+    p.x += p.vx;
+
+    p.y += p.vy;
+
+
+    if (
+      p.x < -20
+    )
+      p.x =
+        window.innerWidth
+        +
+        20;
+
+
+    if (
+      p.x
+      >
+      window.innerWidth
+      +
+      20
+    )
+      p.x =
+        -20;
+
+
+    if (
+      p.y < -20
+    )
+      p.y =
+        window.innerHeight
+        +
+        20;
+
+
+    if (
+      p.y
+      >
+      window.innerHeight
+      +
+      20
+    )
+      p.y =
+        -20;
+
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+      p.x,
+      p.y,
+      p.r,
+      0,
+      Math.PI * 2
+    );
+
+
+    ctx.fillStyle =
+      `rgba(
+        180,
+        225,
+        255,
+        ${p.a}
+      )`;
+
+
+    ctx.fill();
+
+  }
+
+
+  for (
+    let i = 0;
+    i < particles.length;
+    i++
+  ) {
+
+    for (
+      let j = i + 1;
+      j < particles.length;
+      j++
+    ) {
+
+      const a =
+        particles[i];
+
+
+      const b =
+        particles[j];
+
+
+      const dx =
+        a.x
+        -
+        b.x;
+
+
+      const dy =
+        a.y
+        -
+        b.y;
+
+
+      const dist =
+        Math.hypot(
+          dx,
+          dy
+        );
+
+
+      if (
+        dist < 110
+      ) {
 
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(180, 225, 255, ${p.a})`;
-        ctx.fill();
+
+
+        ctx.moveTo(
+          a.x,
+          a.y
+        );
+
+
+        ctx.lineTo(
+          b.x,
+          b.y
+        );
+
+
+        ctx.strokeStyle =
+          `rgba(
+            125,
+            211,
+            252,
+            ${
+              0.12
+              *
+              (
+                1
+                -
+                dist / 110
+              )
+            }
+          )`;
+
+
+        ctx.lineWidth =
+          1;
+
+
+        ctx.stroke();
+
       }
 
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i];
-          const b = particles[j];
-          const dx = a.x - b.x;
-          const dy = a.y - b.y;
-          const dist = Math.hypot(dx, dy);
-          if (dist < 110) {
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(125, 211, 252, ${0.12 * (1 - dist / 110)})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-        }
-      }
-
-      requestAnimationFrame(draw);
     }
 
-    window.addEventListener('resize', resize);
-    resize();
-    draw();
-  </script>
+  }
+
+
+  requestAnimationFrame(
+    draw
+  );
+
+}
+
+
+window.addEventListener(
+  'resize',
+  resize
+);
+
+
+resize();
+
+draw();
+
+</script>
+
 </body>
 </html>
