@@ -1,2117 +1,1075 @@
 <!doctype html>
 <html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0b0f0d">
-<meta name="description" content="AI、モビリティ、デジタルツイン。研究と実装、そして学びの途中経過を置いている Toshiki Demizu / demimomi のサイト。">
-<meta name="keywords" content="出水利樹, Toshiki Demizu, demimomi, AI, mobility, digital twin, human centered, LLM">
-<title>SOL / HUMAN — Toshiki Demizu</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080b0a">
+  <meta name="description" content="AI、モビリティ、ITS、デジタルツイン。研究と実装、学びの途中経過を置いている Toshiki Demizu / demimomi のポートフォリオ。">
+  <meta name="keywords" content="出水利樹, Toshiki Demizu, demimomi, AI, mobility, ITS, digital twin, human centered, LLM, Physical AI">
+  <meta property="og:title" content="SOL / HUMAN — Toshiki Demizu">
+  <meta property="og:description" content="Human-centered intelligence. AI、モビリティ、ITS、デジタルツイン。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://demimomi.github.io/demimomi/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://demimomi.github.io/demimomi/">
+  <link rel="icon" type="image/png" href="https://demimomi.github.io/demimomi/inyou2.png">
+  <title>SOL / HUMAN — Toshiki Demizu</title>
 
-<style>
-:root {
-  color-scheme: dark;
-  --ink: #f1eee5;
-  --muted: rgba(241, 238, 229, .66);
-  --dim: rgba(241, 238, 229, .40);
-  --line: rgba(241, 238, 229, .13);
-  --line-strong: rgba(241, 238, 229, .22);
-  --paper: #0b0f0d;
-  --paper-2: #101612;
-  --gold: #d7bd83;
-  --sage: #9bb49e;
-  --blue: #9cb8c7;
-  --rust: #b8896a;
-  --max: 1180px;
-  --ease: cubic-bezier(.2, .8, .2, 1);
-}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet">
 
-* { box-sizing: border-box; }
-
-html {
-  scroll-behavior: smooth;
-  background: var(--paper);
-}
-
-body {
-  margin: 0;
-  min-height: 100%;
-  overflow-x: hidden;
-  color: var(--ink);
-  background:
-    linear-gradient(rgba(255,255,255,.012), rgba(255,255,255,.012)),
-    radial-gradient(circle at 82% 8%, rgba(215,189,131,.06), transparent 30rem),
-    var(--paper);
-  font-family: Manrope, "Helvetica Neue", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  opacity: .035;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.65'/%3E%3C/svg%3E");
-  mix-blend-mode: soft-light;
-}
-
-a { color: inherit; }
-
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-::selection {
-  color: #10130f;
-  background: var(--gold);
-}
-
-.skip-link {
-  position: fixed;
-  left: 1rem;
-  top: 1rem;
-  z-index: 100;
-  transform: translateY(-180%);
-  padding: .7rem 1rem;
-  color: #10130f;
-  background: var(--gold);
-  border-radius: 999px;
-  transition: transform .2s ease;
-}
-
-.skip-link:focus {
-  transform: translateY(0);
-}
-
-.site-header {
-  position: fixed;
-  inset: 0 0 auto;
-  z-index: 30;
-  border-bottom: 1px solid transparent;
-  transition:
-    background .35s ease,
-    border-color .35s ease,
-    backdrop-filter .35s ease;
-}
-
-.site-header.is-scrolled,
-.site-header.is-open {
-  background: rgba(11, 15, 13, .84);
-  border-color: var(--line);
-  backdrop-filter: blur(14px);
-}
-
-.nav-wrap {
-  width: min(calc(100% - 2rem), var(--max));
-  min-height: 74px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: .8rem;
-  text-decoration: none;
-  font-weight: 700;
-  letter-spacing: .14em;
-}
-
-.brand-mark {
-  width: 27px;
-  aspect-ratio: 1;
-  border: 1px solid rgba(215, 189, 131, .62);
-  border-radius: 50%;
-  position: relative;
-}
-
-.brand-mark::before {
-  content: "";
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: var(--gold);
-}
-
-.brand span:last-child {
-  font-size: .78rem;
-}
-
-.nav-toggle {
-  display: none;
-  appearance: none;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  color: var(--ink);
-  background: rgba(255,255,255,.03);
-  padding: .7rem 1rem;
-  font: inherit;
-  cursor: pointer;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: .15rem;
-}
-
-.nav-links a {
-  padding: .65rem .72rem;
-  border-radius: 999px;
-  color: var(--muted);
-  text-decoration: none;
-  font-size: .8rem;
-  transition: color .2s ease, background .2s ease;
-}
-
-.nav-links a:hover,
-.nav-links a:focus-visible {
-  color: var(--ink);
-  background: rgba(255,255,255,.055);
-  outline: none;
-}
-
-.nav-links .nav-era {
-  border: 1px solid rgba(215, 189, 131, .28);
-  color: var(--gold);
-}
-
-.nav-links .nav-cta {
-  margin-left: .25rem;
-  color: #151713;
-  background: var(--gold);
-  font-weight: 700;
-}
-
-.nav-links .nav-cta:hover,
-.nav-links .nav-cta:focus-visible {
-  color: #151713;
-  background: #e2cc9e;
-}
-
-main {
-  position: relative;
-}
-
-.section {
-  width: min(calc(100% - 2rem), var(--max));
-  margin: auto;
-  padding: 7rem 0;
-}
-
-.hero {
-  min-height: 100svh;
-  display: grid;
-  grid-template-columns: minmax(0, 1.12fr) minmax(260px, .88fr);
-  align-items: center;
-  gap: clamp(2rem, 6vw, 6rem);
-  padding-top: 8.5rem;
-  padding-bottom: 4rem;
-}
-
-.earth-wordmark {
-  width: fit-content;
-  margin: 0 0 1.5rem;
-  display: inline-flex;
-  align-items: center;
-  gap: clamp(.8rem, 1.4vw, 1.1rem);
-  text-decoration: none;
-}
-
-.earth-glyph {
-  position: relative;
-  flex: 0 0 auto;
-  width: clamp(48px, 6vw, 64px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background:
-    radial-gradient(ellipse at 33% 34%, #9eb9a2 0 12%, transparent 13%),
-    radial-gradient(ellipse at 65% 62%, #708d77 0 15%, transparent 16%),
-    radial-gradient(ellipse at 26% 72%, #829d87 0 8%, transparent 9%),
-    radial-gradient(circle at 38% 30%, #9cb8c7 0, #506d7c 52%, #233943 79%, #17262b 100%);
-  border: 1px solid rgba(212,226,231,.45);
-  box-shadow: inset -10px -8px 18px rgba(0,0,0,.28);
-}
-
-.earth-glyph::after {
-  content: "";
-  position: absolute;
-  inset: -12%;
-  border: 1px solid rgba(156,184,199,.26);
-  border-radius: 50%;
-  transform: rotate(66deg) scaleY(.34);
-}
-
-.earth-name {
-  color: var(--ink);
-  font-size: clamp(2.2rem, 5.6vw, 5rem);
-  font-weight: 700;
-  line-height: .9;
-  letter-spacing: -.065em;
-}
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: .65rem;
-  margin: 0 0 1.35rem;
-  color: var(--sage);
-  font-size: .73rem;
-  font-weight: 700;
-  letter-spacing: .17em;
-  text-transform: uppercase;
-}
-
-.eyebrow::before {
-  content: "";
-  width: 28px;
-  height: 1px;
-  background: currentColor;
-}
-
-h1,
-h2,
-h3,
-p {
-  margin-top: 0;
-}
-
-h1 {
-  max-width: 820px;
-  margin-bottom: 1.55rem;
-  font-family: "Noto Serif JP", serif;
-  font-size: clamp(3.05rem, 7.5vw, 7rem);
-  font-weight: 600;
-  line-height: 1.02;
-  letter-spacing: -.055em;
-}
-
-.hero-accent {
-  color: var(--gold);
-}
-
-.hero-lead {
-  max-width: 700px;
-  margin-bottom: 2rem;
-  color: var(--muted);
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
-  line-height: 1.95;
-}
-
-.hero-lead strong {
-  color: var(--ink);
-  font-weight: 600;
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .8rem;
-}
-
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: .7rem;
-  min-height: 48px;
-  padding: .8rem 1.15rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: .88rem;
-  transition:
-    transform .22s var(--ease),
-    border-color .22s ease,
-    background .22s ease;
-}
-
-.button:hover,
-.button:focus-visible {
-  transform: translateY(-2px);
-  outline: none;
-}
-
-.button.primary {
-  color: #141711;
-  border-color: transparent;
-  background: var(--gold);
-}
-
-.button.primary:hover,
-.button.primary:focus-visible {
-  background: #e1cc9e;
-}
-
-.button.secondary {
-  background: rgba(255,255,255,.025);
-}
-
-.button.secondary:hover,
-.button.secondary:focus-visible {
-  border-color: var(--line-strong);
-  background: rgba(255,255,255,.05);
-}
-
-/* =========================================================
-   TOP / SUN
-   既存の太陽に、小さな天体の公転のみ追加
-   ========================================================= */
-
-.hero-orbit {
-  min-height: 430px;
-  position: relative;
-  display: grid;
-  place-items: center;
-}
-
-.solar-core {
-  width: min(64vw, 300px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 37% 32%, #f5e8c4 0 4%, transparent 5%),
-    radial-gradient(
-      circle at 42% 38%,
-      #d9bd85 0 13%,
-      #a98255 36%,
-      #5d4233 67%,
-      rgba(93,66,51,.06) 72%
-    );
-  box-shadow: 0 0 52px rgba(215,189,131,.10);
-  position: relative;
-}
-
-.solar-core::before,
-.solar-core::after {
-  content: "";
-  position: absolute;
-  inset: -18%;
-  border: 1px solid rgba(215,189,131,.15);
-  border-radius: 50%;
-  transform: rotate(-10deg) scaleY(.88);
-}
-
-.solar-core::after {
-  inset: -36%;
-  border-color: rgba(155,180,158,.12);
-  transform: rotate(16deg) scaleY(.82);
-}
-
-/*
-  NEW:
-  既存の小さな点を、太陽の周囲で静かに公転させる。
-*/
-.orbit-dot {
-  position: absolute;
-  inset: -18%;
-  border-radius: 50%;
-  animation: orbit-spin 12s linear infinite;
-}
-
-.orbit-dot::after {
-  content: "";
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  right: -4px;
-  top: 50%;
-  margin-top: -4px;
-  border-radius: 50%;
-  background: var(--sage);
-  box-shadow: 0 0 12px rgba(155,180,158,.42);
-}
-
-@keyframes orbit-spin {
-  to {
-    transform: rotate(360deg);
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Person",
+    "name":"Toshiki Demizu",
+    "alternateName":"demimomi",
+    "url":"https://demimomi.github.io/demimomi/",
+    "sameAs":["https://huggingface.co/demimomi"],
+    "knowsAbout":["Artificial Intelligence","Mobility","ITS","Digital Twin","Large Language Models","Physical AI"]
   }
-}
-
-.hero-note {
-  position: absolute;
-  right: 0;
-  bottom: 6%;
-  max-width: 235px;
-  padding: 1rem 1.05rem;
-  border-left: 1px solid var(--line-strong);
-  color: var(--muted);
-  font-size: .78rem;
-  line-height: 1.75;
-}
-
-.hero-note strong {
-  color: var(--ink);
-  display: block;
-  margin-bottom: .25rem;
-}
-
-.signal-strip {
-  border-block: 1px solid var(--line);
-  background: rgba(255,255,255,.012);
-  overflow: hidden;
-}
-
-.signal-track {
-  width: min(calc(100% - 2rem), var(--max));
-  margin: auto;
-  display: flex;
-  flex-wrap: wrap;
-  gap: .45rem 1.75rem;
-  padding: 1rem 0;
-  color: var(--dim);
-  font-size: .7rem;
-  font-weight: 700;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-}
-
-.signal-track span::before {
-  content: "·";
-  margin-right: .7rem;
-  color: var(--gold);
-}
-
-.section-heading {
-  display: grid;
-  grid-template-columns: .8fr 1.2fr;
-  gap: 2rem;
-  margin-bottom: 3rem;
-  align-items: end;
-}
-
-.section-heading h2 {
-  margin-bottom: 0;
-  font-family: "Noto Serif JP", serif;
-  font-size: clamp(2rem, 4.8vw, 4.3rem);
-  line-height: 1.13;
-  letter-spacing: -.035em;
-}
-
-.section-heading p {
-  max-width: 650px;
-  justify-self: end;
-  margin-bottom: .25rem;
-  color: var(--muted);
-  line-height: 1.9;
-}
-
-/* Learning history: deliberately editorial rather than dashboard-like. */
-
-.learning-shell {
-  display: grid;
-  grid-template-columns: .55fr 1.45fr;
-  gap: clamp(2rem, 6vw, 5rem);
-  padding: clamp(1.5rem, 4vw, 2.8rem) 0;
-  border-top: 1px solid var(--line-strong);
-  border-bottom: 1px solid var(--line-strong);
-}
-
-.learning-summary {
-  align-self: start;
-  position: sticky;
-  top: 110px;
-}
-
-.learning-summary strong {
-  display: block;
-  margin-bottom: .5rem;
-  font-family: "Noto Serif JP", serif;
-  font-size: clamp(2.6rem, 5vw, 5.3rem);
-  font-weight: 500;
-  line-height: 1;
-  color: var(--gold);
-}
-
-.learning-summary span {
-  display: block;
-  color: var(--muted);
-  line-height: 1.8;
-}
-
-.learning-list {
-  border-top: 1px solid var(--line);
-}
-
-.learning-item {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(180px, .85fr);
-  gap: 1.5rem;
-  padding: 1.45rem 0;
-  border-bottom: 1px solid var(--line);
-  text-decoration: none;
-  transition:
-    padding-left .22s ease,
-    border-color .22s ease;
-}
-
-.learning-item:hover,
-.learning-item:focus-visible {
-  padding-left: .55rem;
-  border-color: var(--line-strong);
-  outline: none;
-}
-
-/* =========================================================
-   NEW / Physical AI
-   他の項目より「少しだけ」目立たせる
-   ========================================================= */
-
-.learning-item.is-featured {
-  margin: .35rem 0;
-  padding: 1.45rem 1rem;
-  border: 1px solid rgba(215,189,131,.34);
-  border-radius: 14px;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(215,189,131,.075),
-      rgba(255,255,255,.018)
-    );
-}
-
-.learning-item.is-featured:hover,
-.learning-item.is-featured:focus-visible {
-  padding-left: 1.35rem;
-  border-color: rgba(215,189,131,.58);
-}
-
-.learning-item.is-featured h3 {
-  color: var(--gold);
-}
-
-.learning-badge {
-  display: inline-flex;
-  margin-left: .55rem;
-  padding: .18rem .42rem;
-  border: 1px solid rgba(215,189,131,.34);
-  border-radius: 999px;
-  color: var(--gold);
-  font-size: .6rem;
-  font-weight: 700;
-  letter-spacing: .08em;
-  vertical-align: middle;
-  transform: translateY(-1px);
-}
-
-.learning-item h3 {
-  margin: 0 0 .4rem;
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1.6;
-}
-
-.learning-item small {
-  display: block;
-  color: var(--dim);
-  font-size: .72rem;
-  letter-spacing: .06em;
-}
-
-.learning-facts {
-  display: flex;
-  justify-content: flex-end;
-  gap: .7rem 1.2rem;
-  flex-wrap: wrap;
-  align-content: start;
-  color: var(--muted);
-  font-size: .82rem;
-  line-height: 1.7;
-  text-align: right;
-}
-
-.learning-facts strong {
-  color: var(--ink);
-  font-weight: 600;
-}
-
-.learning-link {
-  display: inline-flex;
-  margin-top: 1.4rem;
-  color: var(--gold);
-  text-decoration: none;
-  font-weight: 700;
-  font-size: .85rem;
-}
-
-.learning-link:hover,
-.learning-link:focus-visible {
-  text-decoration: underline;
-  text-underline-offset: .28em;
-  outline: none;
-}
-
-.principles {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
-
-.principle,
-.project-card,
-.model-card {
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,.018);
-}
-
-.principle {
-  min-height: 270px;
-  padding: 1.6rem;
-  border-radius: 18px;
-  position: relative;
-  overflow: hidden;
-  transition:
-    transform .28s var(--ease),
-    border-color .28s ease,
-    background .28s ease;
-}
-
-.principle:hover {
-  transform: translateY(-3px);
-  border-color: var(--line-strong);
-  background: rgba(255,255,255,.028);
-}
-
-.principle-index {
-  color: var(--gold);
-  font-size: .72rem;
-  letter-spacing: .14em;
-}
-
-.principle h3 {
-  margin: 4rem 0 .8rem;
-  font-size: 1.22rem;
-}
-
-.principle p {
-  margin-bottom: 0;
-  color: var(--muted);
-  font-size: .9rem;
-  line-height: 1.85;
-}
-
-.principle.is-irony {
-  background: #efe8da;
-  color: #1c211d;
-  border-color: transparent;
-}
-
-.principle.is-irony .principle-index {
-  color: #7b6541;
-}
-
-.principle.is-irony p {
-  color: rgba(28,33,29,.72);
-}
-
-.principle.is-irony .aside {
-  display: block;
-  margin-top: .9rem;
-  padding-top: .9rem;
-  border-top: 1px solid rgba(28,33,29,.16);
-  font-size: .78rem;
-  color: rgba(28,33,29,.58);
-}
-
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 1rem;
-}
-
-.project-card {
-  grid-column: span 6;
-  min-height: 310px;
-  padding: 1.5rem;
-  border-radius: 20px;
-  text-decoration: none;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition:
-    transform .28s var(--ease),
-    border-color .28s ease,
-    background .28s ease;
-}
-
-.project-card:nth-child(3) {
-  grid-column: span 7;
-}
-
-.project-card:nth-child(4) {
-  grid-column: span 5;
-}
-
-.project-card:hover,
-.project-card:focus-visible {
-  transform: translateY(-4px);
-  border-color: var(--line-strong);
-  background: rgba(255,255,255,.028);
-  outline: none;
-}
-
-.project-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.project-tag {
-  padding: .4rem .64rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  color: var(--muted);
-  font-size: .66rem;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
-.arrow {
-  font-size: 1.1rem;
-  transition: transform .25s var(--ease);
-}
-
-.project-card:hover .arrow {
-  transform: translate(3px, -3px);
-}
-
-.project-card h3 {
-  margin: 0 0 .7rem;
-  font-size: clamp(1.5rem, 2.8vw, 2.5rem);
-  letter-spacing: -.035em;
-}
-
-.project-card p {
-  max-width: 540px;
-  margin-bottom: 0;
-  color: var(--muted);
-  line-height: 1.75;
-}
-
-.project-mark {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  right: -38px;
-  bottom: -45px;
-  border: 1px solid var(--accent, var(--gold));
-  border-radius: 50%;
-  opacity: .18;
-  transition:
-    transform .4s var(--ease),
-    opacity .4s ease;
-}
-
-.project-card:hover .project-mark {
-  transform: scale(1.18);
-  opacity: .3;
-}
-
-.model-card {
-  display: grid;
-  grid-template-columns: .9fr 1.1fr;
-  gap: 2rem;
-  padding: clamp(1.5rem, 4vw, 3rem);
-  border-radius: 22px;
-  align-items: center;
-}
-
-.model-copy h2 {
-  margin-bottom: 1rem;
-  font-family: "Noto Serif JP", serif;
-  font-size: clamp(2rem, 4vw, 3.8rem);
-  line-height: 1.15;
-  letter-spacing: -.04em;
-}
-
-.model-copy p {
-  color: var(--muted);
-  line-height: 1.85;
-}
-
-.code-shell {
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: #080a09;
-}
-
-.code-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: .8rem 1rem;
-  border-bottom: 1px solid var(--line);
-  color: var(--dim);
-  font: .72rem/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
-}
-
-.code-dots {
-  display: flex;
-  gap: .35rem;
-}
-
-.code-dots span {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.18);
-}
-
-pre {
-  margin: 0;
-  padding: 1.35rem;
-  overflow: auto;
-  color: #d9ddd7;
-  font: .82rem/1.75 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-}
-
-.tok-key { color: var(--blue); }
-.tok-str { color: var(--gold); }
-.tok-fn { color: var(--sage); }
-
-.closing {
-  min-height: 70svh;
-  display: grid;
-  place-items: center;
-  text-align: center;
-}
-
-.closing-inner {
-  max-width: 850px;
-}
-
-.closing h2 {
-  margin-bottom: 1.3rem;
-  font-family: "Noto Serif JP", serif;
-  font-size: clamp(2.4rem, 6vw, 5.8rem);
-  line-height: 1.08;
-  letter-spacing: -.055em;
-}
-
-.closing h2 span {
-  color: var(--gold);
-}
-
-.closing p {
-  max-width: 620px;
-  margin: 0 auto 1.8rem;
-  color: var(--muted);
-  line-height: 1.9;
-}
-
-footer {
-  width: min(calc(100% - 2rem), var(--max));
-  margin: auto;
-  padding: 1.5rem 0 2.2rem;
-  border-top: 1px solid var(--line);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  color: var(--dim);
-  font-size: .75rem;
-}
-
-.status {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-}
-
-.status::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--sage);
-}
-
-.reveal {
-  opacity: 0;
-  transform: translateY(18px);
-  transition:
-    opacity .65s var(--ease),
-    transform .65s var(--ease);
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-@media (max-width: 900px) {
-  .nav-toggle {
-    display: inline-flex;
-  }
-
-  .nav-links {
-    position: absolute;
-    left: 1rem;
-    right: 1rem;
-    top: calc(100% + .5rem);
-    display: grid;
-    gap: .2rem;
-    padding: .65rem;
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    background: rgba(16,22,18,.96);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition:
-      opacity .25s ease,
-      visibility .25s ease,
-      transform .25s ease;
-  }
-
-  .site-header.is-open .nav-links {
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-  }
-
-  .nav-links a {
-    padding: .9rem 1rem;
-  }
-
-  .nav-links .nav-cta {
-    margin-left: 0;
-    text-align: center;
-  }
-
-  .hero {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-copy {
-    z-index: 2;
-  }
-
-  .hero-orbit {
-    min-height: 320px;
-    margin-top: -1rem;
-    opacity: .74;
-  }
-
-  .hero-note {
-    right: 3%;
-    bottom: 0;
-  }
-
-  .section-heading,
-  .model-card,
-  .learning-shell {
-    grid-template-columns: 1fr;
-  }
-
-  .section-heading p {
-    justify-self: start;
-  }
-
-  .learning-summary {
-    position: static;
-  }
-
-  .principles {
-    grid-template-columns: 1fr;
-  }
-
-  .principle {
-    min-height: 220px;
-  }
-
-  .principle h3 {
-    margin-top: 2.4rem;
-  }
-}
-
-@media (max-width: 680px) {
-  .section {
-    padding: 5rem 0;
-  }
-
-  .hero {
-    padding-top: 7rem;
-  }
-
-  .earth-wordmark {
-    margin-bottom: 1.5rem;
-  }
-
-  .hero-actions {
-    align-items: stretch;
-  }
-
-  .hero-actions .button {
-    width: 100%;
-  }
-
-  .hero-orbit {
-    min-height: 285px;
-  }
-
-  .hero-note {
-    display: none;
-  }
-
-  .learning-item {
-    grid-template-columns: 1fr;
-    gap: .7rem;
-  }
-
-  .learning-facts {
-    justify-content: flex-start;
-    text-align: left;
-  }
-
-  .project-card,
-  .project-card:nth-child(3),
-  .project-card:nth-child(4) {
-    grid-column: 1 / -1;
-    min-height: 270px;
-  }
-
-  footer {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: .001ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: .001ms !important;
-  }
-}
-</style>
+  </script>
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --paper: #080b0a;
+      --paper-2: #0d1210;
+      --paper-3: #121914;
+      --ink: #f2efe6;
+      --muted: rgba(242, 239, 230, .68);
+      --dim: rgba(242, 239, 230, .42);
+      --line: rgba(242, 239, 230, .115);
+      --line-strong: rgba(242, 239, 230, .22);
+      --gold: #dfc486;
+      --gold-2: #a97d48;
+      --sage: #9cb9a0;
+      --blue: #93bacd;
+      --rust: #bf8d6a;
+      --max: 1220px;
+      --ease: cubic-bezier(.2, .8, .2, 1);
+      --header-h: 76px;
+      --mx: 50%;
+      --my: 20%;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--paper); }
+    body {
+      margin: 0;
+      min-height: 100%;
+      overflow-x: hidden;
+      color: var(--ink);
+      background:
+        radial-gradient(1100px circle at var(--mx) var(--my), rgba(223,196,134,.06), transparent 58%),
+        radial-gradient(720px circle at 8% 42%, rgba(147,186,205,.035), transparent 62%),
+        linear-gradient(180deg, #080b0a 0%, #0a0f0c 42%, #080b0a 100%);
+      font-family: Manrope, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      opacity: .032;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.72'/%3E%3C/svg%3E");
+      mix-blend-mode: soft-light;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.014) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: linear-gradient(to bottom, transparent 0%, #000 13%, #000 72%, transparent 100%);
+      opacity: .28;
+    }
+
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { font: inherit; }
+    ::selection { color: #11140f; background: var(--gold); }
+
+    .skip-link {
+      position: fixed;
+      left: 1rem;
+      top: 1rem;
+      z-index: 1000;
+      transform: translateY(-180%);
+      padding: .72rem 1rem;
+      color: #10130f;
+      background: var(--gold);
+      border-radius: 999px;
+      transition: transform .2s ease;
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    .scroll-progress {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 90;
+      height: 2px;
+      transform-origin: left center;
+      transform: scaleX(0);
+      background: linear-gradient(90deg, var(--sage), var(--gold), #f1dfb3);
+      box-shadow: 0 0 16px rgba(223,196,134,.28);
+      pointer-events: none;
+    }
+
+    .site-header {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 70;
+      border-bottom: 1px solid transparent;
+      transition: background .35s ease, border-color .35s ease, backdrop-filter .35s ease;
+    }
+    .site-header.is-scrolled,
+    .site-header.is-open {
+      background: rgba(8, 11, 10, .78);
+      border-color: var(--line);
+      backdrop-filter: blur(18px) saturate(120%);
+    }
+
+    .nav-wrap {
+      width: min(calc(100% - 2rem), var(--max));
+      min-height: var(--header-h);
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .82rem;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: .14em;
+    }
+    .brand-mark {
+      width: 28px;
+      aspect-ratio: 1;
+      border: 1px solid rgba(223,196,134,.62);
+      border-radius: 50%;
+      position: relative;
+      box-shadow: inset 0 0 12px rgba(223,196,134,.08);
+    }
+    .brand-mark::before {
+      content: "";
+      position: absolute;
+      width: 6px;
+      aspect-ratio: 1;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 14px rgba(223,196,134,.55);
+    }
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: -5px;
+      border: 1px solid rgba(223,196,134,.18);
+      border-radius: 50%;
+      transform: rotate(30deg) scaleY(.42);
+    }
+    .brand span:last-child { font-size: .76rem; }
+
+    .nav-toggle {
+      display: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--ink);
+      background: rgba(255,255,255,.03);
+      padding: .7rem 1rem;
+      cursor: pointer;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: .08rem; }
+    .nav-links a {
+      padding: .64rem .72rem;
+      border-radius: 999px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .79rem;
+      transition: color .2s ease, background .2s ease, transform .2s ease;
+    }
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: var(--ink);
+      background: rgba(255,255,255,.052);
+      transform: translateY(-1px);
+      outline: none;
+    }
+    .nav-links .nav-era { color: var(--gold); border: 1px solid rgba(223,196,134,.24); }
+
+    main { position: relative; }
+    .section {
+      width: min(calc(100% - 2rem), var(--max));
+      margin: auto;
+      padding: clamp(5.8rem, 10vw, 8.8rem) 0;
+      position: relative;
+    }
+
+    .hero {
+      min-height: 100svh;
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(320px, .88fr);
+      align-items: center;
+      gap: clamp(2rem, 5vw, 5.5rem);
+      padding-top: calc(var(--header-h) + 4rem);
+      padding-bottom: 4.5rem;
+    }
+
+    .hero-copy { position: relative; z-index: 3; }
+    .earth-wordmark {
+      width: fit-content;
+      margin: 0 0 1.6rem;
+      display: inline-flex;
+      align-items: center;
+      gap: clamp(.8rem, 1.4vw, 1.1rem);
+    }
+    .earth-glyph {
+      position: relative;
+      width: clamp(48px, 5.5vw, 66px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(ellipse at 33% 34%, #b0c5ae 0 12%, transparent 13%),
+        radial-gradient(ellipse at 65% 62%, #78927c 0 15%, transparent 16%),
+        radial-gradient(ellipse at 26% 72%, #829d87 0 8%, transparent 9%),
+        radial-gradient(circle at 38% 30%, #a4c2d0 0, #526f7d 52%, #243a43 79%, #152429 100%);
+      border: 1px solid rgba(212,226,231,.45);
+      box-shadow: inset -10px -8px 18px rgba(0,0,0,.32), 0 0 28px rgba(147,186,205,.08);
+    }
+    .earth-glyph::after {
+      content: "";
+      position: absolute;
+      inset: -13%;
+      border: 1px solid rgba(156,184,199,.27);
+      border-radius: 50%;
+      transform: rotate(66deg) scaleY(.34);
+    }
+    .earth-name {
+      font-size: clamp(2.35rem, 5.8vw, 5.1rem);
+      font-weight: 700;
+      line-height: .88;
+      letter-spacing: -.067em;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .68rem;
+      margin: 0 0 1.38rem;
+      color: var(--sage);
+      font-size: .71rem;
+      font-weight: 700;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { content:""; width: 30px; height: 1px; background: currentColor; }
+
+    h1,h2,h3,p { margin-top: 0; }
+    h1 {
+      max-width: 850px;
+      margin-bottom: 1.6rem;
+      font-family: "Noto Serif JP", serif;
+      font-size: clamp(3.2rem, 7.6vw, 7.25rem);
+      font-weight: 600;
+      line-height: 1.01;
+      letter-spacing: -.058em;
+    }
+    .hero-accent {
+      color: var(--gold);
+      text-shadow: 0 0 44px rgba(223,196,134,.08);
+    }
+    .hero-lead {
+      max-width: 720px;
+      margin-bottom: 2rem;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.55vw, 1.18rem);
+      line-height: 1.95;
+    }
+    .hero-lead strong { color: var(--ink); font-weight: 600; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .78rem; }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .7rem;
+      min-height: 49px;
+      padding: .82rem 1.18rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: .87rem;
+      transition: transform .22s var(--ease), border-color .22s ease, background .22s ease, box-shadow .22s ease;
+    }
+    .button:hover,.button:focus-visible { transform: translateY(-2px); outline: none; }
+    .button.primary {
+      color: #141711;
+      border-color: transparent;
+      background: linear-gradient(135deg, #ead6a2, var(--gold));
+      box-shadow: 0 10px 36px rgba(223,196,134,.10);
+    }
+    .button.primary:hover,.button.primary:focus-visible { box-shadow: 0 14px 42px rgba(223,196,134,.17); }
+    .button.secondary { background: rgba(255,255,255,.024); }
+    .button.secondary:hover,.button.secondary:focus-visible { border-color: var(--line-strong); background: rgba(255,255,255,.05); }
+
+    .hero-system {
+      min-height: 500px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      isolation: isolate;
+      perspective: 900px;
+    }
+    .system-halo {
+      position: absolute;
+      width: min(84vw, 500px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(223,196,134,.085), rgba(223,196,134,.018) 46%, transparent 69%);
+      filter: blur(2px);
+      transform: translate3d(calc(var(--px, 0) * -6px), calc(var(--py, 0) * -6px), 0);
+      transition: transform .12s linear;
+    }
+    .solar-core {
+      width: min(54vw, 300px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: translate3d(calc(var(--px, 0) * 8px), calc(var(--py, 0) * 8px), 0);
+      transition: transform .12s linear;
+      background:
+        radial-gradient(circle at 35% 29%, rgba(255,249,220,.95) 0 2%, transparent 3%),
+        radial-gradient(circle at 33% 31%, #f4e2b4 0 7%, #d5ad6a 20%, #98653e 48%, #4d3227 69%, rgba(56,33,27,.05) 75%);
+      box-shadow:
+        0 0 44px rgba(223,196,134,.13),
+        0 0 120px rgba(223,196,134,.055),
+        inset -22px -18px 42px rgba(40,20,16,.22);
+    }
+    .solar-core::before,
+    .solar-core::after {
+      content:"";
+      position:absolute;
+      border-radius:50%;
+      pointer-events:none;
+    }
+    .solar-core::before {
+      inset: -18%;
+      border: 1px solid rgba(223,196,134,.16);
+      transform: rotate(-9deg) scaleY(.87);
+    }
+    .solar-core::after {
+      inset: -40%;
+      border: 1px solid rgba(156,185,160,.12);
+      transform: rotate(14deg) scaleY(.79);
+    }
+
+    .orbit { position:absolute; inset:50%; pointer-events:none; }
+    .orbit.one { width: 118%; aspect-ratio: 1; transform: translate(-50%,-50%) rotate(-9deg) scaleY(.87); animation: orbit-spin 15s linear infinite; }
+    .orbit.two { width: 156%; aspect-ratio: 1; transform: translate(-50%,-50%) rotate(14deg) scaleY(.79); animation: orbit-spin 26s linear infinite reverse; }
+    .orbit.three { width: 198%; aspect-ratio: 1; transform: translate(-50%,-50%) rotate(36deg) scaleY(.62); animation: orbit-spin 38s linear infinite; }
+    .planet {
+      position:absolute;
+      right:-5px;
+      top:50%;
+      translate: 0 -50%;
+      border-radius:50%;
+      box-shadow: 0 0 16px currentColor;
+    }
+    .planet.sage { width:10px; height:10px; background:var(--sage); color:rgba(156,185,160,.55); }
+    .planet.blue { width:7px; height:7px; background:var(--blue); color:rgba(147,186,205,.55); }
+    .planet.gold { width:5px; height:5px; background:var(--gold); color:rgba(223,196,134,.55); }
+    @keyframes orbit-spin { to { rotate: 360deg; } }
+
+    .hero-note {
+      position: absolute;
+      right: -1%;
+      bottom: 3%;
+      max-width: 255px;
+      padding: 1rem 1.05rem 1rem 1.2rem;
+      border-left: 1px solid var(--line-strong);
+      color: var(--muted);
+      font-size: .77rem;
+      line-height: 1.75;
+      backdrop-filter: blur(4px);
+    }
+    .hero-note strong { color: var(--ink); display:block; margin-bottom:.25rem; }
+    .hero-coordinate {
+      position:absolute;
+      left:0;
+      bottom:4%;
+      color:var(--dim);
+      font: .62rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+
+    .signal-strip {
+      border-block: 1px solid var(--line);
+      background: rgba(255,255,255,.01);
+      overflow: hidden;
+    }
+    .signal-window { width: 100%; overflow:hidden; }
+    .signal-track {
+      display:flex;
+      width:max-content;
+      gap: 2.5rem;
+      padding: 1.02rem 0;
+      color: var(--dim);
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      animation: marquee 34s linear infinite;
+    }
+    .signal-group { display:flex; gap:2.5rem; padding-left:2.5rem; }
+    .signal-group span::before { content:"·"; margin-right:.75rem; color:var(--gold); }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    .section-kicker {
+      position: absolute;
+      top: clamp(3rem, 6vw, 4rem);
+      right: 0;
+      color: rgba(242,239,230,.17);
+      font: 700 clamp(3.5rem, 8vw, 7rem)/1 Manrope, sans-serif;
+      letter-spacing: -.06em;
+      pointer-events:none;
+      user-select:none;
+    }
+
+    .section-heading {
+      display: grid;
+      grid-template-columns: .82fr 1.18fr;
+      gap: 2rem;
+      margin-bottom: 3.2rem;
+      align-items: end;
+      position:relative;
+      z-index:2;
+    }
+    .section-heading h2,
+    .model-copy h2,
+    .closing h2 {
+      margin-bottom: 0;
+      font-family: "Noto Serif JP", serif;
+      letter-spacing: -.04em;
+    }
+    .section-heading h2 { font-size: clamp(2.15rem, 4.8vw, 4.45rem); line-height:1.12; }
+    .section-heading > p {
+      max-width: 660px;
+      justify-self: end;
+      margin-bottom:.2rem;
+      color:var(--muted);
+      line-height:1.95;
+    }
+
+    .learning-shell {
+      display:grid;
+      grid-template-columns:.55fr 1.45fr;
+      gap:clamp(2rem,6vw,5rem);
+      padding:clamp(1.8rem,4vw,3rem) 0;
+      border-top:1px solid var(--line-strong);
+      border-bottom:1px solid var(--line-strong);
+    }
+    .learning-summary { align-self:start; position:sticky; top:110px; }
+    .learning-summary strong {
+      display:block;
+      margin-bottom:.6rem;
+      font-family:"Noto Serif JP",serif;
+      font-size:clamp(2.8rem,5vw,5.4rem);
+      font-weight:500;
+      line-height:1;
+      color:var(--gold);
+    }
+    .learning-summary span { display:block; color:var(--muted); line-height:1.85; }
+    .learning-link { display:inline-flex; margin-top:1.5rem; color:var(--gold); text-decoration:none; font-size:.84rem; font-weight:700; }
+    .learning-link:hover,.learning-link:focus-visible { text-decoration:underline; text-underline-offset:.28em; outline:none; }
+
+    .learning-list { border-top:1px solid var(--line); counter-reset: learn; }
+    .learning-item {
+      counter-increment:learn;
+      display:grid;
+      grid-template-columns:minmax(0,1.12fr) minmax(220px,.88fr);
+      gap:1.4rem;
+      padding:1.5rem 0;
+      border-bottom:1px solid var(--line);
+      text-decoration:none;
+      position:relative;
+      transition:padding-left .24s var(--ease), border-color .22s ease, background .22s ease;
+    }
+    .learning-item::before {
+      content: "0" counter(learn);
+      position:absolute;
+      left:-2.7rem;
+      top:1.62rem;
+      color:rgba(242,239,230,.18);
+      font:700 .64rem/1 Manrope,sans-serif;
+      letter-spacing:.08em;
+      opacity:0;
+      transform:translateX(8px);
+      transition:opacity .22s ease, transform .22s ease;
+    }
+    .learning-item:hover,.learning-item:focus-visible { padding-left:.55rem; border-color:var(--line-strong); outline:none; }
+    .learning-item:hover::before,.learning-item:focus-visible::before { opacity:1; transform:none; }
+    .learning-item h3 { margin:0 0 .4rem; font-size:1rem; line-height:1.6; font-weight:600; }
+    .learning-item small { display:block; color:var(--dim); font-size:.7rem; letter-spacing:.075em; }
+    .learning-facts { display:flex; justify-content:flex-end; gap:.65rem 1.1rem; flex-wrap:wrap; align-content:start; color:var(--muted); font-size:.8rem; line-height:1.7; text-align:right; }
+    .learning-facts strong { color:var(--ink); font-weight:600; }
+    .learning-item.is-featured {
+      margin:.45rem 0;
+      padding:1.5rem 1rem;
+      border:1px solid rgba(223,196,134,.32);
+      border-radius:16px;
+      background:linear-gradient(100deg, rgba(223,196,134,.075), rgba(255,255,255,.012));
+      box-shadow: inset 0 1px rgba(255,255,255,.025);
+    }
+    .learning-item.is-featured:hover,.learning-item.is-featured:focus-visible { padding-left:1.35rem; border-color:rgba(223,196,134,.55); }
+    .learning-item.is-featured h3 { color:var(--gold); }
+    .learning-badge { display:inline-flex; margin-left:.55rem; padding:.17rem .43rem; border:1px solid rgba(223,196,134,.34); border-radius:999px; color:var(--gold); font-size:.58rem; font-weight:700; letter-spacing:.1em; vertical-align:middle; transform:translateY(-1px); }
+
+    .principles { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+    .principle {
+      min-height:300px;
+      padding:1.65rem;
+      border:1px solid var(--line);
+      border-radius:20px;
+      position:relative;
+      overflow:hidden;
+      background:linear-gradient(145deg, rgba(255,255,255,.025), rgba(255,255,255,.01));
+      transition:transform .28s var(--ease), border-color .28s ease, background .28s ease;
+    }
+    .principle::after {
+      content:"";
+      position:absolute;
+      width:180px;
+      aspect-ratio:1;
+      right:-80px;
+      top:-85px;
+      border:1px solid rgba(223,196,134,.12);
+      border-radius:50%;
+      transition:transform .5s var(--ease), opacity .5s ease;
+    }
+    .principle:hover { transform:translateY(-4px); border-color:var(--line-strong); background:rgba(255,255,255,.025); }
+    .principle:hover::after { transform:scale(1.18); opacity:.6; }
+    .principle-index { color:var(--gold); font-size:.69rem; letter-spacing:.14em; }
+    .principle h3 { margin:4.6rem 0 .85rem; font-size:1.2rem; }
+    .principle p { margin-bottom:0; color:var(--muted); font-size:.88rem; line-height:1.85; }
+    .principle.is-irony { background:#eee5d5; color:#1b201c; border-color:transparent; }
+    .principle.is-irony .principle-index { color:#77603e; }
+    .principle.is-irony p { color:rgba(27,32,28,.72); }
+    .principle.is-irony::after { border-color:rgba(27,32,28,.14); }
+    .principle .aside { display:block; margin-top:.95rem; padding-top:.95rem; border-top:1px solid rgba(27,32,28,.15); font-size:.76rem; color:rgba(27,32,28,.58); }
+
+    .projects-grid { display:grid; grid-template-columns:repeat(12,1fr); gap:1rem; }
+    .project-card {
+      grid-column:span 6;
+      min-height:340px;
+      padding:1.55rem;
+      border:1px solid var(--line);
+      border-radius:22px;
+      text-decoration:none;
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      background:linear-gradient(150deg, rgba(255,255,255,.023), rgba(255,255,255,.008));
+      isolation:isolate;
+      transition:transform .3s var(--ease), border-color .28s ease, background .28s ease;
+    }
+    .project-card:nth-child(3){ grid-column:span 7; }
+    .project-card:nth-child(4){ grid-column:span 5; }
+    .project-card::before {
+      content:"";
+      position:absolute;
+      inset:auto -16% -46% auto;
+      width:64%;
+      aspect-ratio:1;
+      border-radius:50%;
+      background:radial-gradient(circle, color-mix(in srgb, var(--accent) 20%, transparent), transparent 68%);
+      filter:blur(10px);
+      opacity:.52;
+      z-index:-1;
+      transition:transform .45s var(--ease), opacity .45s ease;
+    }
+    .project-card:hover,.project-card:focus-visible { transform:translateY(-5px); border-color:var(--line-strong); outline:none; }
+    .project-card:hover::before { transform:scale(1.18) translate(-4%,-3%); opacity:.8; }
+    .project-meta { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+    .project-tag { padding:.38rem .64rem; border:1px solid var(--line); border-radius:999px; color:var(--muted); font-size:.64rem; letter-spacing:.08em; text-transform:uppercase; }
+    .arrow { font-size:1.1rem; transition:transform .25s var(--ease); }
+    .project-card:hover .arrow { transform:translate(4px,-4px); }
+    .project-card h3 { margin:0 0 .72rem; font-size:clamp(1.6rem,2.8vw,2.65rem); letter-spacing:-.04em; }
+    .project-card p { max-width:540px; margin:0; color:var(--muted); line-height:1.78; }
+    .project-code { position:absolute; right:1.4rem; top:50%; translate:0 -50%; color:rgba(242,239,230,.055); font:700 clamp(3rem,8vw,6.7rem)/1 ui-monospace, monospace; letter-spacing:-.08em; user-select:none; z-index:-1; }
+
+    .model-card {
+      display:grid;
+      grid-template-columns:.85fr 1.15fr;
+      gap:clamp(2rem,5vw,4.5rem);
+      padding:clamp(1.7rem,4.5vw,3.4rem);
+      border:1px solid var(--line);
+      border-radius:26px;
+      align-items:center;
+      background:
+        radial-gradient(circle at 12% 16%, rgba(156,185,160,.07), transparent 34%),
+        linear-gradient(145deg, rgba(255,255,255,.026), rgba(255,255,255,.008));
+    }
+    .model-copy h2 { font-size:clamp(2.15rem,4.2vw,4rem); line-height:1.13; margin-bottom:1rem; }
+    .model-copy p:not(.eyebrow) { color:var(--muted); line-height:1.88; }
+    .model-actions { display:flex; flex-wrap:wrap; gap:.7rem; margin-top:1.3rem; }
+
+    .code-shell { overflow:hidden; border:1px solid var(--line); border-radius:18px; background:#070908; box-shadow:0 22px 70px rgba(0,0,0,.23); }
+    .code-top { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.82rem 1rem; border-bottom:1px solid var(--line); color:var(--dim); font:.7rem/1.3 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .code-top-right { display:flex; align-items:center; gap:.65rem; }
+    .copy-code { border:0; color:var(--muted); background:transparent; font:inherit; cursor:pointer; padding:.28rem .4rem; border-radius:6px; }
+    .copy-code:hover,.copy-code:focus-visible { color:var(--ink); background:rgba(255,255,255,.05); outline:none; }
+    .code-dots { display:flex; gap:.34rem; }
+    .code-dots span { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.18); }
+    pre { margin:0; padding:1.45rem; overflow:auto; color:#d9ddd7; font:.8rem/1.78 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+    .tok-key{color:var(--blue)} .tok-str{color:var(--gold)} .tok-fn{color:var(--sage)}
+
+    .closing {
+      min-height:78svh;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      overflow:hidden;
+    }
+    .closing::before {
+      content:"";
+      position:absolute;
+      width:min(78vw,760px);
+      aspect-ratio:1;
+      border-radius:50%;
+      border:1px solid rgba(223,196,134,.12);
+      box-shadow:0 0 120px rgba(223,196,134,.045), inset 0 0 100px rgba(223,196,134,.02);
+    }
+    .closing::after {
+      content:"";
+      position:absolute;
+      width:min(62vw,590px);
+      aspect-ratio:1;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(223,196,134,.07), transparent 65%);
+    }
+    .closing-inner { max-width:880px; position:relative; z-index:2; }
+    .closing h2 { margin-bottom:1.4rem; font-size:clamp(2.7rem,6.2vw,6.15rem); line-height:1.07; letter-spacing:-.058em; }
+    .closing h2 span { color:var(--gold); }
+    .closing p:not(.eyebrow) { max-width:630px; margin:0 auto 1.9rem; color:var(--muted); line-height:1.9; }
+
+    footer {
+      width:min(calc(100% - 2rem),var(--max));
+      margin:auto;
+      padding:1.6rem 0 2.3rem;
+      border-top:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      color:var(--dim);
+      font-size:.73rem;
+    }
+    .status { display:inline-flex; align-items:center; gap:.52rem; }
+    .status::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--sage); box-shadow:0 0 10px rgba(156,185,160,.35); }
+
+    .reveal { opacity:0; transform:translateY(22px); transition:opacity .72s var(--ease), transform .72s var(--ease); }
+    .reveal.is-visible { opacity:1; transform:none; }
+    .reveal[data-delay="1"] { transition-delay:.06s; }
+    .reveal[data-delay="2"] { transition-delay:.12s; }
+
+    @media (max-width: 960px) {
+      .nav-toggle { display:inline-flex; }
+      .nav-links {
+        position:absolute;
+        left:1rem;
+        right:1rem;
+        top:calc(100% + .5rem);
+        display:grid;
+        gap:.2rem;
+        padding:.65rem;
+        border:1px solid var(--line);
+        border-radius:18px;
+        background:rgba(13,18,16,.97);
+        box-shadow:0 26px 70px rgba(0,0,0,.28);
+        opacity:0;
+        visibility:hidden;
+        transform:translateY(-10px);
+        transition:opacity .25s ease, visibility .25s ease, transform .25s ease;
+      }
+      .site-header.is-open .nav-links { opacity:1; visibility:visible; transform:none; }
+      .nav-links a { padding:.9rem 1rem; }
+      .hero { grid-template-columns:1fr; gap:1rem; }
+      .hero-system { min-height:390px; margin-top:-1rem; opacity:.88; }
+      .hero-note { right:2%; }
+      .hero-coordinate { display:none; }
+      .section-heading,.learning-shell,.model-card { grid-template-columns:1fr; }
+      .section-heading > p { justify-self:start; }
+      .learning-summary { position:static; }
+      .principles { grid-template-columns:1fr; }
+      .principle { min-height:220px; }
+      .principle h3 { margin-top:2.7rem; }
+    }
+
+    @media (max-width: 700px) {
+      :root { --header-h: 70px; }
+      body::after { background-size:56px 56px; opacity:.17; }
+      .section { width:min(calc(100% - 1.35rem),var(--max)); padding:5.2rem 0; }
+      .hero { padding-top:calc(var(--header-h) + 3rem); min-height:auto; }
+      .earth-name { font-size:clamp(2.3rem,15vw,4.2rem); }
+      h1 { font-size:clamp(3rem,17vw,5.4rem); }
+      .hero-lead br { display:none; }
+      .hero-system { min-height:330px; }
+      .solar-core { width:min(62vw,240px); }
+      .hero-note { right:0; bottom:-1%; max-width:220px; font-size:.72rem; }
+      .signal-track,.signal-group { gap:1.6rem; }
+      .signal-group { padding-left:1.6rem; }
+      .section-heading { margin-bottom:2.4rem; }
+      .section-kicker { font-size:3.2rem; top:2.8rem; }
+      .learning-item { grid-template-columns:1fr; gap:.75rem; }
+      .learning-facts { justify-content:flex-start; text-align:left; }
+      .learning-item.is-featured { padding:1.3rem .9rem; }
+      .learning-item.is-featured:hover,.learning-item.is-featured:focus-visible { padding-left:1.1rem; }
+      .projects-grid { grid-template-columns:1fr; }
+      .project-card,.project-card:nth-child(3),.project-card:nth-child(4) { grid-column:auto; min-height:290px; }
+      .model-card { padding:1.25rem; border-radius:20px; }
+      pre { font-size:.73rem; padding:1.15rem; }
+      .closing { min-height:68svh; }
+      .closing::before { width:105vw; }
+      footer { align-items:flex-start; flex-direction:column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior:auto; }
+      *,*::before,*::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; transition-duration:.001ms !important; }
+      .signal-track { transform:none !important; }
+    }
+  </style>
 </head>
-
-<!-- favicon -->
-<link
-  rel="icon"
-  type="image/png"
-  href="https://demimomi.github.io/demimomi/inyou2.png"
->
-
 <body>
-<a class="skip-link" href="#main">本文へ移動</a>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <a class="skip-link" href="#main">本文へ移動</a>
 
-<header class="site-header" id="siteHeader">
-  <div class="nav-wrap">
-
-    <a
-      class="brand"
-      href="#top"
-      aria-label="SOL HUMAN トップへ"
-    >
-      <span class="brand-mark" aria-hidden="true"></span>
-      <span>SOL / HUMAN</span>
-    </a>
-
-    <button
-      class="nav-toggle"
-      id="navToggle"
-      type="button"
-      aria-expanded="false"
-      aria-controls="navLinks"
-    >
-      Menu
-    </button>
-
-    <nav
-      class="nav-links"
-      id="navLinks"
-      aria-label="主要ナビゲーション"
-    >
-      <a href="#learning">Learning</a>
-      <a href="#philosophy">Philosophy</a>
-      <a href="#projects">Projects</a>
-      <a href="#model">Model</a>
-
-      <a
-        class="nav-era"
-        href="https://demimomi.github.io/demimomi/heisei_ver"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        平成ジャンプ ↗
+  <header class="site-header" id="siteHeader">
+    <div class="nav-wrap">
+      <a class="brand" href="#top" aria-label="SOL HUMAN トップへ">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>SOL / HUMAN</span>
       </a>
 
-      <a
-        href="https://demimomi.github.io/demimomi/patent.html"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Patent
-      </a>
-
-      <a
-        href="https://demimomi.github.io/demimomi/moon.html"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Moon↗
-      </a>
-    </nav>
-
-  </div>
-</header>
-
-<main id="main">
-
-  <!-- ======================================================
-       HERO
-       ====================================================== -->
-
-  <section
-    class="section hero"
-    id="top"
-    aria-labelledby="hero-title"
-  >
-
-    <div class="hero-copy reveal">
-
-      <div
-        class="earth-wordmark"
-        aria-label="demimomi — Earth, intelligence and human"
-      >
-        <span
-          class="earth-glyph"
-          aria-hidden="true"
-        ></span>
-
-        <span class="earth-name">demimomi</span>
-      </div>
-
-      <p class="eyebrow">
-        Human-centered intelligence
-      </p>
-
-      <h1 id="hero-title">
-        AIは、<br>
-        <span class="hero-accent">阿迦奢。</span>
-      </h1>
-
-      <p class="hero-lead">
-        AI、モビリティ、ITS、デジタルツイン。<br>
-        モデルを作ったり、微睡んだり、徘徊したり、泥酔したり。<br><br>
-        サラリーマンに擬態しながら、<strong>世界と同期。</strong>
-      </p>
-
-      <div class="hero-actions">
-
-        <a
-          class="button primary"
-          href="#projects"
-        >
-          プロジェクトを見る
-          <span aria-hidden="true">↓</span>
-        </a>
-
-        <a
-          class="button secondary"
-          href="https://huggingface.co/demimomi"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Research Profile ↗
-        </a>
-
-      </div>
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks">Menu</button>
+      <nav class="nav-links" id="navLinks" aria-label="主要ナビゲーション">
+        <a href="#learning">Learning</a>
+        <a href="#philosophy">Philosophy</a>
+        <a href="#projects">Projects</a>
+        <a href="#model">Model</a>
+        <a class="nav-era" href="https://demimomi.github.io/demimomi/heisei_ver" target="_blank" rel="noopener noreferrer">平成ジャンプ ↗</a>
+        <a href="https://demimomi.github.io/demimomi/patent.html" target="_blank" rel="noopener noreferrer">Patent</a>
+        <a href="https://demimomi.github.io/demimomi/moon.html" target="_blank" rel="noopener noreferrer">Moon ↗</a>
+      </nav>
     </div>
-
-    <div
-      class="hero-orbit reveal"
-      aria-hidden="true"
-    >
-
-      <div class="solar-core">
-        <span class="orbit-dot"></span>
-      </div>
-
-      <div class="hero-note">
-        <strong>SOL = Source of Life</strong>
-        太陽っぽいけど、卵黄でもあるというフラクタルWorld。
-      </div>
-
-    </div>
-
-  </section>
-
-  <div
-    class="signal-strip"
-    aria-hidden="true"
-  >
-    <div class="signal-track">
-      <span>AI Research</span>
-      <span>Human Mobility</span>
-      <span>Digital Twin</span>
-      <span>Safety by Design</span>
-      <span>Open Intelligence</span>
-    </div>
-  </div>
-
-  <!-- ======================================================
-       LEARNING
-       ====================================================== -->
-
-  <section
-    class="section"
-    id="learning"
-    aria-labelledby="learning-title"
-  >
-
-    <div class="section-heading reveal">
-
-      <div>
-        <p class="eyebrow">
-          Learning in public
-        </p>
-
-        <h2 id="learning-title">
-          学びは、<br>
-          記憶と記録。
-        </h2>
-      </div>
-
-      <p>
-        記憶と記録をアップロードしてダウンロードする媒体としての活動
-      </p>
-
-    </div>
-
-    <div class="learning-shell reveal">
-
-      <div class="learning-summary">
-
-        <strong>2024—26</strong>
-
-        
-        <span>9 courses</span>
-        <span>Completed 6 / In progress 3</span>
-
-        <a
-          class="learning-link"
-          href="./llm.html"
-        >
-          全履歴を見る →
-        </a>
-
-      </div>
-
-      <div
-        class="learning-list"
-        aria-label="講義履歴抜粋"
-      >
-
-        <a
-          class="learning-item"
-          href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-
-          <div>
-            <h3>
-              大規模言語モデル 応用編 2024
-            </h3>
-
-            <small>
-              LLM APPLIED / 2024
-            </small>
-          </div>
-
-          <div class="learning-facts">
-            <span>
-              <strong>4,000</strong> participants
-            </span>
-
-            <span>
-              <strong>1,200</strong> completed
-            </span>
-
-            <span>
-              Competition <strong>47th</strong>
-            </span>
-          </div>
-
-        </a>
-
-        <a
-          class="learning-item"
-          href="https://huggingface.co/demimomi/u-tokyo-sbintuitions-sarashina2.2-0.5b"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-
-          <div>
-            <h3>
-              大規模言語モデル 基礎編 2025
-            </h3>
-
-            <small>
-              LLM FUNDAMENTALS / 2025
-            </small>
-          </div>
-
-          <div class="learning-facts">
-
-            <span>
-              <strong>4,000</strong> participants
-            </span>
-
-            <span>
-              <strong>1,876</strong> completed
-            </span>
-
-          </div>
-
-        </a>
-
-        <a
-          class="learning-item"
-          href="https://demimomi.github.io/demimomi/cat.html"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-
-          <div>
-            <h3>
-              実践 Bridge編 2025
-            </h3>
-
-            <small>
-              PRACTICAL BRIDGE / 2025
-            </small>
-          </div>
-
-          <div class="learning-facts">
-
-            <span>
-              <strong>900</strong> participants
-            </span>
-
-            <span>
-              Hands-on
-            </span>
-
-          </div>
-
-        </a>
-
-        <a
-          class="learning-item"
-          href="https://huggingface.co/demimomi/44taomax-qwen3-4b-structured-output-lora"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-
-          <div>
-            <h3>
-              大規模言語モデル 応用編 2025
-            </h3>
-
-            <small>
-              LLM APPLIED / 2025
-            </small>
-          </div>
-
-          <div class="learning-facts">
-
-            <span>
-              <strong>3,800</strong> participants
-            </span>
-
-            <span>
-              <strong>1,046</strong> completed
-            </span>
-
-            <span>
-              Competition <strong>627th</strong>
-            </span>
-
-          </div>
-
-        </a>
-
-        <a
-          class="learning-item"
-          href="https://demimomi.github.io/demimomi/deep_learning.html"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-
-          <div>
-            <h3>
-              Deep Learning 基礎編 2026
-            </h3>
-
-            <small>
-              DEEP LEARNING / 2026
-            </small>
-          </div>
-
-          <div class="learning-facts">
-
-            <span>
-              <strong>2,281</strong> participants
-            </span>
-
-            <span>
-              Competition <strong>7th</strong> *
-            </span>
-
-          </div>
-
-        </a>
-
-        <!-- ==================================================
-             NEW / Physical AI
-             ================================================== -->
-
-        <a
-          class="learning-item is-featured"
-          href="https://huggingface.co/demimomi/UTokyo-MatsuoLab-PhysicalAI-Fundamentals-Spring-2026"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-
-          <div>
-
-            <h3>
-              Physical AI 基礎編 2026
-              <span class="learning-badge">
-                NEW
-              </span>
-            </h3>
-
-            <small>
-              PHYSICAL AI FUNDAMENTALS / 2026
-            </small>
-
-          </div>
-
-          <div class="learning-facts">
-
-            <span>
-              <strong>SmolVLA</strong>
-            </span>
-
-            <span>
-              VLA / Robotics
-            </span>
-
-            <span>
-              LIBERO-Spatial
-            </span>
-
-          </div>
-
-        </a>
-
-      </div>
-    </div>
-
-  </section>
-
-  <!-- ======================================================
-       PHILOSOPHY
-       ====================================================== -->
-
-  <section
-    class="section"
-    id="philosophy"
-    aria-labelledby="philosophy-title"
-  >
-
-    <div class="section-heading reveal">
-
-      <div>
-
-        <p class="eyebrow">
-          Design principles
-        </p>
-
-        <h2 id="philosophy-title">
-          Tera-scale.<br>
-          Human-close.
-        </h2>
-
-      </div>
-
-      <p>
-        大規模モデルや都市規模のシステムであっても、価値が生まれる場所は人の判断と行動。
-        「理解できる」「信頼できる」「参加したくなる」を、すべての設計の起点。
-      </p>
-
-    </div>
-
-    <div class="principles">
-
-      <article class="principle reveal">
-
-        <span class="principle-index">
-          01 / CLARITY
-        </span>
-
-        <h3>
-          複雑さを、明快さへ
-        </h3>
-
-        <p>
-          専門性を損なわず、初見でも価値が伝わる情報設計。
-          技術の凄さより、変化の意味を前面に。
-        </p>
-
-      </article>
-
-      <article class="principle reveal">
-
-        <span class="principle-index">
-          02 / TRUST
-        </span>
-
-        <h3>
-          驚きより、信頼を残す
-        </h3>
-
-        <p>
-          過剰な刺激ではなく、静かな動き、余白、実績への導線によって、
-          長く効く印象をつくる。
-        </p>
-
-      </article>
-
-      <article class="principle is-irony reveal">
-
-        <span class="principle-index">
-          03 / REALITY CHECK
-        </span>
-
-        <h3>
-          胡蝶の夢から、HelloWorld！
-        </h3>
-
-        <p>
-          「夢と現実の境界が曖昧な意識状態」から、
-          「Hello World」が表す
-          「新たなデジタル世界での自己の存在証明・始動」
-          への意識の変遷。
-        </p>
-
-        <span class="aside">
-          ※ 現世と虚無のあいだからのWow信号
-        </span>
-
-      </article>
-
-    </div>
-
-  </section>
-
-  <!-- ======================================================
-       PROJECTS
-       ====================================================== -->
-
-  <section
-    class="section"
-    id="projects"
-    aria-labelledby="projects-title"
-  >
-
-    <div class="section-heading reveal">
-
-      <div>
-
-        <p class="eyebrow">
-          Selected work
-        </p>
-
-        <h2 id="projects-title">
-          Ideas in motion.
-        </h2>
-
-      </div>
-
-      <p>
-        研究、社会実装、オープンソースを、
-        ひとつのストーリーとして見せるプロジェクト群。
-      </p>
-
-    </div>
-
-    <div class="projects-grid">
-
-      <a
-        class="project-card reveal"
-        href="https://demimomi.github.io/demimomi/deep_learning.html"
-        target="_blank"
-        rel="noopener noreferrer"
-        style="--accent:#9bb49e"
-      >
-
-        <div class="project-meta">
-
-          <span class="project-tag">
-            Deep Learning
-          </span>
-
-          <span
-            class="arrow"
-            aria-hidden="true"
-          >
-            ↗
-          </span>
-
+  </header>
+
+  <main id="main">
+    <section class="section hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-copy reveal">
+        <div class="earth-wordmark" aria-label="demimomi — Earth, intelligence and human">
+          <span class="earth-glyph" aria-hidden="true"></span>
+          <span class="earth-name">demimomi</span>
         </div>
 
+        <p class="eyebrow">Human-centered intelligence</p>
+        <h1 id="hero-title">AIは、<br><span class="hero-accent">阿迦奢。</span></h1>
+        <p class="hero-lead">
+          AI、モビリティ、ITS、デジタルツイン。<br>
+          モデルを作ったり、微睡んだり、徘徊したり、泥酔したり。<br><br>
+          サラリーマンに擬態しながら、<strong>世界と同期。</strong>
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="#projects">プロジェクトを見る <span aria-hidden="true">↓</span></a>
+          <a class="button secondary" href="https://huggingface.co/demimomi" target="_blank" rel="noopener noreferrer">Research Profile ↗</a>
+        </div>
+      </div>
+
+      <div class="hero-system reveal" data-delay="1" id="heroSystem" aria-hidden="true">
+        <div class="system-halo"></div>
+        <div class="solar-core">
+          <span class="orbit one"><i class="planet sage"></i></span>
+          <span class="orbit two"><i class="planet blue"></i></span>
+          <span class="orbit three"><i class="planet gold"></i></span>
+        </div>
+        <div class="hero-note"><strong>SOL = Source of Life</strong>太陽っぽいけど、卵黄でもあるというフラクタルWorld。</div>
+        <div class="hero-coordinate">TOKYO / EARTH / HUMAN</div>
+      </div>
+    </section>
+
+    <div class="signal-strip" aria-hidden="true">
+      <div class="signal-window">
+        <div class="signal-track">
+          <div class="signal-group">
+            <span>AI Research</span><span>Human Mobility</span><span>Digital Twin</span><span>Safety by Design</span><span>Open Intelligence</span><span>Physical AI</span>
+          </div>
+          <div class="signal-group">
+            <span>AI Research</span><span>Human Mobility</span><span>Digital Twin</span><span>Safety by Design</span><span>Open Intelligence</span><span>Physical AI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="section" id="learning" aria-labelledby="learning-title">
+      <span class="section-kicker" aria-hidden="true">01</span>
+      <div class="section-heading reveal">
         <div>
-
-          <h3>
-            Deep Learning Lab
-          </h3>
-
-          <p>
-            学習・実験・発見をつなぐ、
-            実践的なAI研究の入り口。
-          </p>
-
+          <p class="eyebrow">Learning in public</p>
+          <h2 id="learning-title">学びは、<br>記憶と記録。</h2>
         </div>
-
-        <span
-          class="project-mark"
-          aria-hidden="true"
-        ></span>
-
-      </a>
-
-      <a
-        class="project-card reveal"
-        href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex"
-        target="_blank"
-        rel="noopener noreferrer"
-        style="--accent:#9cb8c7"
-      >
-
-        <div class="project-meta">
-
-          <span class="project-tag">
-            LLM 2024
-          </span>
-
-          <span
-            class="arrow"
-            aria-hidden="true"
-          >
-            ↗
-          </span>
-
-        </div>
-
-        <div>
-
-          <h3>
-            Japanese LLM
-          </h3>
-
-          <p>
-            日本語の文脈に向き合う、
-            13Bモデルのファインチューニング実践。
-          </p>
-
-        </div>
-
-        <span
-          class="project-mark"
-          aria-hidden="true"
-        ></span>
-
-      </a>
-
-      <a
-        class="project-card reveal"
-        href="https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453"
-        target="_blank"
-        rel="noopener noreferrer"
-        style="--accent:#d7bd83"
-      >
-
-        <div class="project-meta">
-
-          <span class="project-tag">
-            Mobility Research
-          </span>
-
-          <span
-            class="arrow"
-            aria-hidden="true"
-          >
-            ↗
-          </span>
-
-        </div>
-
-        <div>
-
-          <h3>
-            TokyoBus Project
-          </h3>
-
-          <p>
-            都市交通と衛星を繋ぐProject（東京都交通局）。
-          </p>
-
-        </div>
-
-        <span
-          class="project-mark"
-          aria-hidden="true"
-        ></span>
-
-      </a>
-
-      <a
-        class="project-card reveal"
-        href="https://www.softbank.jp/sbnews/entry/20240304_02"
-        target="_blank"
-        rel="noopener noreferrer"
-        style="--accent:#b8896a"
-      >
-
-        <div class="project-meta">
-
-          <span class="project-tag">
-            Social Implementation
-          </span>
-
-          <span
-            class="arrow"
-            aria-hidden="true"
-          >
-            ↗
-          </span>
-
-        </div>
-
-        <div>
-
-          <h3>
-            CatBus
-          </h3>
-
-          <p>
-            未来のモビリティを、
-            親しみやすく社会へ届ける。
-          </p>
-
-        </div>
-
-        <span
-          class="project-mark"
-          aria-hidden="true"
-        ></span>
-
-      </a>
-
-    </div>
-
-  </section>
-
-  <!-- ======================================================
-       MODEL
-       ====================================================== -->
-
-  <section
-    class="section"
-    id="model"
-    aria-labelledby="model-title"
-  >
-
-    <div class="model-card reveal">
-
-      <div class="model-copy">
-
-        <p class="eyebrow">
-          Open model
-        </p>
-
-        <h2 id="model-title">
-          Intelligence,<br>
-          ready to explore.
-        </h2>
-
-        <p>
-          モデルは展示物ではなく、触れて確かめるためのもの。
-          最短のコードで研究成果への入口を開きます。
-        </p>
-
-        <a
-          class="button secondary"
-          href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View on Hugging Face ↗
-        </a>
-
+        <p>記憶と記録をアップロードしてダウンロードする媒体としての活動。学びを履歴ではなく、次の探索へつながる軌道として残す。</p>
       </div>
 
-      <div
-        class="code-shell"
-        aria-label="Pythonコード例"
-      >
-
-        <div class="code-top">
-
-          <span>
-            quickstart.py
-          </span>
-
-          <span
-            class="code-dots"
-            aria-hidden="true"
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-
+      <div class="learning-shell reveal">
+        <div class="learning-summary">
+          <strong>2024—26</strong>
+          <span>9 courses</span>
+          <span>Completed 6 / In progress 3</span>
+          <a class="learning-link" href="./llm.html">全履歴を見る →</a>
         </div>
 
-        <pre><code><span class="tok-key">from</span> transformers <span class="tok-key">import</span> AutoModel
+        <div class="learning-list" aria-label="講義履歴抜粋">
+          <a class="learning-item" href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank" rel="noopener noreferrer">
+            <div><h3>大規模言語モデル 応用編 2024</h3><small>LLM APPLIED / 2024</small></div>
+            <div class="learning-facts"><span><strong>4,000</strong> participants</span><span><strong>1,200</strong> completed</span><span>Competition <strong>47th</strong></span></div>
+          </a>
+          <a class="learning-item" href="https://huggingface.co/demimomi/u-tokyo-sbintuitions-sarashina2.2-0.5b" target="_blank" rel="noopener noreferrer">
+            <div><h3>大規模言語モデル 基礎編 2025</h3><small>LLM FUNDAMENTALS / 2025</small></div>
+            <div class="learning-facts"><span><strong>4,000</strong> participants</span><span><strong>1,876</strong> completed</span></div>
+          </a>
+          <a class="learning-item" href="https://demimomi.github.io/demimomi/cat.html" target="_blank" rel="noopener noreferrer">
+            <div><h3>実践 Bridge編 2025</h3><small>PRACTICAL BRIDGE / 2025</small></div>
+            <div class="learning-facts"><span><strong>900</strong> participants</span><span>Hands-on</span></div>
+          </a>
+          <a class="learning-item" href="https://huggingface.co/demimomi/44taomax-qwen3-4b-structured-output-lora" target="_blank" rel="noopener noreferrer">
+            <div><h3>大規模言語モデル 応用編 2025</h3><small>LLM APPLIED / 2025</small></div>
+            <div class="learning-facts"><span><strong>3,800</strong> participants</span><span><strong>1,046</strong> completed</span><span>Competition <strong>627th</strong></span></div>
+          </a>
+          <a class="learning-item" href="https://demimomi.github.io/demimomi/deep_learning.html" target="_blank" rel="noopener noreferrer">
+            <div><h3>Deep Learning 基礎編 2026</h3><small>DEEP LEARNING / 2026</small></div>
+            <div class="learning-facts"><span><strong>2,281</strong> participants</span><span>Competition <strong>7th</strong> *</span></div>
+          </a>
+          <a class="learning-item is-featured" href="https://huggingface.co/demimomi/UTokyo-MatsuoLab-PhysicalAI-Fundamentals-Spring-2026" target="_blank" rel="noopener noreferrer">
+            <div><h3>Physical AI 基礎編 2026 <span class="learning-badge">NOW</span></h3><small>PHYSICAL AI FUNDAMENTALS / 2026</small></div>
+            <div class="learning-facts"><span><strong>SmolVLA</strong></span><span>VLA / Robotics</span><span>LIBERO-Spatial</span></div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="philosophy" aria-labelledby="philosophy-title">
+      <span class="section-kicker" aria-hidden="true">02</span>
+      <div class="section-heading reveal">
+        <div>
+          <p class="eyebrow">Design principles</p>
+          <h2 id="philosophy-title">Tera-scale.<br>Human-close.</h2>
+        </div>
+        <p>大規模モデルや都市規模のシステムであっても、価値が生まれる場所は人の判断と行動。「理解できる」「信頼できる」「参加したくなる」を、すべての設計の起点。</p>
+      </div>
+
+      <div class="principles">
+        <article class="principle reveal">
+          <span class="principle-index">01 / CLARITY</span>
+          <h3>複雑さを、明快さへ</h3>
+          <p>専門性を損なわず、初見でも価値が伝わる情報設計。技術の凄さより、変化の意味を前面に。</p>
+        </article>
+        <article class="principle reveal" data-delay="1">
+          <span class="principle-index">02 / TRUST</span>
+          <h3>驚きより、信頼を残す</h3>
+          <p>過剰な刺激ではなく、静かな動き、余白、実績への導線によって、長く効く印象をつくる。</p>
+        </article>
+        <article class="principle is-irony reveal" data-delay="2">
+          <span class="principle-index">03 / REALITY CHECK</span>
+          <h3>胡蝶の夢から、HelloWorld！</h3>
+          <p>「夢と現実の境界が曖昧な意識状態」から、「Hello World」が表す「新たなデジタル世界での自己の存在証明・始動」への意識の変遷。</p>
+          <span class="aside">※ 現世と虚無のあいだからのWow信号</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="projects" aria-labelledby="projects-title">
+      <span class="section-kicker" aria-hidden="true">03</span>
+      <div class="section-heading reveal">
+        <div>
+          <p class="eyebrow">Selected work</p>
+          <h2 id="projects-title">Ideas in motion.</h2>
+        </div>
+        <p>研究、社会実装、オープンソースを、ひとつのストーリーとして見せるプロジェクト群。静止画ではなく、動いている途中を置く。</p>
+      </div>
+
+      <div class="projects-grid">
+        <a class="project-card reveal" href="https://demimomi.github.io/demimomi/deep_learning.html" target="_blank" rel="noopener noreferrer" style="--accent:#9cb9a0">
+          <div class="project-meta"><span class="project-tag">Deep Learning</span><span class="arrow" aria-hidden="true">↗</span></div>
+          <div><h3>Deep Learning Lab</h3><p>学習・実験・発見をつなぐ、実践的なAI研究の入り口。</p></div>
+          <span class="project-code" aria-hidden="true">DL</span>
+        </a>
+        <a class="project-card reveal" data-delay="1" href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank" rel="noopener noreferrer" style="--accent:#93bacd">
+          <div class="project-meta"><span class="project-tag">LLM 2024</span><span class="arrow" aria-hidden="true">↗</span></div>
+          <div><h3>Japanese LLM</h3><p>日本語の文脈に向き合う、13Bモデルのファインチューニング実践。</p></div>
+          <span class="project-code" aria-hidden="true">13B</span>
+        </a>
+        <a class="project-card reveal" href="https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453" target="_blank" rel="noopener noreferrer" style="--accent:#dfc486">
+          <div class="project-meta"><span class="project-tag">Mobility Research</span><span class="arrow" aria-hidden="true">↗</span></div>
+          <div><h3>TokyoBus Project</h3><p>都市交通と衛星を繋ぐProject（東京都交通局）。モビリティを都市という大きな系として捉える。</p></div>
+          <span class="project-code" aria-hidden="true">ITS</span>
+        </a>
+        <a class="project-card reveal" data-delay="1" href="https://www.softbank.jp/sbnews/entry/20240304_02" target="_blank" rel="noopener noreferrer" style="--accent:#bf8d6a">
+          <div class="project-meta"><span class="project-tag">Social Implementation</span><span class="arrow" aria-hidden="true">↗</span></div>
+          <div><h3>CatBus</h3><p>未来のモビリティを、親しみやすく社会へ届ける。</p></div>
+          <span class="project-code" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" id="model" aria-labelledby="model-title">
+      <span class="section-kicker" aria-hidden="true">04</span>
+      <div class="model-card reveal">
+        <div class="model-copy">
+          <p class="eyebrow">Open model</p>
+          <h2 id="model-title">Intelligence,<br>ready to explore.</h2>
+          <p>モデルは展示物ではなく、触れて確かめるためのもの。最短のコードで研究成果への入口を開きます。</p>
+          <div class="model-actions">
+            <a class="button secondary" href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" target="_blank" rel="noopener noreferrer">View on Hugging Face ↗</a>
+          </div>
+        </div>
+
+        <div class="code-shell" aria-label="Pythonコード例">
+          <div class="code-top">
+            <span>quickstart.py</span>
+            <div class="code-top-right">
+              <button class="copy-code" type="button" id="copyCode" aria-label="コードをコピー">Copy</button>
+              <span class="code-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+            </div>
+          </div>
+          <pre><code id="codeSample"><span class="tok-key">from</span> transformers <span class="tok-key">import</span> AutoModel
 
 model = AutoModel.<span class="tok-fn">from_pretrained</span>(
   <span class="tok-str">"demimomi/llm-jp-3-13b-finetune-ex"</span>
 )</code></pre>
-
+        </div>
       </div>
+    </section>
 
-    </div>
+    <section class="section closing" aria-labelledby="closing-title">
+      <div class="closing-inner reveal">
+        <p class="eyebrow">Toward a brighter system</p>
+        <h2 id="closing-title">未来は、<br><span>人を中心に回る。</span></h2>
+        <p>ヒト関数による波動と観測を繰り返すProject。技術を中心に置くのではなく、人が理解し、判断し、参加できる系へ。</p>
+        <a class="button primary" href="https://demimomi.github.io/demimomi/patent.html" target="_blank" rel="noopener noreferrer">Explore the work ↗</a>
+      </div>
+    </section>
+  </main>
 
-  </section>
+  <footer>
+    <span>© <span id="year"></span> Toshiki Demizu / demimomi</span>
+    <span class="status">Still edited by a human.</span>
+  </footer>
 
-  <!-- ======================================================
-       CLOSING
-       ====================================================== -->
+  <script>
+  (() => {
+    "use strict";
 
-  <section
-    class="section closing"
-    aria-labelledby="closing-title"
-  >
+    const header = document.getElementById("siteHeader");
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("navLinks");
+    const progress = document.getElementById("scrollProgress");
+    const heroSystem = document.getElementById("heroSystem");
+    const copyButton = document.getElementById("copyCode");
+    const codeSample = document.getElementById("codeSample");
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    <div class="closing-inner reveal">
+    document.getElementById("year").textContent = String(new Date().getFullYear());
 
-      <p class="eyebrow">
-        Toward a brighter system
-      </p>
+    const setMenu = (open) => {
+      header.classList.toggle("is-open", open);
+      navToggle.setAttribute("aria-expanded", String(open));
+    };
 
-      <h2 id="closing-title">
-        未来は、<br>
-        <span>人を中心に回る。</span>
-      </h2>
+    navToggle.addEventListener("click", () => setMenu(!header.classList.contains("is-open")));
+    navLinks.addEventListener("click", (event) => {
+      if (event.target.closest("a")) setMenu(false);
+    });
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setMenu(false);
+    });
 
-      <p>
-        ヒト関数による波動と観測を繰り返すProject。
-      </p>
+    const updateScroll = () => {
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const ratio = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+      header.classList.toggle("is-scrolled", window.scrollY > 12);
+      progress.style.transform = `scaleX(${ratio})`;
+    };
+    updateScroll();
+    window.addEventListener("scroll", updateScroll, { passive: true });
+    window.addEventListener("resize", updateScroll, { passive: true });
 
-      <a
-        class="button primary"
-        href="https://demimomi.github.io/demimomi/patent.html"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Explore the work ↗
-      </a>
-
-    </div>
-
-  </section>
-
-</main>
-
-<footer>
-
-  <span>
-    © <span id="year"></span>
-    Toshiki Demizu / demimomi
-  </span>
-
-  <span class="status">
-    Still edited by a human.
-  </span>
-
-</footer>
-
-<script>
-(() => {
-
-  "use strict";
-
-  const prefersReducedMotion =
-    window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-  const header =
-    document.getElementById("siteHeader");
-
-  const navToggle =
-    document.getElementById("navToggle");
-
-  const navLinks =
-    document.getElementById("navLinks");
-
-  document.getElementById("year").textContent =
-    String(new Date().getFullYear());
-
-  const setMenu = (open) => {
-
-    header.classList.toggle(
-      "is-open",
-      open
-    );
-
-    navToggle.setAttribute(
-      "aria-expanded",
-      String(open)
-    );
-
-  };
-
-  navToggle.addEventListener(
-    "click",
-    () => setMenu(
-      !header.classList.contains("is-open")
-    )
-  );
-
-  navLinks.addEventListener(
-    "click",
-    (event) => {
-
-      if (
-        event.target.closest("a")
-      ) {
-        setMenu(false);
-      }
-
+    const revealItems = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window && !prefersReducedMotion) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: .1, rootMargin: "0px 0px -6%" });
+      revealItems.forEach((item) => observer.observe(item));
+    } else {
+      revealItems.forEach((item) => item.classList.add("is-visible"));
     }
-  );
 
-  window.addEventListener(
-    "keydown",
-    (event) => {
-
-      if (
-        event.key === "Escape"
-      ) {
-        setMenu(false);
-      }
-
+    if (!prefersReducedMotion && window.matchMedia("(pointer: fine)").matches) {
+      window.addEventListener("pointermove", (event) => {
+        document.documentElement.style.setProperty("--mx", `${event.clientX}px`);
+        document.documentElement.style.setProperty("--my", `${event.clientY}px`);
+        if (!heroSystem) return;
+        const rect = heroSystem.getBoundingClientRect();
+        const x = (event.clientX - (rect.left + rect.width / 2)) / Math.max(1, rect.width / 2);
+        const y = (event.clientY - (rect.top + rect.height / 2)) / Math.max(1, rect.height / 2);
+        heroSystem.style.setProperty("--px", Math.max(-1, Math.min(1, x)).toFixed(3));
+        heroSystem.style.setProperty("--py", Math.max(-1, Math.min(1, y)).toFixed(3));
+      }, { passive: true });
     }
-  );
 
-  window.addEventListener(
-    "scroll",
-    () => {
-
-      header.classList.toggle(
-        "is-scrolled",
-        window.scrollY > 12
-      );
-
-    },
-    {
-      passive: true
-    }
-  );
-
-  const revealItems =
-    document.querySelectorAll(
-      ".reveal"
-    );
-
-  if (
-    "IntersectionObserver" in window &&
-    !prefersReducedMotion
-  ) {
-
-    const observer =
-      new IntersectionObserver(
-        (entries) => {
-
-          entries.forEach(
-            (entry) => {
-
-              if (
-                entry.isIntersecting
-              ) {
-
-                entry.target.classList.add(
-                  "is-visible"
-                );
-
-                observer.unobserve(
-                  entry.target
-                );
-
-              }
-
-            }
-          );
-
-        },
-        {
-          threshold: .1,
-          rootMargin: "0px 0px -6%"
+    if (copyButton && codeSample) {
+      copyButton.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(codeSample.innerText);
+          const old = copyButton.textContent;
+          copyButton.textContent = "Copied";
+          window.setTimeout(() => { copyButton.textContent = old; }, 1400);
+        } catch (_) {
+          copyButton.textContent = "Select & copy";
         }
-      );
-
-    revealItems.forEach(
-      (item) =>
-        observer.observe(item)
-    );
-
-  } else {
-
-    revealItems.forEach(
-      (item) =>
-        item.classList.add(
-          "is-visible"
-        )
-    );
-
-  }
-
-})();
-</script>
-
+      });
+    }
+  })();
+  </script>
 </body>
 </html>
