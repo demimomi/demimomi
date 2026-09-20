@@ -3,397 +3,554 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="color-scheme" content="dark light" />
-  <title>The Patent</title>
+  <meta name="theme-color" content="#087b72" />
+  <meta name="color-scheme" content="dark" />
+  <title>ぱてんと | Patent Archive</title>
+
+  <!-- 地球ファビコン（外部ファイル不要） -->
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPGRlZnM+CiAgICA8cmFkaWFsR3JhZGllbnQgaWQ9Im8iIGN4PSIzNSUiIGN5PSIzMCUiPjxzdG9wIHN0b3AtY29sb3I9IiM2NWQ0ZmYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzU5ODUiLz48L3JhZGlhbEdyYWRpZW50PgogIDwvZGVmcz4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSIyOSIgZmlsbD0idXJsKCNvKSIvPgogIDxwYXRoIGQ9Ik0xMyAyMGM1LTggMTMtMTIgMjEtMTIgMiA0IDAgNy00IDgtNCAxLTQgNS04IDYtNCAxLTYtMi05LTJabTE3IDdjNC0zIDktMiAxMiAxIDIgMiA2IDIgNyA1IDEgNC0zIDYtNiA3LTQgMS00IDUtNyA4LTMgMi04IDEtOS0zLTEtNCAyLTYgMS05LTItMy0yLTYgMi05Wm0tMTYgOWM0IDAgNyAyIDggNSAxIDMtMSA3LTQgOS00LTMtNy04LTgtMTMgMS0xIDItMSA0LTFaIiBmaWxsPSIjNTRiOTQ4Ii8+CiAgPGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMjkiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2JmZjdmZiIgc3Ryb2tlLW9wYWNpdHk9Ii43IiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+Cg==" />
+  <script>
+    // Safari/Chromeで確実に表示できるよう、SVG faviconをJSで生成
+    (() => {
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+        <defs><radialGradient id="o" cx="35%" cy="30%"><stop stop-color="#65d4ff"/><stop offset="1" stop-color="#075985"/></radialGradient></defs>
+        <circle cx="32" cy="32" r="29" fill="url(#o)"/>
+        <path d="M13 20c5-8 13-12 21-12 2 4 0 7-4 8-4 1-4 5-8 6-4 1-6-2-9-2Zm17 7c4-3 9-2 12 1 2 2 6 2 7 5 1 4-3 6-6 7-4 1-4 5-7 8-3 2-8 1-9-3-1-4 2-6 1-9-2-3-2-6 2-9Zm-16 9c4 0 7 2 8 5 1 3-1 7-4 9-4-3-7-8-8-13 1-1 2-1 4-1Z" fill="#54b948"/>
+        <circle cx="32" cy="32" r="29" fill="none" stroke="#bff7ff" stroke-opacity=".7" stroke-width="2"/>
+      </svg>`;
+      const link = document.querySelector('link[rel="icon"]');
+      link.href = 'data:image/svg+xml,' + encodeURIComponent(svg);
+    })();
+  </script>
+
   <style>
     :root{
-      --bg0:#070A12;
-      --bg1:#0B1020;
-      --card: rgba(255,255,255,.06);
-      --card2: rgba(255,255,255,.08);
-      --border: rgba(255,255,255,.12);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.68);
-      --accent: #7C5CFF;
-      --accent2:#22D3EE;
-      --shadow: 0 18px 50px rgba(0,0,0,.45);
-      --radius: 18px;
+      --space:#021317;
+      --space2:#07332f;
+      --ocean:#0797c9;
+      --earth:#32d16d;
+      --earth2:#8fe45f;
+      --mist:#bffcf1;
+      --sun:#f2e7a1;
+      --card:rgba(3,35,37,.68);
+      --card2:rgba(5,58,50,.66);
+      --line:rgba(111,239,194,.23);
+      --lineStrong:rgba(106,229,208,.44);
+      --text:#effff8;
+      --muted:#abd8ce;
+      --shadow:0 30px 80px rgba(0,0,0,.45);
+      --radius:26px;
     }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-
+    *{box-sizing:border-box}
+    html{min-height:100%; background:var(--space)}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic", sans-serif;
-      color: var(--text);
+      min-height:100vh;
+      color:var(--text);
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
       background:
-        radial-gradient(1200px 700px at 15% 10%, rgba(124,92,255,.20), transparent 55%),
-        radial-gradient(900px 600px at 85% 20%, rgba(34,211,238,.15), transparent 50%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
+        radial-gradient(circle at 14% 12%, rgba(31,205,111,.24), transparent 33%),
+        radial-gradient(circle at 84% 18%, rgba(20,169,224,.29), transparent 31%),
+        radial-gradient(circle at 48% 95%, rgba(25,180,119,.18), transparent 38%),
+        linear-gradient(180deg,#02141c 0%,#063a3b 55%,#06291f 100%);
       overflow-x:hidden;
     }
 
-    /* three.js canvas full screen */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:-4;
+      opacity:.17;
+      pointer-events:none;
+      background-image:
+        radial-gradient(circle at 20% 20%,rgba(255,255,255,.7) 0 1px,transparent 1.4px),
+        radial-gradient(circle at 80% 30%,rgba(182,255,216,.6) 0 1px,transparent 1.5px),
+        radial-gradient(circle at 55% 80%,rgba(255,255,255,.45) 0 1px,transparent 1.2px);
+      background-size:140px 140px,190px 190px,110px 110px;
+    }
+
     #bg{
       position:fixed;
       inset:0;
-      z-index:-2;
-      display:block;
       width:100%;
       height:100%;
+      z-index:-3;
+      display:block;
       outline:none;
     }
 
-    /* soft overlay for readability */
+    .fallbackEarth{
+      position:fixed;
+      z-index:-2;
+      width:min(56vw,680px);
+      aspect-ratio:1;
+      right:-10vw;
+      top:-8vw;
+      border-radius:50%;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 28% 25%, rgba(255,255,255,.42), transparent 8%),
+        radial-gradient(ellipse at 32% 30%, #61dd72 0 9%, transparent 10%),
+        radial-gradient(ellipse at 56% 32%, #42cf69 0 8%, transparent 9%),
+        radial-gradient(ellipse at 66% 58%, #22b95d 0 12%, transparent 13%),
+        radial-gradient(ellipse at 35% 67%, #7ee66a 0 9%, transparent 10%),
+        radial-gradient(circle at 35% 30%, #58d7ff 0, #08a6d5 42%, #07739a 72%, #033b55 100%);
+      box-shadow:
+        0 0 0 2px rgba(172,247,238,.20),
+        0 0 90px rgba(43,230,176,.34),
+        0 0 170px rgba(31,174,238,.26),
+        inset -70px -30px 100px rgba(0,0,0,.52);
+      opacity:.84;
+      filter:saturate(1.32);
+    }
+
     .veil{
       position:fixed;
       inset:0;
       z-index:-1;
+      pointer-events:none;
       background:
-        radial-gradient(900px 700px at 20% 10%, rgba(0,0,0,.25), transparent 60%),
-        radial-gradient(700px 600px at 80% 40%, rgba(0,0,0,.35), transparent 55%),
-        linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.35));
+        linear-gradient(90deg,rgba(1,12,16,.72) 0%,rgba(2,23,25,.42) 44%,rgba(1,17,22,.10) 72%,rgba(1,16,20,.24) 100%),
+        linear-gradient(180deg,rgba(0,24,30,.02),rgba(0,25,17,.18));
+    }
+
+    .aurora{
+      position:fixed;
+      width:70vw;
+      height:50vh;
+      left:-20vw;
+      bottom:-18vh;
+      z-index:-1;
+      border-radius:50%;
+      background:radial-gradient(ellipse at 35% 55%,rgba(44,235,139,.27),transparent 58%),
+                 radial-gradient(ellipse at 68% 45%,rgba(40,179,244,.20),transparent 64%);
+      filter:blur(30px);
       pointer-events:none;
     }
 
-    header{
-      max-width:1100px;
-      margin: 48px auto 18px;
-      padding: 0 18px;
+    .page{
+      width:min(1180px,calc(100% - 36px));
+      margin:0 auto;
+      padding:54px 0 72px;
     }
 
-    .title{
+    header{
+      min-height:280px;
       display:flex;
       align-items:flex-end;
-      justify-content:space-between;
-      gap:16px;
-      flex-wrap:wrap;
+      padding:20px 4px 34px;
+      position:relative;
+    }
+
+    .hero{max-width:780px}
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:14px;
+      color:#b8f4de;
+      font-size:11px;
+      font-weight:750;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+    }
+
+    .eyebrow::before{
+      content:"";
+      width:34px;
+      height:1px;
+      background:linear-gradient(90deg,var(--earth),transparent);
+      box-shadow:0 0 12px rgba(78,210,135,.7);
     }
 
     h1{
       margin:0;
-      font-size: clamp(26px, 3.4vw, 40px);
-      letter-spacing:.02em;
-      line-height:1.15;
+      font-family:"Hiragino Mincho ProN","Yu Mincho",Georgia,serif;
+      font-weight:700;
+      letter-spacing:.055em;
+      line-height:1.02;
+      font-size:clamp(42px,7.2vw,86px);
+      text-shadow:0 8px 34px rgba(0,0,0,.40);
+    }
+
+    .titleEarth{
+      background:linear-gradient(94deg,#f4fff8 0%,#91f092 30%,#47e0a5 57%,#58cbff 84%,#d8f8ff 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
     }
 
     .subtitle{
-      margin-top:10px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height:1.6;
-      max-width: 75ch;
+      margin:18px 0 0;
+      max-width:670px;
+      color:var(--muted);
+      font-size:clamp(13px,1.6vw,15px);
+      line-height:1.95;
+      letter-spacing:.03em;
     }
 
-    .pillbar{
+    .subtitle strong{color:#d9fff0;font-weight:680}
+
+    .orbitTag{
+      position:absolute;
+      right:8px;
+      bottom:42px;
       display:flex;
-      gap:10px;
       align-items:center;
+      gap:11px;
+      color:rgba(223,248,232,.74);
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    .orbitTag::before{
+      content:"🌍";
+      display:grid;
+      place-items:center;
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      border:1px solid rgba(161,239,196,.28);
+      background:rgba(4,74,66,.50);
+      box-shadow:0 0 34px rgba(54,225,162,.22),0 0 54px rgba(35,170,230,.13);
+      font-size:20px;
+    }
+
+    .statusRow{
+      display:flex;
       flex-wrap:wrap;
+      gap:9px;
+      margin-top:24px;
     }
 
     .pill{
-      padding: 10px 12px;
-      border-radius: 999px;
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-      border: 1px solid var(--border);
-      box-shadow: 0 10px 30px rgba(0,0,0,.25);
-      backdrop-filter: blur(12px);
-      color: var(--muted);
-      font-size: 12px;
-      display:flex;
+      display:inline-flex;
       align-items:center;
       gap:8px;
-    }
-
-    .dot{
-      width:8px;
-      height:8px;
+      padding:8px 11px;
       border-radius:999px;
-      background: linear-gradient(180deg, var(--accent), var(--accent2));
-      box-shadow: 0 0 18px rgba(124,92,255,.55);
+      border:1px solid rgba(153,229,184,.19);
+      background:rgba(3,53,49,.46);
+      backdrop-filter:blur(12px);
+      color:#c3e7dc;
+      font-size:10px;
+      letter-spacing:.11em;
+      text-transform:uppercase;
     }
 
-    main{
-      max-width:1100px;
-      margin: 0 auto 60px;
-      padding: 0 18px 40px;
+    .pulse{
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:#48e887;
+      box-shadow:0 0 0 0 rgba(114,224,154,.56);
+      animation:pulse 2.2s infinite;
+    }
+
+    @keyframes pulse{
+      0%{box-shadow:0 0 0 0 rgba(114,224,154,.48)}
+      70%{box-shadow:0 0 0 8px rgba(114,224,154,0)}
+      100%{box-shadow:0 0 0 0 rgba(114,224,154,0)}
     }
 
     .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
+      position:relative;
       overflow:hidden;
+      border-radius:var(--radius);
+      border:1px solid var(--line);
+      background:
+        linear-gradient(135deg,rgba(3,58,51,.80),rgba(3,38,53,.76));
+      box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.035);
+      backdrop-filter:blur(22px) saturate(1.1);
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:.33;
+      background:
+        radial-gradient(circle at 0 0,rgba(65,236,145,.23),transparent 28%),
+        radial-gradient(circle at 100% 0,rgba(48,173,244,.15),transparent 30%),
+        linear-gradient(115deg,transparent 0 48%,rgba(255,255,255,.025) 49%,transparent 50% 100%);
     }
 
     .cardTop{
+      position:relative;
+      z-index:1;
       display:flex;
-      gap:12px;
-      padding: 18px 18px 14px;
-      border-bottom: 1px solid rgba(255,255,255,.10);
-      align-items:center;
       justify-content:space-between;
-      flex-wrap:wrap;
-    }
-
-    .controls{
-      display:flex;
-      gap:10px;
       align-items:center;
-      flex-wrap:wrap;
+      gap:14px;
+      padding:18px;
+      border-bottom:1px solid var(--line);
     }
 
     .search{
       position:relative;
-      min-width: min(520px, 90vw);
-      flex: 1 1 320px;
+      flex:1 1 520px;
+      max-width:650px;
     }
 
     .search input{
       width:100%;
-      padding: 12px 14px 12px 40px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      color: var(--text);
+      padding:13px 16px 13px 44px;
+      border:1px solid rgba(168,236,193,.20);
+      border-radius:999px;
       outline:none;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+      color:#eef8ef;
+      background:rgba(1,34,38,.56);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+      transition:border-color .18s ease, box-shadow .18s ease, background .18s ease;
     }
 
-    .search input::placeholder{
-      color: rgba(255,255,255,.45);
+    .search input:focus{
+      border-color:rgba(108,225,153,.54);
+      box-shadow:0 0 0 4px rgba(91,207,144,.09), inset 0 1px 0 rgba(255,255,255,.04);
+      background:rgba(1,18,19,.72);
     }
+
+    .search input::placeholder{color:rgba(198,221,210,.43)}
 
     .search svg{
       position:absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      opacity:.65;
+      left:16px;
+      top:50%;
+      transform:translateY(-50%);
+      color:#62e4aa;
+      opacity:.88;
     }
 
+    .controls{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+
     .btn{
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.16);
-      color: var(--text);
+      appearance:none;
+      border:1px solid rgba(168,236,193,.18);
+      border-radius:999px;
+      padding:10px 12px;
+      color:#d6ecde;
+      background:rgba(4,59,54,.54);
       cursor:pointer;
-      transition: transform .12s ease, background .12s ease, border-color .12s ease;
-      user-select:none;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-size: 12px;
+      font-size:11px;
+      transition:transform .15s ease,border-color .15s ease,background .15s ease,box-shadow .15s ease;
     }
 
     .btn:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.06);
-      border-color: rgba(255,255,255,.22);
+      transform:translateY(-1px);
+      border-color:rgba(120,228,160,.42);
+      background:rgba(8,89,69,.70);
+      box-shadow:0 8px 26px rgba(0,0,0,.18);
     }
 
-    .tableWrap{
-      overflow:auto;
+    .count{
+      min-width:44px;
+      color:#a8cabb;
+      font-size:11px;
+      text-align:right;
+      font-variant-numeric:tabular-nums;
     }
 
-    table{
-      width:100%;
-      border-collapse:separate;
-      border-spacing:0;
-      min-width: 820px;
-    }
+    .tableWrap{position:relative;z-index:1;overflow:auto}
+    table{width:100%;border-collapse:separate;border-spacing:0;min-width:800px}
 
     thead th{
       position:sticky;
       top:0;
-      z-index:1;
-      background: rgba(10,14,26,.92);
-      backdrop-filter: blur(16px);
+      z-index:2;
+      padding:14px 17px;
       text-align:left;
-      font-size: 12px;
-      color: rgba(255,255,255,.78);
-      padding: 14px 16px;
-      border-bottom: 1px solid rgba(255,255,255,.12);
+      border-bottom:1px solid var(--lineStrong);
+      background:rgba(3,55,54,.91);
+      backdrop-filter:blur(18px);
+      color:#99c8ae;
+      font-size:10px;
+      font-weight:720;
+      letter-spacing:.11em;
+      text-transform:uppercase;
       white-space:nowrap;
     }
 
     tbody td{
-      padding: 14px 16px;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      font-size: 14px;
+      padding:16px 17px;
+      border-bottom:1px solid rgba(169,238,188,.09);
+      color:#d7e8df;
+      font-size:13px;
+      line-height:1.65;
       vertical-align:middle;
+      transition:background .15s ease;
     }
 
-    tbody tr:hover{
-      background: rgba(255,255,255,.04);
-    }
+    tbody tr:last-child td{border-bottom:0}
+    tbody tr:hover td{background:rgba(56,210,137,.075)}
 
-    .col-no{
-      width: 90px;
-      color: rgba(255,255,255,.78);
-    }
+    .col-no{width:88px;color:#78a88f;font-variant-numeric:tabular-nums}
+    .col-app{width:210px;color:#bad9ca;font-variant-numeric:tabular-nums}
 
-    .col-app{
-      width: 200px;
-      font-feature-settings: "tnum" 1;
-      font-variant-numeric: tabular-nums;
-      color: rgba(255,255,255,.85);
+    .noBubble{
+      display:inline-grid;
+      place-items:center;
+      width:31px;
+      height:31px;
+      border-radius:50%;
+      border:1px solid rgba(124,222,157,.17);
+      background:rgba(34,182,106,.12);
+      color:#73e8aa;
+      font-size:10px;
+      box-shadow:inset 0 0 16px rgba(96,213,144,.04);
     }
 
     a.patLink{
-      color: rgba(255,255,255,.92);
+      color:#edf8ee;
       text-decoration:none;
-      border-bottom: 1px dashed rgba(124,92,255,.55);
-      padding-bottom:2px;
-      transition: color .12s ease, border-color .12s ease;
+      background-image:linear-gradient(90deg,rgba(62,230,139,.92),rgba(69,190,245,.88));
+      background-size:0 1px;
+      background-position:0 100%;
+      background-repeat:no-repeat;
+      transition:color .15s ease,background-size .20s ease;
     }
 
-    a.patLink:hover{
-      color: white;
-      border-color: rgba(34,211,238,.80);
-    }
+    a.patLink:hover{color:#c9ffe0;background-size:100% 1px}
+    a.patLink::after{content:" ↗";color:#64dda6;font-size:10px;opacity:.78}
 
     .footerNote{
-      padding: 12px 18px 18px;
-      color: rgba(255,255,255,.62);
-      font-size: 12px;
-      line-height:1.6;
+      position:relative;
+      z-index:1;
+      display:flex;
+      align-items:center;
+      gap:9px;
+      padding:13px 18px 16px;
+      border-top:1px solid rgba(169,238,188,.08);
+      color:#789f8d;
+      font-size:10px;
+      letter-spacing:.035em;
     }
 
-    .count{
-      color: rgba(255,255,255,.75);
-      font-size: 12px;
+    .footerNote::before{content:"🌱";font-size:13px;filter:saturate(.85)}
+
+    .earthLine{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin:16px 4px 0;
+      color:rgba(156,193,174,.52);
+      font-size:9px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
     }
 
-    @media (max-width: 560px){
-      header{ margin-top: 34px; }
-      .subtitle{ font-size: 13px; }
-      .cardTop{ gap:10px; }
+    .earthLine::before{
+      content:"";
+      height:1px;
+      flex:1;
+      background:linear-gradient(90deg,rgba(105,207,143,.26),rgba(105,207,143,0));
+    }
+
+    @media (max-width:820px){
+      .page{width:min(100% - 24px,1180px);padding-top:22px}
+      header{min-height:250px;padding-bottom:24px}
+      .orbitTag{display:none}
+      .cardTop{align-items:stretch;flex-direction:column}
+      .search{max-width:none;flex-basis:auto}
+      .controls{justify-content:flex-end}
+      .fallbackEarth{width:78vw;right:-30vw;top:-8vw;opacity:.54}
+    }
+
+    @media (max-width:560px){
+      h1{font-size:clamp(38px,14vw,62px);line-height:1.08}
+      .subtitle{line-height:1.8}
+      .statusRow{gap:7px}
+      .pill{padding:7px 9px;font-size:9px}
+      .card{border-radius:20px}
+      .cardTop{padding:14px}
+      .controls{justify-content:flex-start}
+      .count{margin-left:auto}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      .pulse{animation:none}
+      *{scroll-behavior:auto!important}
     }
   </style>
 </head>
 
 <body>
   <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="fallbackEarth" id="fallbackEarth" aria-hidden="true"></div>
   <div class="veil" aria-hidden="true"></div>
+  <div class="aurora" aria-hidden="true"></div>
 
-  <header>
-    <div class="title">
-      <div>
-        <h1>Patent</h1>
-        <div class="subtitle">
-          A glorious assertion of rights, separating self from others! The pinnacle of capitalism.
+  <div class="page">
+    <header>
+      <div class="hero">
+        <div class="eyebrow">PATENT ARCHIVE · BLUE &amp; GREEN</div>
+        <h1><span class="titleEarth">ぱてんと</span></h1>
+        <p class="subtitle">
+          発明を、もっと自然に眺める。<br>
+          <strong>青い水と緑の生命</strong>をまとった、ちいさな特許アーカイブ。
+        </p>
+        <div class="statusRow" aria-label="site status">
+          <span class="pill"><span class="pulse"></span> Patent archive</span>
+          <span class="pill">🌊 Blue planet</span>
+          <span class="pill">🌿 Green ideas</span>
         </div>
       </div>
-      <div class="pillbar">
-        <div class="pill"><span class="dot"></span><span>three.js background</span></div>
-        <div class="pill"><span class="dot"></span><span>single HTML file</span></div>
-      </div>
-    </div>
-  </header>
+      <div class="orbitTag"><span>Blue planet<br>Green ideas</span></div>
+    </header>
 
-  <main>
-    <section class="card" aria-label="特許テーブル">
-      <div class="cardTop">
-        <div class="search" role="search">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          <input id="q" type="search" placeholder="検索（出願番号 / 特許名） 例: 自動運転、2023-xxxxx など" autocomplete="off" />
+    <main>
+      <section class="card" aria-label="特許テーブル">
+        <div class="cardTop">
+          <div class="search" role="search">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <input id="q" type="search" placeholder="特許を検索（出願番号 / 特許名）" autocomplete="off" />
+          </div>
+
+          <div class="controls">
+            <button class="btn" id="toggleFx" type="button" title="地球背景のON/OFF">🌍 地球</button>
+            <button class="btn" id="copyJson" type="button" title="特許データをJSONでコピー">🌱 JSON</button>
+            <div class="count" id="count"></div>
+          </div>
         </div>
 
-        <div class="controls">
-          <button class="btn" id="toggleFx" type="button" title="背景演出のON/OFF">
-            <span aria-hidden="true">✨</span><span>背景</span>
-          </button>
-          <button class="btn" id="copyJson" type="button" title="今のデータをJSONとしてコピー（編集のメモ用）">
-            <span aria-hidden="true">📋</span><span>JSON</span>
-          </button>
-          <div class="count" id="count"></div>
+        <div class="tableWrap">
+          <table>
+            <thead>
+              <tr>
+                <th class="col-no">No.</th>
+                <th class="col-app">Application</th>
+                <th>Patent / Invention</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
         </div>
-      </div>
 
-      <div class="tableWrap">
-        <table>
-          <thead>
-            <tr>
-              <th class="col-no">No</th>
-              <th class="col-app">出願番号</th>
-              <th>特許名（クリックで外部リンク）</th>
-            </tr>
-          </thead>
-          <tbody id="rows"></tbody>
-        </table>
-      </div>
+        <div class="footerNote" id="footerNote">地球背景を準備しています。表は背景演出なしでも利用できます。</div>
+      </section>
 
-      <div class="footerNote" id="footerNote">
-        背景演出が読み込めない環境でも、表の内容は表示されるようにしてあります。
-      </div>
-    </section>
-  </main>
+      <div class="earthLine">blue planet · green ideas · patent archive</div>
+    </main>
+  </div>
 
   <script type="module">
-    /**
-     * =========================================
-     * 1) 特許データ
-     * =========================================
-     */
     const PATENTS = [
-      {
-        no: 1,
-        appNo: "特許7634129",
-        title: "運行管理システム 東京都交通局 衛星測位プロジェクト",
-        url: "https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453"
-      },
-      {
-        no: 2,
-        appNo: "特開2025-044252",
-        title: "対話型AIを活用した認知症予防プラットフォーム",
-        url: "https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2025-044252/11/ja"
-      },
-      {
-        no: 3,
-        appNo: "特開2026-024996",
-        title: "リアル接続型AIによるスマホ依存低減プログラム",
-        url: "https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2026-024996/11/ja"
-      },
-      {
-        no: 4,
-        appNo: "特開2026-034141",
-        title: "高齢者向け適応学習型音声対話システム",
-        url: "https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2026-034141/11/ja"
-      },
-      {
-        no: 5,
-        appNo: "特開2026-037221",
-        title: "個人適応型生成AIによる記憶活性化対話システム",
-        url: "https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2026-037221/11/ja"
-      },
-      {
-        no: 6,
-        appNo: "特開2026-038987",
-        title: "家族データ解析に基づくストーリーボード生成および映像化システム",
-        url: "https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2026-038987/11/ja"
-      },
-      {
-        no: 7,
-        appNo: "特開2026-068495",
-        title: "生成AIを用いた交通安全維持支援システム",
-        url: "https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2026-068495/11/ja"
-      }
+      { no:1, appNo:"特許7634129", title:"運行管理システム 東京都交通局 衛星測位プロジェクト", url:"https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453" },
+      { no:2, appNo:"特開2025-044252", title:"対話型AIを活用した認知症予防プラットフォーム", url:"https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2025-044252/11/ja" },
+      { no:3, appNo:"特開2026-024996", title:"リアル接続型AIによるスマホ依存低減プログラム", url:"https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2026-024996/11/ja" },
+      { no:4, appNo:"特開2026-034141", title:"高齢者向け適応学習型音声対話システム", url:"https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2026-034141/11/ja" },
+      { no:5, appNo:"特開2026-037221", title:"個人適応型生成AIによる記憶活性化対話システム", url:"https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2026-037221/11/ja" },
+      { no:6, appNo:"特開2026-038987", title:"家族データ解析に基づくストーリーボード生成および映像化システム", url:"https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2026-038987/11/ja" },
+      { no:7, appNo:"特開2026-068495", title:"生成AIを用いた交通安全維持支援システム", url:"https://www.j-platpat.inpit.go.jp/c1801/PU/JP-2026-068495/11/ja" }
     ];
 
-    /**
-     * =========================================
-     * 2) DOM参照
-     * =========================================
-     */
     const tbody = document.getElementById("rows");
     const q = document.getElementById("q");
     const count = document.getElementById("count");
@@ -401,12 +558,8 @@
     const toggleFxBtn = document.getElementById("toggleFx");
     const footerNote = document.getElementById("footerNote");
     const canvas = document.getElementById("bg");
+    const fallbackEarth = document.getElementById("fallbackEarth");
 
-    /**
-     * =========================================
-     * 3) テーブル描画
-     * =========================================
-     */
     function escapeHtml(s){
       return String(s)
         .replaceAll("&","&amp;")
@@ -419,227 +572,212 @@
     function render(list){
       tbody.innerHTML = list.map(p => `
         <tr>
-          <td class="col-no">${escapeHtml(p.no)}</td>
+          <td class="col-no"><span class="noBubble">${String(p.no).padStart(2,"0")}</span></td>
           <td class="col-app">${escapeHtml(p.appNo)}</td>
-          <td>
-            <a class="patLink" href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer">
-              ${escapeHtml(p.title)}
-            </a>
-          </td>
+          <td><a class="patLink" href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(p.title)}</a></td>
         </tr>
       `).join("");
-
-      count.textContent = `${list.length} 件`;
+      count.textContent = `${list.length} / ${PATENTS.length}`;
     }
 
     function filter(){
       const s = q.value.trim().toLowerCase();
-      if(!s){
-        render(PATENTS);
-        return;
-      }
-
-      const list = PATENTS.filter(p =>
-        String(p.appNo).toLowerCase().includes(s) ||
-        String(p.title).toLowerCase().includes(s)
-      );
-
-      render(list);
+      render(!s ? PATENTS : PATENTS.filter(p =>
+        String(p.appNo).toLowerCase().includes(s) || String(p.title).toLowerCase().includes(s)
+      ));
     }
 
     q.addEventListener("input", filter);
-
-    window.addEventListener("keydown", (e) => {
-      if(e.key === "/" && document.activeElement !== q){
-        e.preventDefault();
-        q.focus();
-      }
-
-      if(e.key === "Escape" && document.activeElement === q){
-        q.value = "";
-        q.blur();
-        render(PATENTS);
-      }
+    window.addEventListener("keydown", e => {
+      if(e.key === "/" && document.activeElement !== q){ e.preventDefault(); q.focus(); }
+      if(e.key === "Escape" && document.activeElement === q){ q.value=""; q.blur(); render(PATENTS); }
     });
 
     copyJsonBtn.addEventListener("click", async () => {
-      const json = JSON.stringify(PATENTS, null, 2);
-
       try{
-        await navigator.clipboard.writeText(json);
-        copyJsonBtn.innerHTML = "<span aria-hidden='true'>✅</span><span>copied</span>";
-        setTimeout(() => {
-          copyJsonBtn.innerHTML = "<span aria-hidden='true'>📋</span><span>JSON</span>";
-        }, 900);
+        await navigator.clipboard.writeText(JSON.stringify(PATENTS,null,2));
+        const before = copyJsonBtn.innerHTML;
+        copyJsonBtn.innerHTML = "✅ copied";
+        setTimeout(() => copyJsonBtn.innerHTML = before,900);
       }catch{
-        alert("クリップボードにコピーできませんでした（ブラウザ権限の可能性があります）。");
+        alert("クリップボードにコピーできませんでした。");
       }
     });
 
     render(PATENTS);
 
-    /**
-     * =========================================
-     * 4) three.js 背景
-     * =========================================
-     * 重要:
-     * - 背景演出が失敗しても表は必ず表示する
-     * - import失敗 / WebGL失敗を try...catch で吸収
-     */
     let fxEnabled = true;
-    let animationId = null;
-
     toggleFxBtn.addEventListener("click", () => {
       fxEnabled = !fxEnabled;
       canvas.style.display = fxEnabled ? "block" : "none";
-      toggleFxBtn.innerHTML = fxEnabled
-        ? "<span aria-hidden='true'>✨</span><span>背景</span>"
-        : "<span aria-hidden='true'>🌙</span><span>背景OFF</span>";
+      fallbackEarth.style.display = fxEnabled ? "block" : "none";
+      toggleFxBtn.innerHTML = fxEnabled ? "🌍 地球" : "🌑 地球OFF";
     });
 
-    async function initThreeBackground(){
+    async function initEarth(){
       try{
         const THREE = await import("https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js");
-
-        const renderer = new THREE.WebGLRenderer({
-          canvas,
-          antialias: true,
-          alpha: true
-        });
-
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        const renderer = new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:"high-performance"});
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1,2));
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
 
         const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(46,1,.1,100);
+        camera.position.set(0,0,9.8);
 
-        const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 200);
-        camera.position.set(0, 0, 9);
-
-        // Lights
-        const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+        const ambient = new THREE.AmbientLight(0x8fead4,.90);
         scene.add(ambient);
+        const sun = new THREE.DirectionalLight(0xe9fff0,3.45);
+        sun.position.set(-3,4,7);
+        scene.add(sun);
+        const rim = new THREE.PointLight(0x39cfff,2.35,30);
+        rim.position.set(5,-2,5);
+        scene.add(rim);
 
-        const keyLight = new THREE.PointLight(0x7c5cff, 1.1, 50);
-        keyLight.position.set(3, 2, 8);
-        scene.add(keyLight);
+        const earthGroup = new THREE.Group();
+        earthGroup.position.set(3.8,.25,-1.35);
+        earthGroup.rotation.z = -.18;
+        scene.add(earthGroup);
 
-        const rimLight = new THREE.PointLight(0x22d3ee, 0.9, 50);
-        rimLight.position.set(-4, -1, 7);
-        scene.add(rimLight);
-
-        // Hero mesh
-        const geo = new THREE.TorusKnotGeometry(1.35, 0.42, 220, 24);
-        const mat = new THREE.MeshPhysicalMaterial({
-          color: 0xffffff,
-          roughness: 0.22,
-          metalness: 0.20,
-          transmission: 0.75,
-          thickness: 1.2,
-          ior: 1.5,
-          clearcoat: 1.0,
-          clearcoatRoughness: 0.12,
-          opacity: 0.85,
-          transparent: true
+        const earthGeo = new THREE.SphereGeometry(2.55,96,96);
+        const earthMat = new THREE.ShaderMaterial({
+          uniforms:{
+            uLightDir:{value:new THREE.Vector3(-.8,.7,1).normalize()},
+            uTime:{value:0}
+          },
+          vertexShader:`
+            varying vec3 vN; varying vec3 vP;
+            void main(){
+              vN=normalize(normalMatrix*normal);
+              vP=normalize(position);
+              gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);
+            }
+          `,
+          fragmentShader:`
+            varying vec3 vN; varying vec3 vP;
+            uniform vec3 uLightDir; uniform float uTime;
+            float terrain(vec3 p){
+              float n=0.0;
+              n += sin(p.x*5.4 + sin(p.z*3.1))*0.32;
+              n += sin(p.y*8.3 - p.x*4.2)*0.22;
+              n += sin((p.x+p.z)*12.0 + p.y*5.0)*0.13;
+              n += sin((p.z-p.y)*20.0)*0.07;
+              n += cos(p.x*16.0 + p.y*7.0)*0.05;
+              return n;
+            }
+            void main(){
+              float n=terrain(vP);
+              float land=smoothstep(.045,.115,n);
+              float ice=smoothstep(.82,.96,abs(vP.y));
+              vec3 deep=vec3(.010,.22,.36);
+              vec3 ocean=vec3(.015,.52,.72);
+              vec3 shallow=vec3(.06,.70,.77);
+              float latitude=1.0-abs(vP.y);
+              vec3 water=mix(deep,ocean,latitude*.72+.12);
+              water=mix(water,shallow,smoothstep(.03,.10,n)*(1.0-land)*.42);
+              vec3 forest=vec3(.035,.41,.18);
+              vec3 green=vec3(.15,.72,.27);
+              vec3 moss=vec3(.48,.82,.25);
+              vec3 landCol=mix(forest,green,smoothstep(.08,.28,n));
+              landCol=mix(landCol,moss,smoothstep(.30,.48,n)*.55);
+              vec3 base=mix(water,landCol,land);
+              base=mix(base,vec3(.78,.88,.86),ice*.84);
+              float diff=max(dot(normalize(vN),normalize(uLightDir)),0.0);
+              float night=.20+.80*diff;
+              float fres=pow(1.0-max(dot(normalize(vN),vec3(0.,0.,1.)),0.0),2.5);
+              vec3 col=base*night + vec3(.03,.42,.48)*fres*.42;
+              gl_FragColor=vec4(col,1.0);
+            }
+          `
         });
+        const earth = new THREE.Mesh(earthGeo,earthMat);
+        earthGroup.add(earth);
 
-        const knot = new THREE.Mesh(geo, mat);
-        knot.position.set(2.8, 0.2, -1.8);
-        knot.rotation.set(0.6, 0.0, 0.2);
-        scene.add(knot);
-
-        // Starfield
-        const starCount = 900;
-        const starGeo = new THREE.BufferGeometry();
-        const starPos = new Float32Array(starCount * 3);
-
-        for(let i = 0; i < starCount; i++){
-          const r = 18 * Math.pow(Math.random(), 0.75);
-          const theta = Math.random() * Math.PI * 2;
-          const phi = Math.acos(2 * Math.random() - 1);
-
-          starPos[i * 3 + 0] = r * Math.sin(phi) * Math.cos(theta);
-          starPos[i * 3 + 1] = r * Math.cos(phi);
-          starPos[i * 3 + 2] = -8 - (r * Math.sin(phi) * Math.sin(theta));
-        }
-
-        starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
-
-        const starMat = new THREE.PointsMaterial({
-          color: 0xffffff,
-          size: 0.03,
-          transparent: true,
-          opacity: 0.55,
-          depthWrite: false
+        const cloudMat = new THREE.ShaderMaterial({
+          transparent:true,
+          depthWrite:false,
+          uniforms:{uTime:{value:0}},
+          vertexShader:`varying vec3 vP; void main(){vP=normalize(position); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+          fragmentShader:`
+            varying vec3 vP; uniform float uTime;
+            void main(){
+              float c=sin(vP.x*18.0 + uTime*.08 + sin(vP.y*10.0))*sin(vP.z*13.0-vP.y*8.0);
+              c += sin((vP.x+vP.z)*29.0-uTime*.05)*.38;
+              float a=smoothstep(.62,.92,c)*.22;
+              gl_FragColor=vec4(vec3(.86,.98,.97),a);
+            }
+          `
         });
+        const clouds = new THREE.Mesh(new THREE.SphereGeometry(2.59,72,72),cloudMat);
+        earthGroup.add(clouds);
 
-        const stars = new THREE.Points(starGeo, starMat);
-        scene.add(stars);
+        const atmosphere = new THREE.Mesh(
+          new THREE.SphereGeometry(2.72,72,72),
+          new THREE.ShaderMaterial({
+            transparent:true,side:THREE.BackSide,blending:THREE.AdditiveBlending,depthWrite:false,
+            vertexShader:`varying vec3 vN; void main(){vN=normalize(normalMatrix*normal); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+            fragmentShader:`varying vec3 vN; void main(){float i=pow(.72-dot(vN,vec3(0.,0.,1.)),3.2); gl_FragColor=vec4(.16,.78,1.,1.)*i*.76;}`
+          })
+        );
+        earthGroup.add(atmosphere);
 
-        // Mouse interaction
-        const mouse = { x: 0, y: 0 };
-
-        window.addEventListener("pointermove", (e) => {
-          mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-          mouse.y = -((e.clientY / window.innerHeight) * 2 - 1);
-        }, { passive: true });
-
-        // Resize
-        function resize(){
-          const w = window.innerWidth;
-          const h = window.innerHeight;
-          renderer.setSize(w, h, false);
-          camera.aspect = w / h;
-          camera.updateProjectionMatrix();
-        }
-
-        window.addEventListener("resize", resize);
-        resize();
-
-        const clock = new THREE.Clock();
-
-        function tick(){
-          const t = clock.getElapsedTime();
-
-          knot.rotation.x += 0.003;
-          knot.rotation.y += 0.004;
-          stars.rotation.y = t * 0.02;
-
-          const targetX = mouse.x * 1.2;
-          const targetY = mouse.y * 0.7;
-
-          keyLight.position.x = 3 + targetX * 2.0;
-          keyLight.position.y = 2 + targetY * 1.6;
-          rimLight.position.x = -4 - targetX * 1.8;
-          rimLight.position.y = -1 - targetY * 1.4;
-
-          camera.position.x += (targetX - camera.position.x) * 0.03;
-          camera.position.y += (targetY - camera.position.y) * 0.03;
-          camera.lookAt(0, 0, 0);
-
-          if(fxEnabled){
-            renderer.render(scene, camera);
+        // 星＋“生命粒子”
+        function points(count,spread,color,size,opacity){
+          const g=new THREE.BufferGeometry();
+          const a=new Float32Array(count*3);
+          for(let i=0;i<count;i++){
+            a[i*3]=(Math.random()-.5)*spread;
+            a[i*3+1]=(Math.random()-.5)*spread*.62;
+            a[i*3+2]=-4-Math.random()*16;
           }
-
-          animationId = requestAnimationFrame(tick);
+          g.setAttribute('position',new THREE.BufferAttribute(a,3));
+          const m=new THREE.PointsMaterial({color,size,transparent:true,opacity,depthWrite:false});
+          const p=new THREE.Points(g,m); scene.add(p); return p;
         }
+        const stars=points(650,31,0xdffbff,.024,.46);
+        const life=points(210,20,0x48ed93,.042,.38);
 
+        fallbackEarth.style.opacity="0";
+        const mouse={x:0,y:0};
+        window.addEventListener('pointermove',e=>{
+          mouse.x=(e.clientX/window.innerWidth)*2-1;
+          mouse.y=-((e.clientY/window.innerHeight)*2-1);
+        },{passive:true});
+
+        function resize(){
+          const w=window.innerWidth,h=window.innerHeight;
+          renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix();
+          if(w<820) earthGroup.position.set(3.25,.1,-1.75); else earthGroup.position.set(3.8,.25,-1.35);
+        }
+        window.addEventListener('resize',resize); resize();
+
+        const clock=new THREE.Clock();
+        const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        function tick(){
+          const t=clock.getElapsedTime();
+          if(!reduceMotion){
+            earth.rotation.y=t*.055;
+            clouds.rotation.y=-t*.032;
+            stars.rotation.y=t*.006;
+            life.rotation.y=-t*.011;
+            earthGroup.rotation.x += ((mouse.y*.08)-earthGroup.rotation.x)*.018;
+            earthGroup.rotation.y += ((mouse.x*.09)-earthGroup.rotation.y)*.018;
+          }
+          earthMat.uniforms.uTime.value=t;
+          cloudMat.uniforms.uTime.value=t;
+          if(fxEnabled) renderer.render(scene,camera);
+          requestAnimationFrame(tick);
+        }
         tick();
-
-        footerNote.textContent = "背景演出の読み込みに成功しました。表は通常どおり利用できます。";
+        footerNote.textContent="青と緑の地球背景オンライン。特許アーカイブを表示しています。";
       }catch(err){
-        console.error("three.js background init failed:", err);
-
-        canvas.style.display = "none";
-        fxEnabled = false;
-        toggleFxBtn.innerHTML = "<span aria-hidden='true'>⚠️</span><span>背景なし</span>";
-        toggleFxBtn.disabled = true;
-        toggleFxBtn.style.opacity = "0.6";
-        toggleFxBtn.style.cursor = "default";
-
-        footerNote.textContent = "背景演出の読み込みに失敗したため、表のみ表示しています。CDN制限やWebGL非対応環境でも内容は表示されます。";
+        console.error('earth background init failed:',err);
+        canvas.style.display='none';
+        footerNote.textContent="地球背景はCSS版で表示中。特許リストの機能は通常どおり利用できます。";
       }
     }
 
-    initThreeBackground();
+    initEarth();
   </script>
 </body>
 </html>
