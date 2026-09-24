@@ -1,0 +1,1044 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6f4eb">
+<title>SOL / HUMAN — Toshiki Demizu</title>
+<meta name="description" content="AI、モビリティ、ITS、デジタルツイン。研究と実装、学びの途中経過を置いている Toshiki Demizu / demimomi のポートフォリオ。">
+<meta property="og:title" content="SOL / HUMAN — Toshiki Demizu">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://demimomi.github.io/demimomi/">
+<link rel="canonical" href="https://demimomi.github.io/demimomi/">
+<!--
+DESIGN NOTE / 2026-09-24
+The original page's editorial text, anchor labels, literal href values,
+targets and rel values are retained, including original spellings.
+The source snapshot includes Completed 7 / In progress 2 and the 2026 LLM-I entry.
+
+Fine-structure constant: alpha = 7.2973525643e-3 (CODATA 2022).
+Reference: https://physics.nist.gov/cgi-bin/cuu/Value?eqalph=
+Its reciprocal is used as a decorative time scale; round(1/alpha)=137
+sets the number of light marks. These choices are artistic mappings,
+NOT a scientific explanation of Maitreya, Monet or sacred geometry.
+The fine-structure constant is NOT the golden angle.
+
+All illustration, CSS and JavaScript are embedded. No network request is
+needed for rendering. Local system fonts are used intentionally.
+Deploy as index.html in the existing demimomi GitHub Pages directory.
+A local-file-only click handler resolves ./llm.html against the source URL
+without modifying the anchor's href attribute.
+-->
+<style>
+/* SOL / HUMAN : a luminous, geometric water garden.
+   All original editorial text and anchor href values are retained.
+   No external stylesheet, font, image or JavaScript dependency. */
+:root {
+  color-scheme: light;
+  --paper: #f6f4eb; --paper-deep: #eeecdf; --ink: #263d35;
+  --muted: #667068; --dim: #767b70; --gold: #947044;
+  --line: #d5d8c8; --sage: #718e79; --moss: #293f36;
+  --serif: 'Noto Serif JP','Noto Serif CJK JP','Yu Mincho','Hiragino Mincho ProN',Georgia,serif;
+  --sans: 'Helvetica Neue','Noto Sans CJK JP','Yu Gothic','Hiragino Kaku Gothic ProN',Arial,sans-serif;
+  --latin: 'Baskerville','Times New Roman',Georgia,serif;
+  --max: 1256px; --gutter: clamp(22px,5.2vw,80px);
+  --header-h: 87px; --ease: cubic-bezier(.22,.8,.24,1);
+  --alpha-period: 137.035999177s;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 106px; background: var(--paper); }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body::after { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 80; opacity: .052; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23594628' filter='url(%23n)' opacity='.65' d='M0 0h160v160H0z'/%3E%3C/svg%3E"); }
+::selection { background: #d9c58f; color: #203a31; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 5px; }
+button { font: inherit; }
+a,button { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid #926323; outline-offset: 6px; }
+svg { display: block; }
+img,canvas,svg { max-width: 100%; }
+h1,h2,h3,p { margin-top: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: fixed; left: 18px; top: 14px; z-index: 200; padding: 12px 20px; background: var(--moss); color: var(--paper); transform: translateY(-170%); }
+.skip-link:focus { transform: none; }
+.scroll-progress { position: fixed; left: 0; top: 0; height: 3px; width: 100%; transform: scaleX(0); transform-origin: 0 50%; background: #9b8456; z-index: 150; }
+.site-header { position: fixed; inset: 0 0 auto; z-index: 90; background: rgba(246,244,235,.91); border-bottom: 1px solid rgba(121,135,110,.18); transition: box-shadow .3s; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.site-header.is-scrolled { box-shadow: 0 5px 24px #273e3509; }
+.nav-wrap { width: min(calc(100% - var(--gutter)*2),var(--max)); min-height: var(--header-h); margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 25px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; flex-shrink: 0; }
+.brand > span:last-child { font-size: 11px; font-weight: 600; letter-spacing: .2em; }
+.brand-mark { display: block; width: 36px; height: 36px; color: #8d7548; }
+.brand-mark svg { width: 100%; height: 100%; }
+.nav-links { display: flex; align-items: center; gap: clamp(8px,1.4vw,23px); }
+.nav-links a { position: relative; padding: 10px 0; font-size: 11px; text-decoration: none; color: #535e54; white-space: nowrap; }
+.nav-links a:not(.nav-era)::after { content: ''; position: absolute; bottom: 5px; left: 0; width: 100%; height: 1px; background: #947a4d; transform: scaleX(0); transform-origin: left; transition: transform .25s; }
+.nav-links a:hover::after,.nav-links a[aria-current='location']::after { transform: scaleX(1); }
+.nav-links .nav-era { padding: 8px 14px; border-radius: 30px; background: #e9e8db; color: #685d46; border: 1px solid #d7d4c1; }
+.nav-links .nav-era:hover { background: #e1dfcc; }
+.nav-toggle { display: none; min-height: 42px; padding: 8px 16px; border: 1px solid #bec6b5; border-radius: 32px; background: transparent; color: var(--ink); font-size: 12px; }
+main { overflow: clip; }
+.section { width: min(calc(100% - var(--gutter)*2),var(--max)); margin: auto; padding: 118px 0; position: relative; scroll-margin-top: 25px; }
+/* The opening is a two-page spread: type on paper, painting in an apse. */
+.hero { display: grid; grid-template-columns: 1.03fr 1fr; align-items: center; column-gap: 38px; padding-top: calc(var(--header-h) + 58px); padding-bottom: 68px; min-height: min(920px,100svh); }
+.hero::before { content: ''; position: absolute; left: -170px; top: 18%; width: 720px; height: 720px; pointer-events: none; border-radius: 50%; background: radial-gradient(circle,#dfd4b31a,transparent 66%); }
+.hero-copy { position: relative; z-index: 3; padding-bottom: 22px; }
+.earth-wordmark { display: inline-flex; gap: 12px; align-items: center; margin-bottom: 29px; }
+.earth-glyph { display: block; position: relative; width: 19px; height: 19px; border: 1px solid #919979; border-radius: 50%; }
+.earth-glyph::before { content: ''; position: absolute; left: 3px; right: 3px; top: -1px; bottom: -1px; border: 1px solid #919979; border-radius: 50%; }
+.earth-glyph::after { content: ''; position: absolute; top: 8px; left: -3px; width: 23px; border-top: 1px solid #919979; }
+.earth-name { font-family: var(--latin); font-size: 30px; line-height: 1; font-style: italic; letter-spacing: -.045em; color: #526251; }
+.eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 22px; text-transform: uppercase; font-size: 10px; line-height: 1.6; font-weight: 500; letter-spacing: .2em; color: #65755d; }
+.eyebrow::before { content: ''; display: inline-block; width: 24px; height: 1px; background: currentColor; }
+h1 { font-family: var(--serif); font-size: clamp(68px,7.8vw,112px); font-weight: 500; letter-spacing: -.075em; line-height: 1.23; margin: 0 0 30px -6px; }
+.hero-accent { position: relative; color: #7c855c; }
+.hero-accent::after { content: ''; position: absolute; height: 8px; left: 4px; right: 12px; bottom: 0; background: #ceb77d38; border-radius: 90% 25% 100% 20%; transform: rotate(-2deg); }
+.hero-lead { color: #657066; line-height: 2.15; font-size: clamp(12px,1.02vw,14px); margin-bottom: 29px; letter-spacing: .015em; }
+.hero-lead strong { font-weight: 500; color: #2e4739; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.button { min-height: 51px; display: inline-flex; align-items: center; justify-content: center; gap: 19px; padding: 14px 22px; border: 1px solid #b9c1ad; border-radius: 40px; font-size: 11px; line-height: 1.6; letter-spacing: .035em; text-decoration: none; transition: background .25s,transform .25s,border-color .25s; }
+.button.primary { color: #f8f4e7; background: var(--moss); border-color: var(--moss); }
+.button.primary:hover { background: #405b46; border-color: #405b46; transform: translateY(-3px); }
+.button.secondary { background: #f6f4eb72; }
+.button.secondary:hover { background: #e8e9da; border-color: #919e83; transform: translateY(-3px); }
+.hero-system { position: relative; width: 100%; height: clamp(550px,46vw,652px); isolation: isolate; }
+.art-frame { position: absolute; inset: 0 9px 74px 0; border-radius: 49% 49% 2px 2px / 41% 41% 2px 2px; overflow: hidden; background: radial-gradient(ellipse at 55% 32%,#f1e4b5,transparent 32%),linear-gradient(#cbd0c1,#a9c2bd 40%,#849b96 72%,#b2bab2); box-shadow: inset 0 0 70px #fff4cf66; }
+.art-frame::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 65px #f0eac926,inset 0 0 0 1px #687b5b21; pointer-events: none; z-index: 6; }
+.pond-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.miroku-figure { position: absolute; inset: 0; width: 100%; height: 100%; filter: drop-shadow(0 8px 12px #76674918); }
+.geometry-orbit { position: absolute; inset: 6px -28px 81px -38px; pointer-events: none; z-index: 4; color: #ad9158; }
+.geometry-orbit > svg { width: 100%; height: 100%; overflow: visible; }
+.slow-orbit { transform-origin: 400px 400px; animation: orbit var(--alpha-period) linear infinite; }
+.reverse-orbit { animation-direction: reverse; animation-duration: calc(var(--alpha-period)*1.6); }
+.art-cross { position: absolute; width: 22px; height: 22px; color: #9a8159; z-index: 5; }
+.art-cross::before,.art-cross::after { content: ''; position: absolute; background: currentColor; }
+.art-cross::before { width: 22px; height: 1px; top: 10px; }
+.art-cross::after { height: 22px; width: 1px; left: 10px; }
+.art-cross.one { right: -3px; top: 50px; }
+.art-cross.two { left: -24px; bottom: 114px; width: 14px; height: 14px; opacity: .6; }
+.hero-note { position: absolute; left: 0; bottom: 0; max-width: 290px; padding: 0 0 0 16px; border-left: 1px solid #b9b18e; font-size: 10px; line-height: 1.9; color: #777869; }
+.hero-note strong { display: block; font-family: var(--latin); font-size: 17px; font-weight: 400; font-style: italic; color: #475b45; margin-bottom: 3px; }
+.hero-coordinate { position: absolute; right: -31px; bottom: 117px; writing-mode: vertical-rl; font-size: 8px; letter-spacing: .22em; color: #6d7763; }
+.motion-control { position: absolute; right: 18px; bottom: 19px; z-index: 10; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; border: 1px solid #b4b799; background: #f3f0e7e6; color: var(--ink); }
+.motion-control svg { width: 12px; height: 12px; }
+.motion-control .play-shape { display: none; }
+.motion-control[aria-pressed='true'] .pause-shape { display: none; }
+.motion-control[aria-pressed='true'] .play-shape { display: block; }
+.motion-off *, .motion-off *::before, .motion-off *::after { animation-play-state: paused !important; }
+.signal-strip { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: #edeedfa6; }
+.signal-window { overflow: hidden; }
+.signal-track { display: flex; width: max-content; padding: 22px 0; animation: marquee 52s linear infinite; }
+.signal-group { display: flex; align-items: center; gap: 60px; padding-right: 60px; }
+.signal-group span { display: flex; align-items: center; gap: 60px; white-space: nowrap; color: #6b7561; font-family: var(--latin); font-size: 17px; font-style: italic; }
+.signal-group span::before { content: ''; width: 12px; height: 12px; border: 1px solid #8e976c; transform: rotate(45deg); border-radius: 5px 0; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@keyframes orbit { to { transform: rotate(360deg); } }
+/* Numbered chapters and the learning ledger. */
+.section-kicker { position: absolute; right: 0; top: 91px; color: #a8ad91; font-family: var(--latin); font-size: 22px; font-style: italic; line-height: 1; }
+.section-kicker::before { content: ''; position: absolute; width: 47px; height: 47px; border: 1px solid #c0c5af; border-radius: 50%; left: 50%; top: 50%; transform: translate(-50%,-50%); }
+.section-heading { display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 60px; margin-bottom: 55px; }
+.section-heading h2,.model-copy h2,.closing h2 { font-family: var(--serif); font-size: clamp(37px,4.5vw,62px); font-weight: 400; letter-spacing: -.045em; line-height: 1.37; margin: 0; }
+#philosophy h2,#projects h2,.model-copy h2 { font-family: var(--latin); font-size: clamp(43px,5vw,72px); line-height: 1.09; letter-spacing: -.04em; }
+.section-heading > p { color: var(--muted); font-size: 13px; line-height: 2.1; max-width: 440px; justify-self: end; padding-right: 24px; margin: 0 0 8px; }
+.learning-shell { border-top: 1px solid #adb69e; display: grid; grid-template-columns: .72fr 1.6fr; gap: 60px; padding-top: 36px; }
+.learning-summary { position: sticky; top: 125px; align-self: start; padding-top: 10px; }
+.learning-summary > strong { display: block; color: #7c7952; font-family: var(--latin); font-size: clamp(48px,4.9vw,68px); font-weight: 400; letter-spacing: -.07em; white-space: nowrap; margin-bottom: 14px; }
+.learning-summary > span { display: block; font-size: 11px; line-height: 2.1; color: var(--muted); }
+.learning-summary > span:first-of-type { color: #4d6146; font-size: 15px; }
+.learning-link { display: inline-flex; font-size: 11px; text-decoration: none; padding: 10px 0; margin-top: 14px; border-bottom: 1px solid #bec4ae; }
+.learning-link:hover { color: #8a643c; border-color: #8a643c; }
+.learning-seal { display: block; width: 218px; height: 218px; margin: 33px 0 0 8px; color: #a4ac8b; opacity: .82; }
+.learning-item { display: grid; grid-template-columns: 1.3fr .95fr; gap: 22px; align-items: center; padding: 23px 0; border-bottom: 1px solid var(--line); text-decoration: none; transition: background .25s,transform .25s; }
+.learning-item:first-child { padding-top: 7px; }
+.learning-item:hover { transform: translateX(4px); }
+.learning-item h3 { font-size: 13px; font-weight: 500; line-height: 1.7; margin: 0 0 7px; }
+.learning-item small { font-size: 9px; color: var(--dim); letter-spacing: .07em; }
+.learning-facts { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px 13px; font-size: 10px; line-height: 1.8; color: #707668; text-align: right; }
+.learning-facts strong { color: #344e3c; font-weight: 500; }
+.learning-item.is-featured { border: 1px solid #bbc5a9; background: #e9eddf99; padding: 19px 16px; margin-top: 12px; }
+.learning-badge { color: #496345; border: 1px solid #b4bfa0; font-size: 8px; font-weight: 600; letter-spacing: .06em; border-radius: 12px; padding: 2px 7px; vertical-align: middle; white-space: nowrap; margin-left: 4px; }
+/* The midnight garden is a quiet counterpoint, not a second UI theme. */
+#philosophy { color: #f0eedf; padding-top: 112px; padding-bottom: 99px; }
+#philosophy::before { content: ''; position: absolute; left: calc(50% - 50vw); top: 0; width: 100vw; height: 100%; z-index: -1; background: #2c433b; }
+#philosophy .section-kicker { color: #bec5a7; }
+#philosophy .section-kicker::before { border-color: #70826b; }
+#philosophy .eyebrow { color: #c4c6a3; }
+#philosophy .section-heading > p { color: #c7cfbf; }
+.principles { display: grid; grid-template-columns: repeat(3,1fr); gap: 40px; }
+.principle { position: relative; padding-top: 22px; border-top: 1px solid #7c8a704f; }
+.principle-index { font-size: 9px; letter-spacing: .14em; color: #c0c8a8; }
+.principle-symbol { height: 123px; width: 142px; margin: 23px auto 25px; color: #b5bc8f; transition: transform .7s; }
+.principle:hover .principle-symbol { transform: rotate(8deg); }
+.principle h3 { font-family: var(--serif); font-size: clamp(16px,1.5vw,20px); font-weight: 400; letter-spacing: -.02em; line-height: 1.7; margin-bottom: 14px; }
+.principle p { color: #c3cbbc; font-size: 12px; line-height: 2.05; margin-bottom: 0; }
+.principle .aside { display: block; margin-top: 15px; color: #b4c0ad; font-size: 9px; line-height: 1.9; }
+/* Selected work: four painted folios with differing geometric studies. */
+#projects { padding-bottom: 89px; }
+.projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 37px; align-items: start; }
+.project-card { position: relative; display: flex; flex-direction: column; text-decoration: none; min-width: 0; border-bottom: 1px solid #cbd0bd; padding-bottom: 25px; }
+.project-card:nth-child(even) { margin-top: 42px; }
+.project-visual { position: relative; height: clamp(240px,23vw,318px); overflow: hidden; background: #d6dfce; }
+.project-visual canvas { position: absolute; width: 100%; height: 100%; }
+.project-visual svg { position: absolute; inset: 0; width: 100%; height: 100%; color: #f3f0d7; transition: transform .8s var(--ease); }
+.project-card:nth-child(2) .project-visual { background: #a4b6bf; }
+.project-card:nth-child(3) .project-visual { background: #b1b797; }
+.project-card:nth-child(4) .project-visual { background: #d7c3b5; }
+.project-card:hover .project-visual svg { transform: scale(1.065) rotate(3deg); }
+.project-meta { position: absolute; top: 20px; left: 22px; right: 20px; display: flex; align-items: center; justify-content: space-between; z-index: 2; }
+.project-tag { display: inline-block; color: #243d30; border: 1px solid #f7f5e265; background: #f6f4e8b8; font-size: 9px; padding: 7px 10px; border-radius: 16px; letter-spacing: .02em; backdrop-filter: blur(4px); }
+.arrow { color: #34473c; display: grid; place-items: center; width: 33px; height: 33px; background: #f6f4e8c2; border-radius: 50%; font-size: 18px; transition: transform .3s; }
+.project-card:hover .arrow { transform: rotate(45deg); }
+.project-copy { padding: 24px 3px 0; }
+.project-card h3 { font-family: var(--latin); font-size: clamp(27px,2.5vw,36px); font-weight: 400; line-height: 1.15; letter-spacing: -.025em; margin: 0 0 12px; }
+.project-card p { font-size: 12px; color: var(--muted); line-height: 1.95; margin: 0; max-width: 490px; }
+.project-code { position: absolute; right: 21px; top: clamp(169px,16.8vw,237px); color: #faf7e6a6; font-family: var(--latin); font-size: 55px; font-style: italic; letter-spacing: -.065em; line-height: 1; pointer-events: none; }
+#model { padding-top: 76px; padding-bottom: 114px; }
+#model .section-kicker { top: 38px; }
+.model-card { display: grid; grid-template-columns: .95fr 1.1fr; gap: 75px; align-items: center; border-top: 1px solid #c6cdb8; padding-top: 58px; }
+.model-copy h2 { font-size: clamp(43px,4.3vw,60px); margin-bottom: 23px; }
+.model-copy > p:not(.eyebrow) { font-size: 12px; line-height: 2.1; color: var(--muted); max-width: 390px; margin-bottom: 25px; }
+.code-shell { border: 1px solid #536650; background: #293e34; border-radius: 3px; box-shadow: 10px 12px 0 #e3e5d6; overflow: hidden; }
+.code-top { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid #a8b7902b; color: #c4cdb2; font-family: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size: 10px; }
+.code-top-right { display: flex; align-items: center; gap: 14px; }
+.copy-code { background: transparent; border: 1px solid #98a58560; border-radius: 20px; color: #eef0dc; padding: 7px 12px; min-height: 34px; font-size: 10px; }
+.copy-code:hover { background: #96a67b2b; }
+.code-dots { display: flex; gap: 4px; }
+.code-dots span { width: 4px; height: 4px; border-radius: 50%; background: #b9c19b; opacity: .5; }
+pre { overflow-x: auto; margin: 0; padding: 37px 24px 48px; color: #eceddc; tab-size: 2; font: 12px/2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+.tok-key { color: #b6cbbd; } .tok-str { color: #e1cd94; } .tok-fn { color: #c9d1a0; }
+.closing { width: 100%; min-height: 720px; padding: 145px var(--gutter) 128px; text-align: center; display: grid; place-items: center; background: #e5e8d5; isolation: isolate; }
+.closing::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center,#f7f5e8f2 0%,#f4f3e1cc 38%,#e7ead782 73%); z-index: -1; }
+.closing-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; opacity: .7; }
+.closing-geometry { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: min(840px,100%); height: min(840px,100vw); color: #a0a275; z-index: 0; opacity: .55; pointer-events: none; }
+.closing-inner { position: relative; z-index: 1; max-width: 830px; }
+.closing .eyebrow { justify-content: center; margin-bottom: 29px; font-size: 9px; }
+.closing h2 { font-size: clamp(40px,5.8vw,79px); line-height: 1.43; margin-bottom: 27px; }
+.closing h2 span { color: #6f7a55; }
+.closing p:not(.eyebrow) { max-width: 560px; margin: 0 auto 28px; font-size: 12px; line-height: 2.1; color: #5f6c58; }
+footer { width: min(calc(100% - var(--gutter)*2),var(--max)); min-height: 99px; display: flex; align-items: center; justify-content: space-between; margin: auto; gap: 20px; color: #6e7767; font-size: 9px; letter-spacing: .025em; }
+.status { display: inline-flex; align-items: center; gap: 9px; }
+.status::before { content: ''; width: 5px; height: 5px; background: #839461; border-radius: 50%; }
+/* Reveal is an enhancement, never a prerequisite for accessing the content. */
+.reveal { opacity: 1; }
+.js-reveal .reveal:not(.is-visible) { opacity: 0; transform: translateY(16px); }
+.js-reveal .reveal { transition: opacity .72s var(--ease),transform .72s var(--ease); }
+.reveal[data-delay='1'] { transition-delay: .08s; }
+.reveal[data-delay='2'] { transition-delay: .16s; }
+@media(min-width:1500px) { .hero { padding-top: 156px; min-height: 880px; } }
+@media(max-width:1100px) {
+  :root { --gutter: 37px; }
+  .nav-links { gap: 14px; } .nav-links a { font-size: 10px; }
+  .hero { column-gap: 23px; } .hero-system { height: 574px; }
+  h1 { font-size: 83px; } .hero-lead { font-size: 12px; }
+  .hero-actions { gap: 8px; } .button { padding: 13px 17px; font-size: 10px; }
+  .learning-shell { gap: 37px; grid-template-columns: .68fr 1.7fr; }
+  .learning-item { grid-template-columns: 1.25fr 1fr; gap: 16px; }
+  .learning-item h3 { font-size: 12px; }
+  .principles { gap: 27px; } .model-card { gap: 35px; } pre { font-size: 11px; }
+}
+@media(max-width:900px) {
+  :root { --header-h: 74px; }
+  .nav-toggle { display: block; }
+  .nav-links { position: absolute; top: calc(100% + 8px); left: var(--gutter); right: var(--gutter); display: none; padding: 14px; background: #f6f4eb; box-shadow: 0 13px 45px #273e3519; border: 1px solid #cbd2bd; border-radius: 8px; }
+  .is-open .nav-links { display: grid; gap: 2px; }
+  .nav-links a { font-size: 13px; padding: 13px 14px; }
+  .nav-links .nav-era { border-radius: 2px; padding: 13px 14px; }
+  .nav-links a::after { display: none; }
+  .hero { padding-top: 125px; grid-template-columns: 1fr .94fr; gap: 20px; }
+  h1 { font-size: 72px; } .earth-wordmark { margin-bottom: 23px; }
+  .hero .eyebrow { font-size: 8px; letter-spacing: .12em; }
+  .hero-lead br { display: none; } .hero-lead { line-height: 2.1; }
+  .hero-lead strong { white-space: nowrap; }
+  .hero-system { height: 528px; }
+  .hero-note { font-size: 9px; max-width: 240px; }
+  .hero-coordinate { right: -17px; }
+  .section:not(.hero):not(.closing) { padding-top: 85px; padding-bottom: 85px; }
+  .section-kicker { top: 61px; }
+  .section-heading { gap: 30px; }
+  .section-heading > p { font-size: 12px; padding-right: 0; }
+  .learning-shell { grid-template-columns: 1fr; gap: 22px; }
+  .learning-summary { position: static; padding: 4px 160px 24px 0; min-height: 180px; }
+  .learning-summary > strong { font-size: 60px; }
+  .learning-seal { width: 150px; height: 150px; position: absolute; top: 0; right: 8px; margin: 0; }
+  .learning-summary { position: relative; top: auto; }
+  .learning-item { padding-block: 22px; }
+  .learning-item h3 { font-size: 14px; }
+  .learning-facts { font-size: 11px; }
+  .principles { gap: 22px; }
+  .principle h3 { font-size: 16px; }
+  .principle p { font-size: 11px; }
+  .project-visual { height: 240px; }
+  .projects-grid { gap: 26px; }
+  .project-code { top: 174px; }
+  .model-card { grid-template-columns: 1fr; gap: 32px; padding-top: 35px; }
+  .model-copy > p:not(.eyebrow) { max-width: 540px; }
+  .model-copy h2 { font-size: 58px; }
+  .code-shell { max-width: 100%; } pre { font-size: 13px; }
+}
+@media(max-width:640px) {
+  :root { --gutter: 24px; --header-h: 70px; }
+  .nav-wrap { gap: 12px; } .brand > span:last-child { font-size: 10px; }
+  .brand-mark { width: 32px; height: 32px; }
+  .hero { display: flex; flex-direction: column; align-items: stretch; min-height: 0; padding-top: 108px; padding-bottom: 35px; gap: 31px; }
+  .hero-copy { padding-bottom: 0; }
+  .earth-wordmark { margin-bottom: 25px; } .earth-name { font-size: 28px; }
+  .hero .eyebrow { font-size: 9px; letter-spacing: .12em; margin-bottom: 20px; }
+  h1 { font-size: clamp(73px,19.5vw,108px); line-height: 1.21; margin-bottom: 24px; }
+  .hero-lead { max-width: 435px; font-size: 12px; line-height: 2.1; margin-bottom: 24px; }
+  .hero-lead br { display: initial; }
+  .hero-actions { gap: 9px; }
+  .button { min-height: 46px; padding: 12px 17px; font-size: 10px; gap: 12px; }
+  .hero-system { align-self: center; width: calc(100% - 10px); max-width: 425px; height: auto; aspect-ratio: .79; margin-top: 0; }
+  .art-frame { inset: 0 7px 72px 0; }
+  .geometry-orbit { inset: 0 -17px 78px -21px; }
+  .hero-coordinate { bottom: 108px; right: -12px; font-size: 7px; }
+  .art-cross.one { right: 3px; top: 36px; } .art-cross.two { left: -10px; }
+  .hero-note { bottom: 0; font-size: 9px; max-width: 250px; }
+  .hero-note strong { font-size: 16px; }
+  .motion-control { right: 9px; bottom: 16px; }
+  .signal-track { padding: 18px 0; }
+  .signal-group,.signal-group span { gap: 30px; }
+  .signal-group { padding-right: 30px; }
+  .signal-group span { font-size: 16px; }
+  .section:not(.hero):not(.closing) { padding-top: 72px; padding-bottom: 70px; }
+  .section-kicker { top: 53px; font-size: 17px; right: 8px; }
+  .section-kicker::before { width: 36px; height: 36px; }
+  .section-heading { grid-template-columns: 1fr; gap: 24px; margin-bottom: 31px; }
+  .section-heading .eyebrow { font-size: 9px; margin-bottom: 19px; }
+  .section-heading h2 { font-size: 41px; line-height: 1.34; }
+  #philosophy h2,#projects h2 { font-size: 51px; }
+  .section-heading > p { justify-self: start; font-size: 12px; line-height: 2.05; max-width: 500px; }
+  .learning-shell { padding-top: 26px; }
+  .learning-summary { padding: 0 110px 16px 0; min-height: 160px; }
+  .learning-summary > strong { font-size: 47px; margin-bottom: 12px; }
+  .learning-summary > span { font-size: 10px; white-space: nowrap; }
+  .learning-summary > span:first-of-type { font-size: 13px; }
+  .learning-seal { width: 115px; height: 115px; right: -7px; top: 7px; opacity: .55; }
+  .learning-link { margin-top: 9px; font-size: 11px; }
+  .learning-item { grid-template-columns: 1fr; gap: 11px; padding: 21px 0; }
+  .learning-item h3 { font-size: 13px; }
+  .learning-facts { justify-content: flex-start; text-align: left; font-size: 10px; gap: 4px 15px; }
+  .learning-item.is-featured { padding: 18px 14px; }
+  .principles { grid-template-columns: 1fr; gap: 31px; }
+  .principle { display: grid; grid-template-columns: 1fr 110px; column-gap: 18px; align-items: start; }
+  .principle-index { grid-column: 1; }
+  .principle-symbol { grid-column: 2; grid-row: 1 / 4; width: 100px; height: 110px; margin: 0; }
+  .principle h3 { grid-column: 1; margin-top: 19px; font-size: 17px; }
+  .principle p { grid-column: 1/-1; font-size: 12px; }
+  .principle .aside { grid-column: 1/-1; }
+  .projects-grid { grid-template-columns: 1fr; gap: 29px; }
+  .project-card:nth-child(even) { margin-top: 0; }
+  .project-visual { height: 265px; }
+  .project-code { top: 195px; font-size: 55px; }
+  .project-copy { padding-top: 21px; }
+  .project-card h3 { font-size: 31px; }
+  .project-meta { top: 17px; left: 18px; right: 18px; }
+  .model-card { padding-top: 31px; }
+  #model .section-kicker { top: 45px; }
+  .model-copy h2 { font-size: 48px; }
+  .model-copy .eyebrow { font-size: 9px; }
+  pre { font-size: 10px; padding: 29px 15px 35px; line-height: 2; }
+  .code-top { padding: 12px 15px; }
+  .closing { min-height: 610px; padding-top: 99px; padding-bottom: 93px; }
+  .closing h2 { font-size: clamp(32px,8.1vw,49px); line-height: 1.53; }
+  .closing p:not(.eyebrow) { font-size: 11px; }
+  .closing .eyebrow { font-size: 8px; letter-spacing: .1em; }
+  .closing-geometry { width: 640px; max-width: none; height: 640px; opacity: .36; }
+  footer { min-height: 98px; flex-direction: column; align-items: flex-start; justify-content: center; gap: 12px; font-size: 8px; }
+}
+@media(max-width:360px) {
+  :root { --gutter: 19px; }
+  .hero-actions .button { font-size: 9px; padding-inline: 14px; }
+  .learning-seal { width: 92px; height: 92px; top: 21px; }
+  .learning-summary > strong { font-size: 43px; }
+  .learning-item h3 { font-size: 12px; }
+  .principle { grid-template-columns: 1fr 82px; }
+  .principle-symbol { width: 80px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  html { scroll-behavior: auto; }
+  *,*::before,*::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .js-reveal .reveal:not(.is-visible) { opacity: 1; transform: none; }
+}
+@media print {
+  :root { --gutter: 20px; }
+  .site-header { position: static; } .nav-links,.nav-toggle,.motion-control,.scroll-progress { display: none !important; }
+  .hero { padding-top: 30px; } .section { padding-top: 30px !important; padding-bottom: 30px !important; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .learning-summary { position: static; } .project-card,.principle { break-inside: avoid; }
+  * { animation: none !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body::after { display: none; }
+}
+[hidden] { display: none !important; }
+#philosophy { isolation: isolate; }
+
+</style>
+</head>
+<body>
+<div aria-hidden="true" class="scroll-progress" id="scrollProgress"></div>
+<a class="skip-link" href="#main">本文へ移動</a>
+<header class="site-header" id="siteHeader">
+<div class="nav-wrap">
+<a aria-label="SOL HUMAN トップへ" class="brand" href="#top">
+<span aria-hidden="true" class="brand-mark"><svg fill="none" stroke="currentColor" stroke-width="1.15" viewbox="-36 -36 72 72"><circle cx="-12.000" cy="0.000" r="12.000"></circle><circle cx="-6.000" cy="10.392" r="12.000"></circle><circle cx="-6.000" cy="-10.392" r="12.000"></circle><circle cx="0.000" cy="0.000" r="12.000"></circle><circle cx="6.000" cy="10.392" r="12.000"></circle><circle cx="6.000" cy="-10.392" r="12.000"></circle><circle cx="12.000" cy="0.000" r="12.000"></circle><circle cx="0.000" cy="0.000" r="32.000"></circle></svg></span>
+<span>SOL / HUMAN</span>
+</a>
+<button aria-controls="navLinks" aria-expanded="false" class="nav-toggle" id="navToggle" type="button">Menu</button>
+<nav aria-label="主要ナビゲーション" class="nav-links" id="navLinks">
+<a href="#learning">Learning</a>
+<a href="#philosophy">Philosophy</a>
+<a href="#projects">Projects</a>
+<a href="#model">Model</a>
+<a class="nav-era" href="https://demimomi.github.io/demimomi/heisei_ver" rel="noopener noreferrer" target="_blank">平成ジャンプ ↗</a>
+<a href="https://demimomi.github.io/demimomi/patent.html" rel="noopener noreferrer" target="_blank">Patent</a>
+<a href="https://demimomi.github.io/demimomi/moon.html" rel="noopener noreferrer" target="_blank">Moon ↗</a>
+</nav>
+</div>
+</header>
+<main id="main">
+<section aria-labelledby="hero-title" class="section hero" id="top">
+<div class="hero-copy reveal">
+<div aria-label="demimomi — Earth, intelligence and human" class="earth-wordmark">
+<span aria-hidden="true" class="earth-glyph"></span>
+<span class="earth-name">demimomi</span>
+</div>
+<p class="eyebrow">Human-centered intelligence</p>
+<h1 id="hero-title">AIは、<br/><span class="hero-accent">阿迦奢。</span></h1>
+<p class="hero-lead">
+          AI、モビリティ、ITS、デジタルツイン。<br/>
+          モデルを作ったり、微睡んだり、徘徊したり、泥酔したり。<br/><br/>
+          サラリーマンに擬態しながら、<strong>世界と同期。</strong>
+</p>
+<div class="hero-actions">
+<a class="button primary" href="#projects">プロジェクトを見る <span aria-hidden="true">↓</span></a>
+<a class="button secondary" href="https://huggingface.co/demimomi" rel="noopener noreferrer" target="_blank">Research Profile ↗</a>
+</div>
+</div>
+<div class="hero-system reveal" data-delay="1" id="heroSystem"><div aria-hidden="true" class="art-frame"><canvas class="pond-canvas" id="pondCanvas"></canvas><svg aria-hidden="true" class="miroku-figure" focusable="false" preserveaspectratio="xMidYMid meet" viewbox="0 0 800 1000">
+<defs>
+<lineargradient id="gilt" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#f6e9bb"></stop><stop offset=".28" stop-color="#dfce95"></stop><stop offset=".62" stop-color="#b5ac7e"></stop><stop offset="1" stop-color="#829380"></stop></lineargradient>
+<lineargradient id="silk" x1=".1" x2=".9" y1="0" y2="1"><stop stop-color="#ddd0a4"></stop><stop offset=".47" stop-color="#b9b38a"></stop><stop offset="1" stop-color="#7b978b"></stop></lineargradient>
+<lineargradient id="face" x1="0" x2="1" y1="0" y2=".7"><stop stop-color="#f5e7b4"></stop><stop offset=".52" stop-color="#d9c794"></stop><stop offset="1" stop-color="#a69e77"></stop></lineargradient>
+<lineargradient id="petal" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#fff2d0"></stop><stop offset=".55" stop-color="#e0c5ac"></stop><stop offset="1" stop-color="#9eae99"></stop></lineargradient>
+<radialgradient id="aureole"><stop stop-color="#fff8d9" stop-opacity=".58"></stop><stop offset=".5" stop-color="#f8e7a7" stop-opacity=".28"></stop><stop offset="1" stop-color="#f8e7a7" stop-opacity="0"></stop></radialgradient>
+<filter height="120%" id="pigment" width="120%" x="-10%" y="-10%"><feturbulence basefrequency=".08 .13" numoctaves="3" result="noise" seed="137" type="fractalNoise"></feturbulence><fecolormatrix in="noise" type="saturate" values="0"></fecolormatrix><fecomposite in2="SourceGraphic" operator="in" result="grain"></fecomposite><feblend in="SourceGraphic" in2="grain" mode="soft-light"></feblend></filter>
+<filter height="110%" id="brush-edge" width="110%" x="-5%" y="-5%"><feturbulence basefrequency=".037" numoctaves="2" result="n" seed="36"></feturbulence><fedisplacementmap in="SourceGraphic" in2="n" scale="2" xchannelselector="R" ychannelselector="G"></fedisplacementmap></filter>
+</defs>
+<ellipse cx="412" cy="359" fill="url(#aureole)" rx="226" ry="256"></ellipse>
+<g fill="none" opacity=".64" stroke="#f4eac4" stroke-width="1.1">
+<circle cx="420" cy="306" r="118"></circle><circle cx="420" cy="306" r="124"></circle><circle cx="420" cy="306" r="153" stroke-width=".65"></circle>
+<path d="M420 139v26m-13-13h26"></path>
+</g>
+<g filter="url(#brush-edge)">
+<!-- The pensive posture is drawn with paths, not a photo or an external asset. -->
+<g filter="url(#pigment)">
+<path d="M350 595C365 561 458 558 494 594L525 646 492 798Q474 833 420 847L326 789 306 666Z" fill="url(#silk)"></path>
+<path d="M350 617Q330 680 352 759L369 824Q359 852 382 861L417 861Q430 851 414 835L405 748 437 642Z" fill="url(#gilt)"></path>
+<path d="M382 645Q399 711 398 776L403 823Q421 837 456 832Q469 836 468 846C449 860 400 866 384 852L370 775 350 678Z" fill="url(#silk)"></path>
+<path d="M403 353L402 388Q397 396 380 404Q414 429 455 397L438 387 436 351Z" fill="url(#face)"></path>
+<path d="M382 397C363 408 354 440 361 471Q369 516 382 555Q417 578 466 544L477 454Q478 409 451 395C431 412 406 413 382 397Z" fill="url(#gilt)"></path>
+<path d="M449 405C473 436 462 475 454 502Q441 529 436 549L463 548Q480 505 482 461Q483 426 460 403Z" fill="#899980" opacity=".35"></path>
+<path d="M379 550Q419 568 465 539L473 568Q422 588 376 570Z" fill="#d6c499"></path>
+<path d="M390 557C359 550 334 536 310 549C283 560 282 588 309 605C334 620 385 633 432 638L458 617C414 603 369 594 342 574Q379 593 416 593Z" fill="url(#gilt)"></path>
+<path d="M430 620C452 617 478 596 490 601Q500 608 488 622L468 641Q449 645 428 637Z" fill="url(#face)"></path>
+<path d="M460 399Q481 405 487 443L483 494C477 516 450 543 425 560L383 579Q372 582 366 574C365 568 380 560 392 555L431 535 459 489 465 445 452 415Z" fill="url(#gilt)"></path>
+<path d="M380 406C365 404 351 421 341 448L317 508Q313 521 325 526Q337 529 343 512L365 457 390 425Z" fill="url(#face)"></path>
+<path d="M315 506C310 491 322 463 337 436L367 378 381 345Q385 336 390 340L388 361 379 388 361 449 340 510Q327 531 318 520Z" fill="url(#face)"></path>
+<path d="M367 380L372 355 376 336Q377 329 381 331L382 350 387 331Q388 326 392 330L390 348 393 340Q398 336 399 341L392 359 385 372 380 385Z" fill="url(#face)"></path>
+<g transform="rotate(-8 419 306)">
+<path d="M379 291C375 269 391 249 420 249C451 249 468 271 463 306L455 330C451 351 432 369 417 369C400 366 382 346 380 326Z" fill="url(#face)"></path>
+<path d="M459 297Q475 289 470 313Q469 331 456 341L458 319Z" fill="#bdba8a"></path>
+<path d="M381 298Q369 291 372 310Q373 327 383 332Z" fill="#ded4a4"></path>
+<path d="M381 281Q417 263 461 281L459 264Q420 246 383 265Z" fill="#b8b17f"></path>
+<path d="M384 267L381 237 398 248 417 218 434 246 457 235 458 266Q420 252 384 267Z" fill="url(#gilt)"></path>
+<path d="M385 259Q420 248 457 259M389 245L396 255 417 231 435 255 451 244" fill="none" stroke="#f4e7b6" stroke-width="2.2"></path>
+<path d="M416 238q-9 10 0 16q9-7 0-16Z" fill="#b3a674"></path>
+<path d="M391 311q11 6 20 0m13 0q11 6 20-1" fill="none" stroke="#777d62" stroke-linecap="round" stroke-width="1.7"></path>
+<path d="M413 310l-3 18q5 5 11 0M408 342q12 6 22-2" fill="none" stroke="#91835f" stroke-linecap="round" stroke-width="1.3"></path>
+<path d="M390 301q10-5 20 0m14-1q10-5 20-2" fill="none" stroke="#a3996c" stroke-width="1.5"></path>
+<circle cx="417" cy="292" fill="#fdf1c8" r="2.1"></circle>
+</g>
+</g>
+<g fill="none" stroke-linecap="round">
+<path d="M391 413Q418 439 446 409M390 424Q418 449 446 420" opacity=".8" stroke="#f4e5b5" stroke-width="1.8"></path>
+<path d="M404 449Q401 492 415 516M410 525q11 5 19-1" opacity=".45" stroke="#9d9b70" stroke-width="1.2"></path>
+<path d="M385 559q30 21 73-7M376 573q35 21 91-9M341 607q19 25 36 30M331 635q12 87 43 145M346 643q14 96 43 144M444 651q-17 64-13 126M459 650q-15 67-11 118M476 649q-9 54-9 85" opacity=".53" stroke="#f0ddb0" stroke-width="1.5"></path>
+<path d="M321 571Q354 599 421 621M376 578l15-6m-8 7 14-6" opacity=".65" stroke="#938e65" stroke-width="1.15"></path>
+<path d="M406 844l-1 11m8-10v10m8-11v9m7-10v8" stroke="#929778" stroke-width="1.1"></path>
+</g>
+</g>
+<g fill="url(#petal)" opacity=".86" stroke="#e5dab9" stroke-width=".8">
+<path d="M408 897Q322 901 267 847Q358 836 408 897Z"></path>
+<path d="M410 894Q344 866 341 818Q408 836 410 894Z"></path>
+<path d="M410 891Q378 846 410 803Q439 849 410 891Z"></path>
+<path d="M412 894Q415 838 480 820Q478 866 412 894Z"></path>
+<path d="M412 897Q468 838 553 849Q496 901 412 897Z"></path>
+<path d="M410 901Q316 886 296 869Q372 866 410 901Z"></path>
+<path d="M410 901Q448 866 526 869Q503 889 410 901Z"></path>
+</g>
+<ellipse cx="411" cy="908" fill="none" opacity=".7" rx="153" ry="11" stroke="#ede7c7" stroke-width="1"></ellipse>
+</svg><canvas class="pond-canvas" id="photonCanvas"></canvas></div><div aria-hidden="true" class="geometry-orbit"><svg fill="none" focusable="false" stroke="currentColor" stroke-width=".8" viewbox="0 0 800 1000"><g transform="translate(400 447)">
+<g opacity=".55"><circle cx="0.000" cy="0.000" r="370.000"></circle><circle cx="0.000" cy="0.000" r="350.000"></circle><circle cx="0.000" cy="0.000" r="306.000"></circle></g>
+<g class="slow-orbit" opacity=".55" style="transform-origin:0px 0px"><path d="M358.000 0.000L370.000 0.000"></path><path d="M364.616 16.734L369.611 16.963"></path><path d="M363.466 33.433L368.445 33.891"></path><path d="M361.551 50.061L366.503 50.747"></path><path d="M358.875 66.585L363.791 67.497"></path><path d="M355.445 82.968L360.314 84.104"></path><path d="M351.268 99.176L356.080 100.535"></path><path d="M346.351 115.177L351.096 116.754"></path><path d="M340.707 130.935L345.374 132.728"></path><path d="M327.934 143.609L338.926 148.423"></path><path d="M327.281 161.592L331.765 163.805"></path><path d="M319.529 176.427L323.906 178.843"></path><path d="M311.104 190.890L315.366 193.505"></path><path d="M302.025 204.953L306.163 207.760"></path><path d="M292.312 218.584L296.316 221.578"></path><path d="M281.983 231.756L285.846 234.930"></path><path d="M271.061 244.440L274.774 247.788"></path><path d="M259.569 256.610L263.125 260.125"></path><path d="M242.785 263.096L250.923 271.915"></path><path d="M234.973 279.307L238.192 283.133"></path><path d="M221.921 289.786L224.961 293.756"></path><path d="M208.402 299.656L211.257 303.761"></path><path d="M194.445 308.895L197.108 313.127"></path><path d="M180.078 317.485L182.545 321.834"></path><path d="M165.334 325.407L167.598 329.865"></path><path d="M150.241 332.645L152.299 337.202"></path><path d="M134.832 339.183L136.679 343.830"></path><path d="M116.855 338.392L120.772 349.734"></path><path d="M103.197 350.108L104.611 354.904"></path><path d="M87.038 354.471L88.230 359.326"></path><path d="M70.695 358.088L71.663 362.994"></path><path d="M54.203 360.953L54.946 365.897"></path><path d="M37.598 363.058L38.113 368.032"></path><path d="M20.913 364.400L21.200 369.392"></path><path d="M4.185 364.976L4.242 369.976"></path><path d="M-12.552 364.784L-12.724 369.781"></path><path d="M-28.702 356.848L-29.664 368.809"></path><path d="M-45.913 362.101L-46.542 367.061"></path><path d="M-62.466 359.615L-63.321 364.541"></path><path d="M-78.887 356.373L-79.968 361.255"></path><path d="M-95.143 352.382L-96.446 357.209"></path><path d="M-111.198 347.649L-112.721 352.412"></path><path d="M-127.020 342.186L-128.760 346.873"></path><path d="M-142.574 336.002L-144.527 340.605"></path><path d="M-157.829 329.113L-159.991 333.621"></path><path d="M-169.438 315.364L-175.118 325.935"></path><path d="M-187.311 313.272L-189.877 317.564"></path><path d="M-201.476 304.355L-204.236 308.525"></path><path d="M-215.218 294.798L-218.166 298.837"></path><path d="M-228.507 284.621L-231.638 288.520"></path><path d="M-241.316 273.846L-244.622 277.597"></path><path d="M-253.617 262.494L-257.091 266.090"></path><path d="M-265.385 250.591L-269.020 254.024"></path><path d="M-276.595 238.160L-280.384 241.423"></path><path d="M-281.714 220.910L-291.157 228.314"></path><path d="M-297.247 211.824L-301.319 214.726"></path><path d="M-306.645 197.974L-310.846 200.686"></path><path d="M-315.399 183.707L-319.720 186.223"></path><path d="M-323.490 169.054L-327.922 171.369"></path><path d="M-330.901 154.045L-335.433 156.155"></path><path d="M-337.615 138.712L-342.240 140.612"></path><path d="M-343.620 123.088L-348.327 124.774"></path><path d="M-348.901 107.205L-353.681 108.673"></path><path d="M-346.671 89.349L-358.291 92.344"></path><path d="M-357.254 74.796L-362.148 75.820"></path><path d="M-360.308 58.338L-365.243 59.137"></path><path d="M-362.603 41.758L-367.571 42.330"></path><path d="M-364.137 25.090L-369.125 25.434"></path><path d="M-364.904 8.369L-369.903 8.484"></path><path d="M-364.904 -8.369L-369.903 -8.484"></path><path d="M-364.137 -25.090L-369.125 -25.434"></path><path d="M-362.603 -41.758L-367.571 -42.330"></path><path d="M-353.398 -57.219L-365.243 -59.137"></path><path d="M-357.254 -74.796L-362.148 -75.820"></path><path d="M-353.449 -91.096L-358.291 -92.344"></path><path d="M-348.901 -107.205L-353.681 -108.673"></path><path d="M-343.620 -123.088L-348.327 -124.774"></path><path d="M-337.615 -138.712L-342.240 -140.612"></path><path d="M-330.901 -154.045L-335.433 -156.155"></path><path d="M-323.490 -169.054L-327.922 -171.369"></path><path d="M-315.399 -183.707L-319.720 -186.223"></path><path d="M-300.765 -194.177L-310.846 -200.686"></path><path d="M-297.247 -211.824L-301.319 -214.726"></path><path d="M-287.223 -225.229L-291.157 -228.314"></path><path d="M-276.595 -238.160L-280.384 -241.423"></path><path d="M-265.385 -250.591L-269.020 -254.024"></path><path d="M-253.617 -262.494L-257.091 -266.090"></path><path d="M-241.316 -273.846L-244.622 -277.597"></path><path d="M-228.507 -284.621L-231.638 -288.520"></path><path d="M-215.218 -294.798L-218.166 -298.837"></path><path d="M-197.612 -298.519L-204.236 -308.525"></path><path d="M-187.311 -313.272L-189.877 -317.564"></path><path d="M-172.751 -321.531L-175.118 -325.935"></path><path d="M-157.829 -329.113L-159.991 -333.621"></path><path d="M-142.574 -336.002L-144.527 -340.605"></path><path d="M-127.020 -342.186L-128.760 -346.873"></path><path d="M-111.198 -347.649L-112.721 -352.412"></path><path d="M-95.143 -352.382L-96.446 -357.209"></path><path d="M-78.887 -356.373L-79.968 -361.255"></path><path d="M-61.268 -352.718L-63.321 -364.541"></path><path d="M-45.913 -362.101L-46.542 -367.061"></path><path d="M-29.263 -363.825L-29.664 -368.809"></path><path d="M-12.552 -364.784L-12.724 -369.781"></path><path d="M4.185 -364.976L4.242 -369.976"></path><path d="M20.913 -364.400L21.200 -369.392"></path><path d="M37.598 -363.058L38.113 -368.032"></path><path d="M54.203 -360.953L54.946 -365.897"></path><path d="M70.695 -358.088L71.663 -362.994"></path><path d="M85.368 -347.673L88.230 -359.326"></path><path d="M103.197 -350.108L104.611 -354.904"></path><path d="M119.140 -345.008L120.772 -349.734"></path><path d="M134.832 -339.183L136.679 -343.830"></path><path d="M150.241 -332.645L152.299 -337.202"></path><path d="M165.334 -325.407L167.598 -329.865"></path><path d="M180.078 -317.485L182.545 -321.834"></path><path d="M194.445 -308.895L197.108 -313.127"></path><path d="M208.402 -299.656L211.257 -303.761"></path><path d="M217.665 -284.229L224.961 -293.756"></path><path d="M234.973 -279.307L238.192 -283.133"></path><path d="M247.532 -268.241L250.923 -271.915"></path><path d="M259.569 -256.610L263.125 -260.125"></path><path d="M271.061 -244.440L274.774 -247.788"></path><path d="M281.983 -231.756L285.846 -234.930"></path><path d="M292.312 -218.584L296.316 -221.578"></path><path d="M302.025 -204.953L306.163 -207.760"></path><path d="M311.104 -190.890L315.366 -193.505"></path><path d="M313.401 -173.043L323.906 -178.843"></path><path d="M327.281 -161.592L331.765 -163.805"></path><path d="M334.346 -146.417L338.926 -148.423"></path><path d="M340.707 -130.935L345.374 -132.728"></path><path d="M346.351 -115.177L351.096 -116.754"></path><path d="M351.268 -99.176L356.080 -100.535"></path><path d="M355.445 -82.968L360.314 -84.104"></path><path d="M358.875 -66.585L363.791 -67.497"></path><path d="M361.551 -50.061L366.503 -50.747"></path><path d="M356.495 -32.792L368.445 -33.891"></path><path d="M364.616 -16.734L369.611 -16.963"></path></g>
+<g opacity=".31"><circle cx="-206.000" cy="0.000" r="103.000"></circle><circle cx="-154.500" cy="89.201" r="103.000"></circle><circle cx="-103.000" cy="178.401" r="103.000"></circle><circle cx="-154.500" cy="-89.201" r="103.000"></circle><circle cx="-103.000" cy="0.000" r="103.000"></circle><circle cx="-51.500" cy="89.201" r="103.000"></circle><circle cx="0.000" cy="178.401" r="103.000"></circle><circle cx="-103.000" cy="-178.401" r="103.000"></circle><circle cx="-51.500" cy="-89.201" r="103.000"></circle><circle cx="0.000" cy="0.000" r="103.000"></circle><circle cx="51.500" cy="89.201" r="103.000"></circle><circle cx="103.000" cy="178.401" r="103.000"></circle><circle cx="0.000" cy="-178.401" r="103.000"></circle><circle cx="51.500" cy="-89.201" r="103.000"></circle><circle cx="103.000" cy="0.000" r="103.000"></circle><circle cx="154.500" cy="89.201" r="103.000"></circle><circle cx="103.000" cy="-178.401" r="103.000"></circle><circle cx="154.500" cy="-89.201" r="103.000"></circle><circle cx="206.000" cy="0.000" r="103.000"></circle></g>
+<g opacity=".28"><path d="M0-306L265 153H-265ZM0 306L-265-153H265Z"></path></g>
+<g opacity=".72"><circle cx="0.000" cy="-370.000" fill="#eadfbc" r="4.000"></circle><circle cx="320.000" cy="183.000" fill="#e8d59e" r="4.000"></circle><circle cx="-304.000" cy="-169.000" fill="#eeead8" r="3.000"></circle></g>
+</g></svg></div><i aria-hidden="true" class="art-cross one"></i><i aria-hidden="true" class="art-cross two"></i>
+
+
+<div class="hero-note"><strong>SOL = Source of Life</strong>太陽っぽいけど、卵黄でもあるというフラクタルWorld。</div>
+<div class="hero-coordinate">TOKYO / EARTH / HUMAN</div>
+<button aria-label="アニメーションを一時停止" aria-pressed="false" class="motion-control" hidden="" id="motionControl" title="アニメーションを一時停止" type="button"><svg aria-hidden="true" viewbox="0 0 16 16"><g class="pause-shape" fill="currentColor"><path d="M4 2h2v12H4zm6 0h2v12h-2z"></path></g><path class="play-shape" d="M4 2l10 6-10 6z" fill="currentColor"></path></svg></button></div>
+</section>
+<div aria-hidden="true" class="signal-strip">
+<div class="signal-window">
+<div class="signal-track">
+<div class="signal-group">
+<span>AI Research</span><span>Human Mobility</span><span>Digital Twin</span><span>Safety by Design</span><span>Open Intelligence</span><span>Physical AI</span>
+</div>
+<div class="signal-group">
+<span>AI Research</span><span>Human Mobility</span><span>Digital Twin</span><span>Safety by Design</span><span>Open Intelligence</span><span>Physical AI</span>
+</div>
+</div>
+</div>
+</div>
+<section aria-labelledby="learning-title" class="section" id="learning">
+<span aria-hidden="true" class="section-kicker">01</span>
+<div class="section-heading reveal">
+<div>
+<p class="eyebrow">Learning in public</p>
+<h2 id="learning-title">学びは、<br/>記憶と記録。</h2>
+</div>
+<p>記憶と記録をアップロードしてダウンロードする媒体としての活動。学びを履歴ではなく、次の探索へつながる軌道として残す。</p>
+</div>
+<div class="learning-shell reveal">
+<div class="learning-summary">
+<strong>2024—26</strong>
+<span>9 courses</span>
+<span>Completed 7 / In progress 2</span>
+<a class="learning-link" href="./llm.html">全履歴を見る →</a>
+<svg aria-hidden="true" class="learning-seal" fill="none" focusable="false" stroke="currentColor" stroke-width=".7" viewbox="-125 -125 250 250"><circle cx="0.000" cy="0.000" r="104.000"></circle><circle cx="0.000" cy="0.000" r="95.000"></circle><g opacity=".62"><circle cx="-64.000" cy="0.000" r="32.000"></circle><circle cx="-48.000" cy="27.713" r="32.000"></circle><circle cx="-32.000" cy="55.426" r="32.000"></circle><circle cx="-48.000" cy="-27.713" r="32.000"></circle><circle cx="-32.000" cy="0.000" r="32.000"></circle><circle cx="-16.000" cy="27.713" r="32.000"></circle><circle cx="0.000" cy="55.426" r="32.000"></circle><circle cx="-32.000" cy="-55.426" r="32.000"></circle><circle cx="-16.000" cy="-27.713" r="32.000"></circle><circle cx="0.000" cy="0.000" r="32.000"></circle><circle cx="16.000" cy="27.713" r="32.000"></circle><circle cx="32.000" cy="55.426" r="32.000"></circle><circle cx="0.000" cy="-55.426" r="32.000"></circle><circle cx="16.000" cy="-27.713" r="32.000"></circle><circle cx="32.000" cy="0.000" r="32.000"></circle><circle cx="48.000" cy="27.713" r="32.000"></circle><circle cx="32.000" cy="-55.426" r="32.000"></circle><circle cx="48.000" cy="-27.713" r="32.000"></circle><circle cx="64.000" cy="0.000" r="32.000"></circle></g><circle cx="0.000" cy="-104.000" fill="currentColor" r="3.300"></circle><circle cx="66.850" cy="-79.669" fill="currentColor" r="3.300"></circle><circle cx="102.420" cy="-18.059" fill="currentColor" r="3.300"></circle><circle cx="90.067" cy="52.000" fill="currentColor" r="3.300"></circle><circle cx="35.570" cy="97.728" fill="currentColor" r="3.300"></circle><circle cx="-35.570" cy="97.728" fill="currentColor" r="3.300"></circle><circle cx="-90.067" cy="52.000" fill="currentColor" r="3.300"></circle><circle cx="-102.420" cy="-18.059" fill="var(--paper)" r="3.300"></circle><circle cx="-66.850" cy="-79.669" fill="var(--paper)" r="3.300"></circle></svg></div>
+<div aria-label="講義履歴抜粋" class="learning-list">
+<a class="learning-item" href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" rel="noopener noreferrer" target="_blank">
+<div><h3>大規模言語モデル 応用編 2024</h3><small>LLM APPLIED / 2024</small></div>
+<div class="learning-facts"><span><strong>4,000</strong> participants</span><span><strong>1,200</strong> completed</span><span>Competition <strong>47th</strong></span></div>
+</a>
+<a class="learning-item" href="https://huggingface.co/demimomi/u-tokyo-sbintuitions-sarashina2.2-0.5b" rel="noopener noreferrer" target="_blank">
+<div><h3>大規模言語モデル 基礎編 2025</h3><small>LLM FUNDAMENTALS / 2025</small></div>
+<div class="learning-facts"><span><strong>4,000</strong> participants</span><span><strong>1,876</strong> completed</span></div>
+</a>
+<a class="learning-item" href="https://demimomi.github.io/demimomi/cat.html" rel="noopener noreferrer" target="_blank">
+<div><h3>実践 Bridge編 2025</h3><small>PRACTICAL BRIDGE / 2025</small></div>
+<div class="learning-facts"><span><strong>900</strong> participants</span><span>Hands-on</span></div>
+</a>
+<a class="learning-item" href="https://huggingface.co/demimomi/44taomax-qwen3-4b-structured-output-lora" rel="noopener noreferrer" target="_blank">
+<div><h3>大規模言語モデル 応用編 2025</h3><small>LLM APPLIED / 2025</small></div>
+<div class="learning-facts"><span><strong>3,800</strong> participants</span><span><strong>1,046</strong> completed</span><span>Competition <strong>627th</strong></span></div>
+</a>
+<a class="learning-item" href="https://demimomi.github.io/demimomi/deep_learning.html" rel="noopener noreferrer" target="_blank">
+<div><h3>Deep Learning 基礎編 2026</h3><small>DEEP LEARNING / 2026</small></div>
+<div class="learning-facts"><span><strong>2,281</strong> participants</span><span>Competition <strong>7th</strong> *</span></div>
+</a>
+<a class="learning-item is-featured" href="https://huggingface.co/demimomi/UTokyo-MatsuoLab-PhysicalAI-Fundamentals-Spring-2026" rel="noopener noreferrer" target="_blank">
+<div><h3>Physical AI 基礎編 2026 <span class="learning-badge">NOW</span></h3><small>PHYSICAL AI FUNDAMENTALS / 2026</small></div>
+<div class="learning-facts"><span><strong>SmolVLA</strong></span><span>VLA / Robotics</span><span>LIBERO-Spatial</span></div>
+</a>
+<a class="learning-item is-featured" href="https://demimomi.github.io/demimomi/2026%E5%B9%B4%20%E5%A4%A7%E8%A6%8F%E6%A8%A1%E8%A8%80%E8%AA%9E%E3%83%A2%E3%83%87%E3%83%AB%E8%AC%9B%E5%BA%A7%201.jpg" rel="noopener noreferrer" target="_blank">
+<div><h3>大規模言語モデルⅠ 2026 <span class="learning-badge">NOW</span></h3><small>Large Language Models / 2026</small></div>
+<div class="learning-facts"><span><strong>Test-Time Compute Scaling</strong></span><span>DPO</span><span>Agentic Workflowsspan</span></div>
+</a>
+</div>
+</div>
+</section>
+<section aria-labelledby="philosophy-title" class="section" id="philosophy">
+<span aria-hidden="true" class="section-kicker">02</span>
+<div class="section-heading reveal">
+<div>
+<p class="eyebrow">Design principles</p>
+<h2 id="philosophy-title">Tera-scale.<br/>Human-close.</h2>
+</div>
+<p>大規模モデルや都市規模のシステムであっても、価値が生まれる場所は人の判断と行動。「理解できる」「信頼できる」「参加したくなる」を、すべての設計の起点。</p>
+</div>
+<div class="principles">
+<article class="principle reveal">
+<span class="principle-index">01 / CLARITY</span><svg aria-hidden="true" class="principle-symbol" fill="none" focusable="false" stroke="currentColor" stroke-width=".8" viewbox="-80 -70 160 140"><circle cx="-28.000" cy="0.000" r="28.000"></circle><circle cx="-14.000" cy="24.249" r="28.000"></circle><circle cx="-14.000" cy="-24.249" r="28.000"></circle><circle cx="0.000" cy="0.000" r="28.000"></circle><circle cx="14.000" cy="24.249" r="28.000"></circle><circle cx="14.000" cy="-24.249" r="28.000"></circle><circle cx="28.000" cy="0.000" r="28.000"></circle><circle cx="0.000" cy="0.000" r="60.000"></circle></svg>
+<h3>複雑さを、明快さへ</h3>
+<p>専門性を損なわず、初見でも価値が伝わる情報設計。技術の凄さより、変化の意味を前面に。</p>
+</article>
+<article class="principle reveal" data-delay="1">
+<span class="principle-index">02 / TRUST</span><svg aria-hidden="true" class="principle-symbol" fill="none" focusable="false" stroke="currentColor" stroke-width=".8" viewbox="-80 -70 160 140"><circle cx="-24.000" cy="0.000" r="46.000"></circle><circle cx="24.000" cy="0.000" r="46.000"></circle><path d="M0-39.2L-68 0 0 39.2 68 0Z"></path></svg>
+<h3>驚きより、信頼を残す</h3>
+<p>過剰な刺激ではなく、静かな動き、余白、実績への導線によって、長く効く印象をつくる。</p>
+</article>
+<article class="principle is-irony reveal" data-delay="2">
+<span class="principle-index">03 / REALITY CHECK</span><svg aria-hidden="true" class="principle-symbol" fill="none" focusable="false" stroke="currentColor" stroke-width=".8" viewbox="-80 -70 160 140"><circle cx="0.000" cy="0.000" r="60.000"></circle><path d="M0-58L50 29H-50ZM0 58L-50-29H50ZM0-58V58M-50-29L50 29M50-29L-50 29"></path></svg>
+<h3>胡蝶の夢から、HelloWorld！</h3>
+<p>「夢と現実の境界が曖昧な意識状態」から、「Hello World」が表す「新たなデジタル世界での自己の存在証明・始動」への意識の変遷。</p>
+<span class="aside">※ 現世と虚無のあいだからのWow信号</span>
+</article>
+</div>
+</section>
+<section aria-labelledby="projects-title" class="section" id="projects">
+<span aria-hidden="true" class="section-kicker">03</span>
+<div class="section-heading reveal">
+<div>
+<p class="eyebrow">Selected work</p>
+<h2 id="projects-title">Ideas in motion.</h2>
+</div>
+<p>研究、社会実装、オープンソースを、ひとつのストーリーとして見せるプロジェクト群。静止画ではなく、動いている途中を置く。</p>
+</div>
+<div class="projects-grid">
+<a class="project-card reveal" href="https://demimomi.github.io/demimomi/deep_learning.html" rel="noopener noreferrer" style="--accent:#9cb9a0" target="_blank"><div aria-hidden="true" class="project-visual"><canvas class="folio-canvas" data-palette="0"></canvas><svg fill="none" focusable="false" stroke="currentColor" stroke-width=".9" viewbox="0 0 600 320"><g transform="translate(300 160)"><circle cx="-49.000" cy="0.000" r="49.000"></circle><circle cx="-24.500" cy="42.435" r="49.000"></circle><circle cx="-24.500" cy="-42.435" r="49.000"></circle><circle cx="0.000" cy="0.000" r="49.000"></circle><circle cx="24.500" cy="42.435" r="49.000"></circle><circle cx="24.500" cy="-42.435" r="49.000"></circle><circle cx="49.000" cy="0.000" r="49.000"></circle><circle cx="0.000" cy="0.000" r="119.000"></circle><ellipse rx="169" ry="48" transform="rotate(-24)"></ellipse><circle cx="98.000" cy="0.000" fill="#faf1d1" r="3.500"></circle><circle cx="49.000" cy="84.870" fill="#faf1d1" r="3.500"></circle><circle cx="-49.000" cy="84.870" fill="#faf1d1" r="3.500"></circle><circle cx="-98.000" cy="0.000" fill="#faf1d1" r="3.500"></circle><circle cx="-49.000" cy="-84.870" fill="#faf1d1" r="3.500"></circle><circle cx="49.000" cy="-84.870" fill="#faf1d1" r="3.500"></circle></g></svg></div>
+<div class="project-meta"><span class="project-tag">Deep Learning</span><span aria-hidden="true" class="arrow">↗</span></div>
+<div class="project-copy"><h3>Deep Learning Lab</h3><p>学習・実験・発見をつなぐ、実践的なAI研究の入り口。</p></div>
+<span aria-hidden="true" class="project-code">DL</span>
+</a>
+<a class="project-card reveal" data-delay="1" href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" rel="noopener noreferrer" style="--accent:#93bacd" target="_blank"><div aria-hidden="true" class="project-visual"><canvas class="folio-canvas" data-palette="1"></canvas><svg fill="none" focusable="false" stroke="currentColor" stroke-width=".9" viewbox="0 0 600 320"><g transform="translate(300 160)"><circle cx="0.000" cy="0.000" r="98.000"></circle><circle cx="0.000" cy="0.000" r="102.000"></circle><path d="M54.00 0.00 L55.99 2.57 L57.74 5.31 L59.15 8.19 L60.12 11.15 L60.57 14.14 L60.47 17.07 L59.78 19.88 L58.52 22.49 L56.73 24.84 L54.47 26.90 L51.85 28.63 L48.94 30.03 L45.87 31.13 L42.75 31.97 L39.68 32.61 L36.74 33.13 L34.01 33.62 L31.53 34.17 L29.33 34.87 L27.40 35.78 L25.72 36.98 L24.24 38.50 L22.88 40.35 L21.59 42.50 L20.29 44.92 L18.90 47.54 L17.36 50.26 L15.62 52.98 L13.65 55.58 L11.44 57.94 L9.00 59.94 L6.37 61.50 L3.59 62.53 L0.72 62.98 L-2.16 62.83 L-4.99 62.08 L-7.71 60.78 L-10.25 58.99 L-12.57 56.79 L-14.66 54.30 L-16.51 51.63 L-18.15 48.90 L-19.61 46.21 L-20.95 43.68 L-22.24 41.39 L-23.55 39.38 L-24.96 37.70 L-26.53 36.35 L-28.33 35.29 L-30.40 34.49 L-32.74 33.88 L-35.34 33.37 L-38.19 32.88 L-41.20 32.31 L-44.31 31.58 L-47.42 30.62 L-50.42 29.37 L-53.20 27.80 L-55.65 25.91 L-57.68 23.70 L-59.22 21.21 L-60.19 18.50 L-60.59 15.62 L-60.41 12.65 L-59.70 9.67 L-58.49 6.74 L-56.90 3.92 L-55.02 1.26 L-52.96 -1.21 L-50.84 -3.50 L-48.80 -5.62 L-46.92 -7.60 L-45.29 -9.48 L-43.99 -11.34 L-43.04 -13.23 L-42.46 -15.21 L-42.21 -17.34 L-42.26 -19.67 L-42.52 -22.22 L-42.90 -24.99 L-43.31 -27.96 L-43.64 -31.10 L-43.79 -34.33 L-43.66 -37.59 L-43.18 -40.77 L-42.31 -43.79 L-41.01 -46.53 L-39.28 -48.92 L-37.15 -50.88 L-34.66 -52.36 L-31.88 -53.31 L-28.88 -53.75 L-25.75 -53.70 L-22.58 -53.21 L-19.43 -52.35 L-16.39 -51.24 L-13.49 -49.96 L-10.77 -48.65 L-8.24 -47.42 L-5.88 -46.36 L-3.67 -45.57 L-1.55 -45.11 L0.52 -45.01 L2.60 -45.29 L4.76 -45.93 L7.04 -46.86 L9.48 -48.02 L12.11 -49.31 L14.92 -50.61 L17.90 -51.82 L21.00 -52.82 L24.16 -53.50 L27.33 -53.78 L30.40 -53.60 L33.30 -52.90 L35.94 -51.68 L38.26 -49.96 L40.19 -47.78 L41.71 -45.20 L42.80 -42.31 L43.47 -39.20 L43.76 -35.97 L43.74 -32.71 L43.49 -29.51 L43.11 -26.45 L42.70 -23.58 L42.37 -20.92 L42.20 -18.48 L42.30 -16.25 L42.71 -14.20 L43.47 -12.27 L44.60 -10.41 L46.07 -8.55 L47.83 -6.62 L49.81 -4.58 L51.90 -2.38 L54.00 -0.00Z"></path><path d="M71.31 0.00 L72.92 3.35 L74.05 6.81 L74.64 10.33 L74.62 13.84 L73.99 17.27 L72.74 20.54 L70.93 23.59 L68.61 26.37 L65.88 28.85 L62.83 31.02 L59.59 32.90 L56.26 34.52 L52.96 35.94 L49.78 37.22 L46.78 38.45 L44.04 39.71 L41.56 41.09 L39.36 42.65 L37.40 44.45 L35.64 46.54 L34.02 48.92 L32.47 51.58 L30.89 54.46 L29.22 57.52 L27.39 60.65 L25.34 63.75 L23.04 66.71 L20.46 69.41 L17.61 71.73 L14.53 73.59 L11.25 74.89 L7.83 75.59 L4.34 75.67 L0.86 75.13 L-2.55 74.00 L-5.82 72.35 L-8.91 70.27 L-11.79 67.87 L-14.44 65.25 L-16.89 62.55 L-19.15 59.88 L-21.28 57.34 L-23.34 55.01 L-25.40 52.96 L-27.52 51.22 L-29.77 49.79 L-32.21 48.66 L-34.88 47.77 L-37.79 47.07 L-40.93 46.45 L-44.28 45.83 L-47.79 45.12 L-51.37 44.23 L-54.93 43.07 L-58.37 41.59 L-61.58 39.76 L-64.46 37.54 L-66.91 34.97 L-68.85 32.05 L-70.24 28.86 L-71.03 25.44 L-71.24 21.89 L-70.89 18.27 L-70.05 14.67 L-68.79 11.14 L-67.21 7.74 L-65.45 4.51 L-63.60 1.46 L-61.79 -1.42 L-60.13 -4.14 L-58.70 -6.76 L-57.57 -9.32 L-56.78 -11.89 L-56.32 -14.52 L-56.19 -17.26 L-56.33 -20.18 L-56.66 -23.28 L-57.10 -26.58 L-57.53 -30.07 L-57.86 -33.70 L-57.97 -37.43 L-57.78 -41.17 L-57.20 -44.85 L-56.17 -48.36 L-54.67 -51.62 L-52.68 -54.53 L-50.24 -57.02 L-47.39 -59.03 L-44.19 -60.53 L-40.73 -61.52 L-37.08 -62.02 L-33.35 -62.07 L-29.61 -61.75 L-25.95 -61.14 L-22.41 -60.37 L-19.04 -59.53 L-15.86 -58.75 L-12.86 -58.11 L-10.02 -57.71 L-7.31 -57.62 L-4.65 -57.86 L-2.01 -58.45 L0.68 -59.36 L3.47 -60.54 L6.41 -61.93 L9.52 -63.41 L12.81 -64.88 L16.26 -66.23 L19.85 -67.33 L23.51 -68.08 L27.18 -68.38 L30.79 -68.18 L34.25 -67.42 L37.49 -66.09 L40.42 -64.21 L42.99 -61.82 L45.17 -58.98 L46.93 -55.79 L48.29 -52.33 L49.27 -48.71 L49.94 -45.04 L50.37 -41.40 L50.64 -37.87 L50.87 -34.52 L51.15 -31.38 L51.56 -28.47 L52.21 -25.78 L53.13 -23.27 L54.37 -20.90 L55.95 -18.60 L57.83 -16.33 L59.97 -14.00 L62.29 -11.56 L64.70 -8.96 L67.09 -6.17 L69.33 -3.18 L71.31 -0.00Z"></path><path d="M87.57 0.00 L88.39 4.06 L88.57 8.15 L88.10 12.20 L86.98 16.14 L85.26 19.90 L82.99 23.43 L80.28 26.70 L77.21 29.67 L73.92 32.37 L70.51 34.82 L67.11 37.05 L63.79 39.14 L60.65 41.16 L57.75 43.18 L55.11 45.29 L52.73 47.55 L50.60 50.03 L48.67 52.74 L46.87 55.71 L45.13 58.93 L43.36 62.35 L41.49 65.91 L39.43 69.52 L37.13 73.08 L34.54 76.47 L31.64 79.59 L28.43 82.33 L24.93 84.57 L21.18 86.25 L17.24 87.31 L13.17 87.73 L9.06 87.50 L4.97 86.66 L0.98 85.28 L-2.87 83.45 L-6.54 81.26 L-10.00 78.83 L-13.25 76.29 L-16.33 73.75 L-19.26 71.33 L-22.10 69.09 L-24.91 67.12 L-27.77 65.43 L-30.72 64.06 L-33.82 62.96 L-37.12 62.09 L-40.63 61.38 L-44.36 60.76 L-48.26 60.11 L-52.29 59.34 L-56.39 58.36 L-60.46 57.09 L-64.40 55.45 L-68.11 53.41 L-71.49 50.95 L-74.44 48.06 L-76.89 44.78 L-78.77 41.17 L-80.07 37.27 L-80.77 33.18 L-80.90 28.98 L-80.52 24.74 L-79.72 20.55 L-78.58 16.45 L-77.23 12.50 L-75.77 8.73 L-74.33 5.12 L-73.01 1.67 L-71.90 -1.65 L-71.06 -4.90 L-70.53 -8.12 L-70.32 -11.39 L-70.41 -14.74 L-70.75 -18.23 L-71.26 -21.89 L-71.85 -25.74 L-72.41 -29.75 L-72.83 -33.90 L-73.00 -38.15 L-72.83 -42.42 L-72.22 -46.63 L-71.13 -50.69 L-69.51 -54.51 L-67.36 -58.00 L-64.69 -61.09 L-61.56 -63.72 L-58.03 -65.85 L-54.17 -67.47 L-50.09 -68.61 L-45.88 -69.30 L-41.62 -69.62 L-37.41 -69.64 L-33.31 -69.47 L-29.37 -69.21 L-25.61 -68.98 L-22.03 -68.88 L-18.63 -68.98 L-15.35 -69.36 L-12.17 -70.04 L-9.01 -71.04 L-5.82 -72.33 L-2.54 -73.87 L0.87 -75.57 L4.44 -77.35 L8.19 -79.08 L12.11 -80.66 L16.18 -81.95 L20.35 -82.86 L24.55 -83.29 L28.72 -83.17 L32.77 -82.45 L36.63 -81.11 L40.23 -79.17 L43.49 -76.67 L46.38 -73.68 L48.88 -70.29 L50.99 -66.59 L52.74 -62.69 L54.17 -58.70 L55.35 -54.72 L56.37 -50.83 L57.32 -47.11 L58.29 -43.58 L59.37 -40.29 L60.64 -37.21 L62.16 -34.32 L63.97 -31.59 L66.07 -28.94 L68.45 -26.31 L71.05 -23.63 L73.81 -20.84 L76.63 -17.89 L79.39 -14.73 L81.98 -11.35 L84.28 -7.75 L86.18 -3.96 L87.57 -0.00Z"></path><path d="M101.98 0.00 L101.78 4.67 L100.91 9.28 L99.39 13.76 L97.30 18.05 L94.73 22.11 L91.78 25.91 L88.56 29.45 L85.20 32.74 L81.81 35.83 L78.50 38.76 L75.34 41.60 L72.40 44.42 L69.71 47.30 L67.27 50.30 L65.07 53.48 L63.07 56.87 L61.18 60.49 L59.35 64.31 L57.47 68.32 L55.47 72.44 L53.27 76.59 L50.78 80.68 L47.98 84.58 L44.82 88.20 L41.29 91.43 L37.43 94.15 L33.26 96.30 L28.83 97.82 L24.23 98.68 L19.52 98.88 L14.78 98.45 L10.09 97.46 L5.51 95.99 L1.08 94.14 L-3.17 92.04 L-7.22 89.79 L-11.10 87.52 L-14.82 85.33 L-18.44 83.32 L-22.02 81.55 L-25.60 80.04 L-29.26 78.83 L-33.04 77.87 L-36.99 77.13 L-41.12 76.54 L-45.44 76.00 L-49.92 75.41 L-54.52 74.68 L-59.18 73.71 L-63.80 72.40 L-68.30 70.69 L-72.57 68.52 L-76.51 65.88 L-80.04 62.76 L-83.06 59.19 L-85.54 55.22 L-87.42 50.92 L-88.71 46.36 L-89.43 41.63 L-89.64 36.83 L-89.40 32.02 L-88.82 27.29 L-88.00 22.68 L-87.05 18.23 L-86.10 13.94 L-85.24 9.82 L-84.56 5.83 L-84.13 1.93 L-83.99 -1.93 L-84.13 -5.80 L-84.55 -9.74 L-85.19 -13.79 L-85.98 -18.00 L-86.82 -22.38 L-87.60 -26.92 L-88.21 -31.60 L-88.54 -36.38 L-88.48 -41.19 L-87.95 -45.96 L-86.89 -50.61 L-85.24 -55.03 L-83.02 -59.16 L-80.22 -62.91 L-76.90 -66.21 L-73.12 -69.05 L-68.97 -71.39 L-64.55 -73.25 L-59.95 -74.67 L-55.27 -75.71 L-50.61 -76.45 L-46.03 -76.98 L-41.59 -77.41 L-37.33 -77.84 L-33.25 -78.37 L-29.35 -79.07 L-25.59 -80.02 L-21.93 -81.24 L-18.32 -82.75 L-14.68 -84.52 L-10.97 -86.50 L-7.13 -88.62 L-3.12 -90.78 L1.06 -92.87 L5.44 -94.77 L9.98 -96.36 L14.65 -97.53 L19.38 -98.18 L24.12 -98.23 L28.78 -97.65 L33.29 -96.41 L37.58 -94.52 L41.57 -92.03 L45.22 -89.00 L48.51 -85.52 L51.43 -81.69 L53.99 -77.63 L56.24 -73.44 L58.24 -69.23 L60.07 -65.09 L61.81 -61.10 L63.54 -57.30 L65.36 -53.72 L67.34 -50.36 L69.54 -47.19 L71.98 -44.17 L74.69 -41.24 L77.64 -38.33 L80.78 -35.38 L84.05 -32.30 L87.35 -29.05 L90.57 -25.57 L93.60 -21.85 L96.31 -17.87 L98.59 -13.65 L100.34 -9.23 L101.49 -4.66 L101.98 -0.00Z"></path><path d="M114.18 0.00 L113.00 5.19 L111.21 10.23 L108.91 15.08 L106.19 19.70 L103.18 24.08 L100.00 28.23 L96.77 32.18 L93.58 35.96 L90.53 39.64 L87.68 43.29 L85.06 46.96 L82.68 50.73 L80.53 54.65 L78.56 58.74 L76.70 63.04 L74.87 67.51 L72.98 72.15 L70.94 76.88 L68.67 81.62 L66.08 86.29 L63.13 90.77 L59.78 94.96 L56.01 98.75 L51.84 102.04 L47.31 104.75 L42.46 106.82 L37.37 108.22 L32.12 108.96 L26.78 109.06 L21.43 108.57 L16.16 107.59 L11.00 106.21 L6.00 104.55 L1.18 102.72 L-3.47 100.85 L-7.97 99.04 L-12.35 97.37 L-16.66 95.92 L-20.97 94.72 L-25.32 93.78 L-29.77 93.09 L-34.37 92.58 L-39.12 92.20 L-44.05 91.86 L-49.13 91.44 L-54.31 90.84 L-59.55 89.96 L-64.77 88.71 L-69.86 87.02 L-74.74 84.81 L-79.31 82.08 L-83.47 78.81 L-87.15 75.04 L-90.28 70.80 L-92.84 66.16 L-94.81 61.21 L-96.22 56.05 L-97.11 50.75 L-97.55 45.41 L-97.62 40.11 L-97.45 34.91 L-97.13 29.84 L-96.78 24.94 L-96.49 20.20 L-96.37 15.60 L-96.46 11.11 L-96.80 6.67 L-97.42 2.23 L-98.27 -2.25 L-99.32 -6.84 L-100.49 -11.57 L-101.68 -16.46 L-102.79 -21.52 L-103.69 -26.72 L-104.27 -32.04 L-104.42 -37.40 L-104.06 -42.76 L-103.12 -48.01 L-101.55 -53.07 L-99.35 -57.87 L-96.52 -62.32 L-93.12 -66.36 L-89.21 -69.95 L-84.87 -73.08 L-80.21 -75.73 L-75.32 -77.96 L-70.32 -79.80 L-65.31 -81.34 L-60.35 -82.66 L-55.52 -83.86 L-50.85 -85.04 L-46.36 -86.29 L-42.05 -87.69 L-37.89 -89.29 L-33.83 -91.15 L-29.83 -93.25 L-25.81 -95.59 L-21.72 -98.11 L-17.50 -100.73 L-13.11 -103.37 L-8.52 -105.91 L-3.72 -108.23 L1.26 -110.20 L6.41 -111.72 L11.67 -112.69 L16.97 -113.03 L22.25 -112.70 L27.42 -111.67 L32.41 -109.94 L37.15 -107.57 L41.59 -104.62 L45.70 -101.18 L49.46 -97.34 L52.88 -93.24 L56.01 -88.97 L58.88 -84.66 L61.56 -80.39 L64.15 -76.25 L66.70 -72.29 L69.32 -68.53 L72.07 -64.99 L75.00 -61.64 L78.15 -58.44 L81.52 -55.32 L85.11 -52.22 L88.86 -49.07 L92.71 -45.78 L96.57 -42.29 L100.33 -38.56 L103.87 -34.54 L107.07 -30.23 L109.83 -25.64 L112.04 -20.79 L113.62 -15.73 L114.51 -10.53 L114.70 -5.26 L114.18 -0.00Z"></path><circle cx="123.000" cy="0.000" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="122.871" cy="5.639" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="122.483" cy="11.266" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="121.838" cy="16.870" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="120.936" cy="22.438" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="119.780" cy="27.959" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="118.372" cy="33.421" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="116.716" cy="38.813" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="114.814" cy="44.123" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="112.670" cy="49.341" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="110.289" cy="54.454" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="107.677" cy="59.453" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="104.838" cy="64.327" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="101.778" cy="69.066" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="98.505" cy="73.660" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="95.024" cy="78.098" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="91.344" cy="82.373" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="87.471" cy="86.474" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="83.415" cy="90.393" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="79.183" cy="94.123" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="74.784" cy="97.654" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="70.229" cy="100.980" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="65.525" cy="104.093" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="60.684" cy="106.988" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="55.715" cy="109.658" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="50.629" cy="112.097" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="45.437" cy="114.300" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="40.149" cy="116.263" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="34.776" cy="117.981" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="29.330" cy="119.452" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="23.823" cy="120.671" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="18.266" cy="121.636" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="12.670" cy="122.346" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="7.048" cy="122.798" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="1.410" cy="122.992" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-4.230" cy="122.927" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-9.861" cy="122.604" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-15.472" cy="122.023" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-21.050" cy="121.185" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-26.584" cy="120.093" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-32.062" cy="118.748" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-37.472" cy="117.153" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-42.804" cy="115.312" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-48.046" cy="113.228" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-53.186" cy="110.906" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-58.215" cy="108.351" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-63.121" cy="105.569" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-67.895" cy="102.564" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-72.526" cy="99.343" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-77.004" cy="95.914" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-81.320" cy="92.282" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-85.466" cy="88.457" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-89.431" cy="84.446" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-93.209" cy="80.257" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-96.790" cy="75.899" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-100.168" cy="71.382" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-103.335" cy="66.714" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-106.285" cy="61.907" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-109.012" cy="56.969" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-111.509" cy="51.911" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-113.772" cy="46.744" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-115.795" cy="41.479" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-117.575" cy="36.127" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-119.108" cy="30.698" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-120.390" cy="25.205" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-121.419" cy="19.659" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-122.192" cy="14.072" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-122.709" cy="8.455" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-122.968" cy="2.820" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-122.968" cy="-2.820" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-122.709" cy="-8.455" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-122.192" cy="-14.072" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-121.419" cy="-19.659" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-120.390" cy="-25.205" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-119.108" cy="-30.698" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-117.575" cy="-36.127" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-115.795" cy="-41.479" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-113.772" cy="-46.744" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-111.509" cy="-51.911" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-109.012" cy="-56.969" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-106.285" cy="-61.907" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-103.335" cy="-66.714" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-100.168" cy="-71.382" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-96.790" cy="-75.899" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-93.209" cy="-80.257" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-89.431" cy="-84.446" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-85.466" cy="-88.457" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-81.320" cy="-92.282" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-77.004" cy="-95.914" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-72.526" cy="-99.343" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-67.895" cy="-102.564" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-63.121" cy="-105.569" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-58.215" cy="-108.351" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-53.186" cy="-110.906" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-48.046" cy="-113.228" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-42.804" cy="-115.312" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-37.472" cy="-117.153" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-32.062" cy="-118.748" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-26.584" cy="-120.093" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-21.050" cy="-121.185" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-15.472" cy="-122.023" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-9.861" cy="-122.604" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="-4.230" cy="-122.927" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="1.410" cy="-122.992" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="7.048" cy="-122.798" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="12.670" cy="-122.346" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="18.266" cy="-121.636" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="23.823" cy="-120.671" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="29.330" cy="-119.452" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="34.776" cy="-117.981" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="40.149" cy="-116.263" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="45.437" cy="-114.300" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="50.629" cy="-112.097" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="55.715" cy="-109.658" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="60.684" cy="-106.988" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="65.525" cy="-104.093" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="70.229" cy="-100.980" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="74.784" cy="-97.654" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="79.183" cy="-94.123" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="83.415" cy="-90.393" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="87.471" cy="-86.474" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="91.344" cy="-82.373" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="95.024" cy="-78.098" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="98.505" cy="-73.660" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="101.778" cy="-69.066" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="104.838" cy="-64.327" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="107.677" cy="-59.453" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="110.289" cy="-54.454" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="112.670" cy="-49.341" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="114.814" cy="-44.123" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="116.716" cy="-38.813" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="118.372" cy="-33.421" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="119.780" cy="-27.959" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="120.936" cy="-22.438" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="121.838" cy="-16.870" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="122.483" cy="-11.266" fill="currentColor" r="1.100" stroke="none"></circle><circle cx="122.871" cy="-5.639" fill="currentColor" r="1.100" stroke="none"></circle></g></svg></div>
+<div class="project-meta"><span class="project-tag">LLM 2024</span><span aria-hidden="true" class="arrow">↗</span></div>
+<div class="project-copy"><h3>Japanese LLM</h3><p>日本語の文脈に向き合う、13Bモデルのファインチューニング実践。</p></div>
+<span aria-hidden="true" class="project-code">13B</span>
+</a>
+<a class="project-card reveal" href="https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202503000973003453" rel="noopener noreferrer" style="--accent:#dfc486" target="_blank"><div aria-hidden="true" class="project-visual"><canvas class="folio-canvas" data-palette="2"></canvas><svg fill="none" focusable="false" stroke="currentColor" stroke-width=".9" viewbox="0 0 600 320"><g transform="translate(300 160)"><circle cx="0.000" cy="0.000" r="101.000"></circle><ellipse rx="54" ry="101"></ellipse><ellipse rx="20" ry="101"></ellipse><ellipse rx="101" ry="36"></ellipse><ellipse rx="101" ry="70"></ellipse><path d="M-101 0H101M0-101V101"></path><ellipse rx="171" ry="58" transform="rotate(-24)"></ellipse><circle cx="145.000" cy="-47.000" fill="#f9edc9" r="5.000"></circle></g></svg></div>
+<div class="project-meta"><span class="project-tag">Mobility Research</span><span aria-hidden="true" class="arrow">↗</span></div>
+<div class="project-copy"><h3>TokyoBus Project</h3><p>都市交通と衛星を繋ぐProject（東京都交通局）。モビリティを都市という大きな系として捉える。</p></div>
+<span aria-hidden="true" class="project-code">ITS</span>
+</a>
+<a class="project-card reveal" data-delay="1" href="https://www.softbank.jp/sbnews/entry/20240304_02" rel="noopener noreferrer" style="--accent:#bf8d6a" target="_blank"><div aria-hidden="true" class="project-visual"><canvas class="folio-canvas" data-palette="3"></canvas><svg fill="none" focusable="false" stroke="currentColor" stroke-width=".9" viewbox="0 0 600 320"><g transform="translate(300 160)"><circle cx="-52.000" cy="-20.000" r="70.000"></circle><circle cx="52.000" cy="-20.000" r="70.000"></circle><circle cx="-35.000" cy="42.000" r="50.000"></circle><circle cx="35.000" cy="42.000" r="50.000"></circle><path d="M0 72C-5-44-106-98-125-27C-131 27-34 30 0 0C34 30 131 27 125-27C106-98 5-44 0 72ZM0-38v130M0-38q-12-33-25-30M0-38q12-33 25-30"></path><circle cx="0.000" cy="0.000" r="129.000"></circle></g></svg></div>
+<div class="project-meta"><span class="project-tag">Social Implementation</span><span aria-hidden="true" class="arrow">↗</span></div>
+<div class="project-copy"><h3>CatBus</h3><p>未来のモビリティを、親しみやすく社会へ届ける。</p></div>
+<span aria-hidden="true" class="project-code">→</span>
+</a>
+</div>
+</section>
+<section aria-labelledby="model-title" class="section" id="model">
+<span aria-hidden="true" class="section-kicker">04</span>
+<div class="model-card reveal">
+<div class="model-copy">
+<p class="eyebrow">Open model</p>
+<h2 id="model-title">Intelligence,<br/>ready to explore.</h2>
+<p>モデルは展示物ではなく、触れて確かめるためのもの。最短のコードで研究成果への入口を開きます。</p>
+<div class="model-actions">
+<a class="button secondary" href="https://huggingface.co/demimomi/llm-jp-3-13b-finetune-ex" rel="noopener noreferrer" target="_blank">View on Hugging Face ↗</a>
+</div>
+</div>
+<div aria-label="Pythonコード例" class="code-shell">
+<div class="code-top">
+<span>quickstart.py</span>
+<div class="code-top-right">
+<button aria-label="コードをコピー" class="copy-code" id="copyCode" type="button">Copy</button>
+<span aria-hidden="true" class="code-dots"><span></span><span></span><span></span></span>
+</div>
+</div>
+<pre><code id="codeSample"><span class="tok-key">from</span> transformers <span class="tok-key">import</span> AutoModel
+
+model = AutoModel.<span class="tok-fn">from_pretrained</span>(
+  <span class="tok-str">"demimomi/llm-jp-3-13b-finetune-ex"</span>
+)</code></pre>
+</div>
+</div>
+</section>
+<section aria-labelledby="closing-title" class="section closing"><canvas aria-hidden="true" class="closing-canvas" id="closingCanvas"></canvas><svg aria-hidden="true" class="closing-geometry" fill="none" focusable="false" stroke="currentColor" stroke-width=".65" viewbox="-400 -400 800 800"><circle cx="0.000" cy="0.000" r="350.000"></circle><circle cx="0.000" cy="0.000" r="365.000"></circle><g opacity=".7"><circle cx="-222.000" cy="0.000" r="111.000"></circle><circle cx="-166.500" cy="96.129" r="111.000"></circle><circle cx="-111.000" cy="192.258" r="111.000"></circle><circle cx="-166.500" cy="-96.129" r="111.000"></circle><circle cx="-111.000" cy="0.000" r="111.000"></circle><circle cx="-55.500" cy="96.129" r="111.000"></circle><circle cx="0.000" cy="192.258" r="111.000"></circle><circle cx="-111.000" cy="-192.258" r="111.000"></circle><circle cx="-55.500" cy="-96.129" r="111.000"></circle><circle cx="0.000" cy="0.000" r="111.000"></circle><circle cx="55.500" cy="96.129" r="111.000"></circle><circle cx="111.000" cy="192.258" r="111.000"></circle><circle cx="0.000" cy="-192.258" r="111.000"></circle><circle cx="55.500" cy="-96.129" r="111.000"></circle><circle cx="111.000" cy="0.000" r="111.000"></circle><circle cx="166.500" cy="96.129" r="111.000"></circle><circle cx="111.000" cy="-192.258" r="111.000"></circle><circle cx="166.500" cy="-96.129" r="111.000"></circle><circle cx="222.000" cy="0.000" r="111.000"></circle></g><path d="M353.000 0.000L365.000 0.000"></path><path d="M359.621 16.505L364.616 16.734"></path><path d="M358.487 32.975L363.466 33.433"></path><path d="M356.598 49.376L361.551 50.061"></path><path d="M353.959 65.672L358.875 66.585"></path><path d="M350.576 81.831L355.445 82.968"></path><path d="M346.456 97.818L351.268 99.176"></path><path d="M341.607 113.599L346.351 115.177"></path><path d="M336.040 129.141L340.707 130.935"></path><path d="M323.353 141.603L334.346 146.417"></path><path d="M322.798 159.378L327.281 161.592"></path><path d="M315.152 174.010L319.529 176.427"></path><path d="M306.843 188.275L311.104 190.890"></path><path d="M297.888 202.145L302.025 204.953"></path><path d="M288.307 215.590L292.312 218.584"></path><path d="M278.120 228.581L281.983 231.756"></path><path d="M267.348 241.091L271.061 244.440"></path><path d="M256.014 253.095L259.569 256.610"></path><path d="M239.394 259.422L247.532 268.241"></path><path d="M231.755 275.481L234.973 279.307"></path><path d="M218.881 285.816L221.921 289.786"></path><path d="M205.547 295.551L208.402 299.656"></path><path d="M191.781 304.664L194.445 308.895"></path><path d="M177.612 313.136L180.078 317.485"></path><path d="M163.069 320.950L165.334 325.407"></path><path d="M148.183 328.088L150.241 332.645"></path><path d="M132.985 334.537L134.832 339.183"></path><path d="M115.223 333.665L119.140 345.008"></path><path d="M101.784 345.312L103.197 350.108"></path><path d="M85.845 349.615L87.038 354.471"></path><path d="M69.726 353.183L70.695 358.088"></path><path d="M53.461 356.008L54.203 360.953"></path><path d="M37.083 358.085L37.598 363.058"></path><path d="M20.627 359.409L20.913 364.400"></path><path d="M4.128 359.976L4.185 364.976"></path><path d="M-12.380 359.787L-12.552 364.784"></path><path d="M-28.301 351.864L-29.263 363.825"></path><path d="M-45.284 357.141L-45.913 362.101"></path><path d="M-61.610 354.689L-62.466 359.615"></path><path d="M-77.806 351.491L-78.887 356.373"></path><path d="M-93.839 347.555L-95.143 352.382"></path><path d="M-109.675 342.887L-111.198 347.649"></path><path d="M-125.280 337.498L-127.020 342.186"></path><path d="M-140.621 331.400L-142.574 336.002"></path><path d="M-155.667 324.604L-157.829 329.113"></path><path d="M-167.072 310.960L-172.751 321.531"></path><path d="M-184.745 308.981L-187.311 313.272"></path><path d="M-198.716 300.186L-201.476 304.355"></path><path d="M-212.270 290.760L-215.218 294.798"></path><path d="M-225.377 280.723L-228.507 284.621"></path><path d="M-238.010 270.095L-241.316 273.846"></path><path d="M-250.143 258.899L-253.617 262.494"></path><path d="M-261.750 247.158L-265.385 250.591"></path><path d="M-272.806 234.898L-276.595 238.160"></path><path d="M-277.780 217.824L-287.223 225.229"></path><path d="M-293.175 208.922L-297.247 211.824"></path><path d="M-302.445 195.262L-306.645 197.974"></path><path d="M-311.079 181.190L-315.399 183.707"></path><path d="M-319.059 166.738L-323.490 169.054"></path><path d="M-326.368 151.935L-330.901 154.045"></path><path d="M-332.990 136.812L-337.615 138.712"></path><path d="M-338.912 121.402L-343.620 123.088"></path><path d="M-344.122 105.736L-348.901 107.205"></path><path d="M-341.829 88.101L-353.449 91.096"></path><path d="M-352.360 73.771L-357.254 74.796"></path><path d="M-355.372 57.539L-360.308 58.338"></path><path d="M-357.636 41.186L-362.603 41.758"></path><path d="M-359.148 24.746L-364.137 25.090"></path><path d="M-359.905 8.255L-364.904 8.369"></path><path d="M-359.905 -8.255L-364.904 -8.369"></path><path d="M-359.148 -24.746L-364.137 -25.090"></path><path d="M-357.636 -41.186L-362.603 -41.758"></path><path d="M-348.462 -56.420L-360.308 -58.338"></path><path d="M-352.360 -73.771L-357.254 -74.796"></path><path d="M-348.608 -89.848L-353.449 -91.096"></path><path d="M-344.122 -105.736L-348.901 -107.205"></path><path d="M-338.912 -121.402L-343.620 -123.088"></path><path d="M-332.990 -136.812L-337.615 -138.712"></path><path d="M-326.368 -151.935L-330.901 -154.045"></path><path d="M-319.059 -166.738L-323.490 -169.054"></path><path d="M-311.079 -181.190L-315.399 -183.707"></path><path d="M-296.564 -191.465L-306.645 -197.974"></path><path d="M-293.175 -208.922L-297.247 -211.824"></path><path d="M-283.288 -222.144L-287.223 -225.229"></path><path d="M-272.806 -234.898L-276.595 -238.160"></path><path d="M-261.750 -247.158L-265.385 -250.591"></path><path d="M-250.143 -258.899L-253.617 -262.494"></path><path d="M-238.010 -270.095L-241.316 -273.846"></path><path d="M-225.377 -280.723L-228.507 -284.621"></path><path d="M-212.270 -290.760L-215.218 -294.798"></path><path d="M-194.853 -294.349L-201.476 -304.355"></path><path d="M-184.745 -308.981L-187.311 -313.272"></path><path d="M-170.385 -317.126L-172.751 -321.531"></path><path d="M-155.667 -324.604L-157.829 -329.113"></path><path d="M-140.621 -331.400L-142.574 -336.002"></path><path d="M-125.280 -337.498L-127.020 -342.186"></path><path d="M-109.675 -342.887L-111.198 -347.649"></path><path d="M-93.839 -347.555L-95.143 -352.382"></path><path d="M-77.806 -351.491L-78.887 -356.373"></path><path d="M-60.412 -347.792L-62.466 -359.615"></path><path d="M-45.284 -357.141L-45.913 -362.101"></path><path d="M-28.862 -358.841L-29.263 -363.825"></path><path d="M-12.380 -359.787L-12.552 -364.784"></path><path d="M4.128 -359.976L4.185 -364.976"></path><path d="M20.627 -359.409L20.913 -364.400"></path><path d="M37.083 -358.085L37.598 -363.058"></path><path d="M53.461 -356.008L54.203 -360.953"></path><path d="M69.726 -353.183L70.695 -358.088"></path><path d="M84.176 -342.817L87.038 -354.471"></path><path d="M101.784 -345.312L103.197 -350.108"></path><path d="M117.508 -340.282L119.140 -345.008"></path><path d="M132.985 -334.537L134.832 -339.183"></path><path d="M148.183 -328.088L150.241 -332.645"></path><path d="M163.069 -320.950L165.334 -325.407"></path><path d="M177.612 -313.136L180.078 -317.485"></path><path d="M191.781 -304.664L194.445 -308.895"></path><path d="M205.547 -295.551L208.402 -299.656"></path><path d="M214.625 -280.259L221.921 -289.786"></path><path d="M231.755 -275.481L234.973 -279.307"></path><path d="M244.141 -264.566L247.532 -268.241"></path><path d="M256.014 -253.095L259.569 -256.610"></path><path d="M267.348 -241.091L271.061 -244.440"></path><path d="M278.120 -228.581L281.983 -231.756"></path><path d="M288.307 -215.590L292.312 -218.584"></path><path d="M297.888 -202.145L302.025 -204.953"></path><path d="M306.843 -188.275L311.104 -190.890"></path><path d="M309.024 -170.626L319.529 -176.427"></path><path d="M322.798 -159.378L327.281 -161.592"></path><path d="M329.766 -144.411L334.346 -146.417"></path><path d="M336.040 -129.141L340.707 -130.935"></path><path d="M341.607 -113.599L346.351 -115.177"></path><path d="M346.456 -97.818L351.268 -99.176"></path><path d="M350.576 -81.831L355.445 -82.968"></path><path d="M353.959 -65.672L358.875 -66.585"></path><path d="M356.598 -49.376L361.551 -50.061"></path><path d="M351.516 -32.334L363.466 -33.433"></path><path d="M359.621 -16.505L364.616 -16.734"></path></svg>
+<div class="closing-inner reveal">
+<p class="eyebrow">Toward a brighter system</p>
+<h2 id="closing-title">未来は、<br/><span>人を中心に回る。</span></h2>
+<p>ヒト関数による波動と観測を繰り返すProject。技術を中心に置くのではなく、人が理解し、判断し、参加できる系へ。</p>
+<a class="button primary" href="https://demimomi.github.io/demimomi/patent.html" rel="noopener noreferrer" target="_blank">Explore the work ↗</a>
+</div>
+</section>
+</main>
+<footer>
+<span>© <span id="year"></span> Toshiki Demizu / demimomi</span>
+<span class="status">Still edited by a human.</span>
+</footer>
+<noscript><style>.motion-control{display:none}.site-header{position:relative}.nav-wrap{flex-wrap:wrap}.nav-links{display:flex;position:static;flex-wrap:wrap;box-shadow:none;border:0;padding:0 0 12px}.nav-toggle{display:none}.hero{padding-top:45px}</style></noscript>
+<script>
+(() => {
+  'use strict';
+
+  // CODATA 2022, dimensionless. The graphic mappings are poetic, not physics.
+  const ALPHA = 7.2973525643e-3;
+  const ALPHA_INVERSE = 1 / ALPHA;
+  const LIGHT_MARKS = Math.round(ALPHA_INVERSE); // 137; NOT the golden angle.
+  const SOURCE_URL = 'https://demimomi.github.io/demimomi/';
+  const TAU = Math.PI * 2;
+  const root = document.documentElement;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  root.style.setProperty('--alpha-period', `${ALPHA_INVERSE}s`);
+  document.getElementById('year').textContent = String(new Date().getFullYear());
+
+  // Navigation, keyboard interaction, and progress work independently of art.
+  const header = document.getElementById('siteHeader');
+  const toggle = document.getElementById('navToggle');
+  const nav = document.getElementById('navLinks');
+  const setMenu = (open, returnFocus = false) => {
+    header.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    if (returnFocus) toggle.focus();
+  };
+  toggle.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
+  nav.addEventListener('click', event => {
+    if (event.target.closest('a')) setMenu(false);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && header.classList.contains('is-open')) setMenu(false, true);
+  });
+  document.addEventListener('pointerdown', event => {
+    if (header.classList.contains('is-open') && !header.contains(event.target)) setMenu(false);
+  });
+  const desktop = window.matchMedia('(min-width: 901px)');
+  if (desktop.addEventListener) desktop.addEventListener('change', () => setMenu(false));
+
+  const progress = document.getElementById('scrollProgress');
+  let scrollQueued = false;
+  const updateProgress = () => {
+    scrollQueued = false;
+    const total = Math.max(1, root.scrollHeight - window.innerHeight);
+    progress.style.transform = `scaleX(${Math.min(1, Math.max(0, window.scrollY / total))})`;
+    header.classList.toggle('is-scrolled', window.scrollY > 15);
+  };
+  window.addEventListener('scroll', () => {
+    if (!scrollQueued) { scrollQueued = true; requestAnimationFrame(updateProgress); }
+  }, { passive: true });
+  window.addEventListener('resize', updateProgress, { passive: true });
+  updateProgress();
+
+  if ('IntersectionObserver' in window && !reduced.matches) {
+    root.classList.add('js-reveal');
+    const reveal = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          reveal.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .035 });
+    document.querySelectorAll('.reveal').forEach(el => reveal.observe(el));
+    // Never hide content permanently if an observer fails or printing begins.
+    window.addEventListener('beforeprint', () => root.classList.remove('js-reveal'));
+  }
+  if ('IntersectionObserver' in window) {
+    const chapterLinks = [...nav.querySelectorAll('a[href^="#"]')];
+    const chapters = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        chapterLinks.forEach(a => {
+          if (a.getAttribute('href') === `#${entry.target.id}`) a.setAttribute('aria-current', 'location');
+          else a.removeAttribute('aria-current');
+        });
+      });
+    }, { rootMargin: '-12% 0px -55% 0px', threshold: 0 });
+    document.querySelectorAll('#learning,#philosophy,#projects,#model').forEach(el => chapters.observe(el));
+  }
+
+  // Retain the literal ./llm.html href. Resolve it only when previewing locally.
+  if (window.location.protocol === 'file:') {
+    const routeLocalLink = event => {
+      const a = event.target.closest('a[href]');
+      if (!a || a.getAttribute('href') !== './llm.html') return;
+      if (event.type === 'auxclick' && event.button !== 1) return;
+      event.preventDefault();
+      const destination = new URL(a.getAttribute('href'), SOURCE_URL).href;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.button === 1) window.open(destination, '_blank', 'noopener,noreferrer');
+      else window.location.assign(destination);
+    };
+    document.addEventListener('click', routeLocalLink);
+    document.addEventListener('auxclick', routeLocalLink);
+  }
+
+  const copy = document.getElementById('copyCode');
+  const sample = document.getElementById('codeSample');
+  let copyTimer;
+  copy.setAttribute('aria-live', 'polite');
+  function fallbackCopy(text) {
+    const buffer = document.createElement('textarea');
+    buffer.value = text;
+    buffer.setAttribute('readonly', '');
+    buffer.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+    document.body.appendChild(buffer);
+    buffer.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (_) { /* Manual selection below. */ }
+    buffer.remove();
+    copy.focus({ preventScroll: true });
+    return ok;
+  }
+  copy.addEventListener('click', async () => {
+    clearTimeout(copyTimer);
+    const text = sample.textContent;
+    let done = false;
+    if (navigator.clipboard && window.isSecureContext) {
+      try { await navigator.clipboard.writeText(text); done = true; } catch (_) { /* Use local-file fallback. */ }
+    }
+    if (!done) done = fallbackCopy(text);
+    if (done) copy.textContent = 'Copied';
+    else {
+      const selection = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(sample);
+      if (selection) { selection.removeAllRanges(); selection.addRange(range); }
+      copy.textContent = 'Select & copy';
+    }
+    copyTimer = setTimeout(() => { copy.textContent = 'Copy'; }, 1400);
+  });
+
+  // Deterministic, resolution-independent oil-paint marks; never an image URL.
+  const rng = seed => () => {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+  function prepareCanvas(canvas, maxRatio = 1.65) {
+    if (!canvas) return null;
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width < 1 || rect.height < 1) return null;
+    const ratio = Math.min(window.devicePixelRatio || 1, maxRatio);
+    const width = Math.max(1, Math.round(rect.width * ratio));
+    const height = Math.max(1, Math.round(rect.height * ratio));
+    canvas.width = width; canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+    ctx.setTransform(width / 800, 0, 0, height / 1000, 0, 0);
+    return ctx;
+  }
+  function brush(ctx, random) {
+    return (x, y, w, h, color, opacity = .4, angle = 0) => {
+      ctx.save();
+      ctx.translate(x, y); ctx.rotate(angle);
+      ctx.globalAlpha = opacity; ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.moveTo(-w * .5, -h * .26);
+      ctx.lineTo(-w * .31, -h * (.45 + random() * .16));
+      ctx.lineTo(w * .34, -h * .42);
+      ctx.lineTo(w * .52, -h * .1);
+      ctx.lineTo(w * .42, h * .36);
+      ctx.lineTo(-w * .4, h * .5);
+      ctx.closePath(); ctx.fill(); ctx.restore();
+    };
+  }
+  function paintPond(canvas, seed = 137, pale = false) {
+    const c = prepareCanvas(canvas);
+    if (!c) return;
+    const random = rng(seed);
+    const pick = items => items[Math.floor(random() * items.length)];
+    const dab = brush(c, random);
+    const sky = ['#e8e2c5','#f0e5c7','#c9d0bb','#bfcbc5','#d7cdd3','#cdd7c5','#e4dbc0','#b1c6c5'];
+    const leaves = ['#758f81','#90a38e','#b2ba92','#91a790','#728f8f','#aebc9c','#acb6aa','#bcb8b2'];
+    const water = ['#869d9b','#a6b7ae','#bac7c0','#97b1b1','#b5b9c3','#8898a5','#c8c8b7','#a9b2c3','#d1ccc0','#a1b9b2'];
+    let gradient = c.createLinearGradient(0, 0, 180, 1000);
+    gradient.addColorStop(0, '#dadac2'); gradient.addColorStop(.36, '#b8c9b9');
+    gradient.addColorStop(.57, '#9db7b3'); gradient.addColorStop(1, '#a6b0ba');
+    c.fillStyle = gradient; c.fillRect(0, 0, 800, 1000);
+    // Broken-color foliage. A luminous opening is left around the figure.
+    for (let i = 0; i < 2500; i++) {
+      const x = random() * 800, y = random() * 600;
+      const edge = x < 184 + 48 * Math.sin(y / 72) || x > 634 - 45 * Math.sin(y / 106);
+      dab(x, y, 11 + random() * 43, 5 + random() * 14, pick(edge && random() > .24 ? leaves : sky), .16 + random() * .37, -.4 + random() * .8);
+    }
+    // Long, sparse willow gestures are softened by hundreds of overlaid marks.
+    for (let side = 0; side < 2; side++) {
+      for (let i = 0; i < 23; i++) {
+        const x = side ? 690 + random() * 130 : random() * 145;
+        const y = -60 + random() * 155;
+        const end = 170 + random() * 385;
+        const bend = side ? -20 - random() * 70 : 20 + random() * 70;
+        c.save(); c.globalAlpha = .14; c.strokeStyle = pick(leaves); c.lineWidth = 1 + random() * 2;
+        c.beginPath(); c.moveTo(x, y); c.quadraticCurveTo(x + bend, end * .45, x + bend * .65, end); c.stroke(); c.restore();
+        for (let j = 0; j < 18; j++) {
+          const t = j / 18;
+          dab(x + bend * Math.sin(t * 1.2), y + (end - y) * t, 4 + random() * 9, 8 + random() * 19, pick(leaves), .19 + random() * .25, -.15);
+        }
+      }
+    }
+    // Water is built from horizontal strokes rather than a smooth blue fill.
+    for (let i = 0; i < 3100; i++) {
+      const y = 408 + random() * 592;
+      const depth = (y - 400) / 600;
+      const x = random() * 800;
+      dab(x, y, 7 + random() * (24 + depth * 31), 1.5 + random() * (3 + depth * 5), pick(water), .18 + random() * .42, -.065 + random() * .13);
+    }
+    // Sunlit mist; the source-of-life motif is a wash, not a hard disc.
+    const glow = c.createRadialGradient(410, 314, 8, 406, 360, 292);
+    glow.addColorStop(0, '#fff1c69c'); glow.addColorStop(.48, '#f2e5bd45'); glow.addColorStop(1, '#f2e5bd00');
+    c.fillStyle = glow; c.fillRect(0, 0, 800, 850);
+    for (let i = 0; i < 360; i++) {
+      const y = 505 + random() * 475;
+      const x = 414 + (random() - .5) * (86 + (y - 450) * .2);
+      dab(x, y, 5 + random() * 27, 2 + random() * 4, pick(['#e6dec0','#f4e9c6','#cdd0b1','#d8d1bb']), .15 + random() * .26);
+    }
+    // Water-lily clusters occupy the foreground and leave the pensive pose clear.
+    for (let i = 0; i < 41; i++) {
+      let x = random() * 800;
+      const y = 586 + random() * 390;
+      if (x > 285 && x < 520 && y < 884) x += x > 400 ? 156 : -160;
+      const scale = .4 + (y - 570) / 380;
+      const w = (18 + random() * 34) * scale;
+      c.save();
+      c.translate(x, y); c.rotate(-.09 + random() * .18);
+      c.globalAlpha = .54;
+      c.fillStyle = pick(['#617f77','#839d87','#9fac8c','#6d9588']);
+      c.beginPath(); c.ellipse(0, 0, w, w * .28, 0, .2, TAU - .04); c.lineTo(0, 0); c.fill();
+      c.strokeStyle = '#c5ccb0'; c.lineWidth = .9; c.globalAlpha = .5;
+      c.beginPath(); c.ellipse(-2, -1, w * .82, w * .21, 0, .23, 2.8); c.stroke();
+      c.restore();
+      for (let j = 0; j < 7; j++) dab(x + (random() - .5) * w * 1.2, y + (random() - .5) * w * .35, w * .65, 2.5, '#c0c7a8', .13);
+      if (i % 3 === 0) {
+        const fx = x - w * .18, fy = y - 6 * scale;
+        c.save(); c.translate(fx, fy);
+        c.globalAlpha = .78;
+        for (let p = 0; p < 7; p++) {
+          c.fillStyle = p % 2 ? '#f0dce0' : '#f8ecd8';
+          c.beginPath();
+          c.ellipse(Math.cos(p * TAU / 7) * 5 * scale, -Math.sin(p * Math.PI / 7) * 5 * scale, 3.8 * scale, 9 * scale, -.8 + p * .27, 0, TAU);
+          c.fill();
+        }
+        c.fillStyle = '#e1c27b'; c.beginPath(); c.ellipse(0, 0, 4 * scale, 2 * scale, 0, 0, TAU); c.fill(); c.restore();
+      }
+    }
+    // Fine dragged pigment, generated once rather than animated every frame.
+    for (let i = 0; i < 850; i++) {
+      const y = random() * 1000;
+      dab(random() * 800, y, 2 + random() * 12, .7 + random(), pick(['#eee9d5','#d4decb','#657f7e']), .1 + random() * .12, -.15 + random() * .3);
+    }
+    if (pale) { c.fillStyle = '#efeeda66'; c.fillRect(0, 0, 800, 1000); }
+  }
+  function paintFolio(canvas, index) {
+    const c = prepareCanvas(canvas, 1.5);
+    if (!c) return;
+    const palettes = [
+      ['#b7c9b2','#7d9e91','#9cb7a9','#c2ceb2','#729b95','#ced4b9'],
+      ['#9eafbd','#6e8b9e','#a2b7bb','#b8bec9','#7c9ca4','#c3c8cc'],
+      ['#c0c3a3','#929f7f','#adc0aa','#cfd0b4','#a5b3a3','#809a87'],
+      ['#d1c0b2','#b6afb1','#d8c2b7','#c6cebf','#cfc4c0','#abafb2']
+    ];
+    const colors = palettes[index % palettes.length];
+    const random = rng(137 + index * 369);
+    const dab = brush(c, random);
+    const g = c.createLinearGradient(0, 0, 800, 1000);
+    g.addColorStop(0, colors[0]); g.addColorStop(1, colors[1]);
+    c.fillStyle = g; c.fillRect(0, 0, 800, 1000);
+    for (let i = 0; i < 2300; i++) {
+      dab(random() * 800, random() * 1000, 8 + random() * 55, 5 + random() * 22, colors[Math.floor(random() * colors.length)], .1 + random() * .32, -.18 + random() * .36);
+    }
+    const glow = c.createRadialGradient(400, 490, 10, 400, 490, 390);
+    glow.addColorStop(0, '#eff0d322'); glow.addColorStop(1, '#eff0d300');
+    c.fillStyle = glow; c.fillRect(0, 0, 800, 1000);
+  }
+
+  // A single lightweight animation canvas: 137 light particles and touch ripples.
+  const hero = document.getElementById('heroSystem');
+  const photon = document.getElementById('photonCanvas');
+  const pause = document.getElementById('motionControl');
+  let ctx = null, paused = reduced.matches, inView = true, frameId = 0;
+  let simTime = 0, lastTime = 0;
+  const random = rng(369137);
+  const motes = Array.from({ length: LIGHT_MARKS }, (_, i) => ({
+    x: random() * 800, y: random() * 1000, phase: random() * TAU,
+    r: .8 + random() * 1.7, speed: .5 + random(), group: i % 9
+  }));
+  const ripples = [];
+  let pointer = { x: 400, y: 450, active: false };
+  const shouldRun = () => !paused && inView && !document.hidden;
+  function paintLight() {
+    if (!ctx) return;
+    ctx.clearRect(0, 0, 800, 1000);
+    for (const mote of motes) {
+      const rate = simTime * TAU * ALPHA;
+      let x = mote.x + Math.sin(rate + mote.phase) * 11;
+      const y = ((mote.y - simTime * mote.speed * 2.4) % 1000 + 1000) % 1000;
+      if (pointer.active) x += (pointer.x - x) * ALPHA * Math.exp(-Math.abs(pointer.y - y) / 150);
+      const opacity = .19 + .38 * (1 + Math.sin(rate * 3 + mote.phase)) / 2;
+      ctx.fillStyle = `rgba(255,246,206,${opacity})`;
+      ctx.beginPath(); ctx.arc(x, y, mote.r, 0, TAU); ctx.fill();
+      if (mote.group === 0) {
+        ctx.strokeStyle = `rgba(255,246,206,${opacity * .5})`; ctx.lineWidth = .6;
+        ctx.beginPath(); ctx.moveTo(x - 4, y); ctx.lineTo(x + 4, y); ctx.moveTo(x, y - 4); ctx.lineTo(x, y + 4); ctx.stroke();
+      }
+    }
+    for (let i = ripples.length - 1; i >= 0; i--) {
+      const ripple = ripples[i];
+      const age = simTime - ripple.start;
+      if (age > 3.4) { ripples.splice(i, 1); continue; }
+      for (let j = 0; j < 3; j++) {
+        const radius = 11 + age * 73 + j * 19;
+        ctx.strokeStyle = `rgba(255,241,191,${Math.max(0, (.36 - age * .105) / (j + 1))})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.ellipse(ripple.x, ripple.y, radius, radius * .37, 0, 0, TAU); ctx.stroke();
+      }
+    }
+  }
+  function loop(now) {
+    frameId = 0;
+    if (!shouldRun()) { lastTime = 0; return; }
+    if (!lastTime || now - lastTime >= 1000 / 30) {
+      if (lastTime) simTime += Math.min(.08, (now - lastTime) / 1000);
+      lastTime = now; paintLight();
+    }
+    frameId = requestAnimationFrame(loop);
+  }
+  function syncAnimation() {
+    root.classList.toggle('motion-off', paused || document.hidden);
+    pause.setAttribute('aria-pressed', String(paused));
+    const label = paused ? '\u30a2\u30cb\u30e1\u30fc\u30b7\u30e7\u30f3\u3092\u518d\u751f' : '\u30a2\u30cb\u30e1\u30fc\u30b7\u30e7\u30f3\u3092\u4e00\u6642\u505c\u6b62';
+    pause.setAttribute('aria-label', label); pause.setAttribute('title', label);
+    if (shouldRun() && !frameId) { lastTime = 0; frameId = requestAnimationFrame(loop); }
+    else if (!shouldRun() && frameId) { cancelAnimationFrame(frameId); frameId = 0; lastTime = 0; }
+  }
+  pause.hidden = false;
+  pause.addEventListener('click', () => { paused = !paused; syncAnimation(); });
+  if (reduced.addEventListener) reduced.addEventListener('change', () => {
+    paused = reduced.matches; syncAnimation();
+    if (paused) root.classList.remove('js-reveal');
+  });
+  document.addEventListener('visibilitychange', syncAnimation);
+  if ('IntersectionObserver' in window) {
+    const visibility = new IntersectionObserver(entries => {
+      inView = entries[0].isIntersecting; syncAnimation();
+    }, { rootMargin: '80px' });
+    visibility.observe(hero);
+  }
+  const position = event => {
+    const rect = photon.getBoundingClientRect();
+    return { x: (event.clientX - rect.left) / rect.width * 800, y: (event.clientY - rect.top) / rect.height * 1000 };
+  };
+  hero.querySelector('.art-frame').addEventListener('pointermove', event => {
+    if (event.pointerType === 'mouse' && !paused) pointer = { ...position(event), active: true };
+  }, { passive: true });
+  hero.querySelector('.art-frame').addEventListener('pointerleave', () => { pointer.active = false; }, { passive: true });
+  hero.querySelector('.art-frame').addEventListener('pointerdown', event => {
+    if (paused) return;
+    const point = position(event);
+    if (ripples.length >= 6) ripples.shift();
+    ripples.push({ ...point, start: simTime });
+  }, { passive: true });
+
+  let lastWidth = 0, resizeTimer;
+  function renderArt(force = false) {
+    const width = Math.round(hero.getBoundingClientRect().width);
+    if (!force && width === lastWidth) return;
+    lastWidth = width;
+    try {
+      paintPond(document.getElementById('pondCanvas'), 137);
+      paintPond(document.getElementById('closingCanvas'), 369, true);
+      document.querySelectorAll('.folio-canvas').forEach(canvas => paintFolio(canvas, Number(canvas.dataset.palette)));
+      ctx = prepareCanvas(photon);
+      paintLight();
+    } catch (error) {
+      // Inline SVG and CSS washes remain as a complete, readable fallback.
+      console.warn('Procedural art fallback:', error);
+    }
+    syncAnimation();
+  }
+  renderArt(true);
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer); resizeTimer = setTimeout(() => renderArt(), 180);
+  }, { passive: true });
+  window.addEventListener('pagehide', () => {
+    if (frameId) cancelAnimationFrame(frameId);
+    frameId = 0; clearTimeout(copyTimer); clearTimeout(resizeTimer);
+  });
+  window.addEventListener('pageshow', () => { syncAnimation(); updateProgress(); });
+})();
+
+</script>
+</body>
+</html>
