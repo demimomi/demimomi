@@ -764,6 +764,64 @@
       *,*::before,*::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; transition-duration:.001ms !important; }
       .signal-track { transform:none !important; }
     }
+
+    /* A visitor behind the wallpaper. Kept below the navigation. */
+    .titan-peek {
+      position: fixed; right: 0; top: clamp(110px, 29vh, 320px);
+      width: clamp(190px, 25vw, 330px); aspect-ratio: .76;
+      z-index: 65; pointer-events: none; visibility: hidden;
+      overflow: visible; isolation: isolate;
+    }
+    .titan-peek.is-visible { visibility: visible; }
+    .titan-opening {
+      position: absolute; inset: 0; overflow: hidden;
+      background: radial-gradient(ellipse at 100% 45%, #49231e, #140c0b 65%, #030504);
+      clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+      transition: clip-path 1.15s cubic-bezier(.22,.7,.25,1);
+      filter: drop-shadow(-12px 4px 15px #000);
+    }
+    .titan-peek.is-open .titan-opening {
+      clip-path: polygon(100% 0, 12% 16%, 24% 83%, 100% 100%);
+    }
+    .titan-face {
+      position: absolute; height: 112%; width: 112%; right: -25%; top: -3%;
+      transform: translateX(38%) rotate(5deg);
+      transition: transform 1.5s cubic-bezier(.22,.7,.25,1);
+    }
+    .titan-peek.is-open .titan-face { transform: translateX(0) rotate(-5deg); }
+    .titan-paper {
+      position: absolute; inset: 0;
+      background: linear-gradient(100deg, #080b0a 15%, #142019 60%, #334238 82%, #859182 100%);
+      clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+      transition: clip-path 1.15s cubic-bezier(.22,.7,.25,1);
+      filter: drop-shadow(-9px 8px 10px rgba(0,0,0,.8));
+    }
+    .titan-peek.is-open .titan-paper {
+      clip-path: polygon(100% 0, 12% 16%, 24% 83%, 48% 65%);
+    }
+    .titan-paper::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(112deg, transparent 45%, rgba(223,196,134,.14) 60%, transparent 72%);
+    }
+    .titan-fingers {
+      position: absolute; width: 36%; height: 45%; left: 0; top: 42%;
+      opacity: 0; transform: translateX(45%) rotate(-12deg);
+      transition: opacity .5s ease, transform 1.15s cubic-bezier(.22,.7,.25,1);
+      filter: drop-shadow(-3px 5px 4px #000);
+    }
+    .titan-peek.is-open .titan-fingers { opacity: 1; transform: translateX(0) rotate(-12deg); }
+    .titan-eye { transform-box: fill-box; transform-origin: center; }
+    .titan-peek.is-open .titan-eye { animation: titan-blink 5.5s 1.5s both; }
+    @keyframes titan-blink { 0%, 46%, 50%, 100% { transform: scaleY(1); } 48% { transform: scaleY(.08); } }
+    .nav-links .nav-titan { color: var(--gold); }
+    @media (max-width: 600px) {
+      .titan-peek { width: 180px; top: 32vh; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .titan-opening, .titan-face, .titan-paper, .titan-fingers { transition: none; }
+      .titan-peek.is-open .titan-eye { animation: none; }
+    }
+
   </style>
 </head>
 <body>
@@ -784,6 +842,7 @@
         <a href="#projects">Projects</a>
         <a href="physical-ai-cat.html">猫とPhysical AI</a>
         <a href="https://demimomi.github.io/demimomi/neko-robot-game.html" target="_blank" rel="noopener noreferrer">猫GAME</a>
+        <a class="nav-titan" id="titanLink" href="#titan-peek" aria-label="巨人を呼ぶ">巨人</a>
         <a href="#model">Model</a>
         <a class="nav-fsc" href="https://demimomi.github.io/demimomi/fsc.html">微細構造定数</a>
         <a href="https://demimomi.github.io/demimomi/sound-garden.html">音庭</a>
@@ -793,6 +852,51 @@
       </nav>
     </div>
   </header>
+
+
+  <div class="titan-peek" id="titan-peek" aria-hidden="true">
+    <div class="titan-opening">
+      <svg class="titan-face" viewBox="0 0 280 420" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="titan-muscle" x2="1" y2=".4">
+            <stop stop-color="#421714"/><stop offset=".45" stop-color="#bb5f49"/><stop offset="1" stop-color="#4e221e"/>
+          </linearGradient>
+          <radialGradient id="titan-bone"><stop stop-color="#eee0b4"/><stop offset="1" stop-color="#9d8967"/></radialGradient>
+          <radialGradient id="titan-iris"><stop stop-color="#111a12"/><stop offset=".45" stop-color="#5e7245"/><stop offset=".8" stop-color="#b5b480"/><stop offset="1" stop-color="#29301b"/></radialGradient>
+        </defs>
+        <path d="M57 420 Q24 342 27 218 Q16 80 71 28 Q130 -21 219 16 Q278 60 282 186 L280 420Z" fill="url(#titan-muscle)" stroke="#24100f" stroke-width="6"/>
+        <path d="M74 40 Q100 90 93 124 M100 26 Q132 83 125 113 M134 17 Q155 68 160 110 M169 17 Q186 72 193 116 M207 27 Q226 80 231 125" fill="none" stroke="#e69b78" stroke-width="7" opacity=".55"/>
+        <path d="M42 176 Q64 108 122 121 L155 148 Q106 139 50 186Z M171 143 Q221 111 270 161 L274 188 Q227 148 177 160Z" fill="url(#titan-bone)" stroke="#4c2820" stroke-width="4"/>
+        <path d="M46 198 Q92 244 145 190 L153 166 Q95 145 46 174Z M170 175 Q217 149 271 185 L273 215 Q215 246 174 204Z" fill="#371c18"/>
+        <g class="titan-eye">
+          <ellipse cx="98" cy="188" rx="45" ry="32" fill="#f3ead4" stroke="#c79477" stroke-width="5"/>
+          <circle cx="85" cy="187" r="23" fill="url(#titan-iris)"/>
+          <circle cx="84" cy="187" r="10" fill="#070b09"/><circle cx="78" cy="179" r="5" fill="#fff" opacity=".85"/>
+          <path d="M57 181l15 3m48 19l16 6m-10-36l12-5" stroke="#c78578" stroke-width="1.5" fill="none"/>
+        </g>
+        <g class="titan-eye">
+          <ellipse cx="223" cy="192" rx="40" ry="30" fill="#f3ead4" stroke="#c79477" stroke-width="5"/>
+          <circle cx="211" cy="191" r="22" fill="url(#titan-iris)"/>
+          <circle cx="210" cy="191" r="10" fill="#070b09"/><circle cx="204" cy="183" r="5" fill="#fff" opacity=".85"/>
+        </g>
+        <path d="M150 161 L128 254 Q152 273 183 249 L168 167" fill="url(#titan-bone)" stroke="#6a392c" stroke-width="4"/>
+        <path d="M132 250l13-5m17 0l15 3" stroke="#301614" stroke-width="6" stroke-linecap="round"/>
+        <path d="M47 220 Q66 276 90 292 M42 246 Q50 293 76 315 M45 278 Q50 320 73 337 M267 225 Q249 275 222 296 M273 256 Q260 308 237 326" stroke="#e29171" stroke-width="8" fill="none" opacity=".75"/>
+        <path d="M78 296 Q155 273 239 299 L230 345 Q150 375 83 340Z" fill="#271514" stroke="#bd8066" stroke-width="5"/>
+        <path d="M85 299 Q158 285 233 302 L227 319 Q151 308 89 320Z M88 331 Q154 342 226 328 L224 342 Q150 362 92 342Z" fill="#e0d1ae"/>
+        <path d="M104 297v18m21-21v19m22-21v20m23-21v21m23-20v22m21-18v19M109 336v12m25-10v15m25-15v15m25-16v14m25-18v12" stroke="#66523d" stroke-width="3"/>
+        <path d="M86 361 Q152 391 224 365 M100 385 Q158 415 218 388" stroke="#e59a77" stroke-width="7" fill="none" opacity=".6"/>
+      </svg>
+    </div>
+    <div class="titan-paper"></div>
+    <svg class="titan-fingers" viewBox="0 0 100 180" xmlns="http://www.w3.org/2000/svg">
+      <g fill="#b77557" stroke="#512b23" stroke-width="3">
+        <path d="M82 178 Q48 131 50 98 L40 37 Q39 15 52 15 Q66 14 68 35 L78 88 L80 23 Q81 3 93 6 Q105 8 101 30 L99 109Z"/>
+        <path d="M54 110 L21 76 Q10 62 19 53 Q29 45 42 61 L68 84Z"/>
+      </g>
+      <path d="M46 37l18-3M49 54l19-3M80 28l19 1M79 48l20 1M26 64l10-10" stroke="#deb08b" stroke-width="4"/>
+    </svg>
+  </div>
 
   <main id="main">
     <section class="section hero" id="top" aria-labelledby="hero-title">
@@ -1079,5 +1183,60 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
     }
   })();
   </script>
+
+  <script>
+  (() => {
+    "use strict";
+    const peek = document.getElementById("titan-peek");
+    const link = document.getElementById("titanLink");
+    if (!peek || !link) return;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let nextTimer, closeTimer, hideTimer;
+    let open = false;
+    const clearTimers = () => {
+      window.clearTimeout(nextTimer);
+      window.clearTimeout(closeTimer);
+      window.clearTimeout(hideTimer);
+    };
+    const schedule = (delay = 30000 + Math.random() * 15000) => {
+      window.clearTimeout(nextTimer);
+      if (!motion.matches && !document.hidden) nextTimer = window.setTimeout(show, delay);
+    };
+    const close = (reschedule = true) => {
+      clearTimers();
+      open = false;
+      peek.classList.remove("is-open");
+      hideTimer = window.setTimeout(() => peek.classList.remove("is-visible"), motion.matches ? 0 : 1500);
+      if (reschedule) schedule();
+    };
+    const show = () => {
+      if (document.hidden) return;
+      clearTimers();
+      open = true;
+      peek.classList.add("is-visible");
+      // Commit the closed pose before the opening transition, even on first use.
+      void peek.offsetWidth;
+      peek.classList.add("is-open");
+      closeTimer = window.setTimeout(() => close(), 7200);
+    };
+    link.addEventListener("click", event => {
+      event.preventDefault();
+      show();
+    });
+    window.addEventListener("keydown", event => {
+      if (event.key === "Escape" && open) close();
+    });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) close(false);
+      else schedule(12000);
+    });
+    motion.addEventListener("change", () => {
+      close(false);
+      schedule();
+    });
+    schedule(12000);
+  })();
+  </script>
+
 </body>
 </html>
