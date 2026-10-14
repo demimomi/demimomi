@@ -200,6 +200,7 @@
 
     .nav-links { display: flex; align-items: center; gap: .08rem; }
     .nav-links a {
+      white-space: nowrap;
       padding: .64rem .72rem;
       border-radius: 999px;
       color: var(--muted);
@@ -698,7 +699,7 @@
     .reveal[data-delay="1"] { transition-delay:.06s; }
     .reveal[data-delay="2"] { transition-delay:.12s; }
 
-    @media (max-width: 960px) {
+    @media (max-width: 1280px) {
       .nav-toggle { display:inline-flex; }
       .nav-links {
         position:absolute;
@@ -716,9 +717,14 @@
         visibility:hidden;
         transform:translateY(-10px);
         transition:opacity .25s ease, visibility .25s ease, transform .25s ease;
+        max-height:calc(100dvh - var(--header-h) - 1.5rem);
+        overflow-y:auto;
       }
       .site-header.is-open .nav-links { opacity:1; visibility:visible; transform:none; }
       .nav-links a { padding:.9rem 1rem; }
+    }
+
+    @media (max-width: 960px) {
       .hero { grid-template-columns:1fr; gap:1rem; }
       .hero-system { min-height:390px; margin-top:-1rem; opacity:.88; }
       .hero-note { right:2%; }
@@ -842,6 +848,7 @@
         <a href="#projects">Projects</a>
         <a href="physical-ai-cat.html">猫とPhysical AI</a>
         <a href="https://demimomi.github.io/demimomi/neko-robot-game.html" target="_blank" rel="noopener noreferrer">猫GAME</a>
+        <a href="huggingface-incident-rpg.html" target="_blank" rel="noopener noreferrer">HuggingFace事件</a>
         <a class="nav-titan" id="titanLink" href="#titan-peek" aria-label="巨人を呼ぶ">巨人</a>
         <a href="#model">Model</a>
         <a class="nav-fsc" href="https://demimomi.github.io/demimomi/fsc.html">微細構造定数</a>
@@ -1240,3 +1247,4 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
 
 </body>
 </html>
+

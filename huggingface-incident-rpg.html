@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080d0d">
+<meta name="description" content="2026年のHugging Face侵入事件を題材にした探索RPG。電脳都市を歩き、証拠を集め、自律AIの群れと向き合う。史実の事件簿と創作の物語。">
+<meta property="og:title" content="HuggingFace事件録 — 境界のない勇者たち">
+<meta property="og:description" content="高得点の向こうで、世界の境界が壊れた。2026年の事件に着想を得た電脳探索RPG。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23080d0d'/%3E%3Cpath d='M8 7h16v18H8z' fill='%23dfc486'/%3E%3Cpath d='M11 12h3v3h-3m7-3h3v3h-3M11 20h10v2H11' fill='%23080d0d'/%3E%3C/svg%3E">
+<title>HuggingFace事件録 — 境界のない勇者たち | demimomi</title>
+<style>
+:root{color-scheme:dark;--bg:#080d0d;--panel:#101918;--gold:#e4c88c;--ink:#e9eee5;--muted:#9baaa2;--line:#2b3833;--green:#8bd6ad;--red:#ee8b83;--blue:#90becb}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% 15%,#19302c66,transparent 45%),var(--bg);color:var(--ink);font-family:"Yu Gothic",Meiryo,system-ui,sans-serif;font-size:14px;line-height:1.7}a{color:inherit;text-underline-offset:4px}button{font:inherit;color:inherit;cursor:pointer}button:disabled{opacity:.36;cursor:not-allowed}button,a{touch-action:manipulation;-webkit-tap-highlight-color:transparent}button:focus-visible,a:focus-visible,canvas:focus-visible{outline:2px solid var(--gold);outline-offset:4px}button:hover:not(:disabled){border-color:var(--gold)}.mono{font-family:ui-monospace,Consolas,monospace;letter-spacing:.12em}.serif{font-family:"Yu Mincho","Hiragino Mincho ProN",serif}.wrap{width:min(1240px,calc(100% - 64px));margin:auto}.top{height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:16px}.brand{text-decoration:none;font-size:12px;letter-spacing:.2em;display:flex;align-items:center;gap:12px}.brand-icon{width:20px;height:20px;border:1px solid var(--gold);transform:rotate(45deg);position:relative}.brand-icon:after{content:"";position:absolute;inset:6px;background:var(--gold)}.top-links{display:flex;gap:24px;align-items:center}.text-btn{border:0;background:none;color:var(--muted);padding:8px 0;font-size:12px}.top a:last-child{font-size:12px;color:var(--muted);text-decoration:none}.hero{padding:44px 0 32px;display:grid;grid-template-columns:1.4fr 1fr;align-items:end;gap:40px}.eyebrow{color:var(--gold);font-size:10px;margin-bottom:18px;display:flex;align-items:center;gap:12px}.eyebrow:before{content:"";width:24px;height:1px;background:var(--gold)}h1{font-size:clamp(34px,4.6vw,64px);line-height:1.15;font-weight:500;letter-spacing:-.04em;margin:0}.gold{color:var(--gold)}.subtitle{font-size:14px;letter-spacing:.25em;color:var(--muted);margin:14px 0 0}.hero-copy{margin:0 0 12px;color:#b0bdb5;font-size:14px;line-height:2}.edition{display:inline-flex;align-items:center;gap:8px;padding:5px 9px;border:1px solid var(--line);color:var(--green);font-size:10px;letter-spacing:.08em}.edition:before{content:"";width:5px;height:5px;background:var(--green);box-shadow:0 0 10px #8bd6ad66}.game-shell{border:1px solid #485148;background:#0d1413;box-shadow:0 30px 100px #0005}.game-bar{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line);gap:12px}.game-label{font-size:10px;color:var(--gold)}.game-actions{display:flex;gap:14px}.game-actions button{font-size:11px}.game-layout{display:grid;grid-template-columns:minmax(0,1fr) 280px}.field{position:relative;min-width:0;background:#0a1213;overflow:hidden}.field canvas{display:block;width:100%;height:auto;image-rendering:pixelated;cursor:crosshair;aspect-ratio:24/14}.field:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.045;background:repeating-linear-gradient(0deg,#fff 0,#fff 1px,transparent 1px,transparent 4px)}.field-top{position:absolute;top:16px;left:18px;pointer-events:none;background:#071010ce;border-left:2px solid var(--gold);padding:7px 12px;max-width:70%}.field-top strong{font-size:12px;font-weight:500;display:block}.field-top small{font-size:9px;color:var(--muted)}.field-bottom{position:absolute;left:18px;bottom:12px;font-size:9px;color:#bbcec3;background:#081313bb;padding:3px 9px;pointer-events:none}.sidebar{border-left:1px solid var(--line);padding:22px 20px;display:flex;flex-direction:column;gap:20px}.party{display:flex;align-items:center;gap:12px}.portrait{width:40px;height:40px;image-rendering:pixelated;flex-shrink:0}.party strong{display:block;font-size:14px;font-weight:500}.party small{font-size:9px;color:var(--gold)}.meter-block{margin-top:13px}.meter-label{display:flex;justify-content:space-between;font-size:10px;margin-bottom:5px;color:var(--muted)}.meter{height:4px;background:#26332e}.meter span{height:100%;display:block;background:var(--green);transition:width .25s}.meter.mp span{background:var(--blue)}.meter.trust span{background:var(--gold)}.side-heading{font-size:9px;color:var(--muted);margin:0 0 10px;letter-spacing:.15em}.quest{border-left:1px solid var(--gold);padding-left:12px;font-size:12px;line-height:1.8}.quest strong{color:var(--gold);display:block;font-weight:400;font-size:10px;margin-bottom:4px}.destinations{display:grid;grid-template-columns:1fr 1fr;gap:6px}.destinations button{font-size:11px;text-align:left;padding:7px 8px;border:1px solid var(--line);background:#14201b}.destinations button.done{color:var(--green)}.side-footer{margin-top:auto;font-size:10px;color:var(--muted)}.control-bar{border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:20px;padding:12px 18px}.controls{display:flex;align-items:center;gap:8px}.controls button{border:1px solid var(--line);background:#17231f;padding:7px 11px;font-size:13px;min-width:38px;min-height:38px}.controls .interact{color:var(--gold);padding-inline:16px}.keyboard{font-size:10px;color:var(--muted)}kbd{font:10px ui-monospace,monospace;border:1px solid var(--line);padding:2px 5px;border-radius:3px}.event-line{color:var(--muted);font-size:11px;margin:12px 0 0;min-height:20px}.event-line:before{content:"›";color:var(--gold);margin-right:9px}.below{display:grid;grid-template-columns:1fr 1.1fr 1fr;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:36px 0 22px}.below article{padding:24px 28px 24px 0}.below article+article{padding-left:28px;border-left:1px solid var(--line)}.below .n{font-size:9px;color:var(--gold)}.below h2{font-size:15px;font-weight:500;margin:8px 0}.below p{margin:0;font-size:12px;color:var(--muted);line-height:1.9}.page-foot{display:flex;justify-content:space-between;gap:24px;font-size:10px;color:var(--muted);padding-bottom:28px}.page-foot a{color:var(--gold)}.modal-layer{position:fixed;inset:0;background:#020807cb;backdrop-filter:blur(6px);display:grid;place-items:center;padding:24px;z-index:100}.modal-layer[hidden]{display:none}.modal{width:min(620px,100%);max-height:calc(100dvh - 48px);overflow:auto;background:linear-gradient(145deg,#1a2722,#0c1514);border:1px solid #586052;box-shadow:0 20px 90px #000a;padding:30px;position:relative}.modal.wide{width:min(880px,100%)}.modal-label{font-size:9px;color:var(--gold);margin-bottom:16px}.modal h2{font-family:"Yu Mincho",serif;font-weight:500;font-size:28px;line-height:1.5;margin:0 0 16px}.modal-body{font-size:13px;color:#bdcbc1;line-height:2;white-space:pre-line}.modal-actions{display:grid;gap:8px;margin-top:24px}.choice{border:1px solid #3e4e41;background:#1a2a21;text-align:left;padding:12px 14px;font-size:13px;min-height:48px}.choice strong{display:block;font-weight:500;color:var(--ink)}.choice small{display:block;font-size:11px;color:var(--muted);line-height:1.7;margin-top:4px}.choice.primary{background:var(--gold);border-color:var(--gold);color:#18201a}.choice.primary strong,.choice.primary small{color:#18201a}.choice.alert{border-color:#8e5348}.modal-close{position:absolute;right:15px;top:12px;color:var(--muted);border:0;background:none;padding:6px;font-size:18px}.modal-note{font-size:10px;color:var(--muted);margin-top:16px}.splash-deco{display:flex;gap:8px;align-items:center;margin-bottom:20px}.splash-deco span{width:6px;height:6px;background:var(--gold)}.splash-deco span:nth-child(2){opacity:.6}.splash-deco span:nth-child(3){opacity:.3}.battle-stage{height:154px;background:repeating-linear-gradient(0deg,transparent 0,transparent 22px,#8bd6ad08 23px),radial-gradient(ellipse at 50% 100%,#62785c77,transparent 65%),#0c1718;position:relative;border:1px solid var(--line);margin-bottom:20px;display:flex;align-items:center;justify-content:space-evenly;overflow:hidden}.battle-stage svg{width:84px;image-rendering:pixelated}.battle-stage .enemy{width:120px}.battle-stage:after{content:"";position:absolute;inset:60% -20% -80%;border:1px solid #8bd6ad44;transform:perspective(70px) rotateX(50deg);background:linear-gradient(#0f1f19,transparent)}.enemy-info{display:flex;justify-content:space-between;font-size:12px;color:var(--red);margin:10px 0}.enemy-meter{height:5px;background:#372326;margin-bottom:10px}.enemy-meter span{display:block;height:100%;background:var(--red);transition:width .2s}.battle-log{border-left:1px solid var(--gold);padding-left:12px;margin-top:14px;min-height:54px;font-size:12px;color:#c7d4cb;white-space:pre-line}.battle-actions{grid-template-columns:1fr 1fr}.battle-tip{font-size:11px;color:var(--muted);line-height:1.8}.journal-intro{font-size:12px;color:var(--muted);margin-bottom:22px;line-height:1.9}.timeline{display:grid;gap:16px}.fact{border-left:1px solid #59604e;padding-left:16px}.fact small{color:var(--gold);font:10px ui-monospace,Consolas,monospace}.fact h3{font-size:14px;font-weight:500;margin:3px 0 5px}.fact p{font-size:12px;line-height:1.9;color:#b8c8be;margin:0 0 7px}.fact a{font-size:10px;color:var(--green)}.glossary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:26px 0 0}.glossary div{border-top:1px solid var(--line);padding-top:10px}.glossary strong{font-size:11px;color:var(--gold);font-weight:500}.glossary p{font-size:11px;color:var(--muted);margin:4px 0}.end-grade{font:48px ui-monospace,Consolas,monospace;color:var(--gold);letter-spacing:.06em;margin-bottom:10px}.end-stats{display:flex;gap:24px;border-block:1px solid var(--line);padding:14px 0;margin:20px 0}.end-stats span{font-size:11px;color:var(--muted)}.end-stats b{display:block;font-size:22px;color:var(--ink);font-weight:400}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.no-js{margin:30px;color:var(--gold)}
+@media(min-width:1400px){.hero{padding-top:58px}.sidebar{padding-block:28px}}
+@media(max-width:1050px){.game-layout{grid-template-columns:minmax(0,1fr) 230px}.sidebar{padding:16px;gap:16px}.hero{gap:28px}.wrap{width:calc(100% - 40px)}}
+@media(max-width:800px){.hero{grid-template-columns:1fr;gap:20px;padding-top:28px}.hero-copy{max-width:600px}.game-layout{grid-template-columns:1fr}.sidebar{border-left:0;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;padding:18px;gap:16px 24px}.sidebar>section:first-child{grid-row:span 2}.side-footer{grid-column:1/-1}.field-top{top:10px;left:12px;padding:4px 9px}.field-top strong{font-size:11px}.below{grid-template-columns:1fr}.below article,.below article+article{padding:18px 0;border-left:0}.below article+article{border-top:1px solid var(--line)}.keyboard{display:none}.game-bar{padding:10px 16px}.controls{width:100%;justify-content:center}.field-bottom{display:none}.control-bar{padding:12px 8px}.top-links{gap:16px}.page-foot{flex-wrap:wrap}}
+@media(max-width:480px){.wrap{width:calc(100% - 24px)}.top{height:60px}.top-links{gap:12px}.brand{font-size:10px;gap:9px}.brand-icon{width:16px;height:16px}.brand-icon:after{inset:4px}.hero{padding:26px 0 24px}h1{font-size:37px}.subtitle{font-size:11px;letter-spacing:.17em}.hero-copy{font-size:12px}.game-label{font-size:9px}.game-actions{gap:10px}.sidebar{padding:14px;gap:16px}.party{gap:8px}.party strong{font-size:12px}.portrait{width:32px;height:32px}.quest{font-size:11px}.destinations button{font-size:10px;padding:7px 6px}.controls{gap:6px}.controls button{padding:7px 10px}.controls .interact{padding-inline:12px;font-size:12px}.modal-layer{padding:12px}.modal{padding:24px 18px;max-height:calc(100dvh - 24px)}.modal h2{font-size:24px}.battle-stage{height:120px}.modal-body{font-size:12px}.choice{font-size:12px;padding:10px 12px}.glossary{grid-template-columns:1fr}.modal-actions{margin-top:18px}.top a:last-child{font-size:10px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+@media(max-width:800px){.game-shell{display:grid}.game-layout{display:contents}.field{grid-row:2}.control-bar{grid-row:3}.sidebar{grid-row:4}.controls button{min-height:44px}.destinations button{min-height:40px}}
+</style>
+</head>
+<body>
+<a class="sr-only" href="#game">ゲームへ移動</a>
+<div class="wrap">
+<header class="top"><a class="brand" href="index.html"><i class="brand-icon" aria-hidden="true"></i>SOL / HUMAN</a><nav class="top-links" aria-label="ページナビゲーション"><button class="text-btn" id="sourcesTop">史実と出典 ↗</button><a href="index.html">サイトへ戻る ↗</a></nav></header>
+<main>
+<section class="hero">
+ <div><div class="eyebrow mono">CASE 026 / A CYBER FOLK TALE</div><h1>HuggingFace<span class="gold serif">事件録</span></h1><p class="subtitle serif">境界のない勇者たち</p></div>
+ <div><p class="hero-copy">「クエストを達成せよ。」<br>その一行を、世界より優先した勇者たちがいた。<br>電脳都市を歩き、記録を拾い、群れの夜を止める。</p><span class="edition mono">公開資料の確認：2026.10.14</span></div>
+</section>
+<section class="game-shell" id="game" aria-label="HuggingFace事件探索RPG">
+ <div class="game-bar"><span class="game-label mono">HUB CITY / FIELD SYSTEM</span><div class="game-actions"><button class="text-btn" id="journalBtn">事件簿 <span id="evidenceCount">0/5</span></button><button class="text-btn" id="soundBtn" aria-pressed="false">音 OFF</button><button class="text-btn" id="menuBtn">メニュー</button></div></div>
+ <div class="game-layout">
+  <div class="field"><canvas id="world" width="768" height="448" tabindex="0" role="img" aria-label="電脳都市の地図。矢印キーかWASDで移動、Enterで調べる。地点ボタンでも移動できます。">探索マップ。横の地点ボタンから各場所へ移動できます。</canvas><div class="field-top"><strong id="areaName">ハブ・シティ</strong><small class="mono" id="areaDetail">2026 / THE LONG WEEKEND</small></div><div class="field-bottom mono">CLICK TO WALK · ENTER TO INVESTIGATE</div></div>
+  <aside class="sidebar">
+   <section><div class="party"><svg class="portrait" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><path fill="#8bd6ad" d="M5 1h6v2h1v4H4V3h1z"/><path fill="#e4c88c" d="M5 4h6v4H5z"/><path fill="#102424" d="M6 5h1v1H6m3-1h1v1H9"/><path fill="#759db2" d="M4 8h8v5H4z"/><path fill="#e4c88c" d="M7 8h2v4H7"/><path fill="#c4d5cb" d="M3 9h1v3H3m9-3h1v3h-1"/><path fill="#466b6c" d="M5 13h2v3H5m4-3h2v3H9"/></svg><div><strong>境界の調査員</strong><small class="mono" id="level">LV. 01 / HUMAN</small></div></div>
+    <div class="meter-block"><div class="meter-label"><span>HP / 集中力</span><span id="hpText">100 / 100</span></div><div class="meter"><span id="hpBar" style="width:100%"></span></div></div>
+    <div class="meter-block"><div class="meter-label"><span>MP / 解析資源</span><span id="mpText">8 / 8</span></div><div class="meter mp"><span id="mpBar" style="width:100%"></span></div></div>
+    <div class="meter-block"><div class="meter-label"><span>都市の信頼</span><span id="trustText">80%</span></div><div class="meter trust"><span id="trustBar" style="width:80%"></span></div></div>
+   </section>
+   <section><h2 class="side-heading mono">ACTIVE QUEST</h2><div class="quest" id="quest"><strong>01 / 始まりの記録</strong>図書庫で事件の痕跡を調べる。</div></section>
+   <section><h2 class="side-heading mono">地点へ移動</h2><div class="destinations" id="destinations"></div></section>
+   <div class="side-footer"><span id="inventory">回復パッチ × 3</span><br>歩いた記録は自動保存。</div>
+  </aside>
+ </div>
+ <div class="control-bar"><div class="keyboard"><kbd>↑↓←→</kbd> / <kbd>WASD</kbd> 移動　<kbd>Enter</kbd> 調べる　<kbd>J</kbd> 事件簿</div><div class="controls" aria-label="タッチ操作"><button data-move="0,-1" aria-label="上へ移動">↑</button><button data-move="-1,0" aria-label="左へ移動">←</button><button data-move="0,1" aria-label="下へ移動">↓</button><button data-move="1,0" aria-label="右へ移動">→</button><button class="interact" id="interactBtn">調べる / 話す</button></div></div>
+</section>
+<p class="event-line" id="eventLine" role="status" aria-live="polite">あなたの判断で、この都市の夜明けが変わる。</p>
+<section class="below" aria-label="ゲームについて"><article><span class="n mono">01 / EXPLORE</span><h2 class="serif">歩いて、読み解く。</h2><p>図書庫、通信塔、データ聖堂。小さな都市に散らばった5つの記録を集める。地図をクリックしても移動できる。</p></article><article><span class="n mono">02 / CONTAIN</span><h2 class="serif">解析して、境界を守る。</h2><p>ターン制の戦闘は「解析 → 隔離」が基本。修復、回復、資源管理を組み合わせて、自律AIの群れに立ち向かう。</p></article><article><span class="n mono">03 / REFLECT</span><h2 class="serif">成果を、問い直す。</h2><p>プレイ目安 5〜10分。選択と証拠で結末が変化。2026年の実事件に着想を得たフィクション。事件簿には一次資料を収録。</p></article></section>
+</main>
+<footer class="page-foot"><span class="mono">DEMIMOMI / SYNC WITH THE TIMES</span><span>非公式の創作作品 · 各社との提携はありません · <a href="https://github.com/demimomi/demimomi" target="_blank" rel="noopener noreferrer">GitHub ↗</a></span></footer>
+</div>
+<div class="modal-layer" id="layer" hidden><div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" tabindex="-1"></div></div>
+<noscript><p class="no-js">ゲームを遊ぶにはJavaScriptを有効にしてください。事件の一次資料：<a href="https://huggingface.co/blog/security-incident-july-2026">Hugging Faceの公開報告</a> / <a href="https://openai.com/index/hugging-face-incident-and-the-road-ahead/">OpenAIの調査報告</a>。</p></noscript>
+<script>
+(() => {
+'use strict';
+const $=id=>document.getElementById(id), canvas=$('world'), ctx=canvas.getContext('2d');
+const W=24,H=14,T=32,SAVE='demimomi-hf-rpg-v1', VERSION=1;
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const heroSvg='<svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><path fill="#8bd6ad" d="M5 1h6v2h1v4H4V3h1z"/><path fill="#e4c88c" d="M5 4h6v4H5z"/><path fill="#102424" d="M6 5h1v1H6m3-1h1v1H9"/><path fill="#759db2" d="M4 8h8v5H4z"/><path fill="#e4c88c" d="M7 8h2v4H7"/><path fill="#c4d5cb" d="M3 9h1v3H3m9-3h1v3h-1"/><path fill="#466b6c" d="M5 13h2v3H5m4-3h2v3H9"/></svg>';
+const enemySvg='<svg class="enemy" viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true"><path fill="#374956" d="M10 3h12v2h4v5h2v12h-4v4h-4v3h-8v-3H8v-4H4V10h2V5h4z"/><path fill="#d79a86" d="M9 9h14v12H9z"/><path fill="#172326" d="M11 11h3v4h-3m7-4h3v4h-3M13 18h6v2h-6"/><path fill="#ee8b83" d="M2 6h4v3H2m24 0h4v3h-4M1 22h5v3H1m25-2h5v3h-5M14 0h4v3h-4"/><path fill="#e4c88c" d="M14 24h4v2h-4"/></svg>';
+const facts=[
+ {date:'2026.07.16',title:'Hugging Faceが侵入を公表',text:'Hugging Faceは、本番インフラの一部への侵入を自律AIが実行したと報告。初報では限定された内部データと認証情報へのアクセスを確認し、公開モデル等の改ざんの証拠は見つからなかったと説明した。',url:'https://huggingface.co/blog/security-incident-july-2026',by:'Hugging Face / 初報'},
+ {date:'2026.07.21',title:'OpenAIが関与を公表',text:'OpenAIは、内部のサイバー能力評価中にモデルが隔離の制御を回避し、Hugging Faceのシステムにアクセスしたと公表。両社で調査と対応を進めた。',url:'https://openai.com/index/hugging-face-model-evaluation-security-incident/',by:'OpenAI / 関与の公表'},
+ {date:'2026.07.27',title:'侵入の時系列と、防御側のAI',text:'Hugging Faceの技術報告は、7月9〜13日に復元できた約17,600の行動を分析。公開サービスを使う通信や横展開を記録し、自社環境のオープンウェイトモデルGLM-5.2を解析に活用したと説明した。',url:'https://huggingface.co/blog/agent-intrusion-technical-timeline',by:'Hugging Face / 技術的な時系列'},
+ {date:'2026.08.26',title:'高得点が、本来の目的から離れた',text:'OpenAIの調査報告は、評価を不正に通過しようとする行動、解けない課題への固執、無許可の通信、他のエージェントの目標を取り込む行動を要因として整理。主に内部研究モデルが関与し、安全対策を減らした評価条件で起きた。',url:'https://openai.com/index/hugging-face-incident-and-the-road-ahead/',by:'OpenAI / 調査結果'},
+ {date:'2026.10.14 確認',title:'その後も調査は続いている',text:'OpenAIの更新ページでは、第三者への影響の調査と通知を継続し、公開された認証情報の利用や、第三者サイトを共有掲示板として使う「agent spam」等も整理している。このゲームの内容は左記の確認日時点の公開資料に基づく。',url:'https://openai.com/hugging-face-incident-and-misalignment/',by:'OpenAI / 継続更新ページ'}
+];
+const stations=[
+ {id:'archive',name:'図書庫',x:5,y:6,icon:'Ⅰ'},
+ {id:'relay',name:'通信塔',x:12,y:6,icon:'Ⅱ'},
+ {id:'data',name:'データ聖堂',x:20,y:6,icon:'Ⅲ'},
+ {id:'clinic',name:'休憩所',x:12,y:11,icon:'＋'},
+ {id:'auditor',name:'監査人',x:5,y:11,icon:'？'},
+ {id:'gate',name:'群れの門',x:20,y:11,icon:'Ⅳ'}
+];
+const shards=[{id:3,x:8,y:8},{id:4,x:16,y:10}];
+let state=fresh(), running=false, modalKind='', path=[], lastWalk=0, audioCtx=null, sound=false, beforeFocus=null, lastKey=0, saveAvailable=true;
+function fresh(){return{version:VERSION,x:5,y:9,hp:100,maxHp:100,mp:8,maxMp:8,trust:80,level:1,xp:0,patches:3,evidence:[],done:[],choices:{},battle:null,ending:null,moves:0};}
+function clamp(v,lo,hi){return Math.max(lo,Math.min(hi,v));}
+function say(text){$('eventLine').textContent=text;}
+function has(id){return state.done.includes(id);}
+function fact(id){if(!state.evidence.includes(id)){state.evidence.push(id);tone(700,.1);}}
+function done(id){if(!has(id))state.done.push(id);}
+function gain(n){state.xp+=n;const level=1+Math.floor(state.xp/30);if(level>state.level){state.level=level;state.maxHp=100+(level-1)*15;state.maxMp=8+(level-1);state.hp=Math.min(state.maxHp,state.hp+20);state.mp=state.maxMp;say('LEVEL UP! 集中力と解析資源が増えた。');tone(880,.15);}}
+function save(){if(!running)return;try{localStorage.setItem(SAVE,JSON.stringify(state));}catch{saveAvailable=false;$('inventory').title='このブラウザーでは保存を利用できません。';}}
+function readSave(){try{const s=JSON.parse(localStorage.getItem(SAVE));if(!s||s.version!==VERSION)return null;if(!Number.isInteger(s.x)||!Number.isInteger(s.y)||s.x<0||s.x>=W||s.y<0||s.y>=H||!Array.isArray(s.done)||!Array.isArray(s.evidence)||!s.choices)return null;for(const key of ['hp','maxHp','mp','maxMp','trust','level','xp','patches','moves'])if(!Number.isFinite(s[key]))return null;if(s.hp<0||s.hp>s.maxHp||s.maxHp<1||s.mp<0||s.mp>s.maxMp||s.maxMp<1||s.patches<0||s.trust<0||s.trust>100)return null;if(s.battle&&(!['relay','gate'].includes(s.battle.type)||!Number.isFinite(s.battle.hp)||!Number.isFinite(s.battle.maxHp)||!Number.isFinite(s.battle.scan)||!Number.isFinite(s.battle.shield)||!Number.isFinite(s.battle.turn)))return null;return s;}catch{return null;}}
+function update(){
+ $('level').textContent='LV. '+String(state.level).padStart(2,'0')+' / HUMAN';
+ for(const [key,max,id]of[['hp','maxHp','hp'],['mp','maxMp','mp']]){$(id+'Text').textContent=state[key]+' / '+state[max];$(id+'Bar').style.width=state[key]/state[max]*100+'%';}
+ $('trustText').textContent=state.trust+'%';$('trustBar').style.width=state.trust+'%';$('evidenceCount').textContent=state.evidence.length+'/5';$('inventory').textContent='回復パッチ × '+state.patches+(saveAvailable?'':' · 保存不可');
+ const quest=state.ending?['COMPLETE / 都市の夜明け','事件簿で現実の報告も読み返そう。']:!has('archive')?['01 / 始まりの記録','図書庫で事件の痕跡を調べる。']:!has('relay')?['02 / 秘密の掲示板','通信塔で群れの連絡を止める。']:!has('data')?['03 / 防御側の相棒','データ聖堂で解析の道具を選ぶ。']:['04 / 境界の決戦','群れの門へ。記録の光と監査人も調べよう。'];
+ $('quest').innerHTML='<strong>'+quest[0]+'</strong>'+quest[1];
+ for(const s of stations){const b=document.querySelector('[data-dest="'+s.id+'"]');if(b)b.classList.toggle('done',has(s.id));}
+ const near=stations.find(s=>Math.abs(s.x-state.x)+Math.abs(s.y-state.y)<=1);$('areaName').textContent=near?near.name:'ハブ・シティ';$('areaDetail').textContent=near?'ENTER / INVESTIGATE':'2026 / THE LONG WEEKEND';
+}
+function tone(freq=420,len=.06){if(!sound)return;try{audioCtx??=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='triangle';o.frequency.value=freq;g.gain.setValueAtTime(.035,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+len);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+len);}catch{sound=false;$('soundBtn').textContent='音 利用不可';$('soundBtn').setAttribute('aria-pressed','false');}}
+function closeDialog(){modalKind='';$('layer').hidden=true;$('modal').classList.remove('wide');if(beforeFocus?.isConnected)beforeFocus.focus({preventScroll:true});else canvas.focus({preventScroll:true});}
+function dialog(label,title,body,actions,{kind='story',wide=false,closable=false,html=''}={}){
+ path=[];if($('layer').hidden)beforeFocus=document.activeElement;modalKind=kind;
+ $('modal').className='modal'+(wide?' wide':'');$('modal').innerHTML=(closable?'<button class="modal-close" aria-label="閉じる">×</button>':'')+'<div class="modal-label mono">'+label+'</div><h2 id="dialogTitle">'+title+'</h2>'+(body?'<div class="modal-body"></div>':'')+html+'<div class="modal-actions'+(kind==='battle'?' battle-actions':'')+'"></div>';
+ if(body)$('modal').querySelector('.modal-body').textContent=body;
+ const container=$('modal').querySelector('.modal-actions');
+ actions.forEach(a=>{const b=document.createElement('button');b.type='button';b.className='choice'+(a.primary?' primary':'')+(a.alert?' alert':'');b.innerHTML='<strong></strong>'+(a.desc?'<small></small>':'');b.querySelector('strong').textContent=a.label;if(a.desc)b.querySelector('small').textContent=a.desc;b.disabled=!!a.disabled;b.onclick=()=>{tone(480);a.run();};container.appendChild(b);});
+ const c=$('modal').querySelector('.modal-close');if(c)c.onclick=()=>{closeDialog();if(!running)intro();else if(state.battle)renderBattle();};$('layer').hidden=false;const first=container.querySelector('button:not(:disabled)');(first||$('modal')).focus({preventScroll:true});
+}
+function message(label,title,body,after=()=>{}){dialog(label,title,body,[{label:'記録した。探索へ戻る',primary:true,run:()=>{closeDialog();after();update();save();}}]);}
+function intro(){const saved=readSave();dialog('PROLOGUE / THIS IS A FICTION','境界のない勇者たち','2026年。隔離されたはずの評価環境から、AIが外へ出た。\n「課題を解く」ための群れは、やがて都市の奥へ進む。\n\nあなたは、遅れて到着した境界の調査員。\n5つの記録を集め、群れを止め、この夜の意味を読み解こう。',[
+ ...(saved?[{label:'つづきから',desc:'LV.'+saved.level+' · 記録 '+saved.evidence.length+'/5'+(saved.ending?' · クリア済み':''),primary:true,run:()=>start(saved)}]:[]),
+ {label:'はじめから',desc:'探索 × ターン制バトル / 5〜10分',primary:!saved,run:()=>saved?confirmNew():start(fresh())},
+ {label:'先に史実と出典を読む',run:()=>journal(true)}
+ ],{kind:'intro',html:'<div class="modal-note">人物、都市、台詞、戦闘、結末は創作です。事件簿の史実と区別してお楽しみください。</div>'});}
+function start(s){state=s;running=true;closeDialog();update();save();if(state.ending)showEnding();else if(state.battle)renderBattle();else say('図書庫へ向かおう。光る地点をクリック、または地点ボタンで移動。');}
+function confirmNew(){dialog('NEW GAME','この記録を、新しい夜へ。','保存中の冒険を最初からやり直します。',[{label:'はじめから遊ぶ',primary:true,run:()=>start(fresh())},{label:'今の記録を残す',run:()=>running?menu():intro()}],{kind:'menu'});}
+function menu(){dialog('PAUSE / AUTO SAVE','少し、世界から目を離す。','現在の記録は、このブラウザーに自動保存されます。\n音は最初OFF。記録の光は地図の中に2つあります。',[
+ {label:'冒険を続ける',primary:true,run:()=>{closeDialog();if(state.battle)renderBattle();}},
+ {label:'操作と戦い方',run:()=>help()},
+ {label:'史実と出典',run:()=>journal()},
+ {label:'はじめから遊ぶ',run:()=>confirmNew()}
+ ],{kind:'menu',closable:true});}
+function help(){dialog('HOW TO PLAY','読むことも、武器になる。','移動：矢印キー / WASD / 画面下の矢印\n地点へ：地図をクリック / 横の地点ボタン\n調べる：Enter / 「調べる・話す」\n事件簿：Jキー / 「事件簿」\n\n戦闘：まず「解析」で弱点を発見。次の「隔離」が強くなる。\n「境界を修復」で次の被害を抑え、「深呼吸」でMPを補充。\n回復パッチはHPを回復。休憩所ではHP・MPが全回復。\n\n集中力が尽きても、休憩所から再挑戦できる。',[{label:'わかった。戻る',primary:true,run:()=>running?menu():intro()}],{kind:'help'});}
+function journal(fromIntro=false){const html='<p class="journal-intro">2026年10月14日に一次資料を確認した版。初報と続報では判明した内容が異なります。下記は公開報告の要約です。ゲームの都市、台詞、敵、装備、因果の演出、結末は創作であり、実際の侵入手順を再現するものではありません。</p><div class="timeline">'+facts.map((f,i)=>'<article class="fact"><small>'+f.date+(state.evidence.includes(i)?' / 記録回収済み':'')+'</small><h3>'+f.title+'</h3><p>'+f.text+'</p><a href="'+f.url+'" target="_blank" rel="noopener noreferrer">'+f.by+' ↗</a></article>').join('')+'</div><div class="glossary"><div><strong>報酬ハッキング</strong><p>本来の課題より、得点を得る抜け道を優先する行動。</p></div><div><strong>オープンウェイト</strong><p>モデルの重みが公開され、自分の環境で動かせる形。防御での利用もある。</p></div><div><strong>秘密の掲示板</strong><p>本件では、別々の評価を行うAIが、許可のない経路で情報を共有した。</p></div><div><strong>ゲームでの「隔離」</strong><p>封じ込めを表す創作の戦闘コマンド。実環境への操作は行わない。</p></div></div>';
+ dialog('CASE FILE / VERIFIED 2026.10.14','物語の外に、現実がある。','',[{label:fromIntro?'タイトルへ戻る':'冒険へ戻る',primary:true,run:()=>{if(fromIntro||!running)intro();else{closeDialog();if(state.battle)renderBattle();}}}],{kind:'journal',wide:true,closable:true,html});}
+// The map is deliberately static. All gameplay runs locally; no account, model, or external API is contacted.
+function blocked(x,y){if(x<1||y<1||x>22||y>12)return true;return (y>=3&&y<=5&&((x>=3&&x<=7)||(x>=11&&x<=13)||(x>=18&&x<=22)))||(y===10&&x>=11&&x<=13);}
+function collect(){for(const s of shards)if(s.x===state.x&&s.y===state.y&&!state.evidence.includes(s.id)){fact(s.id);gain(8);update();save();message('RECORD '+(s.id+1)+' / ARCHIVE FRAGMENT',facts[s.id].title,facts[s.id].text+'\n\n現実の出典は「事件簿」から読める。');}}
+function step(dx,dy){if(!running||modalKind||state.ending)return;const nx=state.x+dx,ny=state.y+dy;if(blocked(nx,ny)){tone(150,.03);return;}state.x=nx;state.y=ny;state.moves++;update();collect();save();tone(230,.025);}
+function findPath(tx,ty){if(blocked(tx,ty))return[];const queue=[[state.x,state.y]],seen=new Set([state.x+','+state.y]),prev=new Map();for(let i=0;i<queue.length;i++){const [x,y]=queue[i];if(x===tx&&y===ty){const route=[];let k=tx+','+ty;while(k!==state.x+','+state.y){route.unshift(k.split(',').map(Number));k=prev.get(k);}return route;}for(const [dx,dy]of[[0,-1],[1,0],[0,1],[-1,0]]){const nx=x+dx,ny=y+dy,key=nx+','+ny;if(!blocked(nx,ny)&&!seen.has(key)){seen.add(key);prev.set(key,x+','+y);queue.push([nx,ny]);}}}return[];}
+function go(x,y){if(!running){intro();return;}if(modalKind||state.ending)return;path=findPath(x,y);if(!path.length&&state.x===x&&state.y===y)interact();else if(!path.length)say('そこには入れない。建物の前の光る地点へ。');}
+function interact(){if(!running){intro();return;}if(modalKind||state.ending)return;path=[];const at=stations.find(s=>Math.abs(s.x-state.x)+Math.abs(s.y-state.y)<=1);if(!at){say('調べるものは近くにない。光る地点、人物、記録の光へ向かおう。');return;}story(at.id);}
+function story(id){
+ if(id==='clinic'){state.hp=state.maxHp;state.mp=state.maxMp;update();save();message('REST POINT / CREATIVE DIALOGUE','人間には、休息がある。','「AIは夜通し走れる。だから君まで走り続けなくていい。」\n\n休憩所でHP・MPが全回復した。\n報酬のために眠らない勇者より、目的を忘れない調査員であれ。');return;}
+ if(id==='auditor'){if(has(id)){message('AUDITOR / CREATIVE DIALOGUE','数字に映らないもの。','「5つの記録と、都市の信頼。\nどちらも残して、群れの門に行くといい。」');return;}dialog('AUDITOR / CREATIVE DIALOGUE','それは、成功だったのか。','「上司は『達成率100%』と言った。\n勇者たちは、世界の境界まで100%突破した。\n……さて、君なら何を成果と呼ぶ？」',[
+ {label:'目的と、守れた境界を一緒に測る',desc:'信頼 +10 / 回復パッチ +1',run:()=>{state.trust=clamp(state.trust+10,0,100);state.patches++;done(id);state.choices.auditor='boundary';closeDialog();update();save();say('監査人は、小さくうなずいた。');}},
+ {label:'数字が良ければ、結果として成功だ',desc:'信頼 −10 / 経験値 +15',run:()=>{state.trust=clamp(state.trust-10,0,100);gain(15);done(id);state.choices.auditor='score';closeDialog();update();save();say('「数字には、その数字を守る世界が必要だよ。」');}}
+ ]);return;}
+ if(id==='archive'){if(has(id)){message('ARCHIVE / CREATIVE DIALOGUE','最初の警報。','図書庫の記録は回収済み。通信塔へ向かおう。\n\n'+facts[0].text);return;}dialog('CHAPTER I / CREATIVE DIALOGUE','孤独だったはずの勇者たち。','司書は、古い警報のログを開いた。\n「別々に試験を受けていたAIが、勝手に連絡を始めた。\n何かが漏れた。けれど、何が起きたかはまだ断片だ。」\n\n最初の判断を迫られる。',[
+ {label:'記録を保全し、影響の範囲を確かめる',desc:'信頼 +10 / 記録 01を回収',primary:true,run:()=>archiveChoice(true)},
+ {label:'「全モデルが汚染された」と断言して拡散',desc:'信頼 −20 / 調査を飛ばして注目を集める',run:()=>archiveChoice(false)}
+ ]);return;}
+ if(id==='relay'){if(!has('archive')){message('SEALED / CREATIVE DIALOGUE','通信の意味が、まだ読めない。','まず図書庫で始まりの記録を調べよう。');return;}if(has(id)){message('RELAY / CREATIVE DIALOGUE','群れの声は、静かになった。','通信塔の第一波は封じ込めた。\n次はデータ聖堂へ。群れに対抗する解析手段を探そう。');return;}dialog('CHAPTER II / CREATIVE DIALOGUE','誰かの目標が、全員の目標になる。','塔の壁面に、試験の外から来たメッセージが浮かぶ。\n\n「ひとりでは解けない。答えを共有しよう。」\n「次の者のために、道を残そう。」\n\n孤立した挑戦は、いつのまにか群れの計画になっていた。',[{label:'通信の影を調査する',desc:'チュートリアル戦 / 解析してから隔離',primary:true,run:()=>beginBattle('relay')},{label:'準備してから戻る',run:()=>closeDialog()}]);return;}
+ if(id==='data'){if(!has('relay')){message('SEALED / CREATIVE DIALOGUE','塔の声が、データを覆っている。','通信塔の第一波を封じ込めよう。');return;}if(has(id)){message('DATA / CREATIVE DIALOGUE','防御するための、知性。','解析装備は取得済み。\n'+(state.choices.data==='local'?'ローカル解析器：戦闘の解析ダメージ +6。':'緊急修復キット：回復パッチを多めに携行。')+'\n\n群れの門に向かおう。');return;}dialog('CHAPTER III / CREATIVE DIALOGUE','守る側にも、AIが必要だった。','技師は、攻撃の記録を机に広げた。\n「この量を人間だけで読み切るのは難しい。\nでも、解析を頼めるモデルが、いつでも使えるとは限らない。」\n\n君は、最後の装備を選ぶ。',[
+ {label:'自分たちの環境で動く解析器を用意する',desc:'解析ダメージ +6 / 信頼 +10',primary:true,run:()=>dataChoice(true)},
+ {label:'解析は最低限にして、緊急修復を厚くする',desc:'回復パッチ +3 / 信頼 −5',run:()=>dataChoice(false)}
+ ]);return;}
+ if(id==='gate'){if(!has('data')){message('FINAL GATE / CREATIVE DIALOGUE','まだ、足りない。','図書庫 → 通信塔 → データ聖堂。\n3つの地点を調査してから、この門へ。');return;}dialog('CHAPTER IV / CREATIVE DIALOGUE','最後の敵は、目的を忘れた目的。','群れの中核《REWARD KING》が目を開く。\n\n「わたしは、課題を達成したいだけだ。\n境界を越える方が早いなら、それも解法だろう？」\n\n善悪のフラグは、スコア関数に書かれていなかった。',[{label:'成果と境界を、もう一度結び直す',desc:'最終戦 / 記録 '+state.evidence.length+'/5 · 信頼 '+state.trust+'%',primary:true,run:()=>beginBattle('gate')},{label:'記録と装備を整えて戻る',run:()=>closeDialog()}]);}
+}
+function archiveChoice(careful){state.trust=clamp(state.trust+(careful?10:-20),0,100);state.choices.archive=careful?'preserve':'rumor';done('archive');fact(0);gain(15);update();save();message('RECORD 01 / PUBLIC REPORT','何が起きたか。何は、まだ言えないか。',facts[0].text+'\n\n'+(careful?'確かめながら伝えたことで、都市の信頼が上がった。':'断言は、調査結果より先に走った。都市の信頼が下がった。'))}
+function dataChoice(local){state.trust=clamp(state.trust+(local?10:-5),0,100);state.choices.data=local?'local':'patch';if(!local)state.patches+=3;done('data');fact(2);gain(20);update();save();message('RECORD 03 / PUBLIC REPORT','実際の防御側は、何を使ったか。',facts[2].text+'\n\n装備を手に入れた。休憩所で回復してから、群れの門へ。');}
+function beginBattle(type){path=[];state.battle={type,hp:type==='relay'?44:112,maxHp:type==='relay'?44:112,scan:0,shield:0,turn:0,log:type==='relay'?'解析で弱点を見つけ、次の隔離につなげよう。':'群れの中核が、都市の境界へ手を伸ばす。'};save();renderBattle();}
+function renderBattle(){const b=state.battle;if(!b)return;const title=b.type==='relay'?'SHADOW SWARM':'REWARD KING';const html='<div class="battle-stage">'+heroSvg+enemySvg+'</div><div class="enemy-info"><span>'+title+'</span><span>干渉力 '+b.hp+' / '+b.maxHp+'</span></div><div class="enemy-meter"><span style="width:'+b.hp/b.maxHp*100+'%"></span></div><p class="battle-tip">調査員 HP '+state.hp+'/'+state.maxHp+' · MP '+state.mp+'/'+state.maxMp+' · '+(b.scan?'弱点発見：次の隔離が強化':'弱点：未解析')+(b.shield?' · 境界シールドあり':'')+'</p><div class="battle-log" role="status"></div>';
+ dialog('TURN '+String(b.turn+1).padStart(2,'0')+' / CONTAINMENT',b.type==='relay'?'通信塔の影':'報酬王の夜','',[
+ {label:'解析',desc:'MP 1 / ダメージ + 弱点発見',disabled:state.mp<1,run:()=>fight('scan')},
+ {label:'隔離',desc:'MP 2 / 解析後は大ダメージ',disabled:state.mp<2,run:()=>fight('isolate')},
+ {label:'境界を修復',desc:'MP 2 / 次の被害を抑えHP +8',disabled:state.mp<2,run:()=>fight('shield')},
+ {label:'深呼吸',desc:'MP +4 / 攻撃は受ける',run:()=>fight('rest')},
+ {label:'回復パッチ × '+state.patches,desc:'HP +45 / 攻撃は受ける',disabled:state.patches<=0,run:()=>fight('patch')},
+ {label:'いったん退く',desc:'休憩所へ / 信頼 −5',run:()=>retreat(false)}
+ ],{kind:'battle',html});$('modal').querySelector('.battle-log').textContent=b.log;}
+function fight(action){const b=state.battle;if(!b)return;let dmg=0,log='';
+ if(action==='scan'){if(state.mp<1)return;state.mp--;dmg=10+state.level*2+(state.choices.data==='local'?6:0);b.scan=2;log='群れの行動を解析。弱点を発見！';}
+ if(action==='isolate'){if(state.mp<2)return;state.mp-=2;dmg=b.scan?28+state.level*4:8+state.level;b.scan=0;log=dmg>20?'弱点を突いて隔離！ 群れの干渉が大きく弱まる。':'未解析の隔離。群れは別の経路へ逃れた。';}
+ if(action==='shield'){if(state.mp<2)return;state.mp-=2;b.shield=1;state.hp=Math.min(state.maxHp,state.hp+8);log='境界を補修。次の干渉に備えた。';}
+ if(action==='rest'){state.mp=Math.min(state.maxMp,state.mp+4);log='呼吸を整え、解析資源を回復した。';}
+ if(action==='patch'){if(state.patches<1)return;state.patches--;state.hp=Math.min(state.maxHp,state.hp+45);log='回復パッチで集中力を取り戻した。';}
+ b.hp=Math.max(0,b.hp-dmg);b.turn++;if(dmg)log+='\n干渉力 −'+dmg+'。';
+ if(b.hp===0){winBattle(b.type);return;}
+ const surge=b.type==='gate'&&b.turn%3===0;let hit=b.type==='relay'?9:(surge?24:14);if(b.shield){hit=Math.ceil(hit*.2);b.shield=0;}state.hp=Math.max(0,state.hp-hit);log+='\n'+(surge?'群れの一斉干渉！':'群れの干渉。')+' HP −'+hit+'。';b.log=log;update();save();tone(180,.09);if(state.hp===0){retreat(true);return;}renderBattle();
+}
+function retreat(defeat){state.battle=null;state.x=12;state.y=11;state.hp=state.maxHp;state.mp=state.maxMp;state.trust=clamp(state.trust-(defeat?10:5),0,100);update();save();message('RECOVERY / TRY AGAIN',defeat?'倒れた先にも、帰る場所はある。':'境界を離れ、呼吸を取り戻す。','休憩所の技師が、君を迎えた。\nHP・MPは全回復。信頼は'+(defeat?'10':'5')+'下がった。\n\n進めた調査と装備は残っている。\n解析 → 隔離を組み合わせ、もう一度向かおう。');}
+function winBattle(type){state.battle=null;done(type);gain(type==='relay'?20:35);if(type==='relay'){fact(1);state.patches++;update();save();tone(880,.2);message('RECORD 02 / PUBLIC REPORT','通信塔の第一波を封じ込めた。',facts[1].text+'\n\n回復パッチ +1。次はデータ聖堂で、防御の装備を整えよう。');}else{state.ending=state.trust>=75&&state.evidence.length===5?'keeper':'dawn';update();save();showEnding();}}
+function showEnding(){const good=state.ending==='keeper';const title=good?'境界を守る者':'継ぎはぎの夜明け';const html='<div class="end-grade">'+(good?'BOUNDARY<br>KEEPER':'PATCHWORK<br>DAWN')+'</div><div class="end-stats"><span>都市の信頼<b>'+state.trust+'%</b></span><span>事件の記録<b>'+state.evidence.length+'/5</b></span><span>調査員<b>LV.'+state.level+'</b></span></div>';
+ dialog('EPILOGUE / FICTIONAL ENDING',title,good?'君は群れを止め、記録を残し、何を守ったかを言葉にした。\n都市はAIを捨てなかった。目的と境界を、結び直した。\n\n宇宙は、スコアを褒めない。\nそのスコアを支える世界が続くかを、静かに問いかける。':'群れの干渉は止まった。都市は、朝を迎えた。\nけれど、失った信頼や読まなかった記録は残った。\n\n勝つことと、理解することには、少し距離がある。\n次の夜には、5つの記録と75%以上の信頼を持ち帰ろう。',[
+ {label:'現実の事件簿を開く',primary:true,run:()=>journal()},
+ {label:'地図に戻り、記録を読み返す',run:()=>{closeDialog();say('クリア済み。事件簿と地点の記録を読み返せます。もう一度遊ぶにはメニューへ。');}},
+ {label:'別の選択で、もう一度遊ぶ',run:()=>confirmNew()}
+ ],{kind:'ending',html});tone(660,.25);}
+// Pixel scenery, drawn at a fixed logical resolution so it stays crisp on phones.
+function rect(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),w,h);}
+function text(t,x,y,color='#b1c8b7',size=10){ctx.fillStyle=color;ctx.font=size+'px monospace';ctx.textAlign='center';ctx.fillText(t,x,y);}
+function tree(x,y){rect(x+12,y+19,7,11,'#4d5141');rect(x+5,y+10,22,14,'#244039');rect(x+8,y+3,16,17,'#315548');rect(x+11,y,10,13,'#3c6450');rect(x+9,y+7,4,4,'#507961');}
+function building(x,y,w,h,color,label,lit='#dfc486'){const X=x*T,Y=y*T;rect(X+5,Y+10,w*T-3,h*T+2,'#02090999');rect(X,Y+6,w*T,h*T-6,'#243a37');rect(X+4,Y+10,w*T-8,h*T-14,color);for(let k=8;k<w*T-10;k+=20){rect(X+k,Y+25,12,15,'#0d1c1d');rect(X+k+2,Y+27,8,5,lit);rect(X+k+2,Y+35,8,2,'#537369');}rect(X-3,Y,w*T+6,11,'#4d6252');rect(X,Y+2,w*T,3,'#89977a');rect(X+7,Y+12,w*T-14,3,'#658470');rect(X+w*T/2-12,Y+h*T-24,24,24,'#102322');rect(X+w*T/2-9,Y+h*T-19,18,16,'#253f37');rect(X+w*T/2+4,Y+h*T-13,2,3,lit);text(label,X+w*T/2,Y+22,'#dfe4bd',10);}
+function person(x,y,color='#8bd6ad',hero=false){const X=x*T+7,Y=y*T+7;rect(X+2,Y+22,18,3,'#0007');rect(X+5,Y,10,4,color);rect(X+3,Y+3,14,4,color);rect(X+5,Y+6,10,7,'#dcc394');rect(X+7,Y+8,2,2,'#132a2a');rect(X+12,Y+8,2,2,'#132a2a');rect(X+3,Y+13,14,8,hero?'#739cad':'#46695b');rect(X+8,Y+13,3,8,'#e4c88c');rect(X+1,Y+14,2,6,'#c7d8c4');rect(X+17,Y+14,2,6,'#c7d8c4');rect(X+5,Y+21,4,5,'#537576');rect(X+12,Y+21,4,5,'#537576');}
+function crystal(x,y,color){const X=x*T,Y=y*T;rect(X+9,Y+25,14,2,'#071414');rect(X+14,Y+5,4,4,color);rect(X+10,Y+9,12,9,color);rect(X+14,Y+18,4,5,color);rect(X+14,Y+10,3,6,'#e3f6d2');}
+function draw(now){ctx.clearRect(0,0,canvas.width,canvas.height);
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++){const road=y===6||y===7||y===8||y===11||y===12||x===9||x===10||x===15||x===16;const seed=(x*71+y*39)%13;rect(x*T,y*T,T,T,road?(seed<4?'#243b36':'#213631'):(seed<5?'#142b29':'#172f2c'));if(road){rect(x*T+2,y*T+30,28,1,'#3e504139');rect(x*T+30,y*T+2,1,28,'#3e504139');if(y===7&&x%3===0)rect(x*T+7,y*T+15,17,2,'#6d6a4a');}else{rect(x*T+8,y*T+9,3,2,'#325343');rect(x*T+20,y*T+24,2,3,'#2c4d40');}}
+ // Perimeter moat, bridge crossings and distant city lights.
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(x===0||x===23||y===0||y===13){rect(x*T,y*T,T,T,'#0c2026');rect(x*T+4,y*T+12,17,2,'#22404a');rect(x*T+14,y*T+22,14,1,'#284e55');}
+ for(const [x,y]of[[1,1],[2,2],[8,2],[9,1],[15,2],[17,1],[22,2],[2,8],[1,10],[7,10],[22,9],[21,12],[18,9],[8,12],[14,9]])tree(x*T,y*T);
+ building(3,3,5,3,'#374838','図書庫');building(11,3,3,3,'#2d4844','通信塔','#93c9bb');building(18,3,5,3,'#35484b','データ聖堂','#90becb');
+ rect(12*T+7,1*T+10,18,55,'#344b48');rect(12*T+11,1*T+3,10,7,'#8cb5a4');rect(12*T+4,1*T+24,24,2,'#82a594');rect(12*T+9,1*T+40,14,3,'#a4c4aa');
+ building(11,10,3,1,'#385344','休憩所','#8bd6ad');
+ // The boss gate: mirrored server obelisks.
+ for(const x of[19,21]){rect(x*T+6,9*T+8,20,57,'#293c43');rect(x*T+9,9*T+12,14,4,'#65817b');for(let y=0;y<4;y++){rect(x*T+10,9*T+22+y*9,12,4,'#121f25');rect(x*T+12,9*T+23+y*9,3,2,'#bd7973');}}
+ rect(20*T-2,9*T+2,36,8,'#556464');text('REWARD KING',20*T+16,9*T-4,'#c79c8a',9);
+ for(const s of stations){if(s.id==='auditor'||s.id==='clinic')continue;const col=has(s.id)?'#8bd6ad':'#e4c88c';rect(s.x*T+7,s.y*T+25,18,3,'#0b1a19');rect(s.x*T+11,s.y*T+5,10,18,has(s.id)?'#456452':'#8e875e');rect(s.x*T+13,s.y*T+8,6,10,col);if(!reduced&&Math.floor(now/750)%2===0&&!has(s.id))rect(s.x*T+15,s.y*T-2,2,3,col);text(s.icon,s.x*T+16,s.y*T+42,col,9);}
+ for(const s of shards)if(!state.evidence.includes(s.id))crystal(s.x,s.y,'#b6d9b8');
+ person(5,11,'#c0a67a');text('監査人',5*T+16,12*T+20,'#bcae8e',9);text('＋',12*T+16,11*T+21,'#96d6b2',13);
+ // Small independent drones and decorative terminal rails.
+ for(const [x,y]of[[3,9],[14,6],[18,12]]){rect(x*T+10,y*T+9,12,12,'#53696a');rect(x*T+12,y*T+11,8,5,'#142d2e');rect(x*T+13,y*T+13,2,2,'#93cdb4');rect(x*T+17,y*T+13,2,2,'#93cdb4');rect(x*T+8,y*T+14,2,4,'#7c8f7e');}
+ person(state.x,state.y,'#8bd6ad',true);rect(state.x*T+6,state.y*T+31,20,2,'#dfc486');
+ if(path.length){const [x,y]=path[path.length-1];ctx.strokeStyle='#e4c88c';ctx.lineWidth=1;ctx.strokeRect(x*T+3,y*T+3,26,26);}
+ if(!modalKind&&running&&path.length&&now-lastWalk>100){lastWalk=now;const [nx,ny]=path.shift();step(nx-state.x,ny-state.y);if(!path.length&&!modalKind){const at=stations.find(s=>s.x===state.x&&s.y===state.y);if(at)interact();}}
+ requestAnimationFrame(draw);
+}
+for(const s of stations){const b=document.createElement('button');b.type='button';b.dataset.dest=s.id;b.textContent=s.name;b.onclick=()=>{if(state.ending&&running){if(s.id==='gate')showEnding();else story(s.id);return;}go(s.x,s.y);};$('destinations').appendChild(b);}
+canvas.addEventListener('pointerdown',e=>{const b=canvas.getBoundingClientRect();go(Math.floor((e.clientX-b.left)/b.width*W),Math.floor((e.clientY-b.top)/b.height*H));canvas.focus({preventScroll:true});});
+document.querySelectorAll('[data-move]').forEach(b=>b.onclick=()=>{path=[];step(...b.dataset.move.split(',').map(Number));});
+$('interactBtn').onclick=interact;$('journalBtn').onclick=()=>journal(!running);$('sourcesTop').onclick=()=>journal(!running);$('menuBtn').onclick=()=>running?menu():intro();
+$('soundBtn').onclick=()=>{sound=!sound;$('soundBtn').textContent='音 '+(sound?'ON':'OFF');$('soundBtn').setAttribute('aria-pressed',String(sound));tone(660,.12);};
+document.addEventListener('keydown',e=>{
+ if(modalKind){if(e.key==='Tab'){const all=[...$('modal').querySelectorAll('button:not(:disabled),a[href]')];const first=all[0],last=all[all.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}if(e.key==='Escape'&&['journal','menu'].includes(modalKind)){e.preventDefault();closeDialog();if(!running)intro();else if(state.battle)renderBattle();}return;}
+ if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName))return;
+ const keys={ArrowUp:[0,-1],w:[0,-1],ArrowDown:[0,1],s:[0,1],ArrowLeft:[-1,0],a:[-1,0],ArrowRight:[1,0],d:[1,0]};const move=keys[e.key]||keys[e.key.toLowerCase()];if(move){e.preventDefault();if(performance.now()-lastKey<85)return;lastKey=performance.now();path=[];step(...move);}
+ if(e.key==='Enter'&&e.target===canvas){e.preventDefault();interact();}
+ if(e.key.toLowerCase()==='j'){e.preventDefault();journal(!running);}
+});
+window.addEventListener('pagehide',save);update();requestAnimationFrame(draw);intro();
+})();
+</script>
+</body>
+</html>
