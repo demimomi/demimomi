@@ -829,6 +829,8 @@
     }
 
   </style>
+  <link rel="stylesheet" href="assets/cats/cat-walk.css?v=1">
+  <script defer src="assets/cats/cat-walk.js?v=1"></script>
 </head>
 <body>
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
@@ -1105,8 +1107,17 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
     </section>
   </main>
 
+  <div class="cat-walker" id="catWalker" aria-hidden="true" hidden>
+    <img id="walkingCatImage" alt="" width="104" height="96" decoding="async" draggable="false">
+  </div>
+
   <footer>
     <span>© <span id="year"></span> Toshiki Demizu / demimomi</span>
+    <div class="cat-tools" aria-label="猫の散歩">
+      <button type="button" id="callCat">猫を呼ぶ</button>
+      <button type="button" id="toggleCats" aria-pressed="true">猫の散歩：ON</button>
+      <a href="cat-credits.html">猫たち・画像出典 ↗</a>
+    </div>
     <span class="status">Still edited by a human.</span>
   </footer>
 
@@ -1216,8 +1227,11 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
       hideTimer = window.setTimeout(() => peek.classList.remove("is-visible"), motion.matches ? 0 : 1500);
       if (reschedule) schedule();
     };
-    const show = () => {
+    const show = (manual = false) => {
       if (document.hidden) return;
+      const walkingCat = document.getElementById("catWalker");
+      if (!manual && walkingCat && !walkingCat.hidden) { schedule(15000); return; }
+      window.dispatchEvent(new Event("demimomi-titan-peek"));
       clearTimers();
       open = true;
       peek.classList.add("is-visible");
@@ -1228,7 +1242,7 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
     };
     link.addEventListener("click", event => {
       event.preventDefault();
-      show();
+      show(true);
     });
     window.addEventListener("keydown", event => {
       if (event.key === "Escape" && open) close();
@@ -1247,4 +1261,5 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
 
 </body>
 </html>
+
 
