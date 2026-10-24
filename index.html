@@ -829,7 +829,7 @@
     }
 
   </style>
-  <link rel="stylesheet" href="assets/cats/cat-walk.css?v=1">
+  <link rel="stylesheet" href="assets/cats/cat-walk.css?v=2">
   <script defer src="assets/cats/cat-walk.js?v=1"></script>
 </head>
 <body>
@@ -1107,8 +1107,10 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
     </section>
   </main>
 
-  <div class="cat-walker" id="catWalker" aria-hidden="true" hidden>
-    <img id="walkingCatImage" alt="" width="104" height="96" decoding="async" draggable="false">
+  <div class="cat-walk-layer" aria-hidden="true">
+    <div class="cat-walker" id="catWalker" hidden>
+      <img id="walkingCatImage" alt="" width="104" height="96" decoding="async" draggable="false">
+    </div>
   </div>
 
   <footer>

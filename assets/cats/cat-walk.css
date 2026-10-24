@@ -1,6 +1,13 @@
 /* A quiet, occasional visitor along the bottom edge. */
-.cat-walker {
+.cat-walk-layer {
   position: fixed;
+  inset: 0;
+  z-index: 45;
+  overflow: hidden;
+  pointer-events: none;
+}
+.cat-walker {
+  position: absolute;
   left: 0;
   bottom: max(10px, env(safe-area-inset-bottom));
   z-index: 45;
@@ -39,6 +46,7 @@
   50% { translate: 0 -2px; rotate: .7deg; }
 }
 .cat-tools { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: .9rem; }
+footer { padding-bottom: calc(116px + env(safe-area-inset-bottom)); }
 .cat-tools button, .cat-tools a {
   padding: .4rem .2rem;
   border: 0;
