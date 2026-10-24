@@ -8,12 +8,8 @@
   const toggle = document.getElementById('toggleCats');
   if (!walker || !image || !call || !toggle) return;
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const storageKey = 'demimomi-cat-walk-enabled';
+  const storageKey = 'demimomi-cat-walk-enabled-v2';
   const cats = [
-    { file: 'worker.svg', name: '現場を巡回する猫', left: true },
-    { file: 'engineer.svg', name: 'エンジニア猫', left: false },
-    { file: 'office.svg', name: 'お仕事帰りの猫', left: false },
-    { file: 'black-cat.svg', name: '黒猫', left: true },
     { file: 'kitten.webp', name: '茶白の子猫', left: true },
     { file: 'tabby.webp', name: 'お散歩中のキジトラ', left: true },
     { file: 'longhair.webp', name: 'ふわふわの猫', left: false },
@@ -26,7 +22,7 @@
   try { enabled = localStorage.getItem(storageKey) !== 'false'; } catch (_) { /* Optional preference. */ }
   const interval = 5000;
   const active = new Set();
-  const maxCats = 12;
+  const maxCats = 6;
   let deck = [], lastCat, nextTimer, resumeTimer;
   let scrolling = false;
   const choose = () => {
@@ -80,24 +76,49 @@
     picture.alt = cat.name;
     try { await picture.decode(); } catch (_) { retire(visit); return; }
     if (!active.has(visit) || document.hidden) return;
-    const width = innerWidth <= 600 ? 80 : 104;
+    const mobile = innerWidth <= 600;
+    const width = mobile ? 80 : 104;
+    const height = mobile ? 76 : 96;
+    const viewportWidth = walker.parentElement.clientWidth || innerWidth;
+    const viewportHeight = walker.parentElement.clientHeight || innerHeight;
     const rightwards = Math.random() > .5;
     picture.style.transform = cat.left && rightwards || !cat.left && !rightwards ? 'scaleX(-1)' : 'none';
     node.hidden = false;
+    const headerHeight = document.getElementById('siteHeader')?.getBoundingClientRect().height || 76;
+    const minY = Math.min(headerHeight + 22, Math.max(0, viewportHeight - height - 18));
+    const maxY = Math.max(minY, viewportHeight - height - 22);
     if (motion.matches || typeof node.animate !== 'function') {
-      node.style.transform = `translateX(${rightwards ? 14 : Math.max(14, innerWidth - width - 14)}px)`;
+      node.style.transform = `translate3d(${rightwards ? 14 : Math.max(14, viewportWidth - width - 14)}px, ${maxY}px, 0)`;
       visit.timer = setTimeout(() => retire(visit), 9000);
       return;
     }
-    const start = rightwards ? -width - 12 : innerWidth + 12;
-    const end = rightwards ? innerWidth + 12 : -width - 12;
-    node.style.transform = `translateX(${start}px)`;
-    // Each visitor walks independently while a new cat arrives every five seconds.
-    const duration = (innerWidth + width + 24) / random(48, 62) * 1000;
-    visit.animation = node.animate([
-      { transform: `translateX(${start}px)` },
-      { transform: `translateX(${end}px)` }
-    ], { duration, easing: 'linear', fill: 'forwards' });
+    const depthVisit = Math.random() < .28;
+    node.classList.toggle('is-depth', depthVisit);
+    const startX = rightwards ? -width * .25 : viewportWidth - width * .75;
+    const endX = rightwards ? viewportWidth + width : -width * 2;
+    const fromY = random(minY, maxY);
+    const toY = random(minY, maxY);
+    const wave = random(35, mobile ? 65 : 105);
+    const frames = [];
+    for (let step = 0; step <= 8; step++) {
+      const t = step / 8;
+      const x = startX + (endX - startX) * t;
+      const y = Math.max(minY, Math.min(maxY,
+        fromY + (toY - fromY) * t + Math.sin(t * Math.PI * 3) * wave * Math.sin(t * Math.PI)));
+      // A flat photograph gains a little perspective only on occasional visits.
+      const approach = Math.sin(t * Math.PI) ** 6;
+      const z = depthVisit ? -70 + approach * 210 : 0;
+      const turn = depthVisit ? Math.sin(t * Math.PI * 2) * 12 : 0;
+      frames.push({
+        offset: t,
+        transform: `translate3d(${x}px, ${y}px, 0) perspective(700px) translateZ(${z}px) rotateY(${turn}deg)`,
+        opacity: step === 8 ? 0 : 1
+      });
+    }
+    node.style.transform = frames[0].transform;
+    visit.animation = node.animate(frames, {
+      duration: random(22000, 26000), easing: 'linear', fill: 'forwards'
+    });
     visit.animation.onfinish = () => retire(visit);
     if (scrolling) { visit.animation.pause(); node.classList.add('is-paused'); }
   };
@@ -130,5 +151,5 @@
   });
   motion.addEventListener('change', () => { stop(false); refreshControls(); schedule(); });
   refreshControls();
-  schedule();
+  schedule(3000);
 })();

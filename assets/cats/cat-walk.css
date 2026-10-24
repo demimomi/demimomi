@@ -1,4 +1,4 @@
-/* A quiet, occasional visitor along the bottom edge. */
+/* Real cats wander across two dimensions, with occasional perspective. */
 .cat-walk-layer {
   position: fixed;
   inset: 0;
@@ -9,14 +9,15 @@
 .cat-walker {
   position: absolute;
   left: 0;
-  bottom: max(10px, env(safe-area-inset-bottom));
+  top: 0;
   z-index: 45;
   width: 104px;
   height: 96px;
   pointer-events: none;
   user-select: none;
   contain: layout style;
-  will-change: transform;
+  will-change: transform, opacity;
+  transform-origin: center;
 }
 .cat-walker[hidden] { display: none; }
 .cat-walker::after {
@@ -41,6 +42,8 @@
   animation: cat-soft-step .85s ease-in-out infinite;
 }
 .cat-walker.is-paused img { animation-play-state: paused; }
+.cat-walker.is-depth img { filter: drop-shadow(0 10px 9px rgba(0,0,0,.32)); }
+.cat-walker.is-depth::after { opacity: .45; filter: blur(6px); }
 @keyframes cat-soft-step {
   0%, 100% { translate: 0 0; rotate: -.7deg; }
   50% { translate: 0 -2px; rotate: .7deg; }
