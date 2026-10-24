@@ -64,7 +64,7 @@
     for (const visit of [...active]) retire(visit);
     if (reschedule) schedule();
   };
-  const obstructed = () => scrolling || document.getElementById('siteHeader')?.classList.contains('is-open') || document.getElementById('titan-peek')?.classList.contains('is-visible');
+  const obstructed = () => scrolling || document.getElementById('siteHeader')?.classList.contains('is-open');
   const show = async (manual) => {
     if (document.hidden || active.size >= maxCats || (!manual && (!enabled || motion.matches || obstructed()))) return;
     const node = walker.cloneNode(true);
@@ -110,7 +110,6 @@
     schedule();
   });
   window.addEventListener('keydown', event => { if (event.key === 'Escape') stop(); });
-  window.addEventListener('demimomi-titan-peek', () => stop());
   window.addEventListener('scroll', () => {
     scrolling = true;
     for (const visit of active) {

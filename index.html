@@ -830,7 +830,7 @@
 
   </style>
   <link rel="stylesheet" href="assets/cats/cat-walk.css?v=2">
-  <script defer src="assets/cats/cat-walk.js?v=3"></script>
+  <script defer src="assets/cats/cat-walk.js?v=4"></script>
 </head>
 <body>
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
@@ -1231,9 +1231,6 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
     };
     const show = (manual = false) => {
       if (document.hidden) return;
-      const walkingCat = document.querySelector(".cat-walker:not([hidden])");
-      if (!manual && walkingCat) { schedule(15000); return; }
-      window.dispatchEvent(new Event("demimomi-titan-peek"));
       clearTimers();
       open = true;
       peek.classList.add("is-visible");
