@@ -15,7 +15,19 @@
     { file: 'longhair.webp', name: 'ふわふわの猫', left: false },
     { file: 'bengal.webp', name: 'ベンガル猫', left: false },
     { file: 'exotic.webp', name: 'のんびりエキゾチック', left: false },
-    { file: 'maine-coon.webp', name: 'メインクーン', left: true }
+    { file: 'maine-coon.webp', name: 'メインクーン', left: true },
+    { file: 'cameo-2343.webp', name: 'お薬を出す猫', cameo: true },
+    { file: 'cameo-2345.webp', name: 'スクーターに乗る猫たち', cameo: true },
+    { file: 'cameo-2744.webp', name: '戸惑いこそが人生だよ', cameo: true },
+    { file: 'cameo-3194.webp', name: 'やるんだよの猫', cameo: true },
+    { file: 'cameo-3190.webp', name: '冷静さを欠こうとする猫たち', cameo: true },
+    { file: 'cameo-3319.webp', name: '手をかしての猫', cameo: true },
+    { file: 'cameo-3364.webp', name: '缶に乗る猫', cameo: true },
+    { file: 'cameo-3434.webp', name: 'にゃこねっと やんばる', cameo: true },
+    { file: 'cameo-3477.webp', name: '見返りネコ', cameo: true },
+    { file: 'cameo-3473.webp', name: '細けぇ事はの猫', cameo: true },
+    { file: 'cameo-3488.webp', name: 'クリリンのことかーの猫', cameo: true },
+    { file: 'cameo-0509.webp', name: 'くつろぐ猫', cameo: true }
   ];
   const random = (min, max) => min + Math.random() * (max - min);
   let enabled = true;
@@ -63,15 +75,16 @@
   const obstructed = () => scrolling || document.getElementById('siteHeader')?.classList.contains('is-open');
   const show = async (manual) => {
     if (document.hidden || active.size >= maxCats || (!manual && (!enabled || motion.matches || obstructed()))) return;
+    const cat = choose();
+    if (cat.cameo && [...active].some(visit => visit.cameo)) return;
     const node = walker.cloneNode(true);
     node.removeAttribute('id');
     const picture = node.querySelector('img');
     picture.removeAttribute('id');
     walker.parentElement.appendChild(node);
-    const visit = { node, animation: null, timer: null };
+    const visit = { node, animation: null, timer: null, cameo: !!cat.cameo };
     active.add(visit);
     call.disabled = active.size >= maxCats;
-    const cat = choose();
     picture.src = new URL(cat.file, base).href;
     picture.alt = cat.name;
     try { await picture.decode(); } catch (_) { retire(visit); return; }
@@ -81,6 +94,33 @@
     const height = mobile ? 76 : 96;
     const viewportWidth = walker.parentElement.clientWidth || innerWidth;
     const viewportHeight = walker.parentElement.clientHeight || innerHeight;
+    if (cat.cameo) {
+      // Text-bearing cutouts stay upright and appear one at a time near an edge.
+      node.classList.add('is-cameo');
+      const cameoWidth = Math.min(mobile ? 200 : 290, viewportWidth * .52);
+      const cameoHeight = Math.min(cameoWidth * picture.naturalHeight / picture.naturalWidth, viewportHeight * .38);
+      const actualWidth = cameoHeight * picture.naturalWidth / picture.naturalHeight;
+      node.style.width = actualWidth + 'px';
+      node.style.height = cameoHeight + 'px';
+      picture.style.transform = 'none';
+      const x = Math.random() < .5 ? 12 : Math.max(12, viewportWidth - actualWidth - 12);
+      const y = Math.max(90, viewportHeight - cameoHeight - 24);
+      node.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      node.hidden = false;
+      if (motion.matches || typeof node.animate !== 'function') {
+        visit.timer = setTimeout(() => retire(visit), 10000);
+        return;
+      }
+      visit.animation = node.animate([
+        { opacity: 0, offset: 0 },
+        { opacity: 1, offset: .08 },
+        { opacity: 1, offset: .88 },
+        { opacity: 0, offset: 1 }
+      ], { duration: 10000, easing: 'linear', fill: 'forwards' });
+      visit.animation.onfinish = () => retire(visit);
+      if (scrolling) { visit.animation.pause(); node.classList.add('is-paused'); }
+      return;
+    }
     const rightwards = Math.random() > .5;
     picture.style.transform = cat.left && rightwards || !cat.left && !rightwards ? 'scaleX(-1)' : 'none';
     node.hidden = false;

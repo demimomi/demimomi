@@ -69,3 +69,7 @@ footer { padding-bottom: calc(116px + env(safe-area-inset-bottom)); }
 @media (prefers-reduced-motion: reduce) {
   .cat-walker img { animation: none; }
 }
+
+/* User-supplied transparent cameos retain readable text and their own proportions. */
+.cat-walker.is-cameo::after { display: none; }
+.cat-walker.is-cameo img { animation: none; object-position: center; }
