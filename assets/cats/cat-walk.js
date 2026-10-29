@@ -24,12 +24,18 @@
     { file: 'cameo-3477.webp', name: '見返りネコ', cameo: true },
     { file: 'cameo-3473.webp', name: '細けぇ事はの猫', cameo: true },
     { file: 'cameo-3488.webp', name: 'クリリンのことかーの猫', cameo: true },
-    { file: 'cameo-0509.webp', name: 'くつろぐ猫', cameo: true }
+    { file: 'cameo-0509.webp', name: 'くつろぐ猫', cameo: true },
+    { file: 'cameo-oct29-1.webp', name: 'スクーターの猫の漫画', cameo: true },
+    { file: 'cameo-oct29-2.webp', name: '缶と笑顔の猫', cameo: true },
+    { file: 'cameo-oct29-3.webp', name: '仕事猫の二コマ', cameo: true },
+    { file: 'cameo-oct29-4.webp', name: '赤い頬の猫', cameo: true },
+    { file: 'cameo-oct29-5.webp', name: 'コンのポーズ', cameo: true },
+    { file: 'cameo-oct29-6.webp', name: '笑う人物の漫画', cameo: true }
   ];
   const random = (min, max) => min + Math.random() * (max - min);
   let enabled = true;
   try { enabled = localStorage.getItem(storageKey) !== 'false'; } catch (_) { /* Optional preference. */ }
-  const interval = 5000;
+  const interval = 6000;
   const active = new Set();
   const maxCats = 6;
   let deck = [], lastCat, nextTimer, resumeTimer;
@@ -105,7 +111,7 @@
       node.style.transform = `translate3d(${x}px, ${y}px, 0)`;
       node.hidden = false;
       if (motion.matches || typeof node.animate !== 'function') {
-        visit.timer = setTimeout(() => retire(visit), 10000);
+        visit.timer = setTimeout(() => retire(visit), 11000);
         return;
       }
       visit.animation = node.animate([
@@ -113,7 +119,7 @@
         { opacity: 1, offset: .08 },
         { opacity: 1, offset: .88 },
         { opacity: 0, offset: 1 }
-      ], { duration: 10000, easing: 'linear', fill: 'forwards' });
+      ], { duration: 11000, easing: 'linear', fill: 'forwards' });
       visit.animation.onfinish = () => retire(visit);
       if (scrolling) { visit.animation.pause(); node.classList.add('is-paused'); }
       return;
