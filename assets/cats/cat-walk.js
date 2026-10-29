@@ -18,18 +18,15 @@
     { file: 'maine-coon.webp', name: 'メインクーン', left: true },
     { file: 'cameo-2343.webp', name: 'お薬を出す猫', cameo: true },
     { file: 'cameo-2744.webp', name: '戸惑いこそが人生だよ', cameo: true },
-    { file: 'cameo-3319.webp', name: '手をかしての猫', cameo: true },
     { file: 'cameo-3364.webp', name: '缶に乗る猫', cameo: true },
     { file: 'cameo-3434.webp', name: 'にゃこねっと やんばる', cameo: true },
-    { file: 'cameo-3477.webp', name: '見返りネコ', cameo: true },
     { file: 'cameo-3473.webp', name: '細けぇ事はの猫', cameo: true },
-    { file: 'cameo-3488.webp', name: 'クリリンのことかーの猫', cameo: true },
     { file: 'cameo-0509.webp', name: 'くつろぐ猫', cameo: true },
     { file: 'cameo-oct29-1.webp', name: 'スクーターの猫の漫画', cameo: true },
     { file: 'cameo-oct29-2.webp', name: '缶と笑顔の猫', cameo: true },
     { file: 'cameo-oct29-3.webp', name: '仕事猫の二コマ', cameo: true },
-    { file: 'cameo-oct29-4.webp', name: '赤い頬の猫', cameo: true },
-    { file: 'cameo-oct29-5.webp', name: 'コンのポーズ', cameo: true },
+    { file: 'cameo-oct29-4-transparent.webp', name: '赤い頬の猫', cameo: true },
+    { file: 'cameo-oct29-5-transparent.webp', name: 'コンのポーズ', cameo: true },
     { file: 'cameo-oct29-6.webp', name: '笑う人物の漫画', cameo: true }
   ];
   const random = (min, max) => min + Math.random() * (max - min);
