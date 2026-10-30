@@ -829,8 +829,7 @@
     }
 
   </style>
-  <link rel="stylesheet" href="assets/cats/cat-walk.css?v=6">
-  <script defer src="assets/cats/cat-walk.js?v=10"></script>
+  <link rel="stylesheet" href="assets/cats/cat-walk.css?v=7">
 </head>
 <body>
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
@@ -1105,19 +1104,17 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
   </main>
 
   <div class="cat-walk-layer" aria-hidden="true">
-    <div class="cat-walker" id="catWalker" hidden>
-      <img id="walkingCatImage" alt="" width="104" height="96" decoding="async" draggable="false">
+    <div class="resident-cat">
+      <picture>
+        <source media="(prefers-reduced-motion: reduce)" srcset="assets/cats/real-cat-poster.webp">
+        <img src="assets/cats/real-cat-site.webp" alt="" width="320" height="226" decoding="async" draggable="false">
+      </picture>
     </div>
   </div>
 
   <footer>
     <span>© <span id="year"></span> Toshiki Demizu / demimomi</span>
-    <div class="cat-tools" aria-label="猫の散歩">
-      <button type="button" id="callCat">猫を呼ぶ</button>
-      <button type="button" id="callVideoCat">動画の猫を呼ぶ</button>
-      <button type="button" id="toggleCats" aria-pressed="true">猫の散歩：ON</button>
-      <a href="cat-credits.html">猫たち・画像出典 ↗</a>
-    </div>
+
     <span class="status">Still edited by a human.</span>
   </footer>
 

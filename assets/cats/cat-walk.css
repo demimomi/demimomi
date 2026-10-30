@@ -1,75 +1,29 @@
-/* Real cats wander across two dimensions, with occasional perspective. */
+/* The transparent real cat stays visible and loops without interaction. */
 .cat-walk-layer {
   position: fixed;
   inset: 0;
   z-index: 45;
+  pointer-events: none;
   overflow: hidden;
-  pointer-events: none;
 }
-.cat-walker {
+.resident-cat {
   position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 45;
-  width: 104px;
-  height: 96px;
-  pointer-events: none;
+  right: max(12px, env(safe-area-inset-right));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  width: clamp(140px, 22vw, 260px);
   user-select: none;
-  contain: layout style;
-  will-change: transform, opacity;
-  transform-origin: center;
 }
-.cat-walker[hidden] { display: none; }
-.cat-walker::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 17%;
-  width: 66%;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(0,0,0,.24);
-  filter: blur(3px);
-}
-.cat-walker img {
+.resident-cat picture, .resident-cat img {
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
+}
+.resident-cat img {
   object-fit: contain;
-  object-position: center bottom;
-  transform-origin: 50% 100%;
-  filter: drop-shadow(0 2px 3px rgba(0,0,0,.25));
-  animation: cat-soft-step .85s ease-in-out infinite;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,.2));
 }
-.cat-walker.is-paused img { animation-play-state: paused; }
-.cat-walker.is-depth img { filter: drop-shadow(0 10px 9px rgba(0,0,0,.32)); }
-.cat-walker.is-depth::after { opacity: .45; filter: blur(6px); }
-@keyframes cat-soft-step {
-  0%, 100% { translate: 0 0; rotate: -.7deg; }
-  50% { translate: 0 -2px; rotate: .7deg; }
-}
-.cat-tools { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: .9rem; }
-footer { padding-bottom: calc(116px + env(safe-area-inset-bottom)); }
-.cat-tools button, .cat-tools a {
-  padding: .4rem .2rem;
-  border: 0;
-  background: none;
-  color: var(--muted);
-  font: inherit;
-  font-size: .72rem;
-  text-decoration: none;
-  cursor: pointer;
-}
-.cat-tools button:hover, .cat-tools a:hover { color: var(--gold); }
-.cat-tools button:focus-visible, .cat-tools a:focus-visible { outline: 1px solid var(--gold); outline-offset: 4px; border-radius: 3px; }
-.cat-tools button:disabled { opacity: .45; cursor: default; }
+footer { padding-bottom: calc(210px + env(safe-area-inset-bottom)); }
 @media (max-width: 600px) {
-  .cat-walker { width: 80px; height: 76px; }
+  .resident-cat { width: clamp(120px, 38vw, 170px); }
+  footer { padding-bottom: calc(145px + env(safe-area-inset-bottom)); }
 }
-@media (prefers-reduced-motion: reduce) {
-  .cat-walker img { animation: none; }
-}
-
-/* User-supplied transparent cameos retain readable text and their own proportions. */
-.cat-walker.is-cameo::after { display: none; }
-.cat-walker.is-cameo img { animation: none; object-position: center; }
