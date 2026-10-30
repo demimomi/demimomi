@@ -1206,50 +1206,38 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
     const link = document.getElementById("titanLink");
     if (!peek || !link) return;
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let nextTimer, closeTimer, hideTimer;
+    let closeTimer, hideTimer;
     let open = false;
     const clearTimers = () => {
-      window.clearTimeout(nextTimer);
       window.clearTimeout(closeTimer);
       window.clearTimeout(hideTimer);
     };
-    const schedule = (delay = 30000 + Math.random() * 15000) => {
-      window.clearTimeout(nextTimer);
-      if (!motion.matches && !document.hidden) nextTimer = window.setTimeout(show, delay);
-    };
-    const close = (reschedule = true) => {
+    const close = () => {
       clearTimers();
       open = false;
       peek.classList.remove("is-open");
       hideTimer = window.setTimeout(() => peek.classList.remove("is-visible"), motion.matches ? 0 : 1500);
-      if (reschedule) schedule();
     };
-    const show = (manual = false) => {
+    const show = () => {
       if (document.hidden) return;
       clearTimers();
       open = true;
       peek.classList.add("is-visible");
-      // Commit the closed pose before the opening transition, even on first use.
       void peek.offsetWidth;
       peek.classList.add("is-open");
-      closeTimer = window.setTimeout(() => close(), 7200);
+      closeTimer = window.setTimeout(close, 7200);
     };
     link.addEventListener("click", event => {
       event.preventDefault();
-      show(true);
+      show();
     });
     window.addEventListener("keydown", event => {
       if (event.key === "Escape" && open) close();
     });
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) close(false);
-      else schedule(12000);
+      if (document.hidden) close();
     });
-    motion.addEventListener("change", () => {
-      close(false);
-      schedule();
-    });
-    schedule(12000);
+    motion.addEventListener("change", close);
   })();
   </script>
 

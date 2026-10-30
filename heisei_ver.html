@@ -503,6 +503,8 @@
       .marquee-track { padding-left: 8px; white-space: normal; }
     }
   </style>
+  <link rel="stylesheet" href="assets/cats/heisei-cats.css?v=1">
+  <script defer src="assets/cats/heisei-cats.js?v=1"></script>
 </head>
 
 <body>
@@ -758,6 +760,11 @@ model = AutoModel.from_pretrained(
       </tbody>
     </table>
     <footer class="footer" id="footer">
+      <div class="cat-tools" aria-label="画像のランダム表示">
+        <button type="button" id="callCat">猫・画像を呼ぶ</button>
+        <button type="button" id="toggleCats" aria-pressed="true">猫の散歩：ON</button>
+      </div>
+
       <div class="footer-links">
         <a href="#top">TOPへ戻る</a> ｜
         <a href="#projects">Projects</a> ｜
@@ -838,5 +845,10 @@ model = AutoModel.from_pretrained(
       });
     })();
   </script>
+  <div class="cat-walk-layer" aria-hidden="true">
+    <div class="cat-walker" id="catWalker" hidden>
+      <img id="walkingCatImage" alt="" width="104" height="96" decoding="async" draggable="false">
+    </div>
+  </div>
 </body>
 </html>
