@@ -9,7 +9,9 @@
   if (!walker || !image || !call || !toggle) return;
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const storageKey = 'demimomi-cat-walk-enabled-v2';
+  const videoCat = { file: 'real-cat-site.webp', poster: 'real-cat-poster.webp', name: '毛づくろいする実写の猫', cameo: true, animated: true, duration: 20000 };
   const cats = [
+    videoCat,
     { file: 'kitten.webp', name: '茶白の子猫', left: true },
     { file: 'tabby.webp', name: 'お散歩中のキジトラ', left: true },
     { file: 'longhair.webp', name: 'ふわふわの猫', left: false },
@@ -73,9 +75,9 @@
     if (reschedule) schedule();
   };
   const obstructed = () => scrolling || document.getElementById('siteHeader')?.classList.contains('is-open');
-  const show = async (manual) => {
+  const show = async (manual, forcedCat = null) => {
     if (document.hidden || active.size >= maxCats || (!manual && (!enabled || motion.matches || obstructed()))) return;
-    const cat = choose();
+    const cat = forcedCat || choose();
     if (cat.cameo && [...active].some(visit => visit.cameo)) return;
     const node = walker.cloneNode(true);
     node.removeAttribute('id');
@@ -85,7 +87,7 @@
     const visit = { node, animation: null, timer: null, cameo: !!cat.cameo };
     active.add(visit);
     call.disabled = active.size >= maxCats;
-    picture.src = new URL(cat.file, base).href;
+    picture.src = new URL(cat.animated && motion.matches ? cat.poster : cat.file, base).href;
     picture.alt = cat.name;
     try { await picture.decode(); } catch (_) { retire(visit); return; }
     if (!active.has(visit) || document.hidden) return;
@@ -108,7 +110,7 @@
       node.style.transform = `translate3d(${x}px, ${y}px, 0)`;
       node.hidden = false;
       if (motion.matches || typeof node.animate !== 'function') {
-        visit.timer = setTimeout(() => retire(visit), 11000);
+        visit.timer = setTimeout(() => retire(visit), cat.duration || 11000);
         return;
       }
       visit.animation = node.animate([
@@ -116,7 +118,7 @@
         { opacity: 1, offset: .08 },
         { opacity: 1, offset: .88 },
         { opacity: 0, offset: 1 }
-      ], { duration: 11000, easing: 'linear', fill: 'forwards' });
+      ], { duration: cat.duration || 11000, easing: 'linear', fill: 'forwards' });
       visit.animation.onfinish = () => retire(visit);
       if (scrolling) { visit.animation.pause(); node.classList.add('is-paused'); }
       return;
@@ -163,6 +165,11 @@
     if (scrolling) { visit.animation.pause(); node.classList.add('is-paused'); }
   };
   call.addEventListener('click', () => show(true));
+  document.getElementById('callVideoCat')?.addEventListener('click', () => {
+    stop(false);
+    void show(true, videoCat);
+    schedule();
+  });
   toggle.addEventListener('click', () => {
     enabled = !enabled;
     try { localStorage.setItem(storageKey, String(enabled)); } catch (_) { /* Storage can be blocked. */ }
