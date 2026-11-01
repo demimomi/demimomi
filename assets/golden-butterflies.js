@@ -12,7 +12,7 @@
     const catRect = cat.getBoundingClientRect();
     const sunRect = sun?.getBoundingClientRect();
     const sunVisible = sunRect && sunRect.bottom > 90 && sunRect.top < h - 50;
-    const mix = sunVisible ? index / 7 : 1;
+    const mix = sunVisible ? 0.65 : 1;
     const sunX = sunVisible ? sunRect.left + sunRect.width * .5 : catRect.left;
     const sunY = sunVisible ? sunRect.top + sunRect.height * .65 : catRect.top;
     const x = clamp(sunX * (1 - mix) + (catRect.left + catRect.width * .4) * mix + (index % 3 - 1) * 28, 20, w - 36);
@@ -22,7 +22,7 @@
     return Array.from({length:9}, (_, step) => {
       const t = step / 8;
       const side = Math.sin(t * Math.PI * 3 + index * .8) * sway * Math.sin(t * Math.PI);
-      return { offset:t, transform:`translate3d(${clamp(x + side, 12, w - 32)}px,${y - rise * t}px,0) scale(${.68 + (index % 3) * .15})`, opacity:step === 0 || step === 8 ? 0 : .48 + (index % 3) * .12 };
+      return { offset:t, transform:`translate3d(${clamp(x + side, 12, w - 32)}px,${y - rise * t}px,0) scale(${.68 + (index % 3) * .15})`, opacity:step === 0 || step === 8 ? 0 : .95 };
     });
   };
   const stop = () => {
@@ -37,7 +37,7 @@
   const start = () => {
     stop();
     if (motion.matches) return;
-    for (let index = 0; index < 8; index++) {
+    for (let index = 0; index < 1; index++) {
       const node = document.createElement("span");
       node.className = "golden-butterfly";
       node.innerHTML = '<span class="golden-butterfly-shape"><span class="golden-butterfly-wing left"></span><span class="golden-butterfly-wing right"></span><span class="golden-butterfly-body"></span></span>';
@@ -45,7 +45,7 @@
       layer.appendChild(node);
       const duration = 30000 + (index % 4) * 4500;
       const animation = node.animate(framesFor(index), { duration, iterations:Infinity, easing:"linear" });
-      animation.currentTime = (index + .5) / 8 * duration;
+      animation.currentTime = 0.25 * duration;
       flights.push({ animation, index });
     }
     syncPause();
