@@ -22,7 +22,7 @@
     return Array.from({length:9}, (_, step) => {
       const t = step / 8;
       const side = Math.sin(t * Math.PI * 3 + index * .8) * sway * Math.sin(t * Math.PI);
-      return { offset:t, transform:`translate3d(${clamp(x + side, 12, w - 32)}px,${y - rise * t}px,0) scale(${.68 + (index % 3) * .15})`, opacity:step === 0 || step === 8 ? 0 : .95 };
+      return { offset:t, transform:`translate3d(${clamp(x + side, 12, w - 32)}px,${y - rise * t}px,0) scale(${.68 + (index % 3) * .15})`, opacity:step === 0 || step === 8 ? 0 : step === 3 || step === 6 ? .55 : .95 };
     });
   };
   const stop = () => {
@@ -43,7 +43,7 @@
       node.innerHTML = '<span class="golden-butterfly-shape"><span class="golden-butterfly-wing left"></span><span class="golden-butterfly-wing right"></span><span class="golden-butterfly-body"></span></span>';
       node.firstElementChild.style.animationDelay = `-${index * .7}s`;
       layer.appendChild(node);
-      const duration = 30000 + (index % 4) * 4500;
+      const duration = 42000 + (index % 4) * 4500;
       const animation = node.animate(framesFor(index), { duration, iterations:Infinity, easing:"linear" });
       animation.currentTime = 0.25 * duration;
       flights.push({ animation, index });

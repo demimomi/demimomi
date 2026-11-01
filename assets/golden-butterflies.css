@@ -13,3 +13,14 @@
 .golden-butterflies.is-paused * { animation-play-state:paused; }
 @media (max-width:600px) { .golden-butterfly { width:15px; height:14px; } }
 @media (prefers-reduced-motion:reduce) { .golden-butterflies { display:none; } }
+
+/* A single dream butterfly: golden wings, fine veins and a breathing halo. */
+.golden-butterfly-shape { filter:drop-shadow(0 0 4px rgba(255,210,30,.65)) drop-shadow(0 0 13px rgba(242,201,84,.24)); animation:butterfly-drift 7s ease-in-out infinite; }
+.golden-butterfly-wing { background:repeating-conic-gradient(from 12deg at 80% 65%,transparent 0deg 24deg,rgba(153,105,18,.28) 25deg 27deg,transparent 28deg 44deg),radial-gradient(ellipse at 65% 30%,#fff19a 0%,#ffd000 42%,#d89b18 100%); border-color:rgba(255,230,100,.8); }
+.golden-butterfly-wing.left { border-radius:80% 32% 75% 42%; animation-duration:2.8s; }
+.golden-butterfly-wing.right { border-radius:32% 80% 42% 75%; animation-duration:2.8s; }
+.golden-butterfly-wing::after { content:""; position:absolute; top:65%; width:75%; height:48%; background:linear-gradient(145deg,#ffdf54,#ce951b); border:1px solid rgba(255,233,137,.6); border-radius:30% 70% 65% 75%; }
+.golden-butterfly-wing.left::after { right:0; transform:rotate(-12deg); }
+.golden-butterfly-wing.right::after { left:0; transform:rotate(12deg); }
+.golden-butterfly-shape::before { content:""; position:absolute; inset:-14px; border-radius:50%; background:radial-gradient(ellipse,rgba(255,221,99,.16),transparent 68%); animation:butterfly-dream 9s ease-in-out infinite; }
+@keyframes butterfly-dream { 0%,100% { opacity:.35; transform:scale(.8); } 50% { opacity:.9; transform:scale(1.25); } }
