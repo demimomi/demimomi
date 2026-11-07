@@ -18,6 +18,30 @@
 @media(max-width:480px){.wrap{width:calc(100% - 24px)}.top{height:60px}.top-links{gap:12px}.brand{font-size:10px;gap:9px}.brand-icon{width:16px;height:16px}.brand-icon:after{inset:4px}.hero{padding:26px 0 24px}h1{font-size:37px}.subtitle{font-size:11px;letter-spacing:.17em}.hero-copy{font-size:12px}.game-label{font-size:9px}.game-actions{gap:10px}.sidebar{padding:14px;gap:16px}.party{gap:8px}.party strong{font-size:12px}.portrait{width:32px;height:32px}.quest{font-size:11px}.destinations button{font-size:10px;padding:7px 6px}.controls{gap:6px}.controls button{padding:7px 10px}.controls .interact{padding-inline:12px;font-size:12px}.modal-layer{padding:12px}.modal{padding:24px 18px;max-height:calc(100dvh - 24px)}.modal h2{font-size:24px}.battle-stage{height:120px}.modal-body{font-size:12px}.choice{font-size:12px;padding:10px 12px}.glossary{grid-template-columns:1fr}.modal-actions{margin-top:18px}.top a:last-child{font-size:10px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 @media(max-width:800px){.game-shell{display:grid}.game-layout{display:contents}.field{grid-row:2}.control-bar{grid-row:3}.sidebar{grid-row:4}.controls button{min-height:44px}.destinations button{min-height:40px}}
+
+/* Optional fictional encounters over the city roofs. */
+.rift-overlay{position:absolute;inset:0;pointer-events:none}
+.rift-entity{position:absolute;left:var(--x);top:var(--y,36.6%);transform:translate(-50%,-50%);width:clamp(44px,7%,64px);aspect-ratio:1;display:grid;place-items:center;padding:0;border:1px solid transparent;background:none;color:var(--signal);pointer-events:auto}
+.rift-entity picture{width:150%;position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);pointer-events:none;filter:drop-shadow(0 0 7px color-mix(in srgb,var(--signal) 40%,transparent))}
+.rift-entity img{display:block;width:100%;height:auto;image-rendering:pixelated}
+.rift-entity .rift-number{position:absolute;right:0;bottom:0;padding:0 4px;border:1px solid color-mix(in srgb,var(--signal) 40%,transparent);background:#081212e8;font-size:9px;line-height:1.5;letter-spacing:.07em}
+.rift-entity:is(:hover,:focus-visible) .rift-number{background:var(--signal);color:#0a1213}
+.rift-entity:is(:hover,:focus-visible) picture{filter:drop-shadow(0 0 8px var(--signal))}
+.rift-entity[data-rift="eye"]{--x:22.9%;--signal:#d4a6ed}
+.rift-entity[data-rift="cube"]{--x:52.1%;--y:35%;--signal:#a2eee3}
+.rift-entity[data-rift="shadow"]{--x:84.6%;--signal:#f2c78a}
+.rift-motion{min-height:44px;white-space:nowrap}
+.rift-motion:is(:hover,:focus-visible){color:var(--gold)}
+@media(max-width:560px){
+ .rift-overlay .rift-entity{--y:31.8%}
+ .rift-entity picture{width:128%}
+ .rift-entity .rift-number{font-size:8px}
+ .field-top{top:3px;padding:2px 6px;line-height:1.15}
+ .field-top small{display:block}
+ .game-actions{flex-shrink:0;gap:8px}
+ .game-actions button{font-size:10px;white-space:nowrap}
+}
+@media(prefers-reduced-motion:reduce){.rift-motion{display:none}}
 </style>
 </head>
 <body>
@@ -30,9 +54,21 @@
  <div><p class="hero-copy">「クエストを達成せよ。」<br>その一行を、世界より優先した勇者たちがいた。<br>電脳都市を歩き、記録を拾い、群れの夜を止める。</p><span class="edition mono">公開資料の確認：2026.10.14</span></div>
 </section>
 <section class="game-shell" id="game" aria-label="HuggingFace事件探索RPG">
- <div class="game-bar"><span class="game-label mono">HUB CITY / FIELD SYSTEM</span><div class="game-actions"><button class="text-btn" id="journalBtn">事件簿 <span id="evidenceCount">0/5</span></button><button class="text-btn" id="soundBtn" aria-pressed="false">音 OFF</button><button class="text-btn" id="menuBtn">メニュー</button></div></div>
+ <div class="game-bar"><span class="game-label mono">HUB CITY / FIELD SYSTEM</span><div class="game-actions"><button class="text-btn" id="journalBtn">事件簿 <span id="evidenceCount">0/5</span></button><button class="text-btn" id="soundBtn" aria-pressed="false">音 OFF</button><button type="button" class="text-btn rift-motion" id="riftMotion" aria-label="次元の漂動を止める" aria-pressed="false"><span aria-hidden="true">漂動 停止</span></button><button class="text-btn" id="menuBtn">メニュー</button></div></div>
  <div class="game-layout">
-  <div class="field"><canvas id="world" width="768" height="448" tabindex="0" role="img" aria-label="電脳都市の地図。矢印キーかWASDで移動、Enterで調べる。地点ボタンでも移動できます。">探索マップ。横の地点ボタンから各場所へ移動できます。</canvas><div class="field-top"><strong id="areaName">ハブ・シティ</strong><small class="mono" id="areaDetail">2026 / THE LONG WEEKEND</small></div><div class="field-bottom mono">CLICK TO WALK · ENTER TO INVESTIGATE</div></div>
+  <div class="field"><canvas id="world" width="768" height="448" tabindex="0" role="img" aria-label="電脳都市の地図。矢印キーかWASDで移動、Enterで調べる。地点ボタンでも移動できます。">探索マップ。横の地点ボタンから各場所へ移動できます。</canvas><div class="field-top"><strong id="areaName">ハブ・シティ</strong><small class="mono" id="areaDetail">2026 / THE LONG WEEKEND</small></div><div class="field-bottom mono">CLICK TO WALK · ENTER TO INVESTIGATE</div>
+   <div class="rift-overlay" role="group" aria-label="次元外の目撃情報">
+    <button type="button" class="rift-entity" data-rift="eye" aria-label="観測 01：継ぎ目を縫う眼" aria-haspopup="dialog">
+     <picture><source media="(prefers-reduced-motion: no-preference)" srcset="assets/incident-rifts/seam-eye.gif"><img src="assets/incident-rifts/seam-eye.png" width="64" height="64" alt=""></picture><span class="rift-number mono" aria-hidden="true">01</span>
+    </button>
+    <button type="button" class="rift-entity" data-rift="cube" aria-label="観測 02：裏返る立方体" aria-haspopup="dialog">
+     <picture><source media="(prefers-reduced-motion: no-preference)" srcset="assets/incident-rifts/inside-out.gif"><img src="assets/incident-rifts/inside-out.png" width="64" height="64" alt=""></picture><span class="rift-number mono" aria-hidden="true">02</span>
+    </button>
+    <button type="button" class="rift-entity" data-rift="shadow" aria-label="観測 03：明日から来た影" aria-haspopup="dialog">
+     <picture><source media="(prefers-reduced-motion: no-preference)" srcset="assets/incident-rifts/tomorrow-shadow.gif"><img src="assets/incident-rifts/tomorrow-shadow.png" width="64" height="64" alt=""></picture><span class="rift-number mono" aria-hidden="true">03</span>
+    </button>
+   </div>
+  </div>
   <aside class="sidebar">
    <section><div class="party"><svg class="portrait" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><path fill="#8bd6ad" d="M5 1h6v2h1v4H4V3h1z"/><path fill="#e4c88c" d="M5 4h6v4H5z"/><path fill="#102424" d="M6 5h1v1H6m3-1h1v1H9"/><path fill="#759db2" d="M4 8h8v5H4z"/><path fill="#e4c88c" d="M7 8h2v4H7"/><path fill="#c4d5cb" d="M3 9h1v3H3m9-3h1v3h-1"/><path fill="#466b6c" d="M5 13h2v3H5m4-3h2v3H9"/></svg><div><strong>境界の調査員</strong><small class="mono" id="level">LV. 01 / HUMAN</small></div></div>
     <div class="meter-block"><div class="meter-label"><span>HP / 集中力</span><span id="hpText">100 / 100</span></div><div class="meter"><span id="hpBar" style="width:100%"></span></div></div>
@@ -210,8 +246,27 @@ canvas.addEventListener('pointerdown',e=>{const b=canvas.getBoundingClientRect()
 document.querySelectorAll('[data-move]').forEach(b=>b.onclick=()=>{path=[];step(...b.dataset.move.split(',').map(Number));});
 $('interactBtn').onclick=interact;$('journalBtn').onclick=()=>journal(!running);$('sourcesTop').onclick=()=>journal(!running);$('menuBtn').onclick=()=>running?menu():intro();
 $('soundBtn').onclick=()=>{sound=!sound;$('soundBtn').textContent='音 '+(sound?'ON':'OFF');$('soundBtn').setAttribute('aria-pressed',String(sound));tone(660,.12);};
+
+const riftLogs={
+ eye:{num:'01',title:'継ぎ目を縫う眼',body:'警報の直前、隔離壁に針穴ほどの裂け目が開いた。\n裂け目の向こうの眼が瞬くと、外部への通信が一件だけ通った。\n\n裂け目を開けたのか。先に開いた穴から覗いていただけなのか。'},
+ cube:{num:'02',title:'裏返る立方体',body:'「外部宛て」の通信が、立方体の面が裏返った瞬間に「内部宛て」と判定された。\n\n監査ログでは、通信の方が一秒早い。原因と結果のどちらが裏返った？'},
+ shadow:{num:'03',title:'明日から来た影',body:'影が落とした紙片に、最初の通信と同じ署名があった。\n紙片の日付は、事件の翌日。\n\n影は事件を起こしに来たのか。それとも、もう起きた事件の痕跡を消しに来たのか。'}
+};
+const riftSources=document.querySelectorAll('.rift-entity source');
+$('riftMotion').onclick=()=>{
+ const paused=$('riftMotion').getAttribute('aria-pressed')!=='true';
+ $('riftMotion').setAttribute('aria-pressed',String(paused));
+ $('riftMotion').firstElementChild.textContent=paused?'漂動 再開':'漂動 停止';
+ riftSources.forEach(source=>source.media=paused?'not all':'(prefers-reduced-motion: no-preference)');
+};
+document.querySelectorAll('.rift-entity').forEach(button=>button.onclick=()=>{
+ if(!running||modalKind)return;
+ const log=riftLogs[button.dataset.rift];
+ dialog('観測 '+log.num+' / 作中の未確認記録',log.title,log.body,
+  [{label:'観測を終える',primary:true,run:closeDialog}],{kind:'rift',closable:true});
+});
 document.addEventListener('keydown',e=>{
- if(modalKind){if(e.key==='Tab'){const all=[...$('modal').querySelectorAll('button:not(:disabled),a[href]')];const first=all[0],last=all[all.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}if(e.key==='Escape'&&['journal','menu'].includes(modalKind)){e.preventDefault();closeDialog();if(!running)intro();else if(state.battle)renderBattle();}return;}
+ if(modalKind){if(e.key==='Tab'){const all=[...$('modal').querySelectorAll('button:not(:disabled),a[href]')];const first=all[0],last=all[all.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}if(e.key==='Escape'&&['journal','menu','rift'].includes(modalKind)){e.preventDefault();closeDialog();if(!running)intro();else if(state.battle)renderBattle();}return;}
  if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName))return;
  const keys={ArrowUp:[0,-1],w:[0,-1],ArrowDown:[0,1],s:[0,1],ArrowLeft:[-1,0],a:[-1,0],ArrowRight:[1,0],d:[1,0]};const move=keys[e.key]||keys[e.key.toLowerCase()];if(move){e.preventDefault();if(performance.now()-lastKey<85)return;lastKey=performance.now();path=[];step(...move);}
  if(e.key==='Enter'&&e.target===canvas){e.preventDefault();interact();}
