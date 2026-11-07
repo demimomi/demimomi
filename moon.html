@@ -11,9 +11,8 @@
   <!--
     Ura-Izumo edition / standalone, dependency-free.
     Existing copy, placeholder, links and GAS endpoint are retained.
-    All scenery is static inline SVG. No webfonts, images, libraries,
-    canvas, animation loops, tracking, or background network requests.
-    Upload this file as moon.html beside the existing subpages.
+    The landscape is inline SVG; the three cats use local GIF and PNG sprites.
+    No webfonts, libraries, canvas, or tracking.
   -->
   <style>
     :root {
@@ -163,6 +162,77 @@
       font: 10px/1.4 var(--sans);
       letter-spacing: .12em;
     }
+    .moon-cat-walk {
+      position: absolute;
+      inset: auto 0 12px auto;
+      width: min(100%, 640px);
+      height: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .moon-cat-path {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      flex: 1;
+      height: 100%;
+    }
+    .moon-cat-track {
+      --cat-width: 54px;
+      --cat-ground: 1px;
+      --cat-period: 27s;
+      --cat-phase: -5s;
+      position: relative;
+    }
+    .moon-cat-track:nth-child(2) {
+      --cat-width: 59px;
+      --cat-ground: 0px;
+      --cat-period: 31s;
+      --cat-phase: -22s;
+    }
+    .moon-cat-track:nth-child(3) {
+      --cat-width: 50px;
+      --cat-ground: 3px;
+      --cat-period: 24s;
+      --cat-phase: -9s;
+    }
+    .moon-cat-roam {
+      position: absolute;
+      inset: 0 var(--cat-width) var(--cat-ground) 0;
+      animation: moon-cat-roam var(--cat-period) linear var(--cat-phase) infinite paused;
+    }
+    .moon-cat-roam img {
+      display: block;
+      position: absolute;
+      bottom: 0;
+      width: var(--cat-width);
+      height: auto;
+      opacity: .85;
+      animation: moon-cat-turn var(--cat-period) steps(1, end) var(--cat-phase) infinite paused;
+    }
+    .moon-cat-walk.is-walking :is(.moon-cat-roam, .moon-cat-roam img) {
+      animation-play-state: running;
+    }
+    @keyframes moon-cat-roam {
+      0%, 100% { transform: translate(0, 0); }
+      25%, 75% { transform: translate(50%, -1px); }
+      50% { transform: translate(100%, 1px); }
+    }
+    @keyframes moon-cat-turn {
+      0%, 100% { transform: scaleX(1); }
+      50% { transform: scaleX(-1); }
+    }
+    .moon-cat-toggle {
+      min-height: 32px;
+      padding: 0 2px;
+      border: 0;
+      background: none;
+      color: var(--quiet);
+      font-size: 10px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .moon-cat-toggle:hover, .moon-cat-toggle:focus-visible { color: var(--text); }
     .hero-copy { position: relative; }
     .eyebrow {
       display: flex;
@@ -503,10 +573,14 @@
       .brand { font-size: 22px; }
       .nav { width: 100%; justify-content: space-between; gap: 0 12px; }
       .nav a { font-size: 11px; }
-      .hero { grid-template-columns: 1fr; gap: 34px; min-height: 0; padding: 42px 0 31px; }
+      .hero { grid-template-columns: 1fr; gap: 34px; min-height: 0; padding: 42px 0 46px; }
       .scene { inset: 0 -20px 0 0; }
       .landscape { top: -20px; right: -80px; width: 650px; opacity: .76; }
       .moon-caption { top: 19px; right: 15px; font-size: 9px; }
+      .moon-cat-walk { gap: 8px; }
+      .moon-cat-track { --cat-width: 43px; --cat-period: 14s; --cat-phase: -3s; }
+      .moon-cat-track:nth-child(2) { --cat-width: 46px; --cat-period: 17s; --cat-phase: -12s; }
+      .moon-cat-track:nth-child(3) { --cat-width: 40px; --cat-period: 13s; --cat-phase: -5s; }
       .hero-copy { width: 100%; }
       .eyebrow { font-size: 9px; letter-spacing: .09em; }
       h1 { font-size: clamp(62px, 13vw, 94px); margin-top: 23px; margin-bottom: 23px; }
@@ -545,15 +619,17 @@
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+      .moon-cat-walk.is-walking :is(.moon-cat-roam, .moon-cat-roam img) { animation-play-state: paused; }
+      .moon-cat-toggle { display: none; }
     }
     @media (forced-colors: active) {
-      .scene, .threshold { display: none; }
+      .scene, .threshold, .moon-cat-walk { display: none; }
       .send, .chat-card, textarea { border: 1px solid ButtonText; }
       .meter > span, .status-dot { background: Highlight; forced-color-adjust: none; }
     }
     @media print {
       body, .chat-card, textarea { background: white; color: black; }
-      .scene, .threshold, .send { display: none; }
+      .scene, .threshold, .send, .moon-cat-walk { display: none; }
       .shell { width: 100%; }
       .hero { min-height: 0; }
       h1 .soft, .intro, .orbit-title, .nav a, .hint, .signal-note, .signal-row, .signal-row strong, .eyebrow, .status, .prompt-label, footer { color: black; }
@@ -683,6 +759,29 @@
           <div class="meter" aria-hidden="true"><span id="moonMeter"></span></div>
           <p class="signal-note" id="moonNote">十分です。これ以上は月になりすぎます。</p>
         </aside>
+        <div class="moon-cat-walk">
+          <div class="moon-cat-path" id="moonCatPath" aria-hidden="true">
+            <div class="moon-cat-track">
+              <picture class="moon-cat-roam">
+                <source media="not all" srcset="assets/moon-cats/charcoal.gif" type="image/gif">
+                <img src="assets/moon-cats/charcoal-rest.png" width="100" height="54" alt="">
+              </picture>
+            </div>
+            <div class="moon-cat-track">
+              <picture class="moon-cat-roam">
+                <source media="not all" srcset="assets/moon-cats/silver.gif" type="image/gif">
+                <img src="assets/moon-cats/silver-rest.png" width="100" height="54" alt="">
+              </picture>
+            </div>
+            <div class="moon-cat-track">
+              <picture class="moon-cat-roam">
+                <source media="not all" srcset="assets/moon-cats/rust.gif" type="image/gif">
+                <img src="assets/moon-cats/rust-rest.png" width="100" height="54" alt="">
+              </picture>
+            </div>
+          </div>
+          <button type="button" class="moon-cat-toggle" aria-controls="moonCatPath" hidden>猫を休ませる</button>
+        </div>
       </section>
 
       <section class="chat-card" aria-label="demimomi chat">
@@ -913,8 +1012,26 @@ AIで言えば、
     // Enable submission only after handlers are installed.
     sendButton.disabled = false;
 
-    // One-time original signal variation. Nothing runs continuously.
+    // One-time original signal variation.
     gentlyRandomizeMoon();
+  </script>
+  <script>
+    (() => {
+      const walk = document.querySelector(".moon-cat-walk");
+      const toggle = walk.querySelector(".moon-cat-toggle");
+      const sources = walk.querySelectorAll("source");
+      const motionMedia = "(prefers-reduced-motion: no-preference) and (forced-colors: none)";
+
+      function setWalking(walking) {
+        walk.classList.toggle("is-walking", walking);
+        sources.forEach(source => { source.media = walking ? motionMedia : "not all"; });
+        toggle.textContent = walking ? "猫を休ませる" : "猫を歩かせる";
+      }
+
+      toggle.addEventListener("click", () => setWalking(!walk.classList.contains("is-walking")));
+      setWalking(true);
+      toggle.hidden = false;
+    })();
   </script>
 </body>
 </html>
