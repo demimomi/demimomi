@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="大規模言語モデル講座２のコンペに向けた実験記録。検索拡張生成の仕組みと、検索・回答生成を段階的に改善した過程を紹介します。">
+  <link rel="canonical" href="https://demimomi.github.io/demimomi/llm-course-2-2026/">
+  <meta name="theme-color" content="#f8f7f2">
+  <title>大規模言語モデル講座２｜2026 — 学習・実験ノート</title>
+  <style>
+    :root { color-scheme: light; --paper:#f8f7f2; --surface:#fffefa; --ink:#1a2925; --sub:#4d5c55; --accent:#205848; --line:#ced6cd; --soft:#eaf0e8; --serif:"Yu Mincho","Hiragino Mincho ProN",serif; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:1rem/1.85 -apple-system,BlinkMacSystemFont,"Yu Gothic","Hiragino Kaku Gothic ProN",sans-serif; }
+    a { color:var(--accent); text-underline-offset:.2em; }
+    a:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+    .wrap { width:min(100% - 2.5rem, 58rem); margin-inline:auto; }
+    .masthead { border-top:5px solid var(--accent); border-bottom:1px solid var(--line); }
+    .masthead .wrap { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem 1.5rem; min-height:4rem; padding-block:.75rem; }
+    .brand, .label { color:var(--accent); letter-spacing:.14em; font-size:.78rem; font-weight:700; }
+    .masthead a { font-size:.86rem; }
+    header.hero { padding:clamp(3rem, 8vw, 6.25rem) 0 2.8rem; }
+    .meta { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem 1rem; color:var(--sub); font-size:.86rem; }
+    .status { color:var(--accent); background:var(--soft); border:1px solid var(--line); padding:.1rem .65rem; border-radius:2px; font-weight:700; }
+    h1,h2 { font-family:var(--serif); font-weight:700; line-height:1.34; }
+    h1 { font-size:clamp(2rem, 5.8vw, 3.7rem); margin:.65rem 0 1rem; letter-spacing:-.045em; }
+    h1 .year { white-space:nowrap; }
+    h2 { font-size:clamp(1.45rem, 3vw, 2rem); margin:.35rem 0 1rem; }
+    .lead { max-width:45rem; color:var(--sub); margin:0 0 1.65rem; font-size:1.04rem; }
+    .metrics { display:grid; grid-template-columns:1fr 1fr; margin:0; max-width:37rem; border-block:1px solid var(--line); }
+    .metrics div { padding:.75rem 1rem; }
+    .metrics div + div { border-left:1px solid var(--line); }
+    .metrics dt { font-size:.8rem; color:var(--sub); }
+    .metrics dd { margin:0; color:var(--accent); font:700 clamp(1.75rem,5vw,2.7rem)/1.25 var(--serif); font-variant-numeric:tabular-nums; }
+    .contents { display:flex; flex-wrap:wrap; gap:.35rem 1.5rem; padding:1rem 0; border-bottom:1px solid var(--line); font-size:.9rem; }
+    section { padding:2.6rem 0; border-bottom:1px solid var(--line); scroll-margin-top:1rem; }
+    p { max-width:48rem; margin:.7rem 0; }
+    .flow { display:grid; grid-template-columns:repeat(3,1fr); list-style:none; padding:0; margin:1.3rem 0 0; gap:.6rem; }
+    .flow li { background:var(--surface); border:1px solid var(--line); border-top:3px solid var(--accent); padding:.9rem 1rem; }
+    .flow b { display:block; margin-bottom:.25rem; }
+    .flow span { display:block; color:var(--sub); font-size:.9rem; }
+    table { width:100%; border-collapse:collapse; margin:1.1rem 0 .6rem; background:var(--surface); }
+    caption { text-align:left; color:var(--sub); padding:0 0 .55rem; font-size:.85rem; }
+    th,td { text-align:left; vertical-align:top; padding:.65rem .85rem; border-bottom:1px solid var(--line); }
+    th { background:var(--soft); font-size:.85rem; }
+    th:last-child, td:last-child { width:7rem; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
+    tr.best { font-weight:700; color:var(--accent); }
+    .note { color:var(--sub); font-size:.86rem; }
+    .refs { padding-left:1.4rem; }
+    footer { padding:1.8rem 0 2.4rem; color:var(--sub); font-size:.85rem; }
+    @media (max-width:38rem) { .flow { grid-template-columns:1fr; } th,td { padding:.6rem; } .wrap { width:calc(100% - 2rem); } }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+  </style>
+</head>
+<body>
+  <div class="masthead">
+    <div class="wrap">
+      <span class="brand">DEMIMOMI / LEARNING NOTES</span>
+      <a href="https://demimomi.github.io/demimomi/llm.html">講義アーカイブへ</a>
+    </div>
+  </div>
+  <header class="hero wrap">
+    <div class="meta"><span class="status">コンペ参加中</span><time datetime="2026-11-08">2026年11月8日更新</time></div>
+    <h1>大規模言語モデル講座２<span class="year">｜2026</span></h1>
+    <p class="lead">資料から根拠を探し、短い答えを返すには何が必要か。検索拡張生成（RAG）の仕組みを学び、検索と回答生成の改善を一つずつ検証した記録です。</p>
+    <dl class="metrics" aria-label="コンペのスコア">
+      <div><dt>最初の提出</dt><dd>0.06478</dd></div>
+      <div><dt>これまでの最高スコア</dt><dd>0.30233</dd></div>
+    </dl>
+  </header>
+  <main class="wrap">
+    <nav class="contents" aria-label="目次">
+      <a href="#overview">01　課題と仕組み</a><a href="#experiments">02　実験の記録</a><a href="#evaluation">03　評価から分かったこと</a><a href="#next">04　次の検証</a>
+    </nav>
+    <section id="overview" aria-labelledby="overview-title">
+      <div class="label">01 / OVERVIEW</div>
+      <h2 id="overview-title">根拠を探してから答える</h2>
+      <p>講座のコンペでは、配布された資料を使って質問に答え、答えを裏づける資料を示します。RAGは、言語モデルに質問と関連資料を一緒に渡す方法です。資料をうまく探せるかと、見つけた資料を正しく使えるかの両方が結果に影響します。</p>
+      <ol class="flow" aria-label="RAGの処理の流れ">
+        <li><b>1. 検索する</b><span>質問に出てくる語や意味の近さを使って、関連しそうな資料を集めます。</span></li>
+        <li><b>2. 並べ替える</b><span>質問との関係をもう一度確かめ、回答に使う資料を絞ります。</span></li>
+        <li><b>3. 答えを生成する</b><span>言語モデルが資料を読み、短い答えと、その根拠となる資料を返します。</span></li>
+      </ol>
+    </section>
+    <section id="experiments" aria-labelledby="experiments-title">
+      <div class="label">02 / EXPERIMENT LOG</div>
+      <h2 id="experiments-title">何を変え、どう伸びたか</h2>
+      <p>まず配布時の構成を動かし、比較の出発点を作りました。その後、検索で拾える資料の幅、回答モデルへの指示、候補の絞り方、回答の生成設定を順に見直しました。</p>
+      <table>
+        <caption>各提出のコンペスコア（途中経過・小数第5位まで）</caption>
+        <thead><tr><th scope="col">実験の主な変更</th><th scope="col">スコア</th></tr></thead>
+        <tbody>
+          <tr><td>配布時の構成で基準を測定</td><td>0.06478</td></tr>
+          <tr><td>語句による検索を加え、資料を並べ替え</td><td>0.18106</td></tr>
+          <tr><td>複数の資料から事実をつなぐよう指示を調整</td><td>0.19601</td></tr>
+          <tr><td>別の埋め込みモデルを検索に追加</td><td>0.19934</td></tr>
+          <tr><td>並べ替えの対象となる候補を拡大</td><td>0.20100</td></tr>
+          <tr class="best"><td>短答に適した生成設定を比較し、採用</td><td>0.30233</td></tr>
+        </tbody>
+      </table>
+      <p class="note">コンペの採点結果を記録したものです。各行の差には、複数の変更が組み合わさった影響も含まれます。</p>
+    </section>
+    <section id="evaluation" aria-labelledby="evaluation-title">
+      <div class="label">03 / EVALUATION</div>
+      <h2 id="evaluation-title">資料の多さと、答えの正しさを分けて測る</h2>
+      <p>公開の日本語質問応答データを使って、答えの文字列を含む資料が見つかったかと、モデルの短答が正解表記に一致したかを別々に測りました。前者は検索の手掛かり、後者は回答まで含めた結果です。</p>
+      <p>同じ質問で資料を増やして比べると、答えを含む資料が見つかる質問は増えましたが、短答の正解数は増えませんでした。資料が多いほど、回答に必要な情報を選び取る難しさも増します。この結果を踏まえ、資料数を保ったまま生成方法を比較しました。</p>
+      <p class="note">公開データでの完全一致は、改善案を比較するための指標です。上の表のコンペスコアとは別に扱っています。</p>
+    </section>
+    <section id="next" aria-labelledby="next-title">
+      <div class="label">04 / NEXT QUESTION</div>
+      <h2 id="next-title">最初に見つけた資料から、もう一歩探す</h2>
+      <p>複数の記事に根拠が分かれる質問では、最初の検索だけで必要な資料がそろわないことがあります。次は、最初に見つかった資料の固有名詞を手掛かりにもう一度検索し、根拠がそろいやすくなるか、回答精度や所要時間にどんな違いが出るかを比べます。現在、比較用ノートブックを準備した段階です。</p>
+    </section>
+    <section aria-labelledby="links-title">
+      <div class="label">LINKS</div>
+      <h2 id="links-title">関連リンク</h2>
+      <ul class="refs">
+        <li><a href="https://demimomi.github.io/demimomi/">demimomi ポートフォリオ</a></li>
+        <li><a href="https://demimomi.github.io/demimomi/llm.html">大規模言語モデル講座のアーカイブ</a></li>
+        <li><a href="https://github.com/aiishii/JEMHopQA">JEMHopQA（公開の日本語マルチホップ質問応答データ）</a></li>
+      </ul>
+    </section>
+  </main>
+  <footer class="wrap">demimomi · 2026　個人の学習・実験記録</footer>
+</body>
+</html>
