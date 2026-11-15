@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="大規模言語モデル講座２のコンペに向けた実験記録。検索拡張生成の仕組みと、検索・回答生成を段階的に改善した過程を紹介します。">
+  <meta name="description" content="大規模言語モデル講座２のコンペ実験記録。RAGの検索・回答生成の試行錯誤と、追加学習で自己ベスト0.30731に到達するまでを紹介します。">
   <link rel="canonical" href="https://demimomi.github.io/demimomi/llm-course-2-2026/">
   <meta name="theme-color" content="#f8f7f2">
   <title>大規模言語モデル講座２｜2026 — 学習・実験ノート</title>
@@ -42,7 +42,10 @@
     table { width:100%; border-collapse:collapse; margin:1.1rem 0 .6rem; background:var(--surface); }
     caption { text-align:left; color:var(--sub); padding:0 0 .55rem; font-size:.85rem; }
     th,td { text-align:left; vertical-align:top; padding:.65rem .85rem; border-bottom:1px solid var(--line); }
-    th { background:var(--soft); font-size:.85rem; }
+    thead th { background:var(--soft); font-size:.85rem; }
+    tbody th { font-weight:400; }
+    #next th:not(:first-child), #next td { text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
+    @media (max-width:38rem) { #next th:last-child { width:auto; } }
     th:last-child, td:last-child { width:7rem; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
     tr.best { font-weight:700; color:var(--accent); }
     .note { color:var(--sub); font-size:.86rem; }
@@ -60,17 +63,17 @@
     </div>
   </div>
   <header class="hero wrap">
-    <div class="meta"><span class="status">コンペ参加中</span><time datetime="2026-11-08">2026年11月8日更新</time></div>
+    <div class="meta"><span class="status">コンペ参加中</span><time datetime="2026-11-15">2026年11月15日更新</time></div>
     <h1>大規模言語モデル講座２<span class="year">｜2026</span></h1>
     <p class="lead">資料から根拠を探し、短い答えを返すには何が必要か。検索拡張生成（RAG）の仕組みを学び、検索と回答生成の改善を一つずつ検証した記録です。</p>
     <dl class="metrics" aria-label="コンペのスコア">
       <div><dt>最初の提出</dt><dd>0.06478</dd></div>
-      <div><dt>これまでの最高スコア</dt><dd>0.30233</dd></div>
+      <div><dt>自己ベスト（公式採点）</dt><dd>0.30731</dd></div>
     </dl>
   </header>
   <main class="wrap">
     <nav class="contents" aria-label="目次">
-      <a href="#overview">01　課題と仕組み</a><a href="#experiments">02　実験の記録</a><a href="#evaluation">03　評価から分かったこと</a><a href="#next">04　次の検証</a>
+      <a href="#overview">01　課題と仕組み</a><a href="#experiments">02　実験の記録</a><a href="#evaluation">03　伸び悩んだ実験</a><a href="#next">04　追加学習と自己ベスト</a>
     </nav>
     <section id="overview" aria-labelledby="overview-title">
       <div class="label">01 / OVERVIEW</div>
@@ -95,22 +98,39 @@
           <tr><td>複数の資料から事実をつなぐよう指示を調整</td><td>0.19601</td></tr>
           <tr><td>別の埋め込みモデルを検索に追加</td><td>0.19934</td></tr>
           <tr><td>並べ替えの対象となる候補を拡大</td><td>0.20100</td></tr>
-          <tr class="best"><td>短答に適した生成設定を比較し、採用</td><td>0.30233</td></tr>
+          <tr><td>短答の生成設定を見直し、以降の比較基準に採用（E05）</td><td>0.30233</td></tr>
+          <tr class="best"><td>短答と根拠引用をモデルに追加学習（E13）</td><td>0.30731</td></tr>
         </tbody>
       </table>
       <p class="note">コンペの採点結果を記録したものです。各行の差には、複数の変更が組み合わさった影響も含まれます。</p>
     </section>
     <section id="evaluation" aria-labelledby="evaluation-title">
       <div class="label">03 / EVALUATION</div>
-      <h2 id="evaluation-title">資料の多さと、答えの正しさを分けて測る</h2>
-      <p>公開の日本語質問応答データを使って、答えの文字列を含む資料が見つかったかと、モデルの短答が正解表記に一致したかを別々に測りました。前者は検索の手掛かり、後者は回答まで含めた結果です。</p>
-      <p>同じ質問で資料を増やして比べると、答えを含む資料が見つかる質問は増えましたが、短答の正解数は増えませんでした。資料が多いほど、回答に必要な情報を選び取る難しさも増します。この結果を踏まえ、資料数を保ったまま生成方法を比較しました。</p>
-      <p class="note">公開データでの完全一致は、改善案を比較するための指標です。上の表のコンペスコアとは別に扱っています。</p>
+      <h2 id="evaluation-title">0.30前後で、何が伸び悩んだか</h2>
+      <p>E05で0.30に届いた後は、検索を追加したり、資料を並べ直したり、回答の指示を書き換えたりしました。公開の日本語質問応答データで、正解の文字列を含む資料が見つかったか、短答が正解と一致したか、回答が根拠を引用できたかを分けて比べました。</p>
+      <ul class="refs">
+        <li><strong>二段検索。</strong> 最初に見つかった資料を手掛かりに再検索すると、答えの文字列が資料に含まれる質問は1問増えました。短答の完全一致は11問のままでした。</li>
+        <li><strong>資料の追加。</strong> 検索候補にはあるのに回答モデルへ渡らなかった資料を、公開評価の11問で追加しました。1問で追加資料が引用されましたが、短答の完全一致は0問のままでした。</li>
+        <li><strong>二段階の並べ替え。</strong> 別のモデルで候補をもう一度並べ替えると、120問で短答の完全一致が12問から13問に増えました。短答と引用の両方が評価条件を満たした件数は9問から8問に減り、採用を見送りました。</li>
+      </ul>
+      <p>実験の途中では、ColabでGPU用ライブラリの組み合わせが合わず、検索や回答生成が止まりました。実行環境をそろえ、同じ質問と資料で条件を比べ直す作業も、精度の改善と並行して進めました。</p>
     </section>
     <section id="next" aria-labelledby="next-title">
-      <div class="label">04 / NEXT QUESTION</div>
-      <h2 id="next-title">最初に見つけた資料から、もう一歩探す</h2>
-      <p>複数の記事に根拠が分かれる質問では、最初の検索だけで必要な資料がそろわないことがあります。次は、最初に見つかった資料の固有名詞を手掛かりにもう一度検索し、根拠がそろいやすくなるか、回答精度や所要時間にどんな違いが出るかを比べます。現在、比較用ノートブックを準備した段階です。</p>
+      <div class="label">04 / FINE-TUNING</div>
+      <h2 id="next-title">短く答え、根拠を引用するように学習する</h2>
+      <p>関連する資料があっても、答えを選び、その根拠を示す段階で失敗する例が残りました。そこで、許可された公開質問データと配布資料から、根拠のある短答と引用の学習例を作りました。指定された回答モデルに、少数のパラメータを調整するLoRAという方法で追加学習しました。</p>
+      <p>学習から外しておいた120問を使い、学習前後のモデルに同じ資料と指示を渡しました。結果を次に示します。</p>
+      <table>
+        <caption>公開データ JEMHopQA の120問で比較</caption>
+        <thead><tr><th scope="col">評価指標</th><th scope="col">学習前</th><th scope="col">学習後</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">短答の完全一致</th><td>12問</td><td>21問</td></tr>
+          <tr><th scope="row">正答し、参照記事名と正解文字列がそろう資料を引用</th><td>9問</td><td>11問</td></tr>
+          <tr><th scope="row">有効な引用がなかった回答</th><td>9問</td><td>1問</td></tr>
+        </tbody>
+      </table>
+      <p class="note">記事名と正解文字列の一致は、引用の妥当性を測る目安です。この比較の件数とは別に、コンペでは運営の採点でスコアが決まります。</p>
+      <p>学習した重みを元のモデルに統合して公式採点に提出したところ、<strong>0.30730897009966773</strong>を記録しました。前の自己ベスト0.30233から約0.00498の改善です。公開評価の伸びに比べると公式スコアの差は小さく、両方を記録する意味がありました。</p>
     </section>
     <section aria-labelledby="links-title">
       <div class="label">LINKS</div>
