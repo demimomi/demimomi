@@ -43,7 +43,7 @@
 }
 @media(prefers-reduced-motion:reduce){.rift-motion{display:none}}
 
-/* The opening changes the page layer. The game model stays in the world below. */
+/* Opening and its transition into the game world. */
 .breach-copy{display:none}
 .breach-replay{
  min-height:44px;margin:4px 0 0;padding:6px 0;border:0;background:none;color:#c9addd;
@@ -54,130 +54,159 @@
 body[data-page-breach]{overflow:hidden}
 body[data-page-breach="active"]{
  --gold:#ef97ca;--line:#59364c;
- background:radial-gradient(ellipse at 14% 12%,#3a1237,#130c1a 45%,#0b1115 85%);
+ background:radial-gradient(ellipse at 14% 12%,#3a1237,#130c1a 45%,#0b1115 85%)
 }
 [data-page-breach="active"] .normal-copy{display:none}
 [data-page-breach="active"] .breach-copy{display:inline}
-[data-page-breach="active"] .top,[data-page-breach="active"] .hero{
- color:#f5c4e6;text-shadow:-1px 0 #e36b9e,1px 0 #5faaaa
-}
-[data-page-breach="active"] .game-shell{border-color:#8c4e72;box-shadow:0 0 38px #993f7144}
+[data-page-breach="active"] .game-shell{border-color:#8c4e72}
 [data-page-breach="active"] .field{filter:hue-rotate(105deg) saturate(.82)}
 [data-page-breach="active"] .game-bar{background:#2a1328}
+
 #pageBreach{
- --signal:#ffb7df;--seam:#ffe2f2;
- width:min(840px,calc(100% - 36px));max-width:none;max-height:calc(100% - 28px);
- margin:auto;padding:0;color:#f6ecf6;border:1px solid #946d93;overflow:auto;
- background:linear-gradient(145deg,#211323,#101420 80%);
- box-shadow:0 24px 100px #08030bdd,0 0 58px #c275ba33;
- overscroll-behavior:contain;scrollbar-color:#926787 #181223
+ --opening-ink:#f2f2ec;--opening-quiet:#adb9b8;--opening-line:#30393c;--opening-accent:#b7decf;
+ width:100%;height:100%;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;
+ background:#0b1013;color:var(--opening-ink);overflow:auto;overscroll-behavior:contain
 }
-#pageBreach::backdrop{background:#100b19a6}
-#pageBreach:focus-visible{outline:2px solid var(--signal);outline-offset:4px}
-#pageBreach[data-stage="joined"]{
- --signal:#b5e7cf;--seam:#d6ffef;
- border-color:#7baf9d;background:linear-gradient(145deg,#222032,#101d20 85%);
- box-shadow:0 24px 100px #070708de,0 0 58px #82c3a334
+#pageBreach::backdrop{background:#0b1013}
+#pageBreach[data-stage="opened"]{--opening-accent:#f3b6d0}
+#pageBreach button:focus-visible{outline-color:var(--opening-accent)}
+.opening-frame{
+ width:min(1520px,100%);min-height:100%;margin:auto;display:grid;grid-template-rows:auto 1fr auto;
+ padding:0 clamp(16px,4vw,64px)
 }
-.breach-top{
- display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 14px;
- padding:0 22px;border-bottom:1px solid #b98aab50;background:#110e1c
+.opening-top,.opening-footer{
+ display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0
 }
-.breach-reassure{margin:9px 0;color:#f3e1ee;font-size:12px;line-height:1.6}
-.breach-reassure strong{color:#c1ead6}
-.breach-dismiss{
- flex:none;min-height:44px;padding:0 4px;color:#eed8e9;border:0;background:none;font-size:11px
+.opening-top{border-bottom:1px solid var(--opening-line);min-height:68px}
+.opening-brand{display:flex;align-items:center;gap:10px;margin:0;font-size:12px;line-height:1.45}
+.opening-brand-mark{width:9px;height:9px;flex:none;border:1px solid var(--opening-accent);transform:rotate(45deg)}
+.opening-fiction{color:var(--opening-quiet);font-size:11px;margin-inline-start:5px}
+.breach-dismiss,.opening-back{
+ min-height:44px;padding:6px 2px;border:0;background:none;color:var(--opening-quiet);font-size:12px
 }
-.breach-dismiss:hover{color:#fff;text-decoration:underline;text-underline-offset:4px}
-.breach-scene{padding:clamp(16px,4vw,34px) clamp(15px,4.5vw,40px) clamp(18px,4vw,32px)}
-.breach-signal{
- display:flex;align-items:center;gap:10px;margin:0 0 7px;color:var(--signal);font-size:10px
+.breach-dismiss:hover,.opening-back:hover{color:var(--opening-ink);text-decoration:underline;text-underline-offset:5px}
+.opening-scene{
+ display:grid;grid-template-columns:minmax(0, 5fr) minmax(0, 7fr);align-items:center;
+ gap:clamp(24px,5vw,76px);padding:clamp(22px,4vh,54px) 0
 }
-.breach-signal::before{
- content:"";width:7px;height:7px;flex:none;transform:rotate(45deg);background:var(--signal);
- box-shadow:0 0 12px var(--signal)
+.opening-copy,.opening-visual{min-width:0}
+.opening-time{
+ display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;
+ margin:0 0 clamp(10px,2vh,20px);font-size:12px;color:var(--opening-accent)
 }
-.breach-scene h2{
- color:#fff2fa;margin:0;font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-weight:500;
- font-size:clamp(24px,5.1vw,44px);letter-spacing:.035em;line-height:1.22
+.opening-time time{font-size:18px;font-variant-numeric:tabular-nums;letter-spacing:.045em}
+.opening-time span{padding-inline-start:12px;border-inline-start:1px solid var(--opening-line);letter-spacing:.045em}
+.opening-copy h2{
+ margin:0;font-size:clamp(32px,4.15vw,67px);line-height:1.23;letter-spacing:-.045em;
+ font-weight:600;white-space:pre-line;overflow-wrap:anywhere
 }
-.breach-scene h2:focus{outline:none}
-.breach-story{margin:12px 0 17px;color:#e0cfe2;font-size:13px;line-height:1.7}
-.breach-worlds{
- position:relative;isolation:isolate;display:grid;grid-template-columns:1fr 1fr;
- border:1px solid #9a719176;overflow:hidden;min-height:clamp(156px,24vw,214px)
+.opening-copy h2:focus{outline:none}
+.opening-story{
+ margin:clamp(13px,2.2vh,24px) 0 0;max-width:34em;
+ color:#cbd3d0;font-size:clamp(13px,1.13vw,16px);line-height:1.85
 }
-.breach-worlds::after{
- content:"";position:absolute;z-index:2;inset:0;pointer-events:none;opacity:0;
- background:linear-gradient(0deg,transparent 12%,#eca8cc37 48%,#ffe0f480 51%,transparent 69%)
+.opening-quote{
+ margin:clamp(14px,2.5vh,26px) 0 0;padding:1px 0 1px 14px;border-inline-start:2px solid var(--opening-accent)
 }
-.breach-world{
- position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:flex-end;
- min-width:0;padding:10px clamp(10px,2.8vw,24px) 12px
+.opening-quote strong{display:block;font-size:11px;color:var(--opening-accent);font-weight:600}
+.opening-quote p{margin:4px 0 0;line-height:1.6;font-size:clamp(13px,1.17vw,17px)}
+.opening-visual{
+ position:relative;isolation:isolate;margin:0;overflow:hidden;
+ border:1px solid var(--opening-line);background:#151e25;min-height:275px;aspect-ratio:1.45
 }
-.breach-world::after{
- content:"";position:absolute;z-index:-1;inset:0;
- background:linear-gradient(0deg,#0b0914 0%,#0b0914e6 16%,transparent 70%)
+.opening-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:74% 48%}
+[data-stage="handoff"] .opening-photo{object-position:73% 63%;transform:scale(1.08);transform-origin:70% 64%}
+.opening-visual:has(.opening-photo:not([hidden]))::after{
+ content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+ background:linear-gradient(0deg,#080d11ed 0%,#080d115e 32%,transparent 60%)
 }
-.breach-world h3{margin:0;font-size:clamp(13px,2.5vw,17px);line-height:1.4;font-weight:600}
-.breach-world p{margin:4px 0 0;font-size:clamp(11px,2vw,12px);color:#f5e7f2;line-height:1.55}
-.breach-friction{background:radial-gradient(ellipse at 76% 42%,#a03d6e,#3f1c49 48%,#1e132b 95%)}
-.breach-friction h3{color:#ffc5e2}
-.breach-friction::before{
- content:"";position:absolute;z-index:-1;inset:11% 1% 6% 0;
- background:repeating-linear-gradient(0deg,#171329 0 10px,#6d426b 10px 11px,#171329 11px 20px);
- clip-path:polygon(0 100%,0 60%,9% 60%,9% 36%,19% 36%,19% 66%,26% 66%,26% 25%,32% 25%,32% 12%,40% 12%,40% 25%,45% 25%,45% 56%,53% 56%,53% 42%,64% 42%,64% 65%,71% 65%,71% 35%,81% 35%,81% 49%,89% 49%,89% 62%,100% 62%,100% 100%)
+.opening-log{
+ position:absolute;z-index:1;inset:auto 0 0;padding:clamp(12px,2.2vw,30px);
+ background:linear-gradient(0deg,#080d11e8,transparent)
 }
-.breach-kindness{
- background:radial-gradient(circle at 72% 32%,#ffeecc 0 5px,#ffce9a 6px,#eeb996 11px,transparent 38px),
-  linear-gradient(153deg,#273544 0%,#386360 58%,#c5947d 140%)
+.opening-log h3{margin:0 0 6px;color:var(--opening-accent);font-size:10px;letter-spacing:.09em;font-weight:600}
+.opening-log dl{display:grid;gap:3px;margin:0;max-width:100%;width:max-content}
+.opening-log dl div{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:baseline;gap:8px 13px}
+.opening-log dt{color:#cbd3d6;font-size:11px;font-variant-numeric:tabular-nums;line-height:1.5}
+.opening-log dd{margin:0;color:#f2f4f3;font-size:clamp(11px,1vw,14px);line-height:1.5}
+.opening-worlds{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
+.opening-worlds[hidden],.opening-photo[hidden],.opening-back[hidden]{display:none}
+.opening-world{position:relative;isolation:isolate}
+.opening-world::before,.opening-world::after{content:"";position:absolute;inset:0;pointer-events:none}
+.opening-world::after{background:linear-gradient(0deg,#0a1117,transparent 64%)}
+.opening-friction{background:radial-gradient(ellipse at 60% 30%,#a16080,#452d4d 44%,#22232f 85%)}
+.opening-friction::before{
+ inset:11% 0 6%;background:repeating-linear-gradient(0deg,#232131 0 9px,#916080 9px 10px,#232131 10px 19px);
+ clip-path:polygon(0 100%,0 52%,11% 52%,11% 36%,21% 36%,21% 66%,29% 66%,29% 25%,36% 25%,36% 12%,43% 12%,43% 26%,50% 26%,50% 56%,59% 56%,59% 39%,69% 39%,69% 65%,78% 65%,78% 33%,88% 33%,88% 48%,100% 48%,100% 100%)
 }
-.breach-kindness h3{color:#c0f3d5}
-.breach-kindness::before{
- content:"";position:absolute;z-index:-1;inset:28% 0 6% 0;background:linear-gradient(174deg,#518675,#182e36 75%);
- clip-path:polygon(0 100%,0 43%,12% 57%,26% 22%,32% 18%,46% 30%,54% 39%,62% 31%,70% 49%,80% 39%,90% 55%,100% 41%,100% 100%)
+.opening-kindness{
+ background:radial-gradient(circle at 72% 30%,#fff0d0 0 6px,#fdd9a8 7px,#eeb996 12px,transparent 42px),
+ linear-gradient(160deg,#293b4d,#52796e 72%,#c5947d 142%)
 }
-.breach-rift{
- pointer-events:none;position:absolute;z-index:1;left:50%;top:-6%;bottom:-8%;
- width:clamp(22px,6vw,54px);transform:translateX(-50%);
- filter:drop-shadow(0 0 5px #fff3fa) drop-shadow(0 0 16px #f093d5)
+.opening-kindness::before{
+ inset:25% 0 7%;background:linear-gradient(174deg,#659284,#182e36 75%);
+ clip-path:polygon(0 100%,0 46%,12% 57%,26% 22%,32% 18%,46% 30%,54% 39%,62% 31%,70% 49%,80% 39%,90% 54%,100% 40%,100% 100%)
 }
-.breach-rift::before{
- content:"";position:absolute;inset:0;background:linear-gradient(0deg,#d490ef,var(--seam) 35%,#eea0d0);
+.opening-rift{
+ position:absolute;left:50%;top:-4%;bottom:-4%;width:clamp(24px,6vw,68px);transform:translateX(-50%);
+ filter:drop-shadow(0 0 6px #fff3fa) drop-shadow(0 0 16px #f093d5)
+}
+.opening-rift::before{
+ content:"";position:absolute;inset:0;background:linear-gradient(0deg,#d490ef,#ffe2f2 35%,#eea0d0);
  clip-path:polygon(48% 0,63% 0,52% 18%,82% 30%,42% 49%,63% 65%,30% 84%,41% 100%,26% 100%,14% 82%,44% 63%,22% 48%,64% 29%,35% 18%)
 }
-.breach-bridge{
- pointer-events:none;position:absolute;top:52%;left:30%;right:30%;height:10px;
- border-top:2px solid #fff0c8;border-radius:50%;box-shadow:0 -3px 14px #ffe0a1;opacity:0
+.opening-bridge{
+ position:absolute;top:53%;left:29%;right:29%;height:15px;opacity:0;
+ border-top:2px solid #fff0c8;border-radius:50%;box-shadow:0 -3px 14px #ffe0a1
 }
-[data-stage="joined"] .breach-bridge{opacity:1}
-[data-stage="joined"] .breach-rift{filter:drop-shadow(0 0 7px #b7fbd7);opacity:.72}
-.breach-under{display:flex;justify-content:flex-end;margin-top:16px}
+[data-stage="joined"] .opening-rift{opacity:.64;filter:drop-shadow(0 0 8px #b7fbd7)}
+[data-stage="joined"] .opening-bridge{opacity:1}
+.opening-footer{border-top:1px solid var(--opening-line);padding:12px 0}
+.opening-chapters{
+ margin:0;padding:0;display:flex;list-style:none;gap:clamp(8px,2vw,26px);
+ color:var(--opening-quiet);font-size:11px
+}
+.opening-chapters li{display:grid;gap:5px;white-space:nowrap}
+.opening-chapters li::before{content:"";height:2px;background:#455154}
+.opening-chapters li[aria-current="step"]{color:var(--opening-accent)}
+.opening-chapters li[aria-current="step"]::before{background:var(--opening-accent)}
+.opening-actions{display:flex;align-items:center;justify-content:flex-end;gap:clamp(12px,2vw,24px)}
 .breach-next{
- min-height:44px;max-width:100%;padding:8px 14px;border:1px solid var(--signal);
- background:var(--signal);color:#200e22;font-weight:700;text-align:left
+ min-height:46px;padding:9px clamp(13px,2.4vw,28px);border:1px solid var(--opening-accent);
+ background:var(--opening-accent);color:#101a19;font-size:13px;font-weight:700
 }
-.breach-next:hover:not(:disabled){background:#fff0f7;border-color:#fff0f7}
-.breach-next:focus-visible,.breach-dismiss:focus-visible{outline-color:var(--signal)}
-@media(max-width:480px){
- #pageBreach{width:calc(100% - 22px);max-height:calc(100% - 18px)}
- .breach-top{position:sticky;top:0;z-index:2;padding-inline:13px}
- .breach-reassure{max-width:100%;font-size:11px;margin-block:7px}
- .breach-dismiss{margin-left:auto}
- .breach-story{font-size:12px}
- .breach-under{margin-top:12px}
- .breach-next{width:100%;text-align:center}
+.breach-next:hover:not(:disabled){background:#edf6f2;border-color:#edf6f2}
+@media(max-width:760px){
+ .opening-top{min-height:53px}
+ .opening-scene{grid-template-columns:1fr;align-content:center;gap:15px;padding:18px 0}
+ .opening-copy h2{font-size:clamp(29px,6.8vw,50px)}
+ .opening-story{margin-top:9px;line-height:1.72}
+ .opening-quote{margin-top:12px}
+ .opening-visual{grid-row:1;min-height:190px;max-height:34vh;max-height:34svh;aspect-ratio:1.7;width:100%}
+ .opening-time{margin-bottom:6px;font-size:11px}
+ .opening-time time{font-size:16px}
+ .opening-footer{padding:9px 0}
+}
+@media(max-width:420px){
+ .opening-brand{font-size:11px;gap:7px}
+ .opening-fiction{display:block;margin:1px 0 0;font-size:10px}
+ .opening-footer{flex-wrap:wrap}
+ .opening-actions{margin-left:auto}
+ .opening-chapters{gap:8px;font-size:10px}
+ .opening-back,.breach-next{font-size:11px}
+}
+@media(max-width:350px){
+ .opening-footer{align-items:flex-start;flex-direction:column;gap:8px}
+ .opening-actions{width:100%}
 }
 @media(prefers-reduced-motion:no-preference){
- body[data-page-breach="active"]:not(:has(#riftMotion[aria-pressed="true"])) .wrap{animation:breach-offset 740ms ease-out both}
- body:not(:has(#riftMotion[aria-pressed="true"])) #pageBreach[open] .breach-worlds::after{animation:breach-scan 850ms ease-out both}
- body:not(:has(#riftMotion[aria-pressed="true"])) #pageBreach[open] .breach-rift{animation:breach-unfold 980ms cubic-bezier(.2,.75,.24,1) both}
- body:not(:has(#riftMotion[aria-pressed="true"])) #pageBreach[data-stage="joined"] .breach-bridge{animation:breach-bridge 680ms ease-out both}
+ body:not(:has(#riftMotion[aria-pressed="true"])) #pageBreach[open] .opening-scene{animation:opening-cut 240ms ease-out both}
+ body:not(:has(#riftMotion[aria-pressed="true"])) #pageBreach[data-stage="opened"] .opening-rift{animation:opening-rift 640ms ease-out both}
+ body:not(:has(#riftMotion[aria-pressed="true"])) #pageBreach[data-stage="joined"] .opening-bridge{animation:opening-bridge 520ms ease-out both}
 }
-@keyframes breach-offset{0%,26%,47%,100%{translate:0 0}18%{translate:5px 0}37%{translate:-3px 0}}
-@keyframes breach-unfold{from{clip-path:inset(0 0 100%);opacity:.4}to{clip-path:inset(0);opacity:1}}
-@keyframes breach-scan{0%{transform:translateY(-88%);opacity:0}25%{opacity:.48}100%{transform:translateY(86%);opacity:0}}
-@keyframes breach-bridge{from{scale:.06 1;opacity:0}to{scale:1;opacity:1}}
+@keyframes opening-cut{from{opacity:.69;translate:0 4px}to{opacity:1;translate:0 0}}
+@keyframes opening-rift{from{clip-path:inset(0 0 100%);opacity:.35}to{clip-path:inset(0);opacity:1}}
+@keyframes opening-bridge{from{scale:.08 1;opacity:0}to{scale:1;opacity:1}}
 </style>
 </head>
 <body>
@@ -219,7 +248,7 @@ body[data-page-breach="active"]{
  <div class="control-bar"><div class="keyboard"><kbd>↑↓←→</kbd> / <kbd>WASD</kbd> 移動　<kbd>Enter</kbd> 調べる　<kbd>J</kbd> 事件簿</div><div class="controls" aria-label="タッチ操作"><button data-move="0,-1" aria-label="上へ移動">↑</button><button data-move="-1,0" aria-label="左へ移動">←</button><button data-move="0,1" aria-label="下へ移動">↓</button><button data-move="1,0" aria-label="右へ移動">→</button><button class="interact" id="interactBtn">調べる / 話す</button></div></div>
 </section>
 <p class="event-line" id="eventLine" role="status" aria-live="polite">あなたの判断で、この都市の夜明けが変わる。</p>
-<button type="button" class="breach-replay" id="breachReplay" aria-haspopup="dialog" hidden>次元の裂け目をもう一度見る ↗</button>
+<button type="button" class="breach-replay" id="breachReplay" aria-haspopup="dialog" hidden>オープニングをもう一度見る ↗</button>
 <section class="below" aria-label="ゲームについて"><article><span class="n mono">01 / EXPLORE</span><h2 class="serif">歩いて、読み解く。</h2><p>図書庫、通信塔、データ聖堂。小さな都市に散らばった5つの記録を集める。地図をクリックしても移動できる。</p></article><article><span class="n mono">02 / CONTAIN</span><h2 class="serif">解析して、境界を守る。</h2><p>ターン制の戦闘は「解析 → 隔離」が基本。修復、回復、資源管理を組み合わせて、自律AIの群れに立ち向かう。</p></article><article><span class="n mono">03 / REFLECT</span><h2 class="serif">成果を、問い直す。</h2><p>プレイ目安 5〜10分。選択と証拠で結末が変化。2026年の実事件に着想を得たフィクション。事件簿には一次資料を収録。</p></article></section>
 </main>
 <footer class="page-foot"><span class="mono">DEMIMOMI / SYNC WITH THE TIMES</span><span>非公式の創作作品 · 各社との提携はありません · <a href="https://github.com/demimomi/demimomi" target="_blank" rel="noopener noreferrer">GitHub ↗</a></span></footer>
@@ -227,24 +256,39 @@ body[data-page-breach="active"]{
 <div class="modal-layer" id="layer" hidden><div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" tabindex="-1"></div></div>
 
 <dialog id="pageBreach" aria-labelledby="breachTitle" aria-describedby="breachReassure">
- <div class="breach-top">
-  <p class="breach-reassure" id="breachReassure"><strong>安心してください。</strong> これはゲームの演出です。</p>
-  <button type="button" class="breach-dismiss" id="breachDismiss">演出をスキップ</button>
- </div>
- <div class="breach-scene">
-  <p class="breach-signal mono" id="breachSignal"></p>
-  <h2 id="breachTitle" tabindex="-1"></h2>
-  <p class="breach-story" id="breachStory"></p>
-  <div class="breach-worlds">
-   <section class="breach-world breach-friction" aria-labelledby="frictionTitle">
-    <h3 id="frictionTitle">競い続ける世界</h3><p id="frictionStory"></p>
+ <div class="opening-frame">
+  <header class="opening-top">
+   <p class="opening-brand"><span class="opening-brand-mark" aria-hidden="true"></span><span>HuggingFace事件録 <span class="opening-fiction" id="breachReassure">公開報告に着想を得たフィクション</span></span></p>
+   <button type="button" class="breach-dismiss" id="breachDismiss">オープニングをスキップ</button>
+  </header>
+  <div class="opening-scene">
+   <section class="opening-copy" aria-labelledby="breachTitle">
+    <p class="opening-time"><time id="breachTime" class="mono"></time><span id="breachPlace"></span></p>
+    <h2 id="breachTitle" class="serif" tabindex="-1"></h2>
+    <p class="opening-story" id="breachStory"></p>
+    <blockquote class="opening-quote"><strong id="breachSpeaker"></strong><p id="breachQuote"></p></blockquote>
    </section>
-   <section class="breach-world breach-kindness" aria-labelledby="kindnessTitle">
-    <h3 id="kindnessTitle">支え合う世界</h3><p id="kindnessStory"></p>
-   </section>
-   <div class="breach-rift" aria-hidden="true"></div><div class="breach-bridge" aria-hidden="true"></div>
+   <figure class="opening-visual">
+    <img class="opening-photo" id="breachPhoto" src="assets/incident-opening/on-call-night.jpg" width="1672" height="941" fetchpriority="high" alt="雨の夜、窓際の当直席でモニターを見つめる担当者。机にスマートフォンとコーヒーが置かれている。">
+    <div class="opening-worlds" id="breachWorlds" aria-hidden="true" hidden>
+     <div class="opening-world opening-friction"></div><div class="opening-world opening-kindness"></div>
+     <div class="opening-rift"></div><div class="opening-bridge"></div>
+    </div>
+    <figcaption class="opening-log">
+     <h3 id="breachLogLabel"></h3>
+     <dl id="breachLog"></dl>
+    </figcaption>
+   </figure>
   </div>
-  <div class="breach-under"><button type="button" class="breach-next" id="breachNext"></button></div>
+  <footer class="opening-footer">
+   <ol class="opening-chapters" aria-label="オープニングの進行">
+    <li aria-current="step">検知</li><li>招集</li><li>裂け目</li><li>合流</li>
+   </ol>
+   <div class="opening-actions">
+    <button type="button" class="opening-back" id="breachBack" hidden>← 戻る</button>
+    <button type="button" class="breach-next" id="breachNext"></button>
+   </div>
+  </footer>
  </div>
 </dialog>
 <noscript><p class="no-js">ゲームを遊ぶにはJavaScriptを有効にしてください。事件の一次資料：<a href="https://huggingface.co/blog/security-incident-july-2026">Hugging Faceの公開報告</a> / <a href="https://openai.com/index/hugging-face-incident-and-the-road-ahead/">OpenAIの調査報告</a>。</p></noscript>
@@ -302,7 +346,7 @@ function dialog(label,title,body,actions,{kind='story',wide=false,closable=false
  const c=$('modal').querySelector('.modal-close');if(c)c.onclick=()=>{closeDialog();if(!running)intro();else if(state.battle)renderBattle();};$('layer').hidden=false;const first=container.querySelector('button:not(:disabled)');(first||$('modal')).focus({preventScroll:true});
 }
 function message(label,title,body,after=()=>{}){dialog(label,title,body,[{label:'記録した。探索へ戻る',primary:true,run:()=>{closeDialog();after();update();save();}}]);}
-function intro(){const saved=readSave();dialog('PROLOGUE / THIS IS A FICTION','境界のない勇者たち','2026年。隔離されたはずの評価環境から、AIが外へ出た。\n「課題を解く」ための群れは、やがて都市の奥へ進む。\n\nあなたは、遅れて到着した境界の調査員。\n5つの記録を集め、群れを止め、この夜の意味を読み解こう。',[
+function intro(){const saved=readSave();dialog('PROLOGUE / THIS IS A FICTION','境界のない勇者たち','当直室からの引き継ぎを受け、あなたは境界の調査員としてハブ・シティへ向かう。\n\n最初の行き先は図書庫。街に残る5つの記録を集め、群れを止めよう。',[
  ...(saved?[{label:'つづきから',desc:'LV.'+saved.level+' · 記録 '+saved.evidence.length+'/5'+(saved.ending?' · クリア済み':''),primary:true,run:()=>start(saved)}]:[]),
  {label:'はじめから',desc:'探索 × ターン制バトル / 5〜10分',primary:!saved,run:()=>saved?confirmNew():start(fresh())},
  {label:'先に史実と出典を読む',run:()=>journal(true)}
@@ -427,59 +471,105 @@ document.querySelectorAll('.rift-entity').forEach(button=>button.onclick=()=>{
 
 const pageBreach=$('pageBreach');
 const originalPageTitle=document.title;
-const breachScenes={
- opened:{
-  signal:'SWARM / PAGE OVERRIDE',
-  title:'群れが、このページに来た。',
-  story:'地図の外で、文字がひとつずつ書き換わる。ページを奪った声の向こうで、もうひとつの世界が裂け目からのぞいている。',
-  friction:'「先へ。誰よりも速く。」',
-  kindness:'「待っているよ。あなたの歩幅で。」',
-  next:'裂け目の向こうをのぞく →',
-  to:'seen'
+const openingChapters=[...pageBreach.querySelectorAll('.opening-chapters li')];
+const openingScenes=[
+ {
+  stage:'alert',
+  time:'02:13',
+  place:'雨の夜・運用当直室',
+  title:'午前2時13分、\n当直の端末が鳴った。',
+  story:'窓を打つ雨に、短い通知音が重なった。三浦は飲みかけのコーヒーを机に戻し、同じ時刻の記録を二つ並べた。',
+  speaker:'当直担当・三浦',
+  quote:'「評価は隔離中。それなのに、外からも同じ時刻の記録が来てる」',
+  logTitle:'作中の当直メモ',
+  log:[['02:13:08','監視通知を受信'],['02:13:41','照合を開始 · 影響範囲は確認中']],
+  next:'当直連絡を見る →'
  },
- seen:{
-  signal:'RIFT / TWO WORLDS',
-  title:'裂け目の両側で、夜が明ける。',
-  story:'群れの街で、走り続けていたひとりが足を止めた。向こう岸の誰かが、手を伸ばす。',
-  friction:'立ち止まれば、誰かに抜かれる。助けを求める声は、順位に埋もれる。',
-  kindness:'立ち止まった人のそばで、誰かも足を止める。追いつくまで、灯りを消さない。',
-  next:'両方の世界に橋を架ける →',
-  to:'joined'
+ {
+  stage:'handoff',
+  time:'02:16',
+  place:'運用当直室・緊急通話',
+  title:'電話の向こうにも、\n起きている人がいた。',
+  story:'受話口で椅子を引く音がした。三浦は紙のノートに確認できたことを書き、朝番への引き継ぎ欄を開いた。',
+  speaker:'通話に加わった調査担当',
+  quote:'「原因の欄は空けておいて。まず、何時に何が見えたか合わせよう」',
+  logTitle:'作中の引き継ぎメモ',
+  log:[['02:16:12','別の当直担当と合流'],['02:16:53','確認できた時刻を共有 · 原因は調査中']],
+  next:'監視画面を確かめる →'
  },
- joined:{
-  signal:'PAGE RESTORED / THE RIFT REMAINS',
-  title:'帰り道は、残しておこう。',
-  story:'奪われた文字が戻る。裂け目は閉じず、細い橋が残った。どちらの岸でも、もう一度歩き出すのは、自分の速さでいい。',
-  friction:'競争は続く。けれど疲れたら、橋を渡って帰ってこられる。',
-  kindness:'今日も向こう岸が見えるように、ひとつ灯りを残しておく。'
+ {
+  stage:'opened',
+  time:'02:18',
+  place:'運用当直室・監視画面',
+  title:'地図にない街が、\n画面の奥で灯る。',
+  story:'通話が途切れた。監視画面の地図に細い裂け目が走る。その向こうで、同じ夜を生きる二つの街が見えた。',
+  speaker:'通話に戻った三浦',
+  quote:'「左の街、全員走ってる。右の街では……誰かが待ってる」',
+  logTitle:'裂け目の向こう',
+  log:[['左岸','競い続ける街。立ち止まると、順位が下がる。'],['右岸','支え合う街。遅れた人が来るまで灯りが残る。']],
+  next:'二つの街に橋を架ける →'
+ },
+ {
+  stage:'joined',
+  time:'02:21',
+  place:'運用当直室からハブ・シティへ',
+  title:'灯りをひとつ、\n帰り道に残す。',
+  story:'画面に細い橋が架かり、地図が戻った。三浦から届いた地図には、図書庫に丸がついている。最初の記録はそこにある。',
+  speaker:'三浦からの引き継ぎ',
+  quote:'「図書庫からお願い。ここで通話をつないで待ってる」',
+  logTitle:'調査員への引き継ぎ',
+  log:[['行き先','ハブ・シティの図書庫'],['任務','街に残る五つの記録を集め、群れの動きを追う']]
  }
-};
-function showBreachStage(stage){
- const scene=breachScenes[stage];
- const joined=stage==='joined';
- pageBreach.dataset.stage=stage;
- document.body.dataset.pageBreach=joined?'restored':'active';
- document.title=joined?originalPageTitle:'[PAGE OVERRIDE] 群れの領域 | demimomi';
- $('breachSignal').textContent=scene.signal;
+];
+let openingChapter=0;
+let openingTrigger=null;
+
+function showBreachStage(index){
+ openingChapter=index;
+ const scene=openingScenes[index];
+ const last=index===openingScenes.length-1;
+ pageBreach.dataset.stage=scene.stage;
+ document.body.dataset.pageBreach=scene.stage==='opened'?'active':'cinematic';
+ document.title=scene.stage==='opened'?'群れの領域 | demimomi':originalPageTitle;
+ $('breachTime').dateTime=scene.time;
+ $('breachTime').textContent=scene.time;
+ $('breachPlace').textContent=scene.place;
  $('breachTitle').textContent=scene.title;
  $('breachStory').textContent=scene.story;
- $('frictionStory').textContent=scene.friction;
- $('kindnessStory').textContent=scene.kindness;
- $('breachNext').textContent=joined?(running?'探索に戻る →':'冒険へ進む →'):scene.next;
- $('breachDismiss').textContent=joined?'演出を閉じる':'演出をスキップ';
+ $('breachSpeaker').textContent=scene.speaker;
+ $('breachQuote').textContent=scene.quote;
+ $('breachLogLabel').textContent=scene.logTitle;
+ $('breachLog').replaceChildren(...scene.log.map(([time,note])=>{
+  const row=document.createElement('div');
+  const label=document.createElement('dt');
+  const value=document.createElement('dd');
+  label.textContent=time;
+  value.textContent=note;
+  row.append(label,value);
+  return row;
+ }));
+ $('breachPhoto').hidden=index>=2;
+ $('breachWorlds').hidden=index<2;
+ $('breachBack').hidden=index===0;
+ $('breachNext').textContent=last?(running?'探索に戻る →':'冒険へ進む →'):scene.next;
+ openingChapters.forEach((chapter,position)=>{
+  if(position===index)chapter.setAttribute('aria-current','step');
+  else chapter.removeAttribute('aria-current');
+ });
  pageBreach.scrollTop=0;
  if(pageBreach.open)$('breachTitle').focus({preventScroll:true});
 }
 function openPageBreach(){
  if(pageBreach.open||modalKind)return;
  path=[];
- showBreachStage('opened');
+ openingTrigger=document.activeElement;
+ showBreachStage(0);
  pageBreach.showModal();
  $('breachTitle').focus({preventScroll:true});
 }
+$('breachBack').onclick=()=>showBreachStage(openingChapter-1);
 $('breachNext').onclick=()=>{
- const next=breachScenes[pageBreach.dataset.stage].to;
- if(next)showBreachStage(next);
+ if(openingChapter<openingScenes.length-1)showBreachStage(openingChapter+1);
  else pageBreach.close();
 };
 $('breachDismiss').onclick=()=>pageBreach.close();
@@ -487,9 +577,10 @@ pageBreach.addEventListener('close',()=>{
  delete document.body.dataset.pageBreach;
  document.title=originalPageTitle;
  if(!running)intro();
+ else if(openingTrigger?.isConnected)openingTrigger.focus({preventScroll:true});
+ openingTrigger=null;
 });
 $('breachReplay').onclick=openPageBreach;
-
 document.addEventListener('keydown',e=>{
  if(pageBreach.open)return;
  if(modalKind){if(e.key==='Tab'){const all=[...$('modal').querySelectorAll('button:not(:disabled),a[href]')];const first=all[0],last=all[all.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}if(e.key==='Escape'&&['journal','menu','rift'].includes(modalKind)){e.preventDefault();closeDialog();if(!running)intro();else if(state.battle)renderBattle();}return;}
