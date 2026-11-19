@@ -771,8 +771,8 @@
       .signal-track { transform:none !important; }
     }
 
-    /* The cut, paper flap and hand sit on separate planes. */
-    .titan-peek {
+    /* The cat peers through a tear in the edge of the page. */
+    .black-cat-peek {
       position: fixed;
       inset-inline-end: 0;
       top: clamp(calc(var(--header-h) + 8px), 23svh, 220px);
@@ -784,36 +784,36 @@
       isolation: isolate;
       --tear-ease: cubic-bezier(.29, .66, .21, 1);
     }
-    .titan-peek.is-visible { visibility: visible; }
-    .titan-cut, .titan-flap-shadow, .titan-opening, .titan-fold {
+    .black-cat-peek.is-visible { visibility: visible; }
+    .black-cat-cut, .black-cat-flap-shadow, .black-cat-opening, .black-cat-fold {
       position: absolute;
       inset: 0;
     }
-    .titan-cut {
+    .black-cat-cut {
       filter: drop-shadow(-3px 2px 3px #000) drop-shadow(-12px 12px 16px rgba(0,0,0,.64));
       --tear: polygon(100% 0, 100% 7%, 100% 14%, 100% 13%, 100% 20%, 100% 32%,
         100% 36%, 100% 43%, 100% 52%, 100% 61%, 100% 69%, 100% 78%, 100% 87%,
         100% 90%, 100% 94%, 100% 100%);
     }
-    .titan-peek.is-open .titan-cut {
-      --tear: polygon(100% 0, 69% 7%, 51% 14%, 47% 13%, 31% 20%, 25% 32%,
-        20% 36%, 22% 43%, 12% 52%, 16% 61%, 13% 69%, 21% 78%, 36% 87%,
+    .black-cat-peek.is-open .black-cat-cut {
+      --tear: polygon(100% 0, 67% 4%, 44% 8%, 40% 7%, 24% 12%, 18% 24%,
+        16% 32%, 22% 43%, 12% 52%, 16% 61%, 13% 69%, 21% 78%, 36% 87%,
         36% 90%, 57% 94%, 100% 100%);
     }
-    .titan-opening, .titan-depth {
+    .black-cat-opening, .black-cat-depth {
       overflow: hidden;
       clip-path: var(--tear);
       transition: clip-path 1.12s var(--tear-ease);
     }
-    .titan-opening {
+    .black-cat-opening {
       background: linear-gradient(168deg, #25251b, #8a8062 38%, #625944 56%, #242419 79%, #4f4835);
     }
-    .titan-depth {
+    .black-cat-depth {
       position: absolute;
       inset: 1px -1px 2px 4px;
       background: #060805;
     }
-    .titan-depth::after {
+    .black-cat-depth::after {
       content: "";
       position: absolute;
       inset: 0;
@@ -821,55 +821,56 @@
         linear-gradient(180deg, #050705 0%, transparent 24%, transparent 69%, #050705 100%),
         linear-gradient(102deg, #050705 9%, transparent 40%, transparent 68%, rgba(4,6,4,.32));
     }
-    .titan-portrait {
+    .black-cat-portrait {
       position: absolute;
-      top: -2%;
+      top: 11%;
       right: -1%;
-      width: 83%;
+      width: 80%;
+      mask-image: linear-gradient(180deg, transparent, #000 7%, #000 94%, transparent);
       aspect-ratio: 2 / 3;
       transform-origin: 40% 38%;
       transform: translate(42%, 5%) rotate(6deg) scale(.94);
       transition: transform 1.24s var(--tear-ease);
     }
-    .titan-peek.is-open .titan-portrait {
+    .black-cat-peek.is-open .black-cat-portrait {
       transform: translate(0) rotate(-2deg);
       transition-duration: 1.53s;
       transition-delay: .12s;
     }
-    .titan-head { position: absolute; inset: 0; }
-    .titan-face, .titan-lids {
+    .black-cat-head { position: absolute; inset: 0; }
+    .black-cat-face, .black-cat-lids {
       position: absolute;
       inset: 0;
       display: block;
       width: 100%;
       height: auto;
     }
-    .titan-lids {
+    .black-cat-lids {
       opacity: 0;
       mask-image:
-        radial-gradient(ellipse 20% 7% at 27% 35%, #000 65%, transparent 100%),
-        radial-gradient(ellipse 19% 8% at 85% 27%, #000 64%, transparent 100%);
+        radial-gradient(ellipse 16% 7.6% at 30.5% 45.5%, #000 76%, transparent 100%),
+        radial-gradient(ellipse 16% 7.6% at 71.5% 45.5%, #000 76%, transparent 100%);
     }
-    .titan-lids img {
+    .black-cat-lids img {
       position: absolute;
-      top: 17.1875%;
+      top: 37.5%;
       left: 0;
       width: 100%;
       height: auto;
     }
-    .titan-peek.is-open .titan-head { animation: titan-breathe 5.3s 1.5s ease-in-out both; }
-    .titan-peek.is-open .titan-lids { animation: titan-blink 7.2s linear both; }
-    @keyframes titan-breathe {
+    .black-cat-peek.is-open .black-cat-head { animation: black-cat-breathe 5.3s 1.5s ease-in-out both; }
+    .black-cat-peek.is-open .black-cat-lids { animation: black-cat-blink 7.2s linear both; }
+    @keyframes black-cat-breathe {
       0%, 100% { transform: translate(0) rotate(0); }
       40% { transform: translate(-1.4%, .8%) rotate(-.5deg); }
       72% { transform: translate(-.5%, -.35%) rotate(.25deg); }
     }
-    @keyframes titan-blink {
-      0%, 39%, 42.1%, 72%, 74.8%, 100% { opacity: 0; }
-      40%, 40.8%, 73%, 73.6% { opacity: 1; }
+    @keyframes black-cat-blink {
+      0%, 46%, 56%, 100% { opacity: 0; }
+      48.5%, 51.5% { opacity: 1; }
     }
-    .titan-flap-shadow { filter: drop-shadow(3px 4px 4px rgba(0,0,0,.88)); }
-    .titan-fold {
+    .black-cat-flap-shadow { filter: drop-shadow(3px 4px 4px rgba(0,0,0,.88)); }
+    .black-cat-fold {
       background:
         linear-gradient(166deg, transparent 11%, rgba(208,188,145,.18) 31%, transparent 48%),
         repeating-linear-gradient(113deg, rgba(218,199,155,.06) 0 1px, transparent 1px 3px),
@@ -879,44 +880,21 @@
         100% 64%, 100% 54%, 100% 45%, 100% 32%, 100% 17%, 100% 10%, 100% 5%);
       transition: clip-path 1.12s var(--tear-ease);
     }
-    .titan-peek.is-open .titan-fold {
-      clip-path: polygon(100% 0, 69% 7%, 52% 15%, 47% 14%, 32% 21%, 26% 32%,
-        21% 36%, 23% 43%, 13% 52%, 17% 61%, 14% 69%, 21% 78%, 7% 70%,
-        10% 64%, 4% 54%, 13% 45%, 14% 32%, 26% 17%, 37% 10%, 56% 5%);
+    .black-cat-peek.is-open .black-cat-fold {
+      clip-path: polygon(100% 0, 67% 4%, 45% 9%, 40% 8%, 25% 13%, 19% 24%,
+        17% 32%, 23% 43%, 13% 52%, 17% 61%, 14% 69%, 21% 78%, 7% 70%,
+        10% 64%, 4% 54%, 13% 45%, 9% 27%, 17% 12%, 32% 5%, 54% 3%);
     }
-    .titan-grip {
-      position: absolute;
-      top: 50%;
-      left: -3%;
-      width: 65%;
-      opacity: 0;
-      transform: translate(55%, 8%) rotate(9deg);
-      transform-origin: 20% 50%;
-      filter: drop-shadow(-3px 6px 4px rgba(0,0,0,.82));
-      transition: transform 1.05s var(--tear-ease), opacity .25s ease .2s;
-    }
-    .titan-peek.is-open .titan-grip {
-      opacity: 1;
-      transform: translate(0) rotate(-10deg);
-      transition: transform 1.05s var(--tear-ease), opacity .24s ease;
-    }
-    .titan-fingers {
-      display: block;
-      width: 100%;
-      height: auto;
-      mask-image: linear-gradient(90deg, #000 42%, rgba(0,0,0,.75) 58%, transparent 84%);
-      filter: brightness(.84) saturate(.84);
-    }
-    .nav-links .nav-titan { color: var(--gold); }
+    .nav-links .nav-black-cat { color: var(--gold); }
     @media (max-width: 600px) {
-      .titan-peek {
+      .black-cat-peek {
         top: clamp(calc(var(--header-h) + 8px), 29svh, 220px);
         width: min(66vw, 278px, 52svh);
       }
     }
     @media (prefers-reduced-motion: reduce) {
-      .titan-opening, .titan-depth, .titan-fold, .titan-portrait, .titan-grip { transition: none; }
-      .titan-peek.is-open .titan-head, .titan-peek.is-open .titan-lids { animation: none; }
+      .black-cat-opening, .black-cat-depth, .black-cat-fold, .black-cat-portrait { transition: none; }
+      .black-cat-peek.is-open .black-cat-head, .black-cat-peek.is-open .black-cat-lids { animation: none; }
     }
   </style>
   <link rel="stylesheet" href="assets/cats/cat-walk.css?v=7">
@@ -940,7 +918,7 @@
         <a href="physical-ai-cat.html">猫とPhysical AI</a>
         <a href="https://demimomi.github.io/demimomi/neko-robot-game.html" target="_blank" rel="noopener noreferrer">猫GAME</a>
         <a href="huggingface-incident-rpg.html" target="_blank" rel="noopener noreferrer">HuggingFace事件</a>
-        <a class="nav-titan" id="titanLink" href="#titan-peek" aria-label="巨人を呼ぶ">巨人</a>
+        <a class="nav-black-cat" id="blackCatLink" href="#black-cat-peek">ニャー</a>
         <a class="nav-fsc" href="https://demimomi.github.io/demimomi/fsc.html">微細構造定数</a>
         <a href="https://demimomi.github.io/demimomi/sound-garden.html">音庭</a>
         <a class="nav-era" href="https://demimomi.github.io/demimomi/heisei_ver" target="_blank" rel="noopener noreferrer">平成ジャンプ ↗</a>
@@ -951,25 +929,22 @@
   </header>
 
 
-  <div class="titan-peek" id="titan-peek" aria-hidden="true">
-    <div class="titan-cut">
-      <div class="titan-opening">
-        <div class="titan-depth">
-          <div class="titan-portrait">
-            <div class="titan-head">
-              <img class="titan-face" data-src="assets/titan/face.webp" width="768" height="1152" alt="" decoding="async">
-              <div class="titan-lids">
-                <img data-src="assets/titan/blink.webp" width="768" height="318" alt="" decoding="async">
+  <div class="black-cat-peek" id="black-cat-peek" aria-hidden="true">
+    <div class="black-cat-cut">
+      <div class="black-cat-opening">
+        <div class="black-cat-depth">
+          <div class="black-cat-portrait">
+            <div class="black-cat-head">
+              <img class="black-cat-face" data-src="assets/odd-eyed-cat/face.webp" width="768" height="1152" alt="" decoding="async">
+              <div class="black-cat-lids">
+                <img data-src="assets/odd-eyed-cat/blink.webp" width="768" height="216" alt="" decoding="async">
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="titan-flap-shadow"><div class="titan-fold"></div></div>
-    <div class="titan-grip">
-      <img class="titan-fingers" data-src="assets/titan/hand.webp" width="576" height="384" alt="" decoding="async">
-    </div>
+    <div class="black-cat-flap-shadow"><div class="black-cat-fold"></div></div>
   </div>
 
   <main id="main">
@@ -1264,10 +1239,10 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
   <script>
   (() => {
     "use strict";
-    const peek = document.getElementById("titan-peek");
-    const link = document.getElementById("titanLink");
+    const peek = document.getElementById("black-cat-peek");
+    const link = document.getElementById("blackCatLink");
     if (!peek || !link) return;
-    const face = peek.querySelector(".titan-face");
+    const face = peek.querySelector(".black-cat-face");
     const images = [...peek.querySelectorAll("img[data-src]")];
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let artwork, closeTimer, hideTimer, request = 0;
