@@ -771,130 +771,61 @@
       .signal-track { transform:none !important; }
     }
 
-    /* The cat peers through a tear in the edge of the page. */
-    .black-cat-peek {
-      position: fixed;
-      inset-inline-end: 0;
-      top: clamp(calc(var(--header-h) + 8px), 23svh, 220px);
-      width: min(clamp(220px, 31vw, 430px), 52svh);
-      aspect-ratio: .82;
-      z-index: 65;
-      visibility: hidden;
-      pointer-events: none;
-      isolation: isolate;
-      --tear-ease: cubic-bezier(.29, .66, .21, 1);
-    }
-    .black-cat-peek.is-visible { visibility: visible; }
-    .black-cat-cut, .black-cat-flap-shadow, .black-cat-opening, .black-cat-fold {
-      position: absolute;
-      inset: 0;
-    }
-    .black-cat-cut {
-      filter: drop-shadow(-3px 2px 3px #000) drop-shadow(-12px 12px 16px rgba(0,0,0,.64));
-      --tear: polygon(100% 0, 100% 7%, 100% 14%, 100% 13%, 100% 20%, 100% 32%,
-        100% 36%, 100% 43%, 100% 52%, 100% 61%, 100% 69%, 100% 78%, 100% 87%,
-        100% 90%, 100% 94%, 100% 100%);
-    }
-    .black-cat-peek.is-open .black-cat-cut {
-      --tear: polygon(100% 0, 67% 4%, 44% 8%, 40% 7%, 24% 12%, 18% 24%,
-        16% 32%, 22% 43%, 12% 52%, 16% 61%, 13% 69%, 21% 78%, 36% 87%,
-        36% 90%, 57% 94%, 100% 100%);
-    }
-    .black-cat-opening, .black-cat-depth {
-      overflow: hidden;
-      clip-path: var(--tear);
-      transition: clip-path 1.12s var(--tear-ease);
-    }
-    .black-cat-opening {
-      background: linear-gradient(168deg, #25251b, #8a8062 38%, #625944 56%, #242419 79%, #4f4835);
-    }
-    .black-cat-depth {
-      position: absolute;
-      inset: 1px -1px 2px 4px;
-      background: #060805;
-    }
-    .black-cat-depth::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(180deg, #050705 0%, transparent 24%, transparent 69%, #050705 100%),
-        linear-gradient(102deg, #050705 9%, transparent 40%, transparent 68%, rgba(4,6,4,.32));
-    }
-    .black-cat-portrait {
-      position: absolute;
-      top: 11%;
-      right: -1%;
-      width: 80%;
-      mask-image: linear-gradient(180deg, transparent, #000 7%, #000 94%, transparent);
-      aspect-ratio: 2 / 3;
-      transform-origin: 40% 38%;
-      transform: translate(42%, 5%) rotate(6deg) scale(.94);
-      transition: transform 1.24s var(--tear-ease);
-    }
-    .black-cat-peek.is-open .black-cat-portrait {
-      transform: translate(0) rotate(-2deg);
-      transition-duration: 1.53s;
-      transition-delay: .12s;
-    }
-    .black-cat-head { position: absolute; inset: 0; }
-    .black-cat-face, .black-cat-lids {
-      position: absolute;
-      inset: 0;
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-    .black-cat-lids {
-      opacity: 0;
-      mask-image:
-        radial-gradient(ellipse 16% 7.6% at 30.5% 45.5%, #000 76%, transparent 100%),
-        radial-gradient(ellipse 16% 7.6% at 71.5% 45.5%, #000 76%, transparent 100%);
-    }
-    .black-cat-lids img {
-      position: absolute;
-      top: 37.5%;
-      left: 0;
-      width: 100%;
-      height: auto;
-    }
-    .black-cat-peek.is-open .black-cat-head { animation: black-cat-breathe 5.3s 1.5s ease-in-out both; }
-    .black-cat-peek.is-open .black-cat-lids { animation: black-cat-blink 7.2s linear both; }
-    @keyframes black-cat-breathe {
-      0%, 100% { transform: translate(0) rotate(0); }
-      40% { transform: translate(-1.4%, .8%) rotate(-.5deg); }
-      72% { transform: translate(-.5%, -.35%) rotate(.25deg); }
-    }
-    @keyframes black-cat-blink {
-      0%, 46%, 56%, 100% { opacity: 0; }
-      48.5%, 51.5% { opacity: 1; }
-    }
-    .black-cat-flap-shadow { filter: drop-shadow(3px 4px 4px rgba(0,0,0,.88)); }
-    .black-cat-fold {
-      background:
-        linear-gradient(166deg, transparent 11%, rgba(208,188,145,.18) 31%, transparent 48%),
-        repeating-linear-gradient(113deg, rgba(218,199,155,.06) 0 1px, transparent 1px 3px),
-        linear-gradient(91deg, #111713 2%, #333c32 18%, #576052 29%, #20261f 48%, #080b08 74%);
-      clip-path: polygon(100% 0, 100% 7%, 100% 14%, 100% 13%, 100% 20%, 100% 32%,
-        100% 36%, 100% 43%, 100% 52%, 100% 61%, 100% 69%, 100% 78%, 100% 70%,
-        100% 64%, 100% 54%, 100% 45%, 100% 32%, 100% 17%, 100% 10%, 100% 5%);
-      transition: clip-path 1.12s var(--tear-ease);
-    }
-    .black-cat-peek.is-open .black-cat-fold {
-      clip-path: polygon(100% 0, 67% 4%, 45% 9%, 40% 8%, 25% 13%, 19% 24%,
-        17% 32%, 23% 43%, 13% 52%, 17% 61%, 14% 69%, 21% 78%, 7% 70%,
-        10% 64%, 4% 54%, 13% 45%, 9% 27%, 17% 12%, 32% 5%, 54% 3%);
-    }
     .nav-links .nav-black-cat { color: var(--gold); }
-    @media (max-width: 600px) {
-      .black-cat-peek {
-        top: clamp(calc(var(--header-h) + 8px), 29svh, 220px);
-        width: min(66vw, 278px, 52svh);
-      }
+
+    html:has(.cat-video-dialog[open]) { overflow: hidden; }
+    .cat-video-dialog {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      max-height: none;
+      margin: 0;
+      border: 0;
+      padding: max(.75rem, env(safe-area-inset-top)) max(.75rem, env(safe-area-inset-right))
+        max(.75rem, env(safe-area-inset-bottom)) max(.75rem, env(safe-area-inset-left));
+      color: #fff;
+      background: #000;
     }
-    @media (prefers-reduced-motion: reduce) {
-      .black-cat-opening, .black-cat-depth, .black-cat-fold, .black-cat-portrait { transition: none; }
-      .black-cat-peek.is-open .black-cat-head, .black-cat-peek.is-open .black-cat-lids { animation: none; }
+    .cat-video-dialog:not([open]) { display: none; }
+    .cat-video-dialog[open] {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: .5rem;
+    }
+    .cat-video-dialog::backdrop { background: #000; }
+    .cat-video-close {
+      justify-self: end;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border: 1px solid rgba(255,255,255,.38);
+      border-radius: 50%;
+      color: inherit;
+      background: #111;
+      font-size: 1.5rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .cat-video-close:hover { background: #292929; }
+    .cat-video-close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    .cat-video-stage { position: relative; }
+    .cat-video-stage video {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      background: #000;
+    }
+    .cat-video-error {
+      position: absolute;
+      inset: 50% 0 auto;
+      margin: 0;
+      transform: translateY(-50%);
+      text-align: center;
     }
   </style>
   <link rel="stylesheet" href="assets/cats/cat-walk.css?v=7">
@@ -918,7 +849,7 @@
         <a href="physical-ai-cat.html">猫とPhysical AI</a>
         <a href="https://demimomi.github.io/demimomi/neko-robot-game.html" target="_blank" rel="noopener noreferrer">猫GAME</a>
         <a href="huggingface-incident-rpg.html" target="_blank" rel="noopener noreferrer">HuggingFace事件</a>
-        <a class="nav-black-cat" id="blackCatLink" href="#black-cat-peek">ニャー</a>
+        <a class="nav-black-cat" id="catVideoLink" href="assets/cats/cat-dance.mp4" aria-haspopup="dialog">ニャー</a>
         <a class="nav-fsc" href="https://demimomi.github.io/demimomi/fsc.html">微細構造定数</a>
         <a href="https://demimomi.github.io/demimomi/sound-garden.html">音庭</a>
         <a class="nav-era" href="https://demimomi.github.io/demimomi/heisei_ver" target="_blank" rel="noopener noreferrer">平成ジャンプ ↗</a>
@@ -928,24 +859,13 @@
     </div>
   </header>
 
-
-  <div class="black-cat-peek" id="black-cat-peek" aria-hidden="true">
-    <div class="black-cat-cut">
-      <div class="black-cat-opening">
-        <div class="black-cat-depth">
-          <div class="black-cat-portrait">
-            <div class="black-cat-head">
-              <img class="black-cat-face" data-src="assets/odd-eyed-cat/face.webp" width="768" height="1152" alt="" decoding="async">
-              <div class="black-cat-lids">
-                <img data-src="assets/odd-eyed-cat/blink.webp" width="768" height="216" alt="" decoding="async">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <dialog class="cat-video-dialog" id="catVideoDialog" aria-label="猫のダンス動画">
+    <button class="cat-video-close" type="button" aria-label="動画を閉じる" autofocus>×</button>
+    <div class="cat-video-stage">
+      <video src="assets/cats/cat-dance.mp4" controls playsinline preload="none" aria-label="猫のダンス動画"></video>
+      <p class="cat-video-error" role="status" hidden>動画を読み込めませんでした。</p>
     </div>
-    <div class="black-cat-flap-shadow"><div class="black-cat-fold"></div></div>
-  </div>
+  </dialog>
 
   <main id="main">
     <section class="section hero" id="top" aria-labelledby="hero-title">
@@ -1239,67 +1159,33 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
   <script>
   (() => {
     "use strict";
-    const peek = document.getElementById("black-cat-peek");
-    const link = document.getElementById("blackCatLink");
-    if (!peek || !link) return;
-    const face = peek.querySelector(".black-cat-face");
-    const images = [...peek.querySelectorAll("img[data-src]")];
-    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let artwork, closeTimer, hideTimer, request = 0;
-    let open = false;
-    const preload = () => {
-      if (!artwork) {
-        artwork = Promise.allSettled(images.map(image => {
-          image.src = image.dataset.src;
-          return image.decode();
-        })).then(() => {
-          if (!face.naturalWidth) artwork = undefined;
-        });
-      }
-      return artwork;
-    };
-    const clearTimers = () => {
-      window.clearTimeout(closeTimer);
-      window.clearTimeout(hideTimer);
-    };
-    const close = () => {
-      request += 1;
-      open = false;
-      clearTimers();
-      peek.classList.remove("is-open");
-      if (peek.classList.contains("is-visible")) {
-        hideTimer = window.setTimeout(() => peek.classList.remove("is-visible"), motion.matches ? 0 : 1300);
-      }
-    };
-    const show = async () => {
-      if (document.hidden) return;
-      const current = ++request;
-      open = true;
-      await preload();
-      if (current !== request || document.hidden) return;
-      if (!face.naturalWidth) {
-        close();
-        return;
-      }
-      clearTimers();
-      peek.classList.add("is-visible");
-      void peek.offsetWidth;
-      peek.classList.add("is-open");
-      closeTimer = window.setTimeout(close, 7200);
-    };
-    link.addEventListener("pointerenter", preload, { once: true });
-    link.addEventListener("focus", preload, { once: true });
+    const link = document.getElementById("catVideoLink");
+    const dialog = document.getElementById("catVideoDialog");
+    const navToggle = document.getElementById("navToggle");
+    const video = dialog.querySelector("video");
+    const error = dialog.querySelector(".cat-video-error");
+
     link.addEventListener("click", event => {
+      if (typeof dialog.showModal !== "function" || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
-      show();
+      dialog.showModal();
+      error.hidden = true;
+      if (video.error) video.load();
+      video.play().catch(() => {
+        if (dialog.open && video.error) error.hidden = false;
+      });
     });
-    window.addEventListener("keydown", event => {
-      if (event.key === "Escape" && open) close();
+
+    video.addEventListener("error", () => {
+      if (dialog.open) error.hidden = false;
     });
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) close();
+    dialog.querySelector("button").addEventListener("click", () => dialog.close());
+    dialog.addEventListener("close", () => {
+      video.pause();
+      video.currentTime = 0;
+      const focusTarget = navToggle.getClientRects().length ? navToggle : link;
+      focusTarget.focus({ preventScroll: true });
     });
-    motion.addEventListener("change", close);
   })();
   </script>
 
