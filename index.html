@@ -55,7 +55,7 @@
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; background: var(--paper); }
+    html { scroll-behavior: smooth; overflow-x: hidden; background: var(--paper); }
     body {
       margin: 0;
       min-height: 100%;
@@ -773,59 +773,104 @@
 
     .nav-links .nav-black-cat { color: var(--gold); }
 
-    html:has(.cat-video-dialog[open]) { overflow: hidden; }
-    .cat-video-dialog {
+    .cat-video-peek {
       position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      max-width: none;
-      max-height: none;
-      margin: 0;
-      border: 0;
-      padding: max(.75rem, env(safe-area-inset-top)) max(.75rem, env(safe-area-inset-right))
-        max(.75rem, env(safe-area-inset-bottom)) max(.75rem, env(safe-area-inset-left));
+      inset-inline-end: 0;
+      top: clamp(calc(var(--header-h) + 8px), 23svh, 220px);
+      width: min(clamp(205px, 21vw, 266px), 51svh);
+      aspect-ratio: .82;
+      z-index: 65;
       color: #fff;
+      isolation: isolate;
+      pointer-events: none;
+      --peek-duration: 920ms;
+      --peek-ease: cubic-bezier(.29, .66, .21, 1);
+      --tear: polygon(100% 0, 100% 4%, 100% 8%, 100% 10%, 100% 15%, 100% 23%,
+        100% 32%, 100% 40%, 100% 49%, 100% 58%, 100% 67%, 100% 76%, 100% 85%,
+        100% 91%, 100% 97%, 100% 100%);
+      --fold: polygon(100% 0, 100% 4%, 100% 8%, 100% 10%, 100% 15%, 100% 23%,
+        100% 32%, 100% 40%, 100% 49%, 100% 58%, 100% 67%, 100% 76%, 100% 70%,
+        100% 59%, 100% 48%, 100% 38%, 100% 25%, 100% 15%, 100% 8%, 100% 4%);
+    }
+    .cat-video-peek.is-open {
+      --tear: polygon(100% 0, 70% 4%, 45% 8%, 23% 10%, 15% 15%, 12% 23%,
+        16% 32%, 9% 40%, 13% 49%, 9% 58%, 14% 67%, 12% 76%, 16% 85%,
+        23% 91%, 56% 97%, 100% 100%);
+      --fold: polygon(100% 0, 70% 4%, 45% 8%, 23% 10%, 15% 15%, 12% 23%,
+        16% 32%, 9% 40%, 13% 49%, 9% 58%, 14% 67%, 12% 76%, 5% 70%,
+        7% 59%, 2% 48%, 6% 38%, 5% 25%, 12% 15%, 30% 8%, 51% 4%);
+    }
+    .cat-video-cut, .cat-video-opening, .cat-video-stage, .cat-video-fold-shadow, .cat-video-fold {
+      position: absolute;
+      inset: 0;
+    }
+    .cat-video-cut { filter: drop-shadow(-8px 10px 14px rgba(0,0,0,.7)); }
+    .cat-video-opening, .cat-video-stage {
+      overflow: hidden;
+      clip-path: var(--tear);
+      transition: clip-path var(--peek-duration) var(--peek-ease);
+    }
+    .cat-video-opening {
+      background: linear-gradient(168deg, #25251b, #8a8062 38%, #625944 56%, #242419 79%, #4f4835);
+    }
+    .cat-video-stage {
+      inset: 1px -1px 2px 3px;
       background: #000;
     }
-    .cat-video-dialog:not([open]) { display: none; }
-    .cat-video-dialog[open] {
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr);
-      gap: .5rem;
+    .cat-video-fold-shadow { filter: drop-shadow(3px 4px 4px rgba(0,0,0,.88)); }
+    .cat-video-fold {
+      background:
+        linear-gradient(166deg, transparent 11%, rgba(208,188,145,.18) 31%, transparent 48%),
+        repeating-linear-gradient(113deg, rgba(218,199,155,.06) 0 1px, transparent 1px 3px),
+        linear-gradient(91deg, #111713 2%, #333c32 18%, #576052 29%, #20261f 48%, #080b08 74%);
+      clip-path: var(--fold);
+      transition: clip-path var(--peek-duration) var(--peek-ease);
     }
-    .cat-video-dialog::backdrop { background: #000; }
+    .cat-video-stage video {
+      position: absolute;
+      top: 51%;
+      right: max(4%, env(safe-area-inset-right));
+      width: 77%;
+      aspect-ratio: 866 / 902;
+      transform: translateY(-50%);
+      object-fit: contain;
+      background: #000;
+    }
     .cat-video-close {
-      justify-self: end;
-      width: 44px;
-      height: 44px;
+      position: absolute;
+      top: 4%;
+      right: max(4%, env(safe-area-inset-right));
+      width: 36px;
+      height: 36px;
       padding: 0;
       border: 1px solid rgba(255,255,255,.38);
       border-radius: 50%;
       color: inherit;
       background: #111;
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       line-height: 1;
       cursor: pointer;
     }
+    .cat-video-peek.is-open :is(video, button) { pointer-events: auto; }
     .cat-video-close:hover { background: #292929; }
     .cat-video-close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-    .cat-video-stage { position: relative; }
-    .cat-video-stage video {
-      position: absolute;
-      inset: 0;
-      margin: auto;
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      background: #000;
-    }
     .cat-video-error {
       position: absolute;
-      inset: 50% 0 auto;
+      inset: 50% 4% auto 19%;
       margin: 0;
+      padding: .5rem;
       transform: translateY(-50%);
+      background: #000;
+      font-size: .78rem;
       text-align: center;
+      pointer-events: none;
+    }
+    @media (max-width: 600px) {
+      .cat-video-peek {
+        top: auto;
+        bottom: max(1rem, 5svh, env(safe-area-inset-bottom));
+        width: min(59vw, 220px, 51svh);
+      }
     }
   </style>
   <link rel="stylesheet" href="assets/cats/cat-walk.css?v=7">
@@ -849,7 +894,7 @@
         <a href="physical-ai-cat.html">猫とPhysical AI</a>
         <a href="https://demimomi.github.io/demimomi/neko-robot-game.html" target="_blank" rel="noopener noreferrer">猫GAME</a>
         <a href="huggingface-incident-rpg.html" target="_blank" rel="noopener noreferrer">HuggingFace事件</a>
-        <a class="nav-black-cat" id="catVideoLink" href="assets/cats/cat-dance-black.mp4" aria-haspopup="dialog">ニャー</a>
+        <a class="nav-black-cat" id="catVideoLink" href="assets/cats/cat-dance-black.mp4" aria-controls="catVideoPeek" aria-expanded="false">ニャー</a>
         <a class="nav-fsc" href="https://demimomi.github.io/demimomi/fsc.html">微細構造定数</a>
         <a href="https://demimomi.github.io/demimomi/sound-garden.html">音庭</a>
         <a class="nav-era" href="https://demimomi.github.io/demimomi/heisei_ver" target="_blank" rel="noopener noreferrer">平成ジャンプ ↗</a>
@@ -859,13 +904,18 @@
     </div>
   </header>
 
-  <dialog class="cat-video-dialog" id="catVideoDialog" aria-label="猫のダンス動画">
-    <button class="cat-video-close" type="button" aria-label="動画を閉じる" autofocus>×</button>
-    <div class="cat-video-stage">
-      <video src="assets/cats/cat-dance-black.mp4" controls playsinline preload="none" aria-label="猫のダンス動画"></video>
-      <p class="cat-video-error" role="status" hidden>動画を読み込めませんでした。</p>
+  <aside class="cat-video-peek" id="catVideoPeek" aria-label="猫のダンス動画" hidden>
+    <div class="cat-video-cut">
+      <div class="cat-video-opening">
+        <div class="cat-video-stage">
+          <video src="assets/cats/cat-dance-black.mp4" controls playsinline preload="none" aria-label="猫のダンス動画"></video>
+          <button class="cat-video-close" type="button" aria-label="動画を閉じる">×</button>
+          <p class="cat-video-error" role="status" hidden>動画を読み込めませんでした。</p>
+        </div>
+      </div>
     </div>
-  </dialog>
+    <div class="cat-video-fold-shadow" aria-hidden="true"><div class="cat-video-fold"></div></div>
+  </aside>
 
   <main id="main">
     <section class="section hero" id="top" aria-labelledby="hero-title">
@@ -1160,31 +1210,66 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
   (() => {
     "use strict";
     const link = document.getElementById("catVideoLink");
-    const dialog = document.getElementById("catVideoDialog");
+    const peek = document.getElementById("catVideoPeek");
     const navToggle = document.getElementById("navToggle");
-    const video = dialog.querySelector("video");
-    const error = dialog.querySelector(".cat-video-error");
+    const video = peek.querySelector("video");
+    const closeButton = peek.querySelector("button");
+    const error = peek.querySelector(".cat-video-error");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const isOpen = () => peek.classList.contains("is-open");
+    let closeTimer, hideTimer;
+
+    const close = () => {
+      if (!isOpen()) return;
+      window.clearTimeout(closeTimer);
+      video.pause();
+      peek.classList.remove("is-open");
+      link.setAttribute("aria-expanded", "false");
+      if (peek.contains(document.activeElement)) {
+        const focusTarget = navToggle.getClientRects().length ? navToggle : link;
+        focusTarget.focus({ preventScroll: true });
+      }
+      peek.inert = true;
+      hideTimer = window.setTimeout(() => {
+        peek.hidden = true;
+        video.currentTime = 0;
+      }, reducedMotion.matches ? 0 : 920);
+    };
 
     link.addEventListener("click", event => {
-      if (typeof dialog.showModal !== "function" || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
-      dialog.showModal();
+      if (isOpen()) {
+        close();
+        return;
+      }
+
+      window.clearTimeout(hideTimer);
+      peek.hidden = false;
+      peek.inert = false;
+      void peek.offsetWidth;
+      peek.classList.add("is-open");
+      link.setAttribute("aria-expanded", "true");
+      if (event.detail === 0) closeButton.focus({ preventScroll: true });
       error.hidden = true;
       if (video.error) video.load();
+      video.currentTime = 0;
       video.play().catch(() => {
-        if (dialog.open && video.error) error.hidden = false;
+        if (isOpen() && video.error) error.hidden = false;
       });
+      closeTimer = window.setTimeout(close, 22000);
     });
 
     video.addEventListener("error", () => {
-      if (dialog.open) error.hidden = false;
+      if (isOpen()) error.hidden = false;
     });
-    dialog.querySelector("button").addEventListener("click", () => dialog.close());
-    dialog.addEventListener("close", () => {
-      video.pause();
-      video.currentTime = 0;
-      const focusTarget = navToggle.getClientRects().length ? navToggle : link;
-      focusTarget.focus({ preventScroll: true });
+    video.addEventListener("ended", close);
+    closeButton.addEventListener("click", close);
+    window.addEventListener("keydown", event => {
+      if (event.key === "Escape") close();
+    });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) close();
     });
   })();
   </script>
