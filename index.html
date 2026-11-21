@@ -204,7 +204,7 @@
       white-space: nowrap;
       padding: .64rem .72rem;
       border-radius: 999px;
-      color: var(--muted);
+      color: var(--nav-text-color, var(--muted));
       text-decoration: none;
       font-size: .79rem;
       transition: color .2s ease, background .2s ease, transform .2s ease;
@@ -214,12 +214,12 @@
     .nav-disclosure summary:hover,
     .nav-disclosure summary:focus-visible,
     .nav-disclosure[open] summary {
-      color: var(--ink);
+      color: var(--nav-text-color, var(--ink));
       background: rgba(255,255,255,.052);
       transform: translateY(-1px);
       outline: none;
     }
-    .nav-links .nav-era { color: var(--gold); border: 1px solid rgba(223,196,134,.24); }
+    .nav-links .nav-highlight { --nav-text-color: #f4a261; }
 
     .nav-disclosure { position: relative; }
     .nav-disclosure summary {
@@ -818,8 +818,6 @@
       .signal-track { transform:none !important; }
     }
 
-    .nav-links .nav-black-cat { color: var(--gold); }
-
     .cat-video-peek {
       position: fixed;
       inset-inline-end: 0;
@@ -937,9 +935,15 @@
 
       <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks">Menu</button>
       <nav class="nav-links" id="navLinks" aria-label="主要ナビゲーション">
-        <a href="https://arxiv.org/html/2608.09144v1#Toshiki%20Demizu" target="_blank" rel="noopener noreferrer">論文支援</a>
-        <a href="physical-ai-cat.html">猫とPhysical AI</a>
-        <details class="nav-disclosure" id="playMenu">
+        <details class="nav-disclosure" name="header-submenus">
+          <summary class="nav-highlight">次元</summary>
+          <ul class="nav-disclosure-links">
+            <li><a href="https://demimomi.github.io/demimomi/fsc.html" target="_blank" rel="noopener noreferrer">微細構造定数 ↗</a></li>
+            <li><a href="https://demimomi.github.io/demimomi/heisei_ver" target="_blank" rel="noopener noreferrer">平成ジャンプ ↗</a></li>
+            <li><a href="https://demimomi.github.io/demimomi/moon.html" target="_blank" rel="noopener noreferrer">Moon ↗</a></li>
+          </ul>
+        </details>
+        <details class="nav-disclosure" id="playMenu" name="header-submenus">
           <summary>遊戯</summary>
           <ul class="nav-disclosure-links">
             <li><a href="https://demimomi.github.io/demimomi/neko-robot-game.html" target="_blank" rel="noopener noreferrer">猫GAME</a></li>
@@ -947,11 +951,10 @@
             <li><a href="https://demimomi.github.io/demimomi/sound-garden.html">音庭</a></li>
           </ul>
         </details>
-        <a class="nav-black-cat" id="catVideoLink" href="assets/cats/cat-dance-black.mp4" aria-controls="catVideoPeek" aria-expanded="false">ニャー</a>
-        <a class="nav-fsc" href="https://demimomi.github.io/demimomi/fsc.html">微細構造定数</a>
-        <a class="nav-era" href="https://demimomi.github.io/demimomi/heisei_ver" target="_blank" rel="noopener noreferrer">平成ジャンプ ↗</a>
+        <a href="https://arxiv.org/html/2608.09144v1#Toshiki%20Demizu" target="_blank" rel="noopener noreferrer">論文支援</a>
+        <a href="physical-ai-cat.html">猫とPhysical AI</a>
         <a href="https://demimomi.github.io/demimomi/patent.html" target="_blank" rel="noopener noreferrer">Patent</a>
-        <a href="https://demimomi.github.io/demimomi/moon.html" target="_blank" rel="noopener noreferrer">Moon ↗</a>
+        <a class="nav-highlight" id="catVideoLink" href="assets/cats/cat-dance-black.mp4" aria-controls="catVideoPeek" aria-expanded="false">ニャー</a>
       </nav>
     </div>
   </header>
@@ -1184,8 +1187,6 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
     const header = document.getElementById("siteHeader");
     const navToggle = document.getElementById("navToggle");
     const navLinks = document.getElementById("navLinks");
-    const playMenu = document.getElementById("playMenu");
-    const playToggle = playMenu.querySelector("summary");
     const progress = document.getElementById("scrollProgress");
     const heroSystem = document.getElementById("heroSystem");
     const copyButton = document.getElementById("copyCode");
@@ -1194,30 +1195,34 @@ model = AutoModel.<span class="tok-fn">from_pretrained</span>(
 
     document.getElementById("year").textContent = String(new Date().getFullYear());
 
+    const getOpenDisclosure = () => navLinks.querySelector(".nav-disclosure[open]");
     const setMenu = (open) => {
       header.classList.toggle("is-open", open);
       navToggle.setAttribute("aria-expanded", String(open));
-      if (!open) playMenu.open = false;
+      if (!open) getOpenDisclosure()?.removeAttribute("open");
     };
 
     navToggle.addEventListener("click", () => setMenu(!header.classList.contains("is-open")));
     navLinks.addEventListener("click", (event) => {
       const link = event.target.closest("a");
       if (!link) return;
-      if (playMenu.contains(link) && document.activeElement === link) {
-        const focusTarget = navToggle.getClientRects().length ? navToggle : playToggle;
+      const disclosure = link.closest(".nav-disclosure");
+      if (disclosure && document.activeElement === link) {
+        const focusTarget = navToggle.getClientRects().length ? navToggle : disclosure.querySelector("summary");
         focusTarget.focus({ preventScroll: true });
       }
       setMenu(false);
     });
     document.addEventListener("click", (event) => {
-      if (!playMenu.contains(event.target)) playMenu.open = false;
+      const disclosure = getOpenDisclosure();
+      if (disclosure && !disclosure.contains(event.target)) disclosure.open = false;
     });
     window.addEventListener("keydown", (event) => {
       if (event.key !== "Escape") return;
-      if (playMenu.open) {
-        playMenu.open = false;
-        playToggle.focus({ preventScroll: true });
+      const disclosure = getOpenDisclosure();
+      if (disclosure) {
+        disclosure.open = false;
+        disclosure.querySelector("summary").focus({ preventScroll: true });
       } else if (header.classList.contains("is-open")) {
         setMenu(false);
         navToggle.focus({ preventScroll: true });
