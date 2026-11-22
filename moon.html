@@ -125,7 +125,7 @@
     }
     .nav a:last-child { color: #c09884; }
 
-    /* Moon, mountains and a distant threshold are drawn once, not animated. */
+    /* Moonlit landscape and its decorative animation. */
     .hero {
       position: relative;
       display: grid;
@@ -152,6 +152,26 @@
       height: auto;
       mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 97%);
       -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 97%);
+    }
+    .moon-yatagarasu {
+      animation: moon-yatagarasu-flight 4.8s linear .2s both;
+    }
+    .moon-yatagarasu-wing {
+      transform-box: view-box;
+      transform-origin: 0 0;
+      animation: moon-yatagarasu-flap 4.8s ease-in-out .2s both;
+    }
+    .moon-yatagarasu-wing-far { --wing-downstroke: -.38; }
+    @keyframes moon-yatagarasu-flight {
+      0% { transform: translate(362px, 167px) rotate(5deg); opacity: 0; }
+      14%, 84% { opacity: 1; }
+      55% { transform: translate(654px, 145px) rotate(-4deg); }
+      100% { transform: translate(908px, 105px) rotate(-9deg); opacity: 0; }
+    }
+    @keyframes moon-yatagarasu-flap {
+      0%, 22%, 77%, 100% { transform: scaleY(1); }
+      11%, 88% { transform: scaleY(var(--wing-downstroke, -.65)); }
+      36%, 65% { transform: rotate(-5deg) scaleY(.78); }
     }
     .moon-caption {
       position: absolute;
@@ -621,6 +641,7 @@
       *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
       .moon-cat-walk.is-walking :is(.moon-cat-roam, .moon-cat-roam img) { animation-play-state: paused; }
       .moon-cat-toggle { display: none; }
+      :is(.moon-yatagarasu, .moon-yatagarasu-wing) { animation: none; }
     }
     @media (forced-colors: active) {
       .scene, .threshold, .moon-cat-walk { display: none; }
@@ -740,6 +761,22 @@
             <path d="m637 339 77-1 11 5h-104Z" fill="#526047" opacity=".55"/>
             <path d="M365 368c95-8 178 1 236-4s155-11 239-3M280 381c95 4 169-7 259-3s207 6 301-2" stroke="url(#mist)" stroke-width="1"/>
             <path d="M506 394c57 2 83-4 115-3m36 0h58m-122 10h72" stroke="#8f9c73" stroke-opacity=".12" stroke-width=".7"/>
+
+            <!-- Yatagarasu, with three separated legs visible against the moon. -->
+            <g class="moon-yatagarasu" transform="translate(654 145) rotate(-4)"
+               fill="#101711" stroke="#777f62" stroke-width="1.05" stroke-linejoin="round">
+              <path class="moon-yatagarasu-wing moon-yatagarasu-wing-far"
+                    fill="#20291e" d="M5 0C10-14 21-25 38-35c-3 6-6 10-11 15l16-10-12 15 12-6C35-9 26-2 12 4Z"/>
+              <g class="moon-yatagarasu-legs">
+                <path d="M-27 5l-3 11-8 9-8 3 6 1 4-2-2 6 4-2 2-6 8-7 4-11Z"/>
+                <path d="M-10 8l-1 12-5 10-8 5 6 1 4-3-1 6 4-3 1-6 6-9 3-12Z"/>
+                <path d="M8 7l2 11-3 9-7 6 6 0 4-4 1 6 3-4-1-6 4-8-2-11Z"/>
+              </g>
+              <path d="M-49 2l-20 10 15 1-12 8 24-4 14-8c13 6 29 7 42 1 8-4 13-14 21-15l15-1-10-5c-3-9-12-12-20-8-7 3-11 9-20 10-18-5-34-1-49 11Z"/>
+              <path class="moon-yatagarasu-wing"
+                    d="M9 0C-7-27-22-40-59-47c5 6 11 10 19 14l-25-8c5 8 12 13 21 18l-20-5c4 7 13 14 23 17l-16-2C-37 5-12 13 9 0Z"/>
+              <circle cx="30" cy="-13" r="1.6" fill="#cfbc8b" stroke="none"/>
+            </g>
             </g>
           </svg>
           <p class="moon-caption">BAAD</p>
